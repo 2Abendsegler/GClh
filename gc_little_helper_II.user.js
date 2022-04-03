@@ -9526,6 +9526,14 @@ var mainGC = function() {
                 }
             }
 
+            // Add Filtersets.
+            function addFilterSets() {
+                if (settings_search_enable_user_defined && $('.gc-filter-modal')[0]) {
+                    // Coding with helper function are above the `filterSetsUI()` function
+                    filterSetsUI();
+                }
+            }
+
             // Improve add to list popup.
             function improveAddtolistPopup() {
                 function checkAddtolistPopup(waitCount) {
@@ -9618,6 +9626,7 @@ var mainGC = function() {
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
                 setFilter();
+                addFilterSets();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 and Ctrl+s in filter screen.
                 prepareKeydownF2InFilterScreen();
@@ -13072,6 +13081,241 @@ var mainGC = function() {
 ////////////////////////////////////////
 // 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
+    var saveFilterSet = () => {
+        setValue("settings_search_data", JSON.stringify(settings_search_data));
+        $('#gclh_filterSets').remove();
+        filterSetsUI();
+    }
+    var filterSetCss = () => {
+        css = ''
+        css += '.gclh_input {display: grid; grid-template-columns: minmax(0, 100%) 5em; width: 100%;margin-bottom: 1em;}';
+        css += '.gclh_input input {border: thin solid #9b9b9b; border-right: 0 !important; border-radius: 4px 0 0 4px}';
+        css += '.gclh_input button {cursor:pointer; background: #00b265; border: thin solid #9b9b9b; border-left: 0; border-radius: 0 4px 4px 0; color: #fff;}';
+        css += '.gclh_filterSets > :nth-child(odd) {background:#eee}';
+        css += '.gclh_filterSet {display: grid; grid-template-columns: minmax(0, 100%) 3.5em;}';
+        css += '.gclh_filterSet span {display: flex; align-self:center;}';
+        css += '.gclh_filterSet a {display: block; width: 100%; align-self: center; color:#4a4a4a; text-decoration:none; padding: .5em;}';
+        css += '.gclh_filterSet:hover {background:#e4e4e4}';
+        css += '.gclh_filterSet svg {cursor:pointer; width:1.5em; height:1.5em;}';
+        css += '.warning {color: #f00;}'
+        //css += '.gclh_filterSet svg:hover {color:#00b265}';
+ 
+        appendCssStyle(css, null, 'gclh_filter_sets_css');
+    }
+    var toggleFiltersets = () => {
+        $('#gclh_filterSets .filter-group-header').toggleClass('collapsed');
+        $('#gclh_filterSets .filter-group-collapse-button').toggleClass('collapsed');
+        $('#gclh_filterSets .filter-group-collapsable-frame').toggleClass('collapsed');
+    }
+    var createQuery = () => {
+        let params = [];
+        let warning = "";
+        // Location
+        let loc = $('.gc-location-typeahead .chip-label')[0]
+        if (loc) {
+            let val = encodeURIComponent(loc.innerHTML.match(/<strong>.*?<\/strong>(.*)/i)[1]).replaceAll('%20', '+')
+            if (val == 'Home+Location') {
+                params.push('lat=' + (getValue("home_lat") / 10000000));
+                params.push('lng=' + (getValue("home_lng") / 10000000));
+            } else {
+                params.push('st=' + encodeURIComponent(loc.innerHTML.match(/<strong>.*?<\/strong>(.*)/i)[1]).replaceAll('%20', '+'));
+            }
+        }
+        // Distance
+        if (!$('.distance-from > span').hasClass('disabled')) {
+            params.push('r=' + ($('.distance-from-field .gc-search-filters-input').val() || NaN));
+        }
+        // Name contains
+        if ($('.cache-name-contains').val()) params.push('cn=' + $('.cache-name-contains').val());
+        // Foundstatus
+        if ($('[name="fs-found"]:checked').val() == 0) params.push('hf=0');
+        if ($('[name="fs-not-found"]:checked').val() == 1) params.push('hf=1');
+        // Not found by
+        $('#found-status-filter + .filter-group .chip-label').each((_i, elem) => {
+            params.push('nfb=' + encodeURIComponent(elem.innerHTML).replaceAll('%20', '+'));
+        });
+        // Found by
+        $('#found-status-filter + .filter-group + .filter-group .chip-label').each((_i, elem) => {
+            params.push('fb=' + encodeURIComponent(elem.innerHTML).replaceAll('%20', '+'));
+        });
+        // Ownerstatus
+        if ($('[name="co-owned"]:checked').val() == 0) params.push('hf=0');
+        if ($('[name="co-not-owned"]:checked').val() == 1) params.push('hf=1');
+        // Hidden by
+        if ($('#cache-owner-filter + .filter-group .chip-label')[0]) {
+            params.push('hb='+encodeURIComponent($('#cache-owner-filter + .filter-group .chip-label').html()).replaceAll('%20', '+'))
+        }
+        // Placed date
+        switch ($('#gcsel-4JnpBxk').val()) {
+            case 'ANYDATE': break;
+            case 'AFTER': params.push('pad='+$('#start-date').val()); break;
+            case 'BEFORE': params.push('pbd='+$('#start-date').val()); break;
+            case 'BETWEEN':
+                params.push('psd='+$('#start-date').val());
+                params.push('ped='+$('#end-date').val());
+                break;
+            case 'ON': params.push('pod='+$('#start-date').val()); break;
+        }
+        // Find Date
+        switch ($('#gcsel-4JnpBxk').val()) {
+            case 'ANYDATE': break;
+            case 'AFTER': params.push('fad='+$('#start-date').val()); break;
+            case 'BEFORE': params.push('fbd='+$('#start-date').val()); break;
+            case 'BETWEEN':
+                params.push('fsd='+$('#start-date').val());
+                params.push('fed='+$('#end-date').val());
+                break;
+            case 'ON': params.push('fod='+$('#start-date').val()); break;
+        }
+        // Cache types
+        let ct = Object.entries($('[id*="cache-type"]:checked'))
+            .filter(elem => elem[1].value !== undefined)
+            .map(elem => elem[1].value);
+        if (ct[0]) {
+            ct = ct.join('%2C').replace(/2($|%2C)/, '2%2C9%2C3773$1') // Tradi includes APE und GC HQ.
+                .replace(/6($|%2C)/, '6%2C1304%2C3653%2C3774%2C4738$1') // Event includes GPS Maze, CC Event,  GC HQ Celebration und GC HQ Blockparty
+            params.push('ct='+ct);
+        }
+        // Cache size
+        let cs = Object.entries($('[id*="size"]:checked'))
+            .filter(elem => elem[1].value !== undefined)
+            .map(elem => elem[1].value);
+        if (cs[0]) params.push('cs='+cs.join('%2C'));
+        // Solved Coords
+        if ($('[name="cc-corrected-only"]:checked')[0]) params.push('cc=1');
+        if ($('[name="cc-original-only"]:checked')[0]) params.push('cc=0');
+        // Membership type
+        if ($('[name="membership-basic-only"]:checked')[0]) params.push('sp=0');
+        if ($('[name="membership-premium-only"]:checked')[0]) params.push('sp=1');
+        // Cache Status
+        if ($('[name="cs-enabled"]:checked')[0]) params.push('sd=0');
+        if ($('[name="cs-disabled"]:checked')[0]) params.push('sd=1');
+        // min favs
+        if ($('.dial').val() > 0) params.push('fp='+$('.dial').val());
+        // D/T
+        if ($('#dt-filters .toggle.on')[0]) warning = '"Fill in your D/T grid" doesn\'t work in GClh Filtersets';
+        let d = Object.entries($('[id*="difficulties"]:checked'))
+            .filter(elem => elem[1].value !== undefined)
+            .map(elem => elem[1].value);
+        if (d[0]) params.push('d='+d.join('%2C'));
+        let t = Object.entries($('[id*="terrains"]:checked'))
+            .filter(elem => elem[1].value !== undefined)
+            .map(elem => elem[1].value);
+        if (t[0]) params.push('t='+t.join('%2C'));
+        // Attributes
+        let attr = Object.entries($('[id*="attr"]:checked'))
+            .filter(elem => elem[1].value !== undefined)
+            .map(elem => elem[1].value);
+        if (attr[0]) params.push('att='+attr.join('%2C'));
+
+        return {query: params.join('&'), warning: warning};
+    }
+    var filterSetsUI = () => {
+        if ($('#gclh_filterSets')[0]) return;
+        filterSetCss();
+        waitForTarget = (waitCount) => {
+            if ($('#dt-filters')[0]) {
+                var html = `
+                <div id="gclh_filterSets" class="filter-group">
+                    <label class="filter-group-header" tabindex="0">
+                        <div style="display: flex; flex: 1 1 0%; flex-direction: column; min-width: 0px;">
+                            <div class="filter-group-header-label">GClh Filter Sets</div>
+                        </div>
+                        <div class="filter-group-controls">
+                            <div class="filter-group-collapse-button ">
+                                <svg aria-label="Collapse"><use xlink:href="#caret-down"></use></svg>
+                            </div>
+                        </div>
+                    </label>
+                    <div class="filter-group-collapsable-frame">
+                        <div class="filter-container">
+                            <label style="margin-bottom: 7px">
+                                <span class="gc-user-typeahead-label">Save actual Filter as set</span>
+                                <div class="gclh_input">
+                                    <input type="text" id="gclh_new_set_name" class="gc-search-filters-input" placeholder="Name of your new Filterset" />
+                                    <button id="gclh_new_set_save">Save</button>
+                                </div>
+                            </label>
+                            <div class="gclh_filterSets">
+                                ${settings_search_data.map(({name, query}, id) => {
+                                    let map = is_page("searchmap") ? document.location.href.match(/lat.*?zoom=\d{1,2}/gi)[0] + "&" : '';
+                                    return `
+                                    <div class="gclh_filterSet" data-id="${id}">
+                                        <span class="gclh_set_name"><a href="${document.location.pathname}?${map}${query}">${name}</a></span>
+                                        <span style="display: flex; align-self: center;">
+                                            <svg class="gclh_set_delete" title="Delete"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg>
+                                            <svg class="gclh_set_edit" titel="Rename"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-more"></use></svg>
+                                        </span>
+                                    </div>`;
+                                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+                
+                $('#dt-filters').after(html);
+
+                $('#gclh_filterSets .filter-group-header').bind('click', toggleFiltersets);
+                // New Filter Set
+                $('#gclh_new_set_save').bind('click', () => {
+                    let name = $('#gclh_new_set_name').val();
+                    let query = createQuery();
+                    if (query.warning != '') {
+                        let html = `<span class="warning">${query.warning}</span>`;
+                        $('#gclh_filterSets div label').before(html);
+                        return;
+                    }
+                    //else if ($('.warning')[0]) $('.warning')[0].remove();
+                    settings_search_data.push({name: name, query: query.query});
+                    saveFilterSet();
+                });
+                // Edit Filterset
+                $('.gclh_set_edit').bind('click', (e) => {
+                    let id = $(e.target).parents('.gclh_filterSet').data('id');
+                    if ($('#gclh_set_new_name_'+id)[0]) return;
+                    let html = `
+                    <div class="gclh_input" style="margin:0;">
+                        <input id="gclh_set_new_name_${id}" value="${$(`[data-id="${id}"] .gclh_set_name a`).html()}" style="padding: .5em" />
+                        <button id="gclh_new_name_${id}_save">Save</button>
+                    </div>
+                    `;
+                    $(`[data-id="${id}"] .gclh_set_name`).html(html);
+                    $(`#gclh_new_name_${id}_save`).bind('click', () => (id => {
+                        settings_search_data[id].name = $('#gclh_set_new_name_'+id).val();
+                        saveFilterSet();
+                    })(id));
+                });
+                // Delete Filterset
+                $('.gclh_set_delete').bind('click', (e) => {
+                    let id = $(e.target).parents('.gclh_filterSet').data('id')
+                    settings_search_data.splice(id, 1);
+                    saveFilterSet();
+                })
+            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForTarget(waitCount);}, 100);}
+        }
+        waitForTarget(0);
+    }
+    if (settings_search_enable_user_defined && is_page("find_cache")) {
+        try {
+            waitForTarget = (waitCount) => {
+                if ($('#search-results-page, #gc-search-form')[0]) {
+                    var callback = (_mutationsList, _observer) => {
+                        if ($('.gc-filter-modal')[0]) {
+                            filterSetsUI();
+                        }
+                    }
+                    var observer = new MutationObserver(callback);
+                    var target = $('#search-results-page, #gc-search-form')[0];
+                    var config = {
+                        childList: true,
+                        attributes: true
+                    };
+                    observer.observe(target, config);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForTarget(waitCount);}, 100);}
+            }
+            waitForTarget(0);
+        } catch(e) {gclh_error("User defined search",e);}
+    }
 
 ///////////////////////////////
 // 5.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
@@ -17273,7 +17517,7 @@ function is_page(name) {
     } else if (name == "map") {
         if (url.match(/^\/map/)) status = true;
     } else if (name == "find_cache") {
-        if (url.match(/^\/play\/(search|geocache)/)) status = true;
+        if (url.match(/^\/play\/(search|results|geocache)/)) status = true;
     } else if (name == "collection_1") {
         if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines|promotions)/)) status = true;
     } else if (name == "hide_cache") {
