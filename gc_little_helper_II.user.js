@@ -900,7 +900,6 @@ var mainPGC = function() {
                 var [start_month, start_day, start_year] = getDateParts($(this).children().eq(1).text());
                 var [end_month, end_day, end_year] = getDateParts($(this).children().eq(2).text());
                 var cache_count = parseInt($(current_table).find('.pq_name').attr('cache_count'));
-                var fup = $(this).context.rowIndex.toString(10);
                 var pq_name = $(current_table).find('.pq_name').val() + $(this).context.rowIndex.toString(10).padStart(nDigits, '0');
                 var how_often = $(current_table).find('.how_often:checked').attr('index');
                 var email = $(current_table).find('.output_email').val();
@@ -4678,10 +4677,10 @@ var mainGC = function() {
             function findGetParameter(parameterName) {
                 var result = null;
                 var tmp = [];
-                var items = decodeURIComponent(location.search.substr(1)).split("&");
+                var items = location.search.substr(1).split("&");
                 for (var index = 0; index < items.length; index++) {
                     tmp = items[index].split("=");
-                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                    if (tmp[0] === parameterName || urldecode(tmp[0]) === parameterName) result = decodeURIComponent(tmp[1]);
                 }
                 return result;
             }
