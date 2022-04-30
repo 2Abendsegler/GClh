@@ -3826,6 +3826,16 @@ var mainGC = function() {
         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
         code += "  var owner = '" + aOwner + "';";
         code += "  var inhalt = document.getElementById(id).innerHTML;";
+        code += `if (inhalt.match(/#(FoundALC|FoundWithoutALC|FoundWithoutALC_no)#/ig)[0]) {
+                    let xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open('GET', 'https://www.geocaching.com/p/default.aspx?tab=geocaches', false);
+                    xmlHttp.send();
+                    let res = xmlHttp.responseText;
+                    let alcCount = res.match(/ctl11_uxFindCount">(\\d+)</ig)[0].match(/\\d+/ig)[1];
+                    inhalt = inhalt.replace(/#FoundALC#/ig, alcCount)
+                        .replace(/#FoundWithoutALC#/ig, finds - alcCount + 1)
+                        .replace(/#FoundWithoutALC_no#/ig, finds - alcCount);
+                }`;
         code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
         code += "  if (finds) {";
         code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";
@@ -4301,6 +4311,15 @@ var mainGC = function() {
             else var owner = $('.hidden-by a')[0].innerHTML;
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
+        }
+        if (document.getElementById(id).innerHTML.match(/#(FoundALC|FoundWithoutALC|FoundWithoutALC_no)#/ig)[0]) {
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', 'https://www.geocaching.com/p/default.aspx?tab=geocaches', false);
+            xmlHttp.send();
+            res = xmlHttp.responseText;
+            let alcCount = res.match(/ctl11_uxFindCount">(\d+)</ig)[0].match(/\d+/ig)[1];
+            document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#FoundALC#/ig, alcCount)
+                .replace(/#FoundWithoutALC#/ig, finds+1 - alcCount).replace(/#FoundWithoutALC_no#/ig, finds - alcCount);
         }
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
         finds++;
@@ -14348,7 +14367,7 @@ var mainGC = function() {
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #FoundALC# : Your ALC founds<br>&nbsp; #FoundWithoutALC# : Your founds + 1 excluding ALC<br>&nbsp; #FoundWithoutALC_no# : Your founds excluding ALC<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
