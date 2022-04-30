@@ -3828,9 +3828,9 @@ var mainGC = function() {
         code += "  var inhalt = document.getElementById(id).innerHTML;";
         code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
         code += "  if (finds) {";
-        code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";
+        code += "    inhalt = inhalt.replace(/#found_no-?(\\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);";
         code += "    finds++;";
-        code += "    inhalt = inhalt.replace(/#found#/ig, finds);";
+        code += "    inhalt = inhalt.replace(/#found-?(\\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);";
         code += "  }";
         code += "  if (aDate) inhalt = inhalt.replace(/#Date#/ig, aDate);";
         code += "  if (aTime) inhalt = inhalt.replace(/#Time#/ig, aTime);";
@@ -4302,10 +4302,10 @@ var mainGC = function() {
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         }
-        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
+        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
         finds++;
         if (!newLogPage || settings_show_pseudo_as_owner) document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#owner#/ig, owner);
-        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me);
+        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds).replace(/#me#/ig, me);
         var [aDate, aTime, aDateTime] = getDateTime();
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
         var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(newLogPage);
@@ -12172,8 +12172,8 @@ var mainGC = function() {
     function buildSendTemplate() {
         var tpl = getValue("settings_mail_signature", "");
         var trimIt = (tpl.length == tpl.trim().length);
-        tpl = tpl.replace(/#Found#/ig, global_founds+1).replace(/#Found_no#/ig, global_founds).replace(/#Me#/ig, global_activ_username);
-        tpl = tpl.replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
+        tpl = tpl.replace(/#Found-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds+1 - p1 : global_founds+1).replace(/#Found_no-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds - p1 : global_founds)
+        tpl = tpl.replace(/#Me#/ig, global_activ_username).replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
         tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
         if (trimIt) tpl = tpl.trim();
         return tpl;
