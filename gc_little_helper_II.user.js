@@ -2399,6 +2399,12 @@ var mainGC = function() {
 // Add link to waypoint list and cache logs to right sidebar.
     if (is_page("cache_listing") && $("#cache_logs_container")[0] && $(".InformationWidget")[0]) {
         try {
+            if (document.getElementById('ctl00_ContentBody_GeoNav_foundStatus')) {
+                var log_link = document.getElementById('ctl00_ContentBody_GeoNav_logDate').children[0].href;
+                $("#ctl00_ContentBody_GeoNav_logDate").append('<a href="' + log_link + '&amp;edit=true" title="Edit Log">Edit Log</a>');
+                var css = '#ctl00_ContentBody_GeoNav_foundStatus a[href*="&edit=true"]{background-image:url(/images/icons/16/edit.png);background-repeat:no-repeat;overflow:hidden;display:inline-block;height:16px;width:16px;font-size:0!important;margin-left:5px;}';
+                appendCssStyle(css);
+            }
             if (getWaypointTable().length > 0) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#ctl00_ContentBody_bottomSection">Go to Waypoint List</a></li>');
             }
