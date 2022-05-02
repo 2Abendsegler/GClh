@@ -2402,7 +2402,7 @@ var mainGC = function() {
             if (document.getElementById('ctl00_ContentBody_GeoNav_foundStatus')) {
                 var log_link = document.getElementById('ctl00_ContentBody_GeoNav_logDate').children[0].href;
                 $("#ctl00_ContentBody_GeoNav_logDate").append('<a href="' + log_link + '&amp;edit=true" title="Edit Log">Edit Log</a>');
-                var css = '#ctl00_ContentBody_GeoNav_foundStatus a[href*="&edit=true"]{background-image:url(/images/icons/16/edit.png);background-repeat:no-repeat;overflow:hidden;display:inline-block;height:16px;width:16px;font-size:0!important;margin-left:5px;}';
+                var css = '#ctl00_ContentBody_GeoNav_foundStatus a[href*="&edit=true"]{background-image:url(/images/icons/16/edit.png); background-repeat: no-repeat; overflow: hidden; display: inline-block; height: 16px; width: 16px; font-size: 0!important; margin-left: 5px; vertical-align: bottom;}';
                 appendCssStyle(css);
             }
             if (getWaypointTable().length > 0) {
