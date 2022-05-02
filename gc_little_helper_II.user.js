@@ -1594,6 +1594,11 @@ var mainGC = function() {
                         // Menü in Karte ausrichten.
                         if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                         if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
+                    // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
+                    } else {
+                        if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important; position: inherit;}";
+                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;}";
+                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important; position: inherit; flex-wrap: wrap;}";
                     }
 
                 // Altes Seiten Design und restliche Seiten:
