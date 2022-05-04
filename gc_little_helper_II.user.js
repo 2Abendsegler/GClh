@@ -17082,7 +17082,7 @@ var mainGC = function() {
     function buildBgShadow() {
         var shadow = document.createElement("div");
         shadow.setAttribute("id", "bg_shadow");
-        shadow.setAttribute("style", "z-index:1000; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+        shadow.setAttribute("style", "z-index:9999; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
         $('body')[0].appendChild(shadow);
         $('#bg_shadow')[0].addEventListener("click", btnClose, false);
     }
