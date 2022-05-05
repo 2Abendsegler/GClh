@@ -6149,15 +6149,120 @@ var mainGC = function() {
 // Improve drafts new page.
     if (settings_modify_new_drafts_page && is_page('drafts')) {
         try {
+            const logTypes = {
+                'Found it:': 2,
+                'Didn\'t find it:': 3,
+                'Write note:': 4,
+                'Archive:': 5,
+                'Will attend:': 9,
+                'Attended:': 10,
+                'Disable:': 22,
+                'Enable:': 23,
+                'Webcam photo taken:': 11,
+                'Needs maintenance:': 45,
+                'Owner maintenance:': 46,
+                'Announcement:': 74,
+            };
+            // type: count            Tradi  Multi  Virtual  Letterbox  Event  Mystery  APE  Webcam  Locationless (Reverse) Cache  CITO  EC     Mega   GPS Maze  Wherigo  CC Event  GC HQ   GC HQ Celebration  GC HQ Block Party  Giga
+            let cacheTypesFoundCount={2:0,   3:0,   4:0,     5:0,       6:0,   8:0,     9:0, 11:0,   12:0,                         13:0, 137:0, 453:0, 1304:0,   1858:0,  3653:0,   3773:0, 3774:0,            4738:0,            7005:0};
+            // type: count     Found it  Didn't find it  Write note  Archive  Will attend  Attended  Disable  Enable  Webcam photo taken  Needs maintenance  Owner maintenance  Announcement
+            let logTypesCount={2:0,      3:0,            4:0,        5:0,     9:0,         10:0,     22:0,    23:0,   11:0,               45:0,              46:0,              74:0};
+            // Statistic of cache types and log types.
+            function statsBtn() {
+                if ($('#gclh_stats_btn')[0]) return;
+                let html = '<button id="gclh_stats_btn" style="margin-left:2em;">Count cache and log types</button>';
+                $('.sort-action').after(html);
+                $('#gclh_stats_btn').bind('click', showStats)
+            }
+            function showStats() {
+                // Loading all Drafts.
+                var count = $('.draft-list li').length;
+                function scrollAndCheck() {
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                    function waitForDrafts(waitCount) {
+                        if ($('.draft-list li').length > count) {
+                            count = $('.draft-list li').length;
+                            scrollAndCheck()
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDrafts(waitCount);}, 100);}
+                    }
+                    if (count != $('.draft-indicator a').html()) waitForDrafts(0);
+                    else statsUpdateUi();
+                }
+                // Loading
+                let html = `
+                <div class="gclh_popup">
+                    <div class="gclh_popup_content">
+                        <div class="loading"></div>
+                        <div>The GClh loads all your Drafts and counts cache and log types, as well as mark double Logs</div>
+                    </div>
+                </div>`;
+                $('body').append(html);
+                scrollAndCheck();
+
+                function statsUpdateUi() {
+                    $(window).scrollTop(0);
+                    for (type in cacheTypesFoundCount) {
+                        cacheTypesFoundCount[type] = Array.from(document.querySelectorAll(`li[cache_type="${type}"]`))
+                            .map(elem => elem.innerHTML)
+                            .filter(elem => elem.match(/(Found it:|Attended:|Webcam photo taken:)/))
+                            .length;
+                    }
+                    for (type in logTypes) {
+                        logTypesCount[logTypes[type]] = Array.from(document.querySelectorAll('.meta dt')).map(elem => elem.innerHTML).filter(elem => elem == type).length;
+                    }
+                    let html = `
+                    <div class="gclh_stats">
+                        <div>
+                            ${
+                                Object.keys(cacheTypesFoundCount).map(key => [key, cacheTypesFoundCount[key]]).filter(elem => elem[1] != 0).map(([type, num]) => {
+                                    return `
+                                    <div class="gclh_stats_num">
+                                        <svg height="22" width="22"><use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-${type}"></use></svg>
+                                        <span>${num}</span>
+                                    </div>`;
+                                }).join('')
+                            }
+                        </div>
+                        <div>
+                            ${
+                                Object.keys(logTypesCount).map(key => [key, logTypesCount[key]]).filter(elem => elem[1] != 0).map(([type, num]) => {
+                                    return `
+                                    <div class="gclh_stats_num" title="${Object.entries(logTypes).filter(ent => ent[1] == type)[0][0].slice(0, -1)}">
+                                        <svg height="22" width="22"><use xlink:href="/account/app/ui-icons/sprites/log-types.svg#icon-${type}"></use></svg>
+                                        <span>${num}</span>
+                                    </div>`;
+                                }).join('')
+                            }
+                        </div>
+                    </div>`;
+                    $('.draft-list').before(html);
+                    $('.draft-list').after(html);
+                    // Mark double Logs.
+                    let gcCodes = $('.draft-list li');
+                    gcCodes = Array.from(gcCodes).map(li => $(li).attr('code'));
+                    gcCodes = gcCodes.filter((code, pos) => gcCodes.indexOf(code) != pos);
+                    gcCodes.forEach(code => $(`li[code*="${code}"]`).each((_i, elem) => $(elem).addClass('gclh_double')));
+
+                    $('#gclh_stats_btn').remove();
+                    $('.gclh_popup').remove();
+                }
+            }
+
             // Processing drafts.
             function processDrafts() {
                 $('li.draft-item:not(.gclh_done)').each(function() {
                     $(this).addClass('gclh_done');
+                    // Add GCCode to <li> - has to run first
+                    let gcCode = $(this).find('div.draft-content a[href*="compose?gc="]')[0].href.match(/compose\?gc=(.*?)&/)[1];
+                    $(this).attr('code', gcCode);
                     // Link zum Cache Listing einbauen.
                     if (settings_drafts_cache_link && $(this).find('h2.title')[0] && $(this).find('div.draft-content a[href*="compose?gc="]')[0] && $(this).find('div.draft-content a[href*="compose?gc="]')[0].href) {
-                        var gcCode = $(this).find('div.draft-content a[href*="compose?gc="]')[0].href.match(/compose\?gc=(.*?)&/);
-                        if (gcCode && gcCode[1]) {
-                            $(this).find('h2.title')[0].outerHTML = '<a class="cache_name" href="https://coord.info/' + gcCode[1] + '" title="Link to Cache Listing"' + (settings_drafts_cache_link_new_tab ? 'target="_blank" ':'') + '>' + $(this).find('h2.title')[0].outerHTML + '</a>';
+                        if (gcCode) {
+                            $(this).find('h2.title')[0].outerHTML = '<a class="cache_name" href="https://coord.info/' + gcCode + '" title="Link to Cache Listing"' + (settings_drafts_cache_link_new_tab ? 'target="_blank" ':'') + '>' + $(this).find('h2.title')[0].outerHTML + '</a>';
                         }
                     }
                     // Link zum Loggen auf altes Log Formular ändern.
@@ -6170,27 +6275,18 @@ var mainGC = function() {
                     // Show Logtype as icon.
                     if (settings_drafts_log_icons && $(this).find('.meta dt')[0] && $(this).find('.draft-icon')[0]) {
                         let type = $(this).find('.meta dt').html().trim();
-                        getTypeIcon = {
-                            'Found it:': 2,
-                            'Didn\'t find it:': 3,
-                            'Write note:': 4,
-                            'Archive:': 5,
-                            'Will attend:': 9,
-                            'Attended:': 10,
-                            'Disable:': 22,
-                            'Enable:': 23,
-                            'Webcam photo taken:': 11,
-                            'Needs maintenance:': 45,
-                            'Owner maintenance:': 46,
-                            'Announcement:': 74, // Not tested
-                        };
                         let typeHtml = `<div class="gclh_icon">
                                             ${$(this).find('.draft-icon').html()}
-                                            <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${getTypeIcon[type]}"></use></svg>
+                                            <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${logTypes[type]}"></use></svg>
                                         </div>`;
                         $(this).find('.draft-icon').append(typeHtml);
                     }
+                    // Show Cache Statistic.
+                    let iconNum = $(this).find('svg[width="48"] use').attr('xlink:href').match(/icon-(\d+)/)[1]; // because use xlink:href is not readable.
+                    $(this).find('svg[width="48"]').parents('.draft-item').attr('cache_type', iconNum);
                 });
+                // Show Cache Statistic.
+                statsBtn();
             }
             // Build mutation observer.
             function buildObserverDrafts() {
@@ -6225,6 +6321,14 @@ var mainGC = function() {
             }
             // Always show time.
             css += '.timestamp {display: inline !important;}';
+            // Stats
+            css += 'button {cursor: pointer;}'
+            css += '.gclh_popup {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(74,74,74,.4);}';
+            css += '.gclh_popup_content {position:absolute;transform:translate(-50%,-50%);top:50%;left:50%;padding:1em;background:rgba(255,255,255,.4);}';
+            css += '.gclh_stats {display: flex; justify-content: space-between;}';
+            css += '.gclh_stats div {display: flex;align-items: center;}';
+            css += '.gclh_stats_num:not(:last-child) {margin: 0 .5em 0 .1em;}';
+            css += '.gclh_double {background:#FE9C9C !important;}'
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
     }
