@@ -688,10 +688,11 @@ table .markdown-output~tr.AlternatingRow td {
     position: absolute;
     left: 30%;
     top: 10px;
-    z-index: 100001;
+    z-index: 10000;
     border-radius: 30px;
     box-sizing: unset;
 }
+.qtip {z-index: 9997 !important;} /* should be behind config */
 .gclh_headline {
     height: 21px;
     margin: 5px;

@@ -2,10 +2,10 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.15
+// @version      0.11.16
 //<-- $$000
-// @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
-// @author       Torsten Amshove; 2Abendsegler; Ruko2010
+// @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
+// @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
@@ -900,7 +900,6 @@ var mainPGC = function() {
                 var [start_month, start_day, start_year] = getDateParts($(this).children().eq(1).text());
                 var [end_month, end_day, end_year] = getDateParts($(this).children().eq(2).text());
                 var cache_count = parseInt($(current_table).find('.pq_name').attr('cache_count'));
-                var fup = $(this).context.rowIndex.toString(10);
                 var pq_name = $(current_table).find('.pq_name').val() + $(this).context.rowIndex.toString(10).padStart(nDigits, '0');
                 var how_often = $(current_table).find('.how_often:checked').attr('index');
                 var email = $(current_table).find('.output_email').val();
@@ -1595,6 +1594,11 @@ var mainGC = function() {
                         // Menü in Karte ausrichten.
                         if (is_page("map") && !settings_menu_float_right) css += ".#m {height: unset !important;}";
                         if (is_page("map") && settings_menu_float_right) css += "#navi_search {margin: 0 !important;}";
+                    // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
+                    } else {
+                        if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important; position: inherit;}";
+                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;}";
+                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important; position: inherit; flex-wrap: wrap;}";
                     }
 
                 // Altes Seiten Design und restliche Seiten:
@@ -1621,9 +1625,9 @@ var mainGC = function() {
                         }
                     // Horizontales Menü ausrichten in Abhängigkeit von Anzahl Zeilen.
                     } else {
-                        if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important;}";
-                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important;}";
-                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important;}";
+                        if      (settings_menu_number_of_lines == 1) css += "ul.#m {top:   4px !important; position: inherit;}";
+                        else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;}";
+                        else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important; position: inherit; flex-wrap: wrap;}";
                     }
                 }
                 // Alle Seiten: Platzhalter umsetzen:
@@ -1655,7 +1659,7 @@ var mainGC = function() {
     function newWidth() {
         try {
             // Keine Anpassungen.
-            if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) return;
+            if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos") || is_page("logbook")) return;
 
             if (getValue("settings_new_width") > 0) {
                 var new_width = parseInt(getValue("settings_new_width"));
@@ -1946,7 +1950,7 @@ var mainGC = function() {
                     if (drafts) {
                         draft_count = parseInt(drafts.innerHTML.match(/\d+/));
                         if (Number.isInteger(draft_count) && draft_count > 0) {
-                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts" style="outline: none;">' + draft_count + '</a></span>');
                         }
                     }
                 });
@@ -2248,7 +2252,7 @@ var mainGC = function() {
                     + (settings_highlight_usercoords_it ? "font-style: italic;}" : "font-style: unset;}");
             if ($('#tmpl_CacheCoordinateUpdate')[0] && $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.match(/Enter solved coordinates/)) {
                 css += '#coordinateParse dl dd {padding-bottom: 7px;}';
-                css += '#newCoordinates {width: unset; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
+                css += '#newCoordinates {width: 75%; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
                 css += '#updatedCoords {font-style: normal;}';
                 $('#tmpl_CacheCoordinateUpdate')[0].innerHTML = $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.replace('size="35"', 'size="30"');
             }
@@ -2400,6 +2404,12 @@ var mainGC = function() {
 // Add link to waypoint list and cache logs to right sidebar.
     if (is_page("cache_listing") && $("#cache_logs_container")[0] && $(".InformationWidget")[0]) {
         try {
+            if (document.getElementById('ctl00_ContentBody_GeoNav_foundStatus')) {
+                var log_link = document.getElementById('ctl00_ContentBody_GeoNav_logDate').children[0].href;
+                $("#ctl00_ContentBody_GeoNav_logDate").append('<a href="' + log_link + '&amp;edit=true" title="Edit Log">Edit Log</a>');
+                var css = '#ctl00_ContentBody_GeoNav_foundStatus a[href*="&edit=true"]{background-image:url(/images/icons/16/edit.png); background-repeat: no-repeat; overflow: hidden; display: inline-block; height: 16px; width: 16px; font-size: 0!important; margin-left: 5px; vertical-align: bottom;}';
+                appendCssStyle(css);
+            }
             if (getWaypointTable().length > 0) {
                 $(".CacheDetailNavigation:first > ul:first").append('<li><a href="#ctl00_ContentBody_bottomSection">Go to Waypoint List</a></li>');
             }
@@ -3829,9 +3839,9 @@ var mainGC = function() {
         code += "  var inhalt = document.getElementById(id).innerHTML;";
         code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
         code += "  if (finds) {";
-        code += "    inhalt = inhalt.replace(/#found_no#/ig, finds);";
+        code += "    inhalt = inhalt.replace(/#found_no-?(\\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);";
         code += "    finds++;";
-        code += "    inhalt = inhalt.replace(/#found#/ig, finds);";
+        code += "    inhalt = inhalt.replace(/#found-?(\\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);";
         code += "  }";
         code += "  if (aDate) inhalt = inhalt.replace(/#Date#/ig, aDate);";
         code += "  if (aTime) inhalt = inhalt.replace(/#Time#/ig, aTime);";
@@ -4303,10 +4313,10 @@ var mainGC = function() {
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         }
-        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no#/ig, finds);
+        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
         finds++;
         if (!newLogPage || settings_show_pseudo_as_owner) document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#owner#/ig, owner);
-        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found#/ig, finds).replace(/#me#/ig, me);
+        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds).replace(/#me#/ig, me);
         var [aDate, aTime, aDateTime] = getDateTime();
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
         var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(newLogPage);
@@ -4678,10 +4688,10 @@ var mainGC = function() {
             function findGetParameter(parameterName) {
                 var result = null;
                 var tmp = [];
-                var items = decodeURIComponent(location.search.substr(1)).split("&");
+                var items = location.search.substr(1).split("&");
                 for (var index = 0; index < items.length; index++) {
                     tmp = items[index].split("=");
-                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                    if (tmp[0] === parameterName || urldecode(tmp[0]) === parameterName) result = decodeURIComponent(tmp[1]);
                 }
                 return result;
             }
@@ -6139,15 +6149,120 @@ var mainGC = function() {
 // Improve drafts new page.
     if (settings_modify_new_drafts_page && is_page('drafts')) {
         try {
+            const logTypes = {
+                'Found it:': 2,
+                'Didn\'t find it:': 3,
+                'Write note:': 4,
+                'Archive:': 5,
+                'Will attend:': 9,
+                'Attended:': 10,
+                'Disable:': 22,
+                'Enable:': 23,
+                'Webcam photo taken:': 11,
+                'Needs maintenance:': 45,
+                'Owner maintenance:': 46,
+                'Announcement:': 74,
+            };
+            // type: count            Tradi  Multi  Virtual  Letterbox  Event  Mystery  APE  Webcam  Locationless (Reverse) Cache  CITO  EC     Mega   GPS Maze  Wherigo  CC Event  GC HQ   GC HQ Celebration  GC HQ Block Party  Giga
+            let cacheTypesFoundCount={2:0,   3:0,   4:0,     5:0,       6:0,   8:0,     9:0, 11:0,   12:0,                         13:0, 137:0, 453:0, 1304:0,   1858:0,  3653:0,   3773:0, 3774:0,            4738:0,            7005:0};
+            // type: count     Found it  Didn't find it  Write note  Archive  Will attend  Attended  Disable  Enable  Webcam photo taken  Needs maintenance  Owner maintenance  Announcement
+            let logTypesCount={2:0,      3:0,            4:0,        5:0,     9:0,         10:0,     22:0,    23:0,   11:0,               45:0,              46:0,              74:0};
+            // Statistic of cache types and log types.
+            function statsBtn() {
+                if ($('#gclh_stats_btn')[0]) return;
+                let html = '<button id="gclh_stats_btn" style="margin-left:2em;">Count cache and log types</button>';
+                $('.sort-action').after(html);
+                $('#gclh_stats_btn').bind('click', showStats)
+            }
+            function showStats() {
+                // Loading all Drafts.
+                var count = $('.draft-list li').length;
+                function scrollAndCheck() {
+                    window.scrollTo({
+                        top: document.body.scrollHeight,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                    function waitForDrafts(waitCount) {
+                        if ($('.draft-list li').length > count) {
+                            count = $('.draft-list li').length;
+                            scrollAndCheck()
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDrafts(waitCount);}, 100);}
+                    }
+                    if (count != $('.draft-indicator a').html()) waitForDrafts(0);
+                    else statsUpdateUi();
+                }
+                // Loading
+                let html = `
+                <div class="gclh_popup">
+                    <div class="gclh_popup_content">
+                        <div class="loading"></div>
+                        <div>The GClh loads all your Drafts and counts cache and log types, as well as mark double Logs</div>
+                    </div>
+                </div>`;
+                $('body').append(html);
+                scrollAndCheck();
+
+                function statsUpdateUi() {
+                    $(window).scrollTop(0);
+                    for (type in cacheTypesFoundCount) {
+                        cacheTypesFoundCount[type] = Array.from(document.querySelectorAll(`li[cache_type="${type}"]`))
+                            .map(elem => elem.innerHTML)
+                            .filter(elem => elem.match(/(Found it:|Attended:|Webcam photo taken:)/))
+                            .length;
+                    }
+                    for (type in logTypes) {
+                        logTypesCount[logTypes[type]] = Array.from(document.querySelectorAll('.meta dt')).map(elem => elem.innerHTML).filter(elem => elem == type).length;
+                    }
+                    let html = `
+                    <div class="gclh_stats">
+                        <div>
+                            ${
+                                Object.keys(cacheTypesFoundCount).map(key => [key, cacheTypesFoundCount[key]]).filter(elem => elem[1] != 0).map(([type, num]) => {
+                                    return `
+                                    <div class="gclh_stats_num">
+                                        <svg height="22" width="22"><use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-${type}"></use></svg>
+                                        <span>${num}</span>
+                                    </div>`;
+                                }).join('')
+                            }
+                        </div>
+                        <div>
+                            ${
+                                Object.keys(logTypesCount).map(key => [key, logTypesCount[key]]).filter(elem => elem[1] != 0).map(([type, num]) => {
+                                    return `
+                                    <div class="gclh_stats_num" title="${Object.entries(logTypes).filter(ent => ent[1] == type)[0][0].slice(0, -1)}">
+                                        <svg height="22" width="22"><use xlink:href="/account/app/ui-icons/sprites/log-types.svg#icon-${type}"></use></svg>
+                                        <span>${num}</span>
+                                    </div>`;
+                                }).join('')
+                            }
+                        </div>
+                    </div>`;
+                    $('.draft-list').before(html);
+                    $('.draft-list').after(html);
+                    // Mark double Logs.
+                    let gcCodes = $('.draft-list li');
+                    gcCodes = Array.from(gcCodes).map(li => $(li).attr('code'));
+                    gcCodes = gcCodes.filter((code, pos) => gcCodes.indexOf(code) != pos);
+                    gcCodes.forEach(code => $(`li[code*="${code}"]`).each((_i, elem) => $(elem).addClass('gclh_double')));
+
+                    $('#gclh_stats_btn').remove();
+                    $('.gclh_popup').remove();
+                }
+            }
+
             // Processing drafts.
             function processDrafts() {
                 $('li.draft-item:not(.gclh_done)').each(function() {
                     $(this).addClass('gclh_done');
+                    // Add GCCode to <li> - has to run first
+                    let gcCode = $(this).find('div.draft-content a[href*="compose?gc="]')[0].href.match(/compose\?gc=(.*?)&/)[1];
+                    $(this).attr('code', gcCode);
                     // Link zum Cache Listing einbauen.
                     if (settings_drafts_cache_link && $(this).find('h2.title')[0] && $(this).find('div.draft-content a[href*="compose?gc="]')[0] && $(this).find('div.draft-content a[href*="compose?gc="]')[0].href) {
-                        var gcCode = $(this).find('div.draft-content a[href*="compose?gc="]')[0].href.match(/compose\?gc=(.*?)&/);
-                        if (gcCode && gcCode[1]) {
-                            $(this).find('h2.title')[0].outerHTML = '<a class="cache_name" href="https://coord.info/' + gcCode[1] + '" title="Link to Cache Listing"' + (settings_drafts_cache_link_new_tab ? 'target="_blank" ':'') + '>' + $(this).find('h2.title')[0].outerHTML + '</a>';
+                        if (gcCode) {
+                            $(this).find('h2.title')[0].outerHTML = '<a class="cache_name" href="https://coord.info/' + gcCode + '" title="Link to Cache Listing"' + (settings_drafts_cache_link_new_tab ? 'target="_blank" ':'') + '>' + $(this).find('h2.title')[0].outerHTML + '</a>';
                         }
                     }
                     // Link zum Loggen auf altes Log Formular ändern.
@@ -6160,27 +6275,18 @@ var mainGC = function() {
                     // Show Logtype as icon.
                     if (settings_drafts_log_icons && $(this).find('.meta dt')[0] && $(this).find('.draft-icon')[0]) {
                         let type = $(this).find('.meta dt').html().trim();
-                        getTypeIcon = {
-                            'Found it:': 2,
-                            'Didn\'t find it:': 3,
-                            'Write note:': 4,
-                            'Archive:': 5,
-                            'Will attend:': 9,
-                            'Attended:': 10,
-                            'Disable:': 22,
-                            'Enable:': 23,
-                            'Webcam photo taken:': 11,
-                            'Needs maintenance:': 45,
-                            'Owner maintenance:': 46,
-                            'Announcement:': 74, // Not tested
-                        };
                         let typeHtml = `<div class="gclh_icon">
                                             ${$(this).find('.draft-icon').html()}
-                                            <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${getTypeIcon[type]}"></use></svg>
+                                            <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${logTypes[type]}"></use></svg>
                                         </div>`;
                         $(this).find('.draft-icon').append(typeHtml);
                     }
+                    // Show Cache Statistic.
+                    let iconNum = $(this).find('svg[width="48"] use').attr('xlink:href').match(/icon-(\d+)/)[1]; // because use xlink:href is not readable.
+                    $(this).find('svg[width="48"]').parents('.draft-item').attr('cache_type', iconNum);
                 });
+                // Show Cache Statistic.
+                statsBtn();
             }
             // Build mutation observer.
             function buildObserverDrafts() {
@@ -6215,6 +6321,14 @@ var mainGC = function() {
             }
             // Always show time.
             css += '.timestamp {display: inline !important;}';
+            // Stats
+            css += 'button {cursor: pointer;}'
+            css += '.gclh_popup {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(74,74,74,.4);}';
+            css += '.gclh_popup_content {position:absolute;transform:translate(-50%,-50%);top:50%;left:50%;padding:1em;background:rgba(255,255,255,.4);}';
+            css += '.gclh_stats {display: flex; justify-content: space-between;}';
+            css += '.gclh_stats div {display: flex;align-items: center;}';
+            css += '.gclh_stats_num:not(:last-child) {margin: 0 .5em 0 .1em;}';
+            css += '.gclh_double {background:#FE9C9C !important;}'
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
     }
@@ -12173,8 +12287,8 @@ var mainGC = function() {
     function buildSendTemplate() {
         var tpl = getValue("settings_mail_signature", "");
         var trimIt = (tpl.length == tpl.trim().length);
-        tpl = tpl.replace(/#Found#/ig, global_founds+1).replace(/#Found_no#/ig, global_founds).replace(/#Me#/ig, global_activ_username);
-        tpl = tpl.replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
+        tpl = tpl.replace(/#Found-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds+1 - p1 : global_founds+1).replace(/#Found_no-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds - p1 : global_founds)
+        tpl = tpl.replace(/#Me#/ig, global_activ_username).replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
         tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
         if (trimIt) tpl = tpl.trim();
         return tpl;
@@ -12370,8 +12484,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/icJ"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/LJqg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/ieL"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/dD6p/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13361,6 +13475,7 @@ var mainGC = function() {
             var side = $('body')[0];
             var div = document.createElement("div");
             div.setAttribute("id", "findplayer_overlay");
+            div.setAttribute("style", "z-index: 9999");
             div.setAttribute("align", "center");
             div.innerHTML = html;
             div.appendChild(document.createTextNode(""));
@@ -13558,11 +13673,12 @@ var mainGC = function() {
             html += thanksLineBuild("reodor09",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
             html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("TiBaWe",               "",                         false, false, false, true,  false);
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "31.03.2022";
+            var thanksLastUpdate = "06.05.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14349,7 +14465,7 @@ var mainGC = function() {
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
@@ -14407,7 +14523,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
@@ -14601,7 +14717,7 @@ var mainGC = function() {
             html += "&nbsp;" + "<input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' title='Save the configuration data and\nupload it to your own DropBox' style='height: 25px;' value='Save & Upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a></div>";
+            html += "<div align='right' class='gclh_small' style='float: right; font-size: 9px;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a>, 2019-"+end+" <a href='/profile/?u=capoaira' target='_blank' title='GC profile of capoaira'>capoaira</a></div>";
             html += "</div></div>";
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
@@ -17072,7 +17188,7 @@ var mainGC = function() {
     function buildBgShadow() {
         var shadow = document.createElement("div");
         shadow.setAttribute("id", "bg_shadow");
-        shadow.setAttribute("style", "z-index:1000; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+        shadow.setAttribute("style", "z-index: 9998; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
         $('body')[0].appendChild(shadow);
         $('#bg_shadow')[0].addEventListener("click", btnClose, false);
     }
@@ -17570,6 +17686,8 @@ function is_page(name) {
         if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
     } else if (name == "souvenirs") {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
+    } else if (name == "logbook") { // View all logs.
+        if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
     } else {
         gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }
