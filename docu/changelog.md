@@ -1,3 +1,4 @@
+<a href="#v01116" title="GClh II version 0.11.16 (07.05.2022)">v0.11.16</a> &nbsp;
 <a href="#v01115" title="GClh II version 0.11.15 (31.03.2022)">v0.11.15</a> &nbsp;
 <a href="#v01114" title="GClh II version 0.11.14 (12.03.2022)">v0.11.14</a> &nbsp;
 <a href="#v01113" title="GClh II version 0.11.13 (08.03.2022)">v0.11.13</a> &nbsp;
@@ -37,6 +38,43 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.16:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Drafts] Statistic of cache types and log types, mark double caches and load all drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/2108" title="Issue 2108">2108</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		When you click on "Count cache and log types", all drafts are loaded<br>
+		<img src="../images/0.11.16/Screen01.jpg" alt="Screen01.jpg"><br>
+		and a statistic of cache types and log types is generated<br>
+		<img src="../images/0.11.16/Screen02.jpg" alt="Screen02.jpg"><br>
+		and double caches are marked.<br>
+		<img src="../images/0.11.16/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Show edit button for last log. [<a href="https://github.com/2Abendsegler/GClh/issues/2105" title="Issue 2105">2105</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		When you log with the new log form, an edit button is shown for this log in the cache listing screen.<br>
+		<img src="../images/0.11.16/Screen04.jpg" alt="Screen04.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log, Mail, Message] Flexible found placeholder. [<a href="https://github.com/2Abendsegler/GClh/issues/2109" title="Issue 2109">2109</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		With the flexible found placeholder you can reduce the determined found counter with a minus followed by a number. This works in cache and TB log templates and signatures and in Mails and Messages. It works for the placeholders #Found# and #Found_no#". For example: #Found-2# reduce the determined counter by two.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Color Picker popup behind config. [<a href="https://github.com/2Abendsegler/GClh/issues/2114" title="Issue 2114">2114</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Header] Horizontal Linklist with more than one line does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2110" title="Issue 2110">2110</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [PQ Splitter] Creating a PQ with countries or regions with special characters does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2103" title="Issue 2103">2103</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(07.05.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.15:
