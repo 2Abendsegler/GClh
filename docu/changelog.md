@@ -59,7 +59,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Log, Mail, Message] Flexible found placeholder. [<a href="https://github.com/2Abendsegler/GClh/issues/2109" title="Issue 2109">2109</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		With the flexible found placeholder you can reduce the determined found counter with a minus followed by a number. This works in cache and TB log templates and signatures and in Mails and Messages. It works for the placeholders #Found# and #Found_no#". For example: #Found-2# reduce the determined counter by two.<br><br>
+		With the flexible found placeholder you can reduce the determined found counter with a minus followed by a number. This works in cache and TB log templates and signatures and in Mails and Messages. It works for the placeholders `#Found#` and `#Found_no#`. For example: `#Found-2#` reduce the determined counter by two.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Config] Color Picker popup behind config. [<a href="https://github.com/2Abendsegler/GClh/issues/2114" title="Issue 2114">2114</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
