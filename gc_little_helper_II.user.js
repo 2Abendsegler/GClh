@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.15
+// @version      0.11.16
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -1659,7 +1659,7 @@ var mainGC = function() {
     function newWidth() {
         try {
             // Keine Anpassungen.
-            if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) return;
+            if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos") || is_page("logbook")) return;
 
             if (getValue("settings_new_width") > 0) {
                 var new_width = parseInt(getValue("settings_new_width"));
@@ -1950,7 +1950,7 @@ var mainGC = function() {
                     if (drafts) {
                         draft_count = parseInt(drafts.innerHTML.match(/\d+/));
                         if (Number.isInteger(draft_count) && draft_count > 0) {
-                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts" style="outline: none;">' + draft_count + '</a></span>');
                         }
                     }
                 });
@@ -2252,7 +2252,7 @@ var mainGC = function() {
                     + (settings_highlight_usercoords_it ? "font-style: italic;}" : "font-style: unset;}");
             if ($('#tmpl_CacheCoordinateUpdate')[0] && $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.match(/Enter solved coordinates/)) {
                 css += '#coordinateParse dl dd {padding-bottom: 7px;}';
-                css += '#newCoordinates {width: unset; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
+                css += '#newCoordinates {width: 75%; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
                 css += '#updatedCoords {font-style: normal;}';
                 $('#tmpl_CacheCoordinateUpdate')[0].innerHTML = $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.replace('size="35"', 'size="30"');
             }
@@ -14361,7 +14361,7 @@ var mainGC = function() {
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
@@ -14419,7 +14419,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
@@ -17582,6 +17582,8 @@ function is_page(name) {
         if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
     } else if (name == "souvenirs") {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
+    } else if (name == "logbook") { // View all logs.
+        if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
     } else {
         gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }
