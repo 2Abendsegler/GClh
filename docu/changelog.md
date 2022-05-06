@@ -45,7 +45,7 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Drafts] Statistic of cache types and log types, mark double caches and load all drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/2108" title="Issue 2108">2108</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		When you click on "Count cache and log types", all drafts are loaded<br>
+		When you click on "Count cache and log types" on your drafts page, all drafts are loaded<br>
 		<img src="../images/0.11.16/Screen01.jpg" alt="Screen01.jpg"><br>
 		and a statistic of cache types and log types is generated<br>
 		<img src="../images/0.11.16/Screen02.jpg" alt="Screen02.jpg"><br>
