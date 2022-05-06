@@ -2,10 +2,10 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.15
+// @version      0.11.16
 //<-- $$000
-// @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010
-// @author       Torsten Amshove; 2Abendsegler; Ruko2010
+// @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
+// @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
@@ -1659,7 +1659,7 @@ var mainGC = function() {
     function newWidth() {
         try {
             // Keine Anpassungen.
-            if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos")) return;
+            if (is_page('lists') || is_page('searchmap') || is_page("messagecenter") || is_page("settings") || is_page("hide_cache") || is_page("collection_1") || is_page("find_cache") || is_page("geotours") || is_page("map") || is_page("dashboard-section") || is_page("track") || is_page("owner_dashboard") || is_page("promos") || is_page("logbook")) return;
 
             if (getValue("settings_new_width") > 0) {
                 var new_width = parseInt(getValue("settings_new_width"));
@@ -1950,7 +1950,7 @@ var mainGC = function() {
                     if (drafts) {
                         draft_count = parseInt(drafts.innerHTML.match(/\d+/));
                         if (Number.isInteger(draft_count) && draft_count > 0) {
-                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts">' + draft_count + '</a></span>');
+                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts" style="outline: none;">' + draft_count + '</a></span>');
                         }
                     }
                 });
@@ -2252,7 +2252,7 @@ var mainGC = function() {
                     + (settings_highlight_usercoords_it ? "font-style: italic;}" : "font-style: unset;}");
             if ($('#tmpl_CacheCoordinateUpdate')[0] && $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.match(/Enter solved coordinates/)) {
                 css += '#coordinateParse dl dd {padding-bottom: 7px;}';
-                css += '#newCoordinates {width: unset; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
+                css += '#newCoordinates {width: 75%; padding: 6px 6px; margin-top: -7px; margin-bottom: 0px;}';
                 css += '#updatedCoords {font-style: normal;}';
                 $('#tmpl_CacheCoordinateUpdate')[0].innerHTML = $('#tmpl_CacheCoordinateUpdate')[0].innerHTML.replace('size="35"', 'size="30"');
             }
@@ -12484,8 +12484,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/icJ"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/LJqg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/ieL"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/dD6p/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13475,6 +13475,7 @@ var mainGC = function() {
             var side = $('body')[0];
             var div = document.createElement("div");
             div.setAttribute("id", "findplayer_overlay");
+            div.setAttribute("style", "z-index: 9999");
             div.setAttribute("align", "center");
             div.innerHTML = html;
             div.appendChild(document.createTextNode(""));
@@ -13672,11 +13673,12 @@ var mainGC = function() {
             html += thanksLineBuild("reodor09",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
             html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("TiBaWe",               "",                         false, false, false, true,  false);
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "31.03.2022";
+            var thanksLastUpdate = "06.05.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14463,7 +14465,7 @@ var mainGC = function() {
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
@@ -14521,7 +14523,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1<br>&nbsp; #Found_no# : Your founds<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
@@ -14715,7 +14717,7 @@ var mainGC = function() {
             html += "&nbsp;" + "<input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' title='Save the configuration data and\nupload it to your own DropBox' style='height: 25px;' value='Save & Upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a></div>";
+            html += "<div align='right' class='gclh_small' style='float: right; font-size: 9px;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a>, 2019-"+end+" <a href='/profile/?u=capoaira' target='_blank' title='GC profile of capoaira'>capoaira</a></div>";
             html += "</div></div>";
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
@@ -17186,7 +17188,7 @@ var mainGC = function() {
     function buildBgShadow() {
         var shadow = document.createElement("div");
         shadow.setAttribute("id", "bg_shadow");
-        shadow.setAttribute("style", "z-index:9999; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
+        shadow.setAttribute("style", "z-index: 9998; width: 100%; height: 100%; background-color: #000000; position:fixed; top: 0; left: 0; opacity: 0.5; filter: alpha(opacity=50);");
         $('body')[0].appendChild(shadow);
         $('#bg_shadow')[0].addEventListener("click", btnClose, false);
     }
@@ -17684,6 +17686,8 @@ function is_page(name) {
         if (url.match(/^\/track\/($|#$|edit|upload|default.aspx)/)) status = true;
     } else if (name == "souvenirs") {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
+    } else if (name == "logbook") { // View all logs.
+        if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
     } else {
         gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }

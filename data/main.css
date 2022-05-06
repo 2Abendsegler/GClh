@@ -692,7 +692,7 @@ table .markdown-output~tr.AlternatingRow td {
     border-radius: 30px;
     box-sizing: unset;
 }
-.qtip {z-index: 9998 !important;} /* should be behind config */
+.qtip {z-index: 9997 !important;} /* should be behind config */
 .gclh_headline {
     height: 21px;
     margin: 5px;
