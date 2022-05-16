@@ -9065,6 +9065,7 @@ var mainGC = function() {
             var lngHighG = false;
             var lngLowG = false;
             var firstRun = true;
+            const ONE_MINUTE_MS = 60*1000;
             function searchThisArea(waitCount) {
                 // For the first run.
                 if ($('.leaflet-gl-layer.mapboxgl-map')[0]) {
@@ -9092,8 +9093,54 @@ var mainGC = function() {
                                 latLowG = latLow;
                                 lngHighG = lngHigh;
                                 lngLowG = lngLow;
+
+                                // ensure that no more than 10 searches per minute are performed (enforce GS limit)
                                 if (!firstRun) {
-                                    $('#clear-map-control').click();
+                                    // make times persistent across reloads or search map in action on multiple tabs
+                                    // (otherwise GS nag message may still occur)
+                                    let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
+                                    // 9 searches max to be on the safe side ...
+                                    if (times.length < 9) {
+                                        $('#clear-map-control').click();
+                                        times.push(Date.now());
+                                        GM_setValue("search_this_area_times", JSON.stringify(times));
+                                    } else {
+                                        let t = Date.now();
+                                        // check 1min limit
+                                        if ((t-times[0]) > ONE_MINUTE_MS) {
+                                            $('#clear-map-control').click();
+                                            // remove first and append current timestamp
+                                            times.splice(0, 1);
+                                            times.push(t);
+                                            GM_setValue("search_this_area_times", JSON.stringify(times));
+                                        } else {
+                                            // search limit reached, add message, but only once
+                                            if ($('body.gclh-waiting-msg').length === 0) {
+                                                // add marker to body
+                                                $('body').addClass('gclh-waiting-msg');
+                                                // time to wait for next search
+                                                var wait = Math.ceil((ONE_MINUTE_MS-(t-times[0]))/1000);
+                                                // update message every second
+                                                function countdown(waitTime) {
+                                                    if (waitTime < 1) { // waiting time is over
+                                                        // hide message
+                                                        $('#gclh-waiting-msg').remove();
+                                                        $('div.loading-container').css('display', 'none').removeClass('show');
+                                                        $('body').removeClass('gclh-waiting-msg');
+                                                    } else {
+                                                        // show message (keep next line in countdown, otherwise message gets hidden when switching map source during waiting time)
+                                                        $('div.loading-container').css('display', 'flex').addClass('show');
+                                                        // update message
+                                                        $('#gclh-waiting-msg').remove();
+                                                        $('.loading-display').append('<span id="gclh-waiting-msg" role="alert" aria-live="assertive">Too many searches per minute, please try again in <b>' + waitTime + ' s</b>.</span>');
+
+                                                        setTimeout(function() {countdown(--waitTime);}, 1000);
+                                                    }
+                                                }
+                                                countdown(wait);
+                                            }
+                                        }
+                                    }
                                 }
                                 firstRun = false;
                             }
