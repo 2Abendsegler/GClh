@@ -3740,7 +3740,8 @@ var mainGC = function() {
             }
         });
     }
-// Add Copy to Clipboard Links to Geocache and Trackable log page
+
+// Add copy to clipboard links to geocaches and trackables old log page for Log ID and Logtext.
     if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/))) {
         try {
             if ($('.CoordInfoLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
@@ -3751,6 +3752,7 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Copy to Clipboard on log page",e);}
     }
+
 // Show Smilies und Log Templates old log page.
     if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/)) &&
         $('#litDescrCharCount')[0] && $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] && $('#uxDateVisited')[0]) {
