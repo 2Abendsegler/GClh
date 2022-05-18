@@ -3747,7 +3747,6 @@ var mainGC = function() {
                 addCopyToClipboardLink($('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "Log ID");
             }
             if ($('.LogEdit')[0] && $('#ctl00_ContentBody_LogBookPanel1_LogText')[0]) {
-                alert("Foooo cgk2");
                 addCopyToClipboardLink(document.getElementById('ctl00_ContentBody_LogBookPanel1_LogText').innerText, $('.LogEdit')[0], "Logtext", 'padding: 4px 14px; position: relative; bottom: 5px;');
             }
         } catch(e) {gclh_error("Copy to Clipboard on log page",e);}
