@@ -3740,7 +3740,18 @@ var mainGC = function() {
             }
         });
     }
-
+// Add Copy to Clipboard Links to Geocache and Trackable log page
+    if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/))) {
+        try {
+            if ($('.CoordInfoLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+                addCopyToClipboardLink($('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "Log ID");
+            }
+            if ($('.LogEdit')[0] && $('#ctl00_ContentBody_LogBookPanel1_LogText')[0]) {
+                alert("Foooo cgk2");
+                addCopyToClipboardLink(document.getElementById('ctl00_ContentBody_LogBookPanel1_LogText').innerText, $('.LogEdit')[0], "Logtext", 'padding: 4px 14px; position: relative; bottom: 5px;');
+            }
+        } catch(e) {gclh_error("Copy to Clipboard on log page",e);}
+    }
 // Show Smilies und Log Templates old log page.
     if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/)) &&
         $('#litDescrCharCount')[0] && $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] && $('#uxDateVisited')[0]) {
