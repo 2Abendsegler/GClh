@@ -1117,12 +1117,14 @@ var mainCertitudes = function() {
         if (document.getElementById('solution')) {
             function addCompactCertitude() {
                 var solution = document.getElementById('solution').textContent;
-                var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
                 var output = '<div style="font-weight: bold; font-family: Inconsolata, monospace;">';
                 output += '<a href="javascript:void(0);" class="gclh_copy_btn" style="margin: 20px; padding: 20px; background-color: green; border: 2px dotted grey; text-align: center; text-decoration: none; float: right; color: lightgrey;">Copy to clipboard</a>';
                 output += '<div id="gclh_solution" style="padding: 30px 20px 50px; background-color: lightyellow; border: 3px dashed lightsalmon;">';
                 output += 'Certitude: ' + solution + '<br><br>';
-                output += 'Final: ' + coord + '<br>';
+                if (document.getElementsByTagName('h1')[2]) {
+                    var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
+                    output += 'Final: ' + coord + '<br>';
+                 }
                 if (document.getElementsByTagName('h3')[1]) {
                     var information = document.getElementsByTagName('h3')[1].children[0].textContent;
                     output += 'Info: <br>' + information + '<br>';
