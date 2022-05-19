@@ -15,6 +15,7 @@
 // @include      https://www.google.tld/maps*
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
+// @include      https://www.certitudes.org/certify
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -67,6 +68,8 @@ var start = function(c) {
                         mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
+                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/certify/)) {
+                        mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
             }
@@ -17421,8 +17424,50 @@ var mainGC = function() {
 
 };  // End of mainGC.
 
+/////////////////////////
+// 6. Certitude ($$cap)
+/////////////////////////
+var mainCertitudes = function() {
+    try {
+        if (document.getElementById('solution')) {
+            function addCompactCertitude() {
+                var solution = document.getElementById('solution').textContent;
+                var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
+                var output = '<div style="font-size: 16px; font-weight: bold; font-family: Inconsolata, monospace;">';
+                output += '<a href="javascript:void(0);" class="gclh_copy_btn" style="margin: 20px; padding: 20px; background-color: green; border: 2px dotted grey; text-align: center; text-decoration: none; float: right; color: lightgrey;">Copy to clipboard</a>';
+
+                output += '<div id="gclh_solution" style="padding: 30px 20px 50px; background-color: lightyellow; border: 3px dashed lightsalmon;">';
+                output += 'Certitude: ' + solution + '<br><br>';
+                output += 'Final: ' + coord + '<br>';
+                if (document.getElementsByTagName('h3')[1]) {
+                    var information = document.getElementsByTagName('h3')[1].children[0].textContent;
+                    output += 'Info: <br>' + information + '<br>';
+                }
+                if (document.getElementsByTagName('a')[5].children[0].src) {
+                    var spoiler = document.getElementsByTagName('a')[5].children[0].src;
+                    output += 'Spoiler: ' + spoiler + '<br>';
+                }
+                output += '</div></div>';
+                document.getElementsByTagName('td')[6].innerHTML += output;
+                var copyBtn = document.querySelector('.gclh_copy_btn');
+                copyBtn.addEventListener('click', function(event) {
+                    copyTextToClipboard(document.getElementById('gclh_solution').innerText);
+                })
+            }
+            addCompactCertitude();
+        }
+        function copyTextToClipboard(text) {
+            try {
+                navigator.clipboard.writeText(text);
+            }
+            catch(e) {gclh_error("Certitude copy to clipboard",e)};
+        }
+    } catch(e) {gclh_error("mainCertitudes",e);}
+
+};  // End of mainCertitudes.
+
 //////////////////////////////
-// 6. Global Functions ($$cap) (Functions global usable.)
+// 7. Global Functions ($$cap) (Functions global usable.)
 //////////////////////////////
 // Change coordinates from N/S/E/W Deg Min.Sec to Dec.
 function toDec(coords) {
