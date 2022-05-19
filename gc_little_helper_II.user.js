@@ -1109,8 +1109,49 @@ var mainPGC = function() {
     }
 };  // End of mainPGC.
 
+///////////////////////
+// 4. Certitude ($$cap)
+///////////////////////
+var mainCertitudes = function() {
+    try {
+        if (document.getElementById('solution')) {
+            function addCompactCertitude() {
+                var solution = document.getElementById('solution').textContent;
+                var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
+                var output = '<div style="font-weight: bold; font-family: Inconsolata, monospace;">';
+                output += '<a href="javascript:void(0);" class="gclh_copy_btn" style="margin: 20px; padding: 20px; background-color: green; border: 2px dotted grey; text-align: center; text-decoration: none; float: right; color: lightgrey;">Copy to clipboard</a>';
+                output += '<div id="gclh_solution" style="padding: 30px 20px 50px; background-color: lightyellow; border: 3px dashed lightsalmon;">';
+                output += 'Certitude: ' + solution + '<br><br>';
+                output += 'Final: ' + coord + '<br>';
+                if (document.getElementsByTagName('h3')[1]) {
+                    var information = document.getElementsByTagName('h3')[1].children[0].textContent;
+                    output += 'Info: <br>' + information + '<br>';
+                }
+                if (document.getElementsByTagName('a')[5].children[0].src) {
+                    var spoiler = document.getElementsByTagName('a')[5].children[0].src;
+                    output += 'Spoiler: ' + spoiler + '<br>';
+                }
+                output += '</div></div>';
+                document.getElementsByTagName('td')[6].innerHTML += output;
+                var copyBtn = document.querySelector('.gclh_copy_btn');
+                copyBtn.addEventListener('click', function(event) {
+                    copyTextToClipboard(document.getElementById('gclh_solution').innerText);
+                })
+            }
+            addCompactCertitude();
+        }
+        function copyTextToClipboard(text) {
+            try {
+                navigator.clipboard.writeText(text);
+            }
+            catch(e) {gclh_error("Certitude copy to clipboard",e)};
+        }
+    } catch(e) {gclh_error("mainCertitudes",e);}
+
+};  // End of mainCertitudes.
+
 ///////////////////////////
-// 4. Openstreetmap ($$cap)
+// 5. Openstreetmap ($$cap)
 ///////////////////////////
 var mainOSM = function() {
     try {
@@ -1150,9 +1191,9 @@ var mainOSM = function() {
 };
 
 ////////////////////////////
-// 5. GC ($$cap)             (For the geocaching webpages.)
-// 5.1 GC - Main     ($$cap) (For the geocaching webpages.)
-// 5.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
+// 6. GC ($$cap)             (For the geocaching webpages.)
+// 6.1 GC - Main     ($$cap) (For the geocaching webpages.)
+// 6.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGCWait = function() {
     tlc('START mainGCWait');
@@ -1248,7 +1289,7 @@ var mainGCWait = function() {
 };
 
 ////////////////////////////
-// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
+// 6.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGC = function() {
     tlc('START maingc');
@@ -12169,7 +12210,7 @@ var mainGC = function() {
     }
 
 /////////////////////////////
-// 5.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
+// 6.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
 /////////////////////////////
 // Leaflet init.
     function leafletInit() {
@@ -13290,7 +13331,7 @@ var mainGC = function() {
     }
 
 ////////////////////////////////////////
-// 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
+// 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
     function create_config_css_search() {
         var css = "";
@@ -13514,7 +13555,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////
-// 5.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
+// 6.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
 ///////////////////////////////
 // Create and hide the "Find Player" Form.
     function createFindPlayerForm() {
@@ -13551,8 +13592,8 @@ var mainGC = function() {
     }
 
 //////////////////////////////
-// 5.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
-// 5.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
+// 6.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
+// 6.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
 //////////////////////////////
     function checkboxy(setting_id, label) {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEvForDouPara".)
@@ -15873,7 +15914,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////////
-// 5.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
+// 6.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
 ///////////////////////////////////
 // Highlight new parameters in GClh Config and set version info.
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
@@ -16606,7 +16647,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////
-// 5.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
+// 6.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
 ///////////////////////////////
     function rcPrepare() {
         global_mod_reset = true;
@@ -16762,7 +16803,7 @@ var mainGC = function() {
     }
 
 //////////////////////////////
-// 5.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
+// 6.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
 //////////////////////////////
 // Get/Set Config Data.
     function sync_getConfigData() {
@@ -17082,7 +17123,7 @@ var mainGC = function() {
     }
 
 //////////////////////////////////////
-// 5.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
+// 6.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
 //////////////////////////////////////
 // Search in array.
     function in_array(search, arr) {
@@ -17423,47 +17464,6 @@ var mainGC = function() {
     };
 
 };  // End of mainGC.
-
-/////////////////////////
-// 6. Certitude ($$cap)
-/////////////////////////
-var mainCertitudes = function() {
-    try {
-        if (document.getElementById('solution')) {
-            function addCompactCertitude() {
-                var solution = document.getElementById('solution').textContent;
-                var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
-                var output = '<div style="font-weight: bold; font-family: Inconsolata, monospace;">';
-                output += '<a href="javascript:void(0);" class="gclh_copy_btn" style="margin: 20px; padding: 20px; background-color: green; border: 2px dotted grey; text-align: center; text-decoration: none; float: right; color: lightgrey;">Copy to clipboard</a>';
-                output += '<div id="gclh_solution" style="padding: 30px 20px 50px; background-color: lightyellow; border: 3px dashed lightsalmon;">';
-                output += 'Certitude: ' + solution + '<br><br>';
-                output += 'Final: ' + coord + '<br>';
-                if (document.getElementsByTagName('h3')[1]) {
-                    var information = document.getElementsByTagName('h3')[1].children[0].textContent;
-                    output += 'Info: <br>' + information + '<br>';
-                }
-                if (document.getElementsByTagName('a')[5].children[0].src) {
-                    var spoiler = document.getElementsByTagName('a')[5].children[0].src;
-                    output += 'Spoiler: ' + spoiler + '<br>';
-                }
-                output += '</div></div>';
-                document.getElementsByTagName('td')[6].innerHTML += output;
-                var copyBtn = document.querySelector('.gclh_copy_btn');
-                copyBtn.addEventListener('click', function(event) {
-                    copyTextToClipboard(document.getElementById('gclh_solution').innerText);
-                })
-            }
-            addCompactCertitude();
-        }
-        function copyTextToClipboard(text) {
-            try {
-                navigator.clipboard.writeText(text);
-            }
-            catch(e) {gclh_error("Certitude copy to clipboard",e)};
-        }
-    } catch(e) {gclh_error("mainCertitudes",e);}
-
-};  // End of mainCertitudes.
 
 //////////////////////////////
 // 7. Global Functions ($$cap) (Functions global usable.)
