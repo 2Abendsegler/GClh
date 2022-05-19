@@ -672,6 +672,7 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
+    c.settings_show_compact_certitude_information = getValue("settings_show_compact_certitude_information", true);
     c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
     c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
@@ -1114,7 +1115,7 @@ var mainPGC = function() {
 ///////////////////////
 var mainCertitudes = function() {
     try {
-        if (document.getElementById('solution')) {
+        if (document.getElementById('solution') && settings_show_compact_certitude_information) {
             function addCompactCertitude() {
                 var solution = document.getElementById('solution').textContent;
                 var output = '<div style="font-weight: bold; font-family: Inconsolata, monospace;">';
@@ -14046,6 +14047,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Certitude</b></div>";
+            html += checkboxy('settings_show_compact_certitude_information', 'Compact information overview after successfully passing Certitude.') + show_help("Shows also Copy to Clipboard button.") + "<br>";
+            html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
@@ -15837,6 +15841,7 @@ var mainGC = function() {
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
+                'settings_show_compact_certitude_information',
                 'settings_change_font_cache_notes',
                 'settings_larger_map_as_browse_map',
                 'settings_fav_proz_cod',
