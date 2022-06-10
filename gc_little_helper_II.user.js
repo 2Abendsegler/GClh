@@ -1121,9 +1121,9 @@ var mainCertitudes = function() {
         if (document.getElementById('solution') && settings_show_compact_certitude_information) {
             function addCompactCertitude() {
                 var solution = document.getElementById('solution').textContent;
-                var output = '<div>';
-                output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard" style="margin: 10px 20px; padding: 4px; float: right;"></input>';
-                output += '<div id="gclh_solution" style="padding: 2px 10px; background-color: #d7e5f5; border: solid 1px #85b1de;  text-align: left;">';
+                var output = '<div id="inputArea">';
+                output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
+                output += '<div id="gclh_solution">';
                 output += 'Certitude: ' + solution + '<br><br>';
                 if (document.getElementsByTagName('h1')[2]) {
                     var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
@@ -1138,7 +1138,7 @@ var mainCertitudes = function() {
                     output += 'Spoiler: ' + spoiler + '<br>';
                 }
                 output += '</div></div><br>';
-                document.getElementById('inputArea').previousElementSibling.outerHTML += output;
+                document.getElementById('inputArea').nextElementSibling.outerHTML += output;
                 var copyBtn = document.querySelector('.gclh_copy_btn');
                 copyBtn.addEventListener('click', function(event) {
                     copyTextToClipboard(document.getElementById('gclh_solution').innerText);
