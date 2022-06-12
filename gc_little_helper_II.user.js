@@ -10176,11 +10176,13 @@ var mainGC = function() {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
-            // Sind keine Layer im Config ausgewählt, werden alle Layer verwendet.
-            // Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt. Deshalb wird dafür
-            // gesorgt, dass mindestens zwei Layer vorhanden sind.
+            // Sind weniger als 2 Layer im Config ausgewählt, werden alle Layer verwendet.
+            // (Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt.)
             if (settings_map_layers == "" || settings_map_layers.length < 2) {
-                for (name in map_layers) { new_settings_map_layers.push(name); }
+                for (name in all_map_layers) {
+                    new_settings_map_layers.push(name);
+                    if (new_settings_map_layers.length >= 20) break;
+                }
             } else {
                 new_settings_map_layers = settings_map_layers;
             }
@@ -13891,7 +13893,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_pq_previewmap','Show preview map for coordinates from origin') + "&nbsp;";
             html += '<select class="gclh_form" id="settings_pq_previewmap_layer" style="width: 200px;">';
-            for ( name in all_map_layers) {
+            for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_pq_previewmap_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
             html += '</select>'+ "<br>";
