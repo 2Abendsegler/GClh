@@ -345,5 +345,6 @@
   "settings_drafts_log_icons": true,
   "settings_drafts_go_automatic_back": false,
   "settings_listing_hide_external_link_warning": false,
-  "settings_listing_links_new_tab": false
+  "settings_listing_links_new_tab": false,
+  "settings_show_compact_certitude_information": true
 }
