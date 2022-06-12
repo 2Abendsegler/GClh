@@ -1123,7 +1123,7 @@ var mainCertitudes = function() {
                 var solution = document.getElementById('solution').textContent;
                 var output = '<div id="inputArea">';
                 output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
-                output += '<div id="gclh_solution">';
+                output += '<div id="gclh_solution" style="word-break: break-word;">';
                 output += 'Certitude: ' + solution + '<br><br>';
                 if (document.getElementsByTagName('h1')[2]) {
                     var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
@@ -1149,11 +1149,9 @@ var mainCertitudes = function() {
         function copyTextToClipboard(text) {
             try {
                 navigator.clipboard.writeText(text);
-            }
-            catch(e) {gclh_error("Certitude copy to clipboard",e)};
+            } catch(e) {gclh_error("Certitude copy to clipboard",e);}
         }
     } catch(e) {gclh_error("mainCertitudes",e);}
-
 };  // End of mainCertitudes.
 
 ///////////////////////////
@@ -10226,13 +10224,11 @@ var mainGC = function() {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
-            // Sind weniger als 2 Layer im Config ausgewählt, werden alle Layer verwendet.
-            // (Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt.)
+            // Sind keine Layer im Config ausgewählt, werden alle Layer verwendet.
+            // Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt. Deshalb wird dafür
+            // gesorgt, dass mindestens zwei Layer vorhanden sind.
             if (settings_map_layers == "" || settings_map_layers.length < 2) {
-                for (name in all_map_layers) {
-                    new_settings_map_layers.push(name);
-                    if (new_settings_map_layers.length >= 20) break;
-                }
+                for (name in map_layers) { new_settings_map_layers.push(name); }
             } else {
                 new_settings_map_layers = settings_map_layers;
             }
@@ -13943,7 +13939,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_pq_previewmap','Show preview map for coordinates from origin') + "&nbsp;";
             html += '<select class="gclh_form" id="settings_pq_previewmap_layer" style="width: 200px;">';
-            for (name in all_map_layers) {
+            for ( name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_pq_previewmap_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
             html += '</select>'+ "<br>";
@@ -14050,10 +14046,8 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
+            html += checkboxy('settings_show_compact_certitude_information', 'Show information overview on Certitude\'s solution page') + show_help("Show a compact information overview and a Copy to Clipboard button after successfully passing a Certitude page.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
-            html += "</div>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Certitude</b></div>";
-            html += checkboxy('settings_show_compact_certitude_information', 'Compact information overview after successfully passing Certitude.') + show_help("Shows also Copy to Clipboard button.") + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
