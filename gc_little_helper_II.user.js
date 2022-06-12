@@ -1123,12 +1123,12 @@ var mainCertitudes = function() {
                 var solution = document.getElementById('solution').textContent;
                 var output = '<div id="inputArea">';
                 output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
-                output += '<div id="gclh_solution">';
+                output += '<div id="gclh_solution" style="word-break: break-word;">';
                 output += 'Certitude: ' + solution + '<br><br>';
                 if (document.getElementsByTagName('h1')[2]) {
                     var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
                     output += 'Final: ' + coord + '<br>';
-                 }
+                }
                 if (document.getElementsByTagName('h3')[1]) {
                     var information = document.getElementsByTagName('h3')[1].children[0].textContent;
                     output += 'Info: ' + information + '<br>';
@@ -1149,11 +1149,9 @@ var mainCertitudes = function() {
         function copyTextToClipboard(text) {
             try {
                 navigator.clipboard.writeText(text);
-            }
-            catch(e) {gclh_error("Certitude copy to clipboard",e)};
+            } catch(e) {gclh_error("Certitude copy to clipboard",e);}
         }
     } catch(e) {gclh_error("mainCertitudes",e);}
-
 };  // End of mainCertitudes.
 
 ///////////////////////////
@@ -14050,10 +14048,8 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
+            html += checkboxy('settings_show_compact_certitude_information', 'Show information overview on Certitude\'s solution page') + show_help("Show a compact information overview and a Copy to Clipboard button after successfully passing a Certitude page.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
-            html += "</div>";
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Certitude</b></div>";
-            html += checkboxy('settings_show_compact_certitude_information', 'Compact information overview after successfully passing Certitude.') + show_help("Shows also Copy to Clipboard button.") + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
