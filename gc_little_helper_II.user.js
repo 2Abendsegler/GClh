@@ -15,6 +15,7 @@
 // @include      https://www.google.tld/maps*
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
+// @include      https://www.certitudes.org/certify
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -67,6 +68,8 @@ var start = function(c) {
                         mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
+                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/certify/)) {
+                        mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
             }
@@ -669,6 +672,7 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
+    c.settings_show_compact_certitude_information = getValue("settings_show_compact_certitude_information", true);
     c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
     c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
@@ -1106,8 +1110,54 @@ var mainPGC = function() {
     }
 };  // End of mainPGC.
 
+///////////////////////
+// 4. Certitude ($$cap)
+///////////////////////
+// If you want to test the function, you can use:
+// URL: https://www.certitudes.org/certitude?wp=GC8J1H9
+// Certitude: GCLH
+var mainCertitudes = function() {
+    try {
+        if (document.getElementById('solution') && settings_show_compact_certitude_information) {
+            function addCompactCertitude() {
+                var solution = document.getElementById('solution').textContent;
+                var output = '<div id="inputArea">';
+                output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
+                output += '<div id="gclh_solution">';
+                output += 'Certitude: ' + solution + '<br><br>';
+                if (document.getElementsByTagName('h1')[2]) {
+                    var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
+                    output += 'Final: ' + coord + '<br>';
+                 }
+                if (document.getElementsByTagName('h3')[1]) {
+                    var information = document.getElementsByTagName('h3')[1].children[0].textContent;
+                    output += 'Info: ' + information + '<br>';
+                }
+                if (document.getElementsByTagName('a')[5].children[0].src) {
+                    var spoiler = document.getElementsByTagName('a')[5].children[0].src;
+                    output += 'Spoiler: ' + spoiler + '<br>';
+                }
+                output += '</div></div><br>';
+                document.getElementById('inputArea').nextElementSibling.outerHTML += output;
+                var copyBtn = document.querySelector('.gclh_copy_btn');
+                copyBtn.addEventListener('click', function(event) {
+                    copyTextToClipboard(document.getElementById('gclh_solution').innerText);
+                })
+            }
+            addCompactCertitude();
+        }
+        function copyTextToClipboard(text) {
+            try {
+                navigator.clipboard.writeText(text);
+            }
+            catch(e) {gclh_error("Certitude copy to clipboard",e)};
+        }
+    } catch(e) {gclh_error("mainCertitudes",e);}
+
+};  // End of mainCertitudes.
+
 ///////////////////////////
-// 4. Openstreetmap ($$cap)
+// 5. Openstreetmap ($$cap)
 ///////////////////////////
 var mainOSM = function() {
     try {
@@ -1147,9 +1197,9 @@ var mainOSM = function() {
 };
 
 ////////////////////////////
-// 5. GC ($$cap)             (For the geocaching webpages.)
-// 5.1 GC - Main     ($$cap) (For the geocaching webpages.)
-// 5.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
+// 6. GC ($$cap)             (For the geocaching webpages.)
+// 6.1 GC - Main     ($$cap) (For the geocaching webpages.)
+// 6.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGCWait = function() {
     tlc('START mainGCWait');
@@ -1245,7 +1295,7 @@ var mainGCWait = function() {
 };
 
 ////////////////////////////
-// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
+// 6.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGC = function() {
     tlc('START maingc');
@@ -12168,7 +12218,7 @@ var mainGC = function() {
     }
 
 /////////////////////////////
-// 5.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
+// 6.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
 /////////////////////////////
 // Leaflet init.
     function leafletInit() {
@@ -13289,7 +13339,7 @@ var mainGC = function() {
     }
 
 ////////////////////////////////////////
-// 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
+// 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
     function create_config_css_search() {
         var css = "";
@@ -13513,7 +13563,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////
-// 5.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
+// 6.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
 ///////////////////////////////
 // Create and hide the "Find Player" Form.
     function createFindPlayerForm() {
@@ -13550,8 +13600,8 @@ var mainGC = function() {
     }
 
 //////////////////////////////
-// 5.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
-// 5.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
+// 6.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
+// 6.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
 //////////////////////////////
     function checkboxy(setting_id, label) {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEvForDouPara".)
@@ -14001,6 +14051,9 @@ var mainGC = function() {
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
+            html += "</div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Certitude</b></div>";
+            html += checkboxy('settings_show_compact_certitude_information', 'Compact information overview after successfully passing Certitude.') + show_help("Shows also Copy to Clipboard button.") + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
@@ -15793,6 +15846,7 @@ var mainGC = function() {
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
+                'settings_show_compact_certitude_information',
                 'settings_change_font_cache_notes',
                 'settings_larger_map_as_browse_map',
                 'settings_fav_proz_cod',
@@ -15872,7 +15926,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////////
-// 5.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
+// 6.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
 ///////////////////////////////////
 // Highlight new parameters in GClh Config and set version info.
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
@@ -16605,7 +16659,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////
-// 5.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
+// 6.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
 ///////////////////////////////
     function rcPrepare() {
         global_mod_reset = true;
@@ -16761,7 +16815,7 @@ var mainGC = function() {
     }
 
 //////////////////////////////
-// 5.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
+// 6.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
 //////////////////////////////
 // Get/Set Config Data.
     function sync_getConfigData() {
@@ -17081,7 +17135,7 @@ var mainGC = function() {
     }
 
 //////////////////////////////////////
-// 5.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
+// 6.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
 //////////////////////////////////////
 // Search in array.
     function in_array(search, arr) {
@@ -17424,7 +17478,7 @@ var mainGC = function() {
 };  // End of mainGC.
 
 //////////////////////////////
-// 6. Global Functions ($$cap) (Functions global usable.)
+// 7. Global Functions ($$cap) (Functions global usable.)
 //////////////////////////////
 // Change coordinates from N/S/E/W Deg Min.Sec to Dec.
 function toDec(coords) {
