@@ -1153,18 +1153,17 @@ var mainCertitudes = function() {
                     copyElementByIdToClipboard('gclh_solution');
                 })
             }
+            function copyElementByIdToClipboard(element) {
+                try {
+                    var range = document.createRange();
+                    range.selectNode(document.getElementById(element));
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    document.execCommand("copy");
+                    window.getSelection().removeAllRanges();
+                } catch(e) {gclh_error("Certitude copy to clipboard",e);}
+            }
             addCompactCertitude();
-
-        function copyElementByIdToClipboard(element) {
-            try {
-                var range = document.createRange();
-                range.selectNode(document.getElementById(element));
-                window.getSelection().removeAllRanges();
-                window.getSelection().addRange(range);
-                document.execCommand("copy");
-                window.getSelection().removeAllRanges();
-            } catch(e) {gclh_error("Certitude copy to clipboard",e);}
-        }
         } catch(e) {gclh_error("mainCertitudes",e);}
     }
 };  // End of mainCertitudes.
