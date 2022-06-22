@@ -1141,14 +1141,19 @@ var mainCertitudes = function() {
                 document.getElementById('inputArea').nextElementSibling.outerHTML += output;
                 var copyBtn = document.querySelector('.gclh_copy_btn');
                 copyBtn.addEventListener('click', function(event) {
-                    copyTextToClipboard(document.getElementById('gclh_solution').innerText);
+                    copyElementByIdToClipboard('gclh_solution');
                 })
             }
             addCompactCertitude();
         }
-        function copyTextToClipboard(text) {
+        function copyElementByIdToClipboard(element) {
             try {
-                navigator.clipboard.writeText(text);
+                var range = document.createRange();
+                range.selectNode(document.getElementById(element));
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand("copy");
+                window.getSelection().removeAllRanges();
             } catch(e) {gclh_error("Certitude copy to clipboard",e);}
         }
     } catch(e) {gclh_error("mainCertitudes",e);}
