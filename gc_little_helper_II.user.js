@@ -1124,18 +1124,18 @@ var mainCertitudes = function() {
                 var output = '<div id="inputArea">';
                 output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
                 output += '<div id="gclh_solution" style="word-break: break-word;">';
-                output += 'Certitude: ' + solution + '<br><br>';
+                output += 'Certitude: ' + solution;
                 if (document.getElementsByTagName('h1')[2]) {
                     var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
-                    output += 'Final: ' + coord + '<br>';
+                    output += '<br><br>Final: ' + coord;
                 }
                 if (document.getElementsByTagName('h3')[1]) {
                     var information = document.getElementsByTagName('h3')[1].children[0].textContent;
-                    output += 'Info: ' + information + '<br>';
+                    output += '<br>Info: ' + information;
                 }
                 if (document.getElementsByTagName('a')[5].children[0].src) {
                     var spoiler = document.getElementsByTagName('a')[5].children[0].src;
-                    output += 'Spoiler: ' + spoiler + '<br>';
+                    output += '<br>Spoiler: ' + spoiler;
                 }
                 output += '</div></div><br>';
                 document.getElementById('inputArea').nextElementSibling.outerHTML += output;
