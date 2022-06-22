@@ -15,7 +15,7 @@
 // @include      https://www.google.tld/maps*
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
-// @include      https://www.certitudes.org/certify
+// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -68,7 +68,7 @@ var start = function(c) {
                         mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
-                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/certify/)) {
+                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/)) {
                         mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
@@ -673,6 +673,7 @@ var variablesInit = function(c) {
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
     c.settings_show_compact_certitude_information = getValue("settings_show_compact_certitude_information", true);
+    c.settings_anonymous_on_certitude = getValue("settings_anonymous_on_certitude", false);
     c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
     c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
@@ -1117,8 +1118,16 @@ var mainPGC = function() {
 // URL: https://www.certitudes.org/certitude?wp=GC8J1H9
 // Certitude: GCLH
 var mainCertitudes = function() {
-    try {
-        if (document.getElementById('solution') && settings_show_compact_certitude_information) {
+    // Certitude stay anonymous
+    if (document.getElementsByName('anonymous')[0] && settings_anonymous_on_certitude) {
+        try {
+            document.getElementsByName('anonymous')[0].checked = true;
+        } catch(e) {gclh_error("Certitude stay anonymous.",e);}
+    }
+
+    // Certitude compact information and copy to clipboard button
+    if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/certify/) && document.getElementById('solution') && settings_show_compact_certitude_information) {
+        try {
             function addCompactCertitude() {
                 var solution = document.getElementById('solution').textContent;
                 var output = '<div id="inputArea">';
@@ -1145,7 +1154,7 @@ var mainCertitudes = function() {
                 })
             }
             addCompactCertitude();
-        }
+
         function copyElementByIdToClipboard(element) {
             try {
                 var range = document.createRange();
@@ -1156,7 +1165,8 @@ var mainCertitudes = function() {
                 window.getSelection().removeAllRanges();
             } catch(e) {gclh_error("Certitude copy to clipboard",e);}
         }
-    } catch(e) {gclh_error("mainCertitudes",e);}
+        } catch(e) {gclh_error("mainCertitudes",e);}
+    }
 };  // End of mainCertitudes.
 
 ///////////////////////////
@@ -14054,6 +14064,7 @@ var mainGC = function() {
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
             html += checkboxy('settings_show_compact_certitude_information', 'Show information overview on Certitude\'s solution page') + show_help("Show a compact information overview and a Copy to Clipboard button after successfully passing a Certitude page.") + "<br>";
+            html += checkboxy('settings_anonymous_on_certitude', 'Do not get listed on Certitude\'s solvers rank page') + show_help("Always activate the \"Stay anonymous\" checkbox. If the solution is correct, the nickname will not be listed in the ranking.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
@@ -15848,6 +15859,7 @@ var mainGC = function() {
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
                 'settings_show_compact_certitude_information',
+                'settings_anonymous_on_certitude',
                 'settings_change_font_cache_notes',
                 'settings_larger_map_as_browse_map',
                 'settings_fav_proz_cod',
