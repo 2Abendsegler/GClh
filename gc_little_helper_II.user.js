@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.16
+// @version      0.11.17
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -15,6 +15,7 @@
 // @include      https://www.google.tld/maps*
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
+// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -67,6 +68,8 @@ var start = function(c) {
                         mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
+                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/)) {
+                        mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
             }
@@ -669,6 +672,8 @@ var variablesInit = function(c) {
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
     c.settings_show_button_fav_proz_cod = getValue("settings_show_button_fav_proz_cod", true);
+    c.settings_show_compact_certitude_information = getValue("settings_show_compact_certitude_information", true);
+    c.settings_anonymous_on_certitude = getValue("settings_anonymous_on_certitude", false);
     c.settings_change_font_cache_notes = getValue("settings_change_font_cache_notes", false);
     c.settings_larger_map_as_browse_map = getValue("settings_larger_map_as_browse_map", false);
     c.settings_fav_proz_cod = getValue("settings_fav_proz_cod", true);
@@ -1106,8 +1111,65 @@ var mainPGC = function() {
     }
 };  // End of mainPGC.
 
+///////////////////////
+// 4. Certitude ($$cap)
+///////////////////////
+// If you want to test the function, you can use:
+// URL: https://www.certitudes.org/certitude?wp=GC8J1H9
+// Certitude: GCLH
+var mainCertitudes = function() {
+    // Certitude stay anonymous.
+    if (document.getElementsByName('anonymous')[0] && settings_anonymous_on_certitude) {
+        try {
+            document.getElementsByName('anonymous')[0].checked = true;
+        } catch(e) {gclh_error("Certitude stay anonymous.",e);}
+    }
+
+    // Certitude compact information and copy to clipboard button.
+    if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/certify/) && document.getElementById('solution') && settings_show_compact_certitude_information) {
+        try {
+            function addCompactCertitude() {
+                var solution = document.getElementById('solution').textContent;
+                var output = '<div id="inputArea">';
+                output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
+                output += '<div id="gclh_solution" style="word-break: break-word;">';
+                output += 'Certitude: ' + solution;
+                if (document.getElementsByTagName('h1')[2]) {
+                    var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
+                    output += '<br><br>Final: ' + coord;
+                }
+                if (document.getElementsByTagName('h3')[1]) {
+                    var information = document.getElementsByTagName('h3')[1].children[0].textContent;
+                    output += '<br>Info: ' + information;
+                }
+                if (document.getElementsByTagName('a')[5].children[0].src) {
+                    var spoiler = document.getElementsByTagName('a')[5].children[0].src;
+                    output += '<br>Spoiler: ' + spoiler;
+                }
+                output += '</div></div><br>';
+                document.getElementById('inputArea').nextElementSibling.outerHTML += output;
+                var copyBtn = document.querySelector('.gclh_copy_btn');
+                copyBtn.addEventListener('click', function(event) {
+                    copyElementByIdToClipboard('gclh_solution');
+                })
+            }
+            function copyElementByIdToClipboard(element) {
+                try {
+                    var range = document.createRange();
+                    range.selectNode(document.getElementById(element));
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    document.execCommand("copy");
+                    window.getSelection().removeAllRanges();
+                } catch(e) {gclh_error("Certitude copy to clipboard",e);}
+            }
+            addCompactCertitude();
+        } catch(e) {gclh_error("mainCertitudes",e);}
+    }
+};  // End of mainCertitudes.
+
 ///////////////////////////
-// 4. Openstreetmap ($$cap)
+// 5. Openstreetmap ($$cap)
 ///////////////////////////
 var mainOSM = function() {
     try {
@@ -1147,9 +1209,9 @@ var mainOSM = function() {
 };
 
 ////////////////////////////
-// 5. GC ($$cap)             (For the geocaching webpages.)
-// 5.1 GC - Main     ($$cap) (For the geocaching webpages.)
-// 5.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
+// 6. GC ($$cap)             (For the geocaching webpages.)
+// 6.1 GC - Main     ($$cap) (For the geocaching webpages.)
+// 6.1.1 GC - Main 1 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGCWait = function() {
     tlc('START mainGCWait');
@@ -1245,7 +1307,7 @@ var mainGCWait = function() {
 };
 
 ////////////////////////////
-// 5.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
+// 6.1.2 GC - Main 2 ($$cap) (For the geocaching webpages.)
 ////////////////////////////
 var mainGC = function() {
     tlc('START maingc');
@@ -3739,6 +3801,18 @@ var mainGC = function() {
                 if (favoritePoints) getFavoritePercent(userTokenACI, $('.favorite_percent')[0]);
             }
         });
+    }
+
+// Add copy to clipboard links to geocaches and trackables old log page for Log ID and Logtext.
+    if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/))) {
+        try {
+            if ($('.CoordInfoLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+                addCopyToClipboardLink($('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "Log ID");
+            }
+            if ($('.LogEdit')[0] && $('#ctl00_ContentBody_LogBookPanel1_LogText')[0]) {
+                addCopyToClipboardLink(document.getElementById('ctl00_ContentBody_LogBookPanel1_LogText').innerText, $('.LogEdit')[0], "Logtext", 'padding: 4px 14px; position: relative; bottom: 5px;');
+            }
+        } catch(e) {gclh_error("Copy to Clipboard on log page",e);}
     }
 
 // Show Smilies und Log Templates old log page.
@@ -9058,23 +9132,24 @@ var mainGC = function() {
                 }
             }
 
-            // Virtually hit "Search this area" after dragging the map, if not BML and not link from matrix.
+            // Virtually hit "Search this area" after dragging the map or zooming, if not BML and not link from matrix.
             var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
             var latHighG = false;
             var latLowG = false;
             var lngHighG = false;
             var lngLowG = false;
             var firstRun = true;
+            const ONE_MINUTE_MS = 60*1000;
             function searchThisArea(waitCount) {
                 // For the first run.
-                if ($('.leaflet-gl-layer.mapboxgl-map')[0]) {
+                if ($('.leaflet-gl-layer.mapboxgl-map')[0] || $('div.gm-style')[0]) { // Leaflet or GM
                     if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                         // Delay, so that the last values of a movement are used.
                         setTimeout(function() {
                             if ($('.loading-container.show')[0]) return;
                             // Determine whether a new search is necessary, because we have not yet searched of a part of the map area.
-                            var pxHeight = parseInt($('.leaflet-gl-layer.mapboxgl-map')[0].offsetHeight);
-                            var pxWidth = parseInt($('.leaflet-gl-layer.mapboxgl-map')[0].offsetWidth);
+                            var pxHeight = window.innerHeight;
+                            var pxWidth = window.innerWidth;
                             var lat = parseFloat(getURLParam('lat'));
                             var lng = parseFloat(getURLParam('lng'));
                             var zoom = parseInt(getURLParam('zoom'));
@@ -9092,8 +9167,56 @@ var mainGC = function() {
                                 latLowG = latLow;
                                 lngHighG = lngHigh;
                                 lngLowG = lngLow;
+
+                                // ensure that no more than 10 searches per minute are performed (enforce GS limit)
                                 if (!firstRun) {
-                                    $('#clear-map-control').click();
+                                    // make times persistent across reloads or search map in action on multiple tabs
+                                    // (otherwise GS nag message may still occur)
+                                    let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
+                                    // 9 searches max to be on the safe side ...
+                                    if (times.length < 9) {
+                                        // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
+                                        $('#clear-map-control').click().click();
+                                        times.push(Date.now());
+                                        GM_setValue("search_this_area_times", JSON.stringify(times));
+                                    } else {
+                                        let t = Date.now();
+                                        // check 1min limit
+                                        if ((t - times[0]) > ONE_MINUTE_MS) {
+                                            // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
+                                            $('#clear-map-control').click().click();
+                                            // remove first and append current timestamp
+                                            times.splice(0, 1);
+                                            times.push(t);
+                                            GM_setValue("search_this_area_times", JSON.stringify(times));
+                                        } else {
+                                            // search limit reached, add message, but only once
+                                            if ($('body.gclh-waiting-msg').length === 0) {
+                                                // add marker to body
+                                                $('body').addClass('gclh-waiting-msg');
+                                                // time to wait for next search
+                                                var wait = Math.ceil((ONE_MINUTE_MS-(t-times[0]))/1000);
+                                                // update message every second
+                                                function countdown(waitTime) {
+                                                    if (waitTime < 1) { // waiting time is over
+                                                        // hide message
+                                                        $('#gclh-waiting-msg').remove();
+                                                        $('div.loading-container').css('display', 'none').removeClass('show');
+                                                        $('body').removeClass('gclh-waiting-msg');
+                                                    } else {
+                                                        // show message (keep next line in countdown, otherwise message gets hidden when switching map source during waiting time)
+                                                        $('div.loading-container').css('display', 'flex').addClass('show');
+                                                        // update message
+                                                        $('#gclh-waiting-msg').remove();
+                                                        $('.loading-display').append('<span id="gclh-waiting-msg" role="alert" aria-live="assertive">Too many searches per minute, please try again in <b>' + waitTime + ' s</b>.</span>');
+
+                                                        setTimeout(function() {countdown(--waitTime);}, 1000);
+                                                    }
+                                                }
+                                                countdown(wait);
+                                            }
+                                        }
+                                    }
                                 }
                                 firstRun = false;
                             }
@@ -9101,6 +9224,14 @@ var mainGC = function() {
                     }
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
+            // each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom call 'searchThisArea(0);' inside
+            // (for reference: https://stackoverflow.com/a/64927639)
+            window.history.pushState = new Proxy(window.history.pushState, {
+                apply: (target, thisArg, argArray) => {
+                    searchThisArea(0);
+                    return target.apply(thisArg, argArray);
+                }
+            });
 
             // Set link to owner.
             function setLinkToOwner() {
@@ -9763,8 +9894,7 @@ var mainGC = function() {
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
-                scrollInCacheList(); // Has to be run before searchThisArea.
-                searchThisArea(0);
+                scrollInCacheList();
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
@@ -9780,8 +9910,8 @@ var mainGC = function() {
                 prepareKeydownF2InFilterScreen();
             }
 
-            // Observer callback for body and checking existence of sidebar and map.
-            var cb_body = function(mutationsList, observer) {
+            // Observer callback for body and checking existence of sidebar.
+            var cb_body = function() {
                 processAllSearchMap();
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
@@ -9792,18 +9922,9 @@ var mainGC = function() {
                     };
                     observer_sidebar.observe(target_sidebar, config_sidebar);
                 }
-                if ($('.map-container')[0] && !$('.gclh_map_observer')[0]) {
-                    $('.map-container').addClass('gclh_map_observer');
-                    var target_map = $('.map-container')[0];
-                    var config_map = {
-                        childList: true,
-                        attributes: true
-                    };
-                    observer_map.observe(target_map, config_map);
-                }
             }
             // Observer callback for sidebar.
-            var cb_sidebar = function(mutationsList, observer) {
+            var cb_sidebar = function() {
                 if (!$('div#sidebar')[0]) return;
                 observer_sidebar.disconnect();
                 processAllSearchMap();
@@ -9814,14 +9935,9 @@ var mainGC = function() {
                 };
                 observer_sidebar.observe(target_sidebar, config_sidebar);
             }
-            // Observer callback for map.
-            var cb_map = function(mutationsList, observer) {
-                processAllSearchMap();
-            }
             // Create observer instances linked to callback functions.
             var observer_body    = new MutationObserver(cb_body);
             var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
-            var observer_map = new MutationObserver(cb_map);
             var target_body = $('body')[0];
             var config_body = {
                 childList: true,
@@ -10117,11 +10233,13 @@ var mainGC = function() {
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
-            // Sind keine Layer im Config ausgewählt, werden alle Layer verwendet.
-            // Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt. Deshalb wird dafür
-            // gesorgt, dass mindestens zwei Layer vorhanden sind.
+            // Sind weniger als 2 Layer im Config ausgewählt, werden alle Layer verwendet.
+            // (Ist nur ein Layer im Config ausgewählt, wäre er nicht klickbar, weil es sich um einen Radio Button handelt.)
             if (settings_map_layers == "" || settings_map_layers.length < 2) {
-                for (name in map_layers) { new_settings_map_layers.push(name); }
+                for (name in all_map_layers) {
+                    new_settings_map_layers.push(name);
+                    if (new_settings_map_layers.length >= 20) break;
+                }
             } else {
                 new_settings_map_layers = settings_map_layers;
             }
@@ -12107,7 +12225,7 @@ var mainGC = function() {
     }
 
 /////////////////////////////
-// 5.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
+// 6.2 GC - Functions ($$cap) (Functions for the geocaching webpages.)
 /////////////////////////////
 // Leaflet init.
     function leafletInit() {
@@ -12484,8 +12602,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/ieL"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/dD6p/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/ihJ"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/Hau9/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13228,7 +13346,7 @@ var mainGC = function() {
     }
 
 ////////////////////////////////////////
-// 5.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
+// 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
     function create_config_css_search() {
         var css = "";
@@ -13452,7 +13570,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////
-// 5.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
+// 6.4 GC - Find Player ($$cap) (Find Player on the geocaching webpages.)
 ///////////////////////////////
 // Create and hide the "Find Player" Form.
     function createFindPlayerForm() {
@@ -13489,8 +13607,8 @@ var mainGC = function() {
     }
 
 //////////////////////////////
-// 5.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
-// 5.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
+// 6.5 Config ($$cap)          (GClh Config on the geocaching webpages.)
+// 6.5.1 Config - Main ($$cap) (GClh Config on the geocaching webpages.)
 //////////////////////////////
     function checkboxy(setting_id, label) {
         // Hier werden auch gegebenenfalls "Clone" von Parametern verarbeitet. (Siehe Erläuterung weiter unten bei "setEvForDouPara".)
@@ -13630,11 +13748,12 @@ var mainGC = function() {
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
-            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
+            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  false, false);
             html += thanksLineBuild("CastParo",             "LittleJohn-DD",            false, false, true,  true,  false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
@@ -13643,7 +13762,6 @@ var mainGC = function() {
             html += thanksLineBuild("sunhillduo",           "Yannick-XY",               false, false, true,  false, false);
             html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Pzi",                  "PetziAt",                  false, false, true,  false, false);
-            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  false, false);
             html += thanksLineBuild("",                     "sdennler",                 false, false, true,  false, false);
             html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
@@ -13678,7 +13796,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "06.05.2022";
+            var thanksLastUpdate = "23.06.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -13832,7 +13950,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_pq_previewmap','Show preview map for coordinates from origin') + "&nbsp;";
             html += '<select class="gclh_form" id="settings_pq_previewmap_layer" style="width: 200px;">';
-            for ( name in all_map_layers) {
+            for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_pq_previewmap_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
             html += '</select>'+ "<br>";
@@ -13939,6 +14057,8 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
+            html += checkboxy('settings_show_compact_certitude_information', 'Show information overview on Certitude\'s solution page') + show_help("Show a compact information overview and a Copy to Clipboard button after successfully passing a Certitude page.") + "<br>";
+            html += checkboxy('settings_anonymous_on_certitude', 'Do not get listed on Certitude\'s solvers rank page') + show_help("Always activate the \"Stay anonymous\" checkbox. If the solution is correct, the nickname will not be listed in the ranking.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += "</div>";
 
@@ -14443,7 +14563,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
-            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log') + "<br>";
+            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log with new log form') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15732,6 +15852,8 @@ var mainGC = function() {
                 'settings_map_show_btn_hide_header',
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
+                'settings_show_compact_certitude_information',
+                'settings_anonymous_on_certitude',
                 'settings_change_font_cache_notes',
                 'settings_larger_map_as_browse_map',
                 'settings_fav_proz_cod',
@@ -15811,7 +15933,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////////
-// 5.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
+// 6.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
 ///////////////////////////////////
 // Highlight new parameters in GClh Config and set version info.
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
@@ -16544,7 +16666,7 @@ var mainGC = function() {
     }
 
 ///////////////////////////////
-// 5.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
+// 6.5.3 Config - Reset ($$cap) (Functions for GClh Config Reset on the geocaching webpages.)
 ///////////////////////////////
     function rcPrepare() {
         global_mod_reset = true;
@@ -16700,7 +16822,7 @@ var mainGC = function() {
     }
 
 //////////////////////////////
-// 5.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
+// 6.5.4 Config - Sync ($$cap) (Functions for GClh Config Sync on the geocaching webpages.)
 //////////////////////////////
 // Get/Set Config Data.
     function sync_getConfigData() {
@@ -17020,7 +17142,7 @@ var mainGC = function() {
     }
 
 //////////////////////////////////////
-// 5.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
+// 6.6. GC - General Functions ($$cap) (Functions generally usable on geocaching webpages.)
 //////////////////////////////////////
 // Search in array.
     function in_array(search, arr) {
@@ -17363,7 +17485,7 @@ var mainGC = function() {
 };  // End of mainGC.
 
 //////////////////////////////
-// 6. Global Functions ($$cap) (Functions global usable.)
+// 7. Global Functions ($$cap) (Functions global usable.)
 //////////////////////////////
 // Change coordinates from N/S/E/W Deg Min.Sec to Dec.
 function toDec(coords) {
