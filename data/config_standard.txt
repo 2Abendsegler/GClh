@@ -346,5 +346,6 @@
   "settings_drafts_go_automatic_back": false,
   "settings_listing_hide_external_link_warning": false,
   "settings_listing_links_new_tab": false,
-  "settings_show_compact_certitude_information": true
+  "settings_show_compact_certitude_information": true,
+  "settings_anonymous_on_certitude": false
 }
