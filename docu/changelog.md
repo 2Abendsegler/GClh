@@ -1,3 +1,4 @@
+<a href="#v01117" title="GClh II version 0.11.17 (23.06.2022)">v0.11.17</a> &nbsp;
 <a href="#v01116" title="GClh II version 0.11.16 (07.05.2022)">v0.11.16</a> &nbsp;
 <a href="#v01115" title="GClh II version 0.11.15 (31.03.2022)">v0.11.15</a> &nbsp;
 <a href="#v01114" title="GClh II version 0.11.14 (12.03.2022)">v0.11.14</a> &nbsp;
@@ -38,6 +39,47 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.17:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Certitude] Show compact solution information. [<a href="https://github.com/2Abendsegler/GClh/issues/2129" title="Issue 2129">2129</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		<img src="../images/0.11.17/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_compact_certitude_information" title="Link to your GClh II Config">Settings -> Others:</a><br>
+		<img src="../images/0.11.17/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Certitude] Activate the "Stay anonymous" checkbox and fix issue with copy function on Linux. [<a href="https://github.com/2Abendsegler/GClh/issues/2140" title="Issue 2140">2140</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		<img src="../images/0.11.17/Screen04.jpg" alt="Screen04.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_anonymous_on_certitude" title="Link to your GClh II Config">Settings -> Others:</a><br>
+		<img src="../images/0.11.17/Screen05.jpg" alt="Screen05.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Search Map] Error message "Sorry, we couldn't find what you're looking for". [<a href="https://github.com/2Abendsegler/GClh/issues/1785" title="Issue 1785">1785</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		The search for caches is limited to 10 searches per minute. Exceeding this limit, previously resulted in an error message. Sometimes the page had to be reloaded because you couldn't disable the error message.<br>
+Now, the error message no longer appears. Instead, a countdown appears. After the countdown, it will automatically search for caches again.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Search Map] Auto "Search this area" also for Google maps and also when zooming a map. [<a href="https://github.com/2Abendsegler/GClh/issues/2132" title="Issue 2132">2132</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache/TB Log] Show copy to clipboard button for Logtext and for Log ID. [<a href="https://github.com/2Abendsegler/GClh/issues/2127" title="Issue 2127">2127</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		<img src="../images/0.11.17/Screen01.jpg" alt="Screen01.jpg"><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] When starting with the default configuration, no map layers are displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/2131" title="Issue 2131">2131</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config/Reset] Reset to standard configuration doesn't run. [<a href="https://github.com/2Abendsegler/GClh/issues/2130" title="Issue 2130">2130</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(23.06.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.16:
