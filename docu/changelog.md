@@ -67,7 +67,7 @@ Now, the error message no longer appears. Instead, a countdown appears. After th
 	</li>
 	<li>
 		<strong>New:</strong> [Cache/TB Log] Show copy to clipboard button for Logtext and for Log ID. [<a href="https://github.com/2Abendsegler/GClh/issues/2127" title="Issue 2127">2127</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
-		<img src="../images/0.11.17/Screen01.jpg" alt="Screen01.jpg"><br>
+		<img src="../images/0.11.17/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] When starting with the default configuration, no map layers are displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/2131" title="Issue 2131">2131</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
