@@ -9132,7 +9132,7 @@ var mainGC = function() {
                 }
             }
 
-            // Virtually hit "Search this area" after dragging the map, if not BML and not link from matrix.
+            // Virtually hit "Search this area" after dragging the map or zooming, if not BML and not link from matrix.
             var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
             var latHighG = false;
             var latLowG = false;
@@ -9142,14 +9142,14 @@ var mainGC = function() {
             const ONE_MINUTE_MS = 60*1000;
             function searchThisArea(waitCount) {
                 // For the first run.
-                if ($('.leaflet-gl-layer.mapboxgl-map')[0]) {
+                if ($('.leaflet-gl-layer.mapboxgl-map')[0] || $('div.gm-style')[0]) { // Leaflet or GM
                     if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                         // Delay, so that the last values of a movement are used.
                         setTimeout(function() {
                             if ($('.loading-container.show')[0]) return;
                             // Determine whether a new search is necessary, because we have not yet searched of a part of the map area.
-                            var pxHeight = parseInt($('.leaflet-gl-layer.mapboxgl-map')[0].offsetHeight);
-                            var pxWidth = parseInt($('.leaflet-gl-layer.mapboxgl-map')[0].offsetWidth);
+                            var pxHeight = window.innerHeight;
+                            var pxWidth = window.innerWidth;
                             var lat = parseFloat(getURLParam('lat'));
                             var lng = parseFloat(getURLParam('lng'));
                             var zoom = parseInt(getURLParam('zoom'));
@@ -9175,14 +9175,16 @@ var mainGC = function() {
                                     let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
                                     // 9 searches max to be on the safe side ...
                                     if (times.length < 9) {
-                                        $('#clear-map-control').click();
+                                        // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
+                                        $('#clear-map-control').click().click();
                                         times.push(Date.now());
                                         GM_setValue("search_this_area_times", JSON.stringify(times));
                                     } else {
                                         let t = Date.now();
                                         // check 1min limit
-                                        if ((t-times[0]) > ONE_MINUTE_MS) {
-                                            $('#clear-map-control').click();
+                                        if ((t - times[0]) > ONE_MINUTE_MS) {
+                                            // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
+                                            $('#clear-map-control').click().click();
                                             // remove first and append current timestamp
                                             times.splice(0, 1);
                                             times.push(t);
@@ -9222,6 +9224,14 @@ var mainGC = function() {
                     }
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
+            // each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom call 'searchThisArea(0);' inside
+            // (for reference: https://stackoverflow.com/a/64927639)
+            window.history.pushState = new Proxy(window.history.pushState, {
+                apply: (target, thisArg, argArray) => {
+                    searchThisArea(0);
+                    return target.apply(thisArg, argArray);
+                }
+            });
 
             // Set link to owner.
             function setLinkToOwner() {
@@ -9884,8 +9894,7 @@ var mainGC = function() {
             // Processing all steps.
             function processAllSearchMap() {
                 setFilter();
-                scrollInCacheList(); // Has to be run before searchThisArea.
-                searchThisArea(0);
+                scrollInCacheList();
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout();
@@ -9901,8 +9910,8 @@ var mainGC = function() {
                 prepareKeydownF2InFilterScreen();
             }
 
-            // Observer callback for body and checking existence of sidebar and map.
-            var cb_body = function(mutationsList, observer) {
+            // Observer callback for body and checking existence of sidebar.
+            var cb_body = function() {
                 processAllSearchMap();
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
@@ -9913,18 +9922,9 @@ var mainGC = function() {
                     };
                     observer_sidebar.observe(target_sidebar, config_sidebar);
                 }
-                if ($('.map-container')[0] && !$('.gclh_map_observer')[0]) {
-                    $('.map-container').addClass('gclh_map_observer');
-                    var target_map = $('.map-container')[0];
-                    var config_map = {
-                        childList: true,
-                        attributes: true
-                    };
-                    observer_map.observe(target_map, config_map);
-                }
             }
             // Observer callback for sidebar.
-            var cb_sidebar = function(mutationsList, observer) {
+            var cb_sidebar = function() {
                 if (!$('div#sidebar')[0]) return;
                 observer_sidebar.disconnect();
                 processAllSearchMap();
@@ -9935,14 +9935,9 @@ var mainGC = function() {
                 };
                 observer_sidebar.observe(target_sidebar, config_sidebar);
             }
-            // Observer callback for map.
-            var cb_map = function(mutationsList, observer) {
-                processAllSearchMap();
-            }
             // Create observer instances linked to callback functions.
             var observer_body    = new MutationObserver(cb_body);
             var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
-            var observer_map = new MutationObserver(cb_map);
             var target_body = $('body')[0];
             var config_body = {
                 childList: true,
