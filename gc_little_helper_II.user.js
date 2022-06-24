@@ -4447,6 +4447,11 @@ var mainGC = function() {
             }
         } catch(e) {gclh_error("Hide socialshare2",e);}
     }
+    if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/souvenircampaign/)) {
+        try {
+            if ($('#SocialShareWrapper')[0]) $('#SocialShareWrapper')[0].style.display = "none";
+        } catch(e) {gclh_error("Hide socialshare3",e);}
+    }
 
 // Remove advertisement link.
     if (settings_hide_advert_link) {
