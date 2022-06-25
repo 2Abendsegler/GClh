@@ -1280,16 +1280,7 @@ var mainGCWait = function() {
             if (typeof chromeSettings.findCount !== 'undefined') global_findCount = chromeSettings.findCount;
             if (typeof chromeSettings.isBasic !== 'undefined') global_isBasic = chromeSettings.isBasic;
         }
-        // New user data area on the page: https://www.geocaching.com/live/promos/jacklinks.
-        if ($('#__NEXT_DATA__')[0] && $('#__NEXT_DATA__')[0].innerHTML) {
-            try {
-                var userdata = JSON.parse($('#__NEXT_DATA__')[0].innerHTML);
-                if (typeof userdata !== 'undefined' && typeof userdata.props !== 'undefined' && typeof userdata.props.pageProps !== 'undefined' && typeof userdata.props.pageProps.gcUser !== 'undefined') {
-                    var _gcUser = userdata.props.pageProps.gcUser;
-                    tlc('Global user data userdata.props.pageProps.gcUser found and named as _gcUser');
-                }
-            } catch(e) {gclh_error("Determine user data for id '__NEXT_DATA__'",e);}
-        }
+        // Used on page: https://www.geocaching.com/plan/lists
         if (typeof _gcUser !== 'undefined' && typeof _gcUser.username !== 'undefined' && _gcUser.username !== null) {
             tlc('Global user data _gcUser found');
             if (typeof _gcUser.username !== 'undefined') global_me = _gcUser.username;
@@ -1297,6 +1288,23 @@ var mainGCWait = function() {
             if (typeof _gcUser.locale !== 'undefined') global_locale = _gcUser.locale;
             if (typeof _gcUser.findCount !== 'undefined') global_findCount = _gcUser.findCount;
             if (typeof _gcUser.membershipLevel !== 'undefined' && _gcUser.membershipLevel == 1) global_isBasic = true;
+        }
+        // Used on page: https://www.geocaching.com/live/promos/jacklinks
+        if ($('#__NEXT_DATA__')[0] && $('#__NEXT_DATA__')[0].innerHTML) {
+            try {
+                var userdata = JSON.parse($('#__NEXT_DATA__')[0].innerHTML);
+                if (typeof userdata !== 'undefined' && typeof userdata.props !== 'undefined' && typeof userdata.props.pageProps !== 'undefined' && typeof userdata.props.pageProps.gcUser !== 'undefined') {
+                    var gcUser = userdata.props.pageProps.gcUser;
+                    if (typeof gcUser !== 'undefined' && typeof gcUser.username !== 'undefined' && gcUser.username !== null) {
+                        tlc('Global user data userdata.props.pageProps.gcUser found');
+                        if (typeof gcUser.username !== 'undefined') global_me = gcUser.username;
+                        if (typeof gcUser.image !== 'undefined' && typeof gcUser.image.imageUrl !== 'undefined') global_avatarUrl = gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
+                        if (typeof gcUser.locale !== 'undefined') global_locale = gcUser.locale;
+                        if (typeof gcUser.findCount !== 'undefined') global_findCount = gcUser.findCount;
+                        if (typeof gcUser.membershipLevel !== 'undefined' && gcUser.membershipLevel == 1) global_isBasic = true;
+                    }
+                }
+            } catch(e) {gclh_error("Determine user data for id '__NEXT_DATA__'",e);}
         }
         if (global_me !== false && global_avatarUrl !== false && global_locale !== false && global_findCount !== false) {
             tlc('All global user data found');
