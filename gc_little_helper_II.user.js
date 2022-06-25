@@ -4259,19 +4259,21 @@ var mainGC = function() {
                         for (let i=0; i<tbs.length; i++) {
                             let tbC = getTb(tbs[i]);
                             // Build UI.
-                            $(tbs[i]).find('.details').after('<div id="gclh_action_list_'+tbC+'"></div>');
-                            $(tbs[i]).find('.actions.radio-toggle-group').appendTo('#gclh_action_list_'+tbC+'');
-                            let html = '<div class="actions radio-toggle-group gclh_autovisit" role="radiogroup">'
-                                    + '    <label>'
-                                    + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? '' : ' checked')+'>'
-                                    + '        <span class="label">No action</span>'
-                                    + '    </label>'
-                                    + '    <label>'
-                                    + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? ' checked' : '')+'>'
-                                    + '        <span class="label">Auto Visit</span>'
-                                    + '    </label>'
-                                    + '</div>';
-                            $('#gclh_action_list_'+tbC).append(html);
+                            if (!$('#gclh_action_list_'+tbC)[0]) {
+                                $(tbs[i]).find('.details').after('<div id="gclh_action_list_'+tbC+'"></div>');
+                                $(tbs[i]).find('.actions.radio-toggle-group').appendTo('#gclh_action_list_'+tbC+'');
+                                let html = '<div class="actions radio-toggle-group gclh_autovisit" role="radiogroup">'
+                                         + '    <label>'
+                                         + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? '' : ' checked')+'>'
+                                         + '        <span class="label">No action</span>'
+                                         + '    </label>'
+                                         + '    <label>'
+                                         + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? ' checked' : '')+'>'
+                                         + '        <span class="label">Auto Visit</span>'
+                                         + '    </label>'
+                                         + '</div>';
+                                 $('#gclh_action_list_'+tbC).append(html);
+                            }
                             // Save TB in autovisit if it new.
                             if (getValue("autovisit_"+tbC, "new") === "new") {
                                 setValue("autovisit_"+tbC, settings_autovisit_default);
@@ -4288,8 +4290,9 @@ var mainGC = function() {
                         buildAutos();
                         // Change autovisit if the logtype changed
                         $('select.log-types').bind('change', buildAutos);
+                        waitCount++; if (waitCount <= 100) setTimeout(function(){waitForContent(waitCount);}, 100);
                     }
-                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForContent(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForContent(waitCount);}, 100);}
             }
             waitForContent(0);
         } catch(e) {gclh_error("Autovisit New",e);}
