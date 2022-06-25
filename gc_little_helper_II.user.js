@@ -1280,6 +1280,16 @@ var mainGCWait = function() {
             if (typeof chromeSettings.findCount !== 'undefined') global_findCount = chromeSettings.findCount;
             if (typeof chromeSettings.isBasic !== 'undefined') global_isBasic = chromeSettings.isBasic;
         }
+        // New user data area on the page: https://www.geocaching.com/live/promos/jacklinks.
+        if ($('#__NEXT_DATA__')[0] && $('#__NEXT_DATA__')[0].innerHTML) {
+            try {
+                var userdata = JSON.parse($('#__NEXT_DATA__')[0].innerHTML);
+                if (typeof userdata !== 'undefined' && typeof userdata.props !== 'undefined' && typeof userdata.props.pageProps !== 'undefined' && typeof userdata.props.pageProps.gcUser !== 'undefined') {
+                    var _gcUser = userdata.props.pageProps.gcUser;
+                    tlc('Global user data userdata.props.pageProps.gcUser found and named as _gcUser');
+                }
+            } catch(e) {gclh_error("Determine user data for id '__NEXT_DATA__'",e);}
+        }
         if (typeof _gcUser !== 'undefined' && typeof _gcUser.username !== 'undefined' && _gcUser.username !== null) {
             tlc('Global user data _gcUser found');
             if (typeof _gcUser.username !== 'undefined') global_me = _gcUser.username;
