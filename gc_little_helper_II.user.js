@@ -6433,12 +6433,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("New drafts page",e);}
     }
     // Automatic back to Drafts after sending log.
-    if (
-        (settings_drafts_go_automatic_back) &&
-        (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) ||
-            (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && ($('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success"))
-        )
-    ) {
+    if ((settings_drafts_go_automatic_back) && (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && ($('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success")))) {
         document.location = 'https://www.geocaching.com/account/drafts';
     }
 
@@ -14594,7 +14589,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
-            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending the log') + show_help("This option applies to both the old and the new log form.") + "<br>";
+            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
