@@ -1476,6 +1476,12 @@ var mainGC = function() {
 // Wait for header and build up header.
     tlc('START buildUpHeader');
     try {
+        // Empty header in browse map due to a bug on the website. (Issue 2134 and https://forums.geocaching.com/GC/index.php?/topic/378861-weird-mapmenu-bar-behaviour)
+        // Der Header in der browse map sollte nicht zeitverzögert kommen, sollte hier also bereits vorhanden sein. Falls nicht, sollte es sich um den Bug handeln.
+        // Wenn der Bug irgendwann behoben ist, kann das wieder entfernt werden.
+        if (is_page("map") && $('#gc-header-root')[0] && !$('#gc-header-root #gc-header')[0]) {
+            $('#gc-header-root')[0].innerHTML = '<header id="gc-header" class="css-az98zw">';
+        }
         function buildUpHeader(waitCount) {
             if ($('#gc-header, #GCHeader')[0]) {
                 tlc('Header found');
