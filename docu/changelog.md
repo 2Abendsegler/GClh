@@ -1,3 +1,4 @@
+<a href="#v01118" title="GClh II version 0.11.18 (04.07.2022)">v0.11.18</a> &nbsp;
 <a href="#v01117" title="GClh II version 0.11.17 (23.06.2022)">v0.11.17</a> &nbsp;
 <a href="#v01116" title="GClh II version 0.11.16 (07.05.2022)">v0.11.16</a> &nbsp;
 <a href="#v01115" title="GClh II version 0.11.15 (31.03.2022)">v0.11.15</a> &nbsp;
@@ -39,6 +40,28 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.18:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Drafts / Old log form] Automatic go back to drafts after sending to log also with old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2150" title="Issue 2150">2150</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Empty header due to a bug on the website. [<a href="https://github.com/2Abendsegler/GClh/issues/2134" title="Issue 2134">2134</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=cghove" title="Thanks to cghove">cghove</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Auto visit does not work on Events if you log from Drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/2148" title="Issue 2148">2148</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [The Great Jerky Hunt by Jack Link's] Integration of the page. [<a href="https://github.com/2Abendsegler/GClh/issues/2146" title="Issue 2146">2146</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(04.07.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.17:
