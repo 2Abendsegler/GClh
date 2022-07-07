@@ -6443,7 +6443,7 @@ var mainGC = function() {
         if (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/)) {
             var drafts_go_automatic_back = true;
         }
-        if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && (document.getElementById('ctl00_ContentBody_LogBookPanel1_lblErrorMessage'))) {
+        else if (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && (document.getElementById('ctl00_ContentBody_LogBookPanel1_lblErrorMessage'))) {
             if (document.getElementById('ctl00_ContentBody_LogBookPanel1_lblErrorMessage').firstChild.className.toLowerCase() == "success") {
                 var drafts_go_automatic_back = true;
             }
