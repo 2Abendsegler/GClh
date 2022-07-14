@@ -6091,7 +6091,7 @@ var mainGC = function() {
     }
 
 // Improve friends list.
-    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#invitation-button-root')[0]) {
+    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#ctl00_ContentBody_btnAddFriend')[0]) {
         try {
             var friends = document.getElementsByClassName("FriendText");
             var day = new Date().getDate();
@@ -6227,28 +6227,28 @@ var mainGC = function() {
                 spanT.style.fontSize = "smaller";
                 spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
-                document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
+                document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
             }
             var button = document.createElement("input");
             button.setAttribute("type", "button");
             button.setAttribute("value", "Reset counter");
-            button.setAttribute("class", "gc-button css-of50lf gc-button-has-type gc-button-primary");
+            button.setAttribute("style", "height: 35px;");
             button.addEventListener("click", gclh_reset_counter, false);
-            document.getElementsByClassName('spanTclass')[0].appendChild(button);
+            document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
         } catch(e) {gclh_error("Improve friends list",e);}
     }
 
