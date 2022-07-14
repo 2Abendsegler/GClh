@@ -6091,7 +6091,7 @@ var mainGC = function() {
     }
 
 // Improve friends list.
-    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#ctl00_ContentBody_btnAddFriend')[0]) {
+    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#invitation-button-root')[0]) {
         try {
             var friends = document.getElementsByClassName("FriendText");
             var day = new Date().getDate();
@@ -6113,8 +6113,16 @@ var mainGC = function() {
                  "  text-decoration:underline;}" +
                  "a.myfriends {" +
                  "  color:#00AA00;" +
-                 "  text-decoration:none;}";
+                 "  text-decoration:none;} " +
+                 "a.gclh_resetBtn:hover {" +
+                 "  text-decoration:underline;" +
+                 "  font-weight: bold;}" +
+                 "a.gclh_resetBtn {" +
+                 "  color:#00AA00;" +
+                 "  text-decoration:none;" +
+                 "  font-weight: bold;} ";
             appendCssStyle(myf);
+
             var sNewF = "";
             var sNewH = "";
             var myvips = getValue("vips", false);
@@ -6211,7 +6219,7 @@ var mainGC = function() {
                     // Und "last reset" aktualisieren.
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
-                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
+                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 }
             }
             if (settings_friendlist_summary) {
@@ -6225,30 +6233,30 @@ var mainGC = function() {
                 spanT.className = "spanTclass";
                 spanT.style.color = "gray";
                 spanT.style.fontSize = "smaller";
-                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')';
+                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
-                document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
+                document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
-                    document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
+                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
-                    document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
+                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
                 }
             }
-            var button = document.createElement("input");
-            button.setAttribute("type", "button");
-            button.setAttribute("value", "Reset counter");
-            button.setAttribute("style", "height: 35px;");
+            var button = document.createElement("a");
+            button.setAttribute("class", "gclh_resetBtn");
+            button.setAttribute("href", "javascript:void(0);");
             button.addEventListener("click", gclh_reset_counter, false);
-            document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
+            button.innerHTML = "Reset Counter";
+            document.getElementsByClassName('spanTclass')[0].appendChild(button);
         } catch(e) {gclh_error("Improve friends list",e);}
     }
 
