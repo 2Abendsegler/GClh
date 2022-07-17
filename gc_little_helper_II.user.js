@@ -6447,7 +6447,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("New drafts page",e);}
     }
     // Automatic back to Drafts after sending log.
-    if ((settings_drafts_go_automatic_back) && (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && ($('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success")))) {
+    if ((settings_drafts_go_automatic_back) && (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success"))) {
         document.location = 'https://www.geocaching.com/account/drafts';
     }
 
