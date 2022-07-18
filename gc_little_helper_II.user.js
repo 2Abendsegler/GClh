@@ -8479,6 +8479,7 @@ var mainGC = function() {
                         $(log).find('.activity-label .label-text .icon:first').before(ct);
                         $(log).find('.activity-label .label-text .icon:first').addClass('gclh_cache-type');
                     }
+                    buildEventMoreAF(log);
                 }
             }
             if (settings_show_cache_type_icons_in_dashboard) {
@@ -14347,7 +14348,11 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += newParameterOn2;
             html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn1;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
 
