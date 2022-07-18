@@ -8440,28 +8440,11 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
             }
             showHideNearbyEvents(0);
-            // Show cache/TB type in front of log type in Latest Activity list.
-            // (Der Wechsel zwischen Community Logs und Your Logs wird nicht unterstützt. Auch das Aktivieren von Latest Activity nach einigen Sekunden wird nicht unterstützt.)
-            function showCacheTypeIcons(waitCount) {
-                if ($('.activity-container .activity-details')[0]) {
-                    $('.activity-container .activity-details').each((i, elem) => {
-                        if ($(elem).find('.activity-footer .meta-data span:first .icon')[0] && $(elem).find('.activity-label .label-text .icon:first')[0]) {
-                            var ct = $(elem).find('.activity-footer .meta-data span:first .icon');
-                            $(elem).find('.activity-label .label-text .icon:first').before(ct);
-                        }
-                    });
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showCacheTypeIcons(waitCount);}, 100);}
-            }
-            if (settings_show_cache_type_icons_in_dashboard) {
-                showCacheTypeIcons(0);
-                css += '.activity-label .icon:nth-child(1) {margin-right: 0px;}';
-                css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
-                css += '.activity-label.has-favorite a {margin-left: 0;}';
-            }
 
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
             function buildLinksAF(log) {
+                if (!settings_show_edit_links_for_logs) return;
                 if (!$(log).find('.gclh_view-link')[0]) {
                     $(log).find('.edit-link')[0].innerHTML = 'View log';
                     $(log).find('.edit-link').addClass('gclh_view-link');
@@ -8483,13 +8466,35 @@ var mainGC = function() {
                     buildEventMoreAF(log);
                 }
             }
-            function buildLinksWaitAF(log, waitCount) {
+            if (settings_show_edit_links_for_logs) {
+                css += '.gclh_buttons {display: flex;}';
+                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
+            }
+            // Show cache/TB type in front of log type in Latest Activity list.
+            function buildCacheTypeIconAF(log) {
+                if (!settings_show_cache_type_icons_in_dashboard) return;
+                if (!$(log).find('.gclh_cache-type')[0]) {
+                    if ($(log).find('.activity-footer .meta-data span:first .icon')[0] && $(log).find('.activity-label .label-text .icon:first')[0]) {
+                        var ct = $(log).find('.activity-footer .meta-data span:first .icon');
+                        $(log).find('.activity-label .label-text .icon:first').before(ct);
+                        $(log).find('.activity-label .label-text .icon:first').addClass('gclh_cache-type');
+                    }
+                }
+            }
+            if (settings_show_cache_type_icons_in_dashboard) {
+                css += '.activity-label .icon:nth-child(1) {margin-right: 0px;}';
+                css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
+                css += '.activity-label.has-favorite a {margin-left: 0;}';
+            }
+            // Common functions for features in Latest Activity list.
+            function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
-                waitCount++; if (waitCount <= 50) setTimeout(function(){buildLinksWaitAF(log, waitCount);}, 100);
+                buildCacheTypeIconAF(log);
+                waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
             }
             function buildEventMoreAF(log) {
                 if (!$(log).find('.activity-details').hasClass('gclh_event')) {
-                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildLinksWaitAF($(this).closest('.activity-item'), 0);}, false);
+                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildWaitAF($(this).closest('.activity-item'), 0);}, false);
                     $($(log).find('.activity-details')[0]).addClass('gclh_event');
                 }
             }
@@ -8498,10 +8503,11 @@ var mainGC = function() {
                     for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
+                            buildCacheTypeIconAF($('#ActivityFeed .activity-item')[i]);
                         }
                     }
                 }
-                waitCount++; if (waitCount <= 25) setTimeout(function(){processLogsAF(waitCount);}, 200);
+                waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
             }
             function buildEventQtipAF(waitCount) {
                 if ($('#ActivityFeed .btn-settings')[0] && $('#ActivityFeed .btn-settings').attr('data-hasqtip') && $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] && !$( $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] ).hasClass('gclh_event')) {
@@ -8527,10 +8533,8 @@ var mainGC = function() {
                 buildEventLatestActivityAF(0);
                 processLogsAF(0);
             }
-            if (settings_show_edit_links_for_logs) {
+            if (settings_show_edit_links_for_logs || settings_show_cache_type_icons_in_dashboard) {
                 startAF();
-                css += '.gclh_buttons {display: flex;}';
-                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
             }
 
             // Show unpublished hides.
