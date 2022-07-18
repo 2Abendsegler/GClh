@@ -696,6 +696,7 @@ var variablesInit = function(c) {
     c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
+    c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
 
     tlc('START userToken');
     try {
@@ -8439,6 +8440,24 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
             }
             showHideNearbyEvents(0);
+            // Show cache/TB type in front of log type in Latest Activity list.
+            // (Der Wechsel zwischen Community Logs und Your Logs wird nicht unterstützt. Auch das Aktivieren von Latest Activity nach einigen Sekunden wird nicht unterstützt.)
+            function showCacheTypeIcons(waitCount) {
+                if ($('.activity-container .activity-details')[0]) {
+                    $('.activity-container .activity-details').each((i, elem) => {
+                        if ($(elem).find('.activity-footer .meta-data span:first .icon')[0] && $(elem).find('.activity-label .label-text .icon:first')[0]) {
+                            var ct = $(elem).find('.activity-footer .meta-data span:first .icon');
+                            $(elem).find('.activity-label .label-text .icon:first').before(ct);
+                        }
+                    });
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showCacheTypeIcons(waitCount);}, 100);}
+            }
+            if (settings_show_cache_type_icons_in_dashboard) {
+                showCacheTypeIcons(0);
+                css += '.activity-label .icon:nth-child(1) {margin-right: 0px;}';
+                css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
+                css += '.activity-label.has-favorite a {margin-left: 0;}';
+            }
 
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
@@ -14324,6 +14343,7 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
+            html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
 
@@ -15917,6 +15937,7 @@ var mainGC = function() {
                 'settings_drafts_go_automatic_back',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
+                'settings_show_cache_type_icons_in_dashboard',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
