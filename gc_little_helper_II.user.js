@@ -10264,6 +10264,12 @@ var mainGC = function() {
 // Add layers, control to map and set default layers.
     function addLayersOnBrowseMap() {
         try {
+            //>> Issue 2016
+            // [Browse Map] Map overlay "Hillshadow" doesn't work. Issue: https://github.com/2Abendsegler/GClh/issues/2016
+            // The "Hillshadow" service is no longer available. We have removed the feature. We'll keep an eye on it, maybe the service will be reactivated,
+            // then we'll reinstall it. The adjustments in the script are marked with "Issue 2016".
+            settings_show_hillshadow = false;
+            //<< Issue 2016
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
@@ -10296,10 +10302,12 @@ var mainGC = function() {
                                 if (name == settings_map_default_layer) defaultLayer = layerToAdd;
                                 else if (defaultLayer == null) defaultLayer = layerToAdd;
                             }
-                            for (name in map_overlays) {
-                                layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
-                                layerControl.addOverlay(layerToAdd, name);
-                            }
+                            //>> Issue 2016
+                            //for (name in map_overlays) {
+                            //    layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
+                            //    layerControl.addOverlay(layerToAdd, name);
+                            //}
+                            //<< Issue 2016
                             window.MapSettings.Map.addControl(layerControl);
                             layerControl._container.className += " gclh_layers gclh_used";
                             window.MapSettings.Map.addLayer(defaultLayer);
@@ -14195,7 +14203,9 @@ var mainGC = function() {
             html += "<tr><td colspan='3'>Default layer &nbsp; <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a layer from the right list and push the button \"Set default layer\".");
             html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
-            html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
+            //>> Issue 2016
+            //html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
+            //<< Issue 2016
             html += "</td></tr>";
             html += "</tbody></table>";
             html += newParameterOn2;
