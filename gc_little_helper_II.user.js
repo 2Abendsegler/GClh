@@ -696,6 +696,7 @@ var variablesInit = function(c) {
     c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
+    c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
 
     tlc('START userToken');
     try {
@@ -8443,6 +8444,7 @@ var mainGC = function() {
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
             function buildLinksAF(log) {
+                if (!settings_show_edit_links_for_logs) return;
                 if (!$(log).find('.gclh_view-link')[0]) {
                     $(log).find('.edit-link')[0].innerHTML = 'View log';
                     $(log).find('.edit-link').addClass('gclh_view-link');
@@ -8464,25 +8466,49 @@ var mainGC = function() {
                     buildEventMoreAF(log);
                 }
             }
-            function buildLinksWaitAF(log, waitCount) {
+            if (settings_show_edit_links_for_logs) {
+                css += '.gclh_buttons {display: flex;}';
+                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
+            }
+            // Show cache/TB type in front of log type in Latest Activity list.
+            function buildCacheTypeIconAF(log) {
+                if (!settings_show_cache_type_icons_in_dashboard) return;
+                if (!$(log).find('.gclh_cache-type')[0]) {
+                    if ($(log).find('.activity-footer .meta-data span:first .icon')[0] && $(log).find('.activity-label .label-text .icon:first')[0]) {
+                        var ct = $(log).find('.activity-footer .meta-data span:first .icon');
+                        $(log).find('.activity-label .label-text .icon:first').before(ct);
+                        $(log).find('.activity-label .label-text .icon:first').addClass('gclh_cache-type');
+                    }
+                    buildEventMoreAF(log);
+                }
+            }
+            if (settings_show_cache_type_icons_in_dashboard) {
+                css += '.activity-label .icon:nth-child(1) {margin-right: 0px;}';
+                css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
+                css += '.activity-label.has-favorite a {margin-left: 0;}';
+            }
+            // Common functions for features in Latest Activity list.
+            function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
-                waitCount++; if (waitCount <= 50) setTimeout(function(){buildLinksWaitAF(log, waitCount);}, 100);
+                buildCacheTypeIconAF(log);
+                waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
             }
             function buildEventMoreAF(log) {
                 if (!$(log).find('.activity-details').hasClass('gclh_event')) {
-                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildLinksWaitAF($(this).closest('.activity-item'), 0);}, false);
+                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildWaitAF($(this).closest('.activity-item'), 0);}, false);
                     $($(log).find('.activity-details')[0]).addClass('gclh_event');
                 }
             }
             function processLogsAF(waitCount) {
                 if ($('#ActivityFeed .activity-item').length > 0) {
                     for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
+                        buildCacheTypeIconAF($('#ActivityFeed .activity-item')[i]);
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
                         }
                     }
                 }
-                waitCount++; if (waitCount <= 25) setTimeout(function(){processLogsAF(waitCount);}, 200);
+                waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
             }
             function buildEventQtipAF(waitCount) {
                 if ($('#ActivityFeed .btn-settings')[0] && $('#ActivityFeed .btn-settings').attr('data-hasqtip') && $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] && !$( $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] ).hasClass('gclh_event')) {
@@ -8508,10 +8534,8 @@ var mainGC = function() {
                 buildEventLatestActivityAF(0);
                 processLogsAF(0);
             }
-            if (settings_show_edit_links_for_logs) {
+            if (settings_show_edit_links_for_logs || settings_show_cache_type_icons_in_dashboard) {
                 startAF();
-                css += '.gclh_buttons {display: flex;}';
-                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
             }
 
             // Show unpublished hides.
@@ -14324,6 +14348,11 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
+            html += newParameterVersionSetzen('0.10') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn1;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
 
@@ -15917,6 +15946,7 @@ var mainGC = function() {
                 'settings_drafts_go_automatic_back',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
+                'settings_show_cache_type_icons_in_dashboard',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
