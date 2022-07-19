@@ -8502,9 +8502,9 @@ var mainGC = function() {
             function processLogsAF(waitCount) {
                 if ($('#ActivityFeed .activity-item').length > 0) {
                     for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
+                        buildCacheTypeIconAF($('#ActivityFeed .activity-item')[i]);
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
-                            buildCacheTypeIconAF($('#ActivityFeed .activity-item')[i]);
                         }
                     }
                 }
