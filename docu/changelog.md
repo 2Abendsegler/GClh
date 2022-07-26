@@ -49,7 +49,7 @@
 	<li>
 		<strong>Info:</strong> [Browse Map] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
 		The "Hillshadow" service is no longer available. We have removed the feature. We'll keep an eye on it, maybe the service will be reactivated, then we'll reinstall it.<br>
-		See also the earlier note in <a href="https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01110" title="Issue 2016">changelog to v0.11.14</a>.<br><br>
+		See also the earlier note in <a href="https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01114" title="Issue 2016">changelog to v0.11.14</a>.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Dashboard] Show cache/TB type in front of log type in Latest Activity list. [<a href="https://github.com/2Abendsegler/GClh/issues/2164" title="Issue 2164">2164</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
