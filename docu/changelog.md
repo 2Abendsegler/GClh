@@ -1,3 +1,4 @@
+<a href="#v01119" title="GClh II version 0.11.19 (26.07.2022)">v0.11.19</a> &nbsp;
 <a href="#v01118" title="GClh II version 0.11.18 (04.07.2022)">v0.11.18</a> &nbsp;
 <a href="#v01117" title="GClh II version 0.11.17 (23.06.2022)">v0.11.17</a> &nbsp;
 <a href="#v01116" title="GClh II version 0.11.16 (07.05.2022)">v0.11.16</a> &nbsp;
@@ -40,6 +41,34 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.11.19:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Info:</strong> [Browse Map] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
+		The "Hillshadow" service is no longer available. We have removed the feature. We'll keep an eye on it, maybe the service will be reactivated, then we'll reinstall it.<br>
+		See also the earlier note in <a href="https://github.com/2Abendsegler/GClh/blob/collector/docu/changelog.md#v01110" title="Issue 2016">changelog to v0.11.14</a>.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Show cache/TB type in front of log type in Latest Activity list. [<a href="https://github.com/2Abendsegler/GClh/issues/2164" title="Issue 2164">2164</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.11.19/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_cache_type_icons_in_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:</a><br>
+		<img src="../images/0.11.19/Screen01.jpg" alt="Screen01.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	<li>
+		<strong>Fix:</strong> [Friends List] Friends List will not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2159" title="Issue 2159">2159</a> / <a href="https://www.geocaching.com/profile/?u=Herr Ma" title="Thanks to Herr Ma">Herr Ma</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Drafts / Old log form] Bugfix - Automatic go back to drafts after sending to log with old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2161" title="Issue 2161">2161</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	</li>
+</ul>
+<br>
+(26.07.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.18:
