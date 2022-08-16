@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.17
+// @version      0.11.19
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
