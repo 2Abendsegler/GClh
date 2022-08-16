@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.19
+// @version      0.11.17
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -696,7 +696,6 @@ var variablesInit = function(c) {
     c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
-    c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
 
     tlc('START userToken');
     try {
@@ -1281,7 +1280,6 @@ var mainGCWait = function() {
             if (typeof chromeSettings.findCount !== 'undefined') global_findCount = chromeSettings.findCount;
             if (typeof chromeSettings.isBasic !== 'undefined') global_isBasic = chromeSettings.isBasic;
         }
-        // Used on page: https://www.geocaching.com/plan/lists
         if (typeof _gcUser !== 'undefined' && typeof _gcUser.username !== 'undefined' && _gcUser.username !== null) {
             tlc('Global user data _gcUser found');
             if (typeof _gcUser.username !== 'undefined') global_me = _gcUser.username;
@@ -1289,23 +1287,6 @@ var mainGCWait = function() {
             if (typeof _gcUser.locale !== 'undefined') global_locale = _gcUser.locale;
             if (typeof _gcUser.findCount !== 'undefined') global_findCount = _gcUser.findCount;
             if (typeof _gcUser.membershipLevel !== 'undefined' && _gcUser.membershipLevel == 1) global_isBasic = true;
-        }
-        // Used on page: https://www.geocaching.com/live/promos/jacklinks
-        if ($('#__NEXT_DATA__')[0] && $('#__NEXT_DATA__')[0].innerHTML) {
-            try {
-                var userdata = JSON.parse($('#__NEXT_DATA__')[0].innerHTML);
-                if (typeof userdata !== 'undefined' && typeof userdata.props !== 'undefined' && typeof userdata.props.pageProps !== 'undefined' && typeof userdata.props.pageProps.gcUser !== 'undefined') {
-                    var gcUser = userdata.props.pageProps.gcUser;
-                    if (typeof gcUser !== 'undefined' && typeof gcUser.username !== 'undefined' && gcUser.username !== null) {
-                        tlc('Global user data userdata.props.pageProps.gcUser found');
-                        if (typeof gcUser.username !== 'undefined') global_me = gcUser.username;
-                        if (typeof gcUser.image !== 'undefined' && typeof gcUser.image.imageUrl !== 'undefined') global_avatarUrl = gcUser.image.imageUrl.replace(/\{0\}/,'avatar');
-                        if (typeof gcUser.locale !== 'undefined') global_locale = gcUser.locale;
-                        if (typeof gcUser.findCount !== 'undefined') global_findCount = gcUser.findCount;
-                        if (typeof gcUser.membershipLevel !== 'undefined' && gcUser.membershipLevel == 1) global_isBasic = true;
-                    }
-                }
-            } catch(e) {gclh_error("Determine user data for id '__NEXT_DATA__'",e);}
         }
         if (global_me !== false && global_avatarUrl !== false && global_locale !== false && global_findCount !== false) {
             tlc('All global user data found');
@@ -4260,21 +4241,19 @@ var mainGC = function() {
                         for (let i=0; i<tbs.length; i++) {
                             let tbC = getTb(tbs[i]);
                             // Build UI.
-                            if (!$('#gclh_action_list_'+tbC)[0]) {
-                                $(tbs[i]).find('.details').after('<div id="gclh_action_list_'+tbC+'"></div>');
-                                $(tbs[i]).find('.actions.radio-toggle-group').appendTo('#gclh_action_list_'+tbC+'');
-                                let html = '<div class="actions radio-toggle-group gclh_autovisit" role="radiogroup">'
-                                         + '    <label>'
-                                         + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? '' : ' checked')+'>'
-                                         + '        <span class="label">No action</span>'
-                                         + '    </label>'
-                                         + '    <label>'
-                                         + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? ' checked' : '')+'>'
-                                         + '        <span class="label">Auto Visit</span>'
-                                         + '    </label>'
-                                         + '</div>';
-                                 $('#gclh_action_list_'+tbC).append(html);
-                            }
+                            $(tbs[i]).find('.details').after('<div id="gclh_action_list_'+tbC+'"></div>');
+                            $(tbs[i]).find('.actions.radio-toggle-group').appendTo('#gclh_action_list_'+tbC+'');
+                            let html = '<div class="actions radio-toggle-group gclh_autovisit" role="radiogroup">'
+                                    + '    <label>'
+                                    + '        <input type="radio" value="0" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? '' : ' checked')+'>'
+                                    + '        <span class="label">No action</span>'
+                                    + '    </label>'
+                                    + '    <label>'
+                                    + '        <input type="radio" value="1" name="autovisit_'+tbC+'"'+(getValue("autovisit_"+tbC, settings_autovisit_default) ? ' checked' : '')+'>'
+                                    + '        <span class="label">Auto Visit</span>'
+                                    + '    </label>'
+                                    + '</div>';
+                            $('#gclh_action_list_'+tbC).append(html);
                             // Save TB in autovisit if it new.
                             if (getValue("autovisit_"+tbC, "new") === "new") {
                                 setValue("autovisit_"+tbC, settings_autovisit_default);
@@ -4291,9 +4270,8 @@ var mainGC = function() {
                         buildAutos();
                         // Change autovisit if the logtype changed
                         $('select.log-types').bind('change', buildAutos);
-                        waitCount++; if (waitCount <= 100) setTimeout(function(){waitForContent(waitCount);}, 100);
                     }
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForContent(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForContent(waitCount);}, 100);}
             }
             waitForContent(0);
         } catch(e) {gclh_error("Autovisit New",e);}
@@ -4468,11 +4446,6 @@ var mainGC = function() {
                 if ($('.share-button-group')[0]) $('.share-button-group')[0].style.marginBottom = "0";
             }
         } catch(e) {gclh_error("Hide socialshare2",e);}
-    }
-    if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/souvenircampaign/)) {
-        try {
-            if ($('#SocialShareWrapper')[0]) $('#SocialShareWrapper')[0].style.display = "none";
-        } catch(e) {gclh_error("Hide socialshare3",e);}
     }
 
 // Remove advertisement link.
@@ -6086,7 +6059,7 @@ var mainGC = function() {
     }
 
 // Improve friends list.
-    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#invitation-button-root')[0]) {
+    if (document.location.href.match(/\.com\/my\/myfriends\.aspx/) && $('#ctl00_ContentBody_btnAddFriend')[0]) {
         try {
             var friends = document.getElementsByClassName("FriendText");
             var day = new Date().getDate();
@@ -6108,16 +6081,8 @@ var mainGC = function() {
                  "  text-decoration:underline;}" +
                  "a.myfriends {" +
                  "  color:#00AA00;" +
-                 "  text-decoration:none;} " +
-                 "a.gclh_resetBtn:hover {" +
-                 "  text-decoration:underline;" +
-                 "  font-weight: bold;}" +
-                 "a.gclh_resetBtn {" +
-                 "  color:#00AA00;" +
-                 "  text-decoration:none;" +
-                 "  font-weight: bold;} ";
+                 "  text-decoration:none;}";
             appendCssStyle(myf);
-
             var sNewF = "";
             var sNewH = "";
             var myvips = getValue("vips", false);
@@ -6214,7 +6179,7 @@ var mainGC = function() {
                     // Und "last reset" aktualisieren.
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
-                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
+                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')';
                 }
             }
             if (settings_friendlist_summary) {
@@ -6228,30 +6193,30 @@ var mainGC = function() {
                 spanT.className = "spanTclass";
                 spanT.style.color = "gray";
                 spanT.style.fontSize = "smaller";
-                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
+                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
-                document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
+                document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(spanT, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxH, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(boxF, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
                 }
             }
-            var button = document.createElement("a");
-            button.setAttribute("class", "gclh_resetBtn");
-            button.setAttribute("href", "javascript:void(0);");
+            var button = document.createElement("input");
+            button.setAttribute("type", "button");
+            button.setAttribute("value", "Reset counter");
+            button.setAttribute("style", "height: 35px;");
             button.addEventListener("click", gclh_reset_counter, false);
-            button.innerHTML = "Reset Counter";
-            document.getElementsByClassName('spanTclass')[0].appendChild(button);
+            document.getElementById('ctl00_ContentBody_btnAddFriend').parentNode.insertBefore(button, document.getElementById('ctl00_ContentBody_btnAddFriend').nextSibling);
         } catch(e) {gclh_error("Improve friends list",e);}
     }
 
@@ -6442,7 +6407,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("New drafts page",e);}
     }
     // Automatic back to Drafts after sending log.
-    if ((settings_drafts_go_automatic_back) && (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success"))) {
+    if (settings_drafts_go_automatic_back && document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/)) {
         document.location = 'https://www.geocaching.com/account/drafts';
     }
 
@@ -8444,7 +8409,6 @@ var mainGC = function() {
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
             function buildLinksAF(log) {
-                if (!settings_show_edit_links_for_logs) return;
                 if (!$(log).find('.gclh_view-link')[0]) {
                     $(log).find('.edit-link')[0].innerHTML = 'View log';
                     $(log).find('.edit-link').addClass('gclh_view-link');
@@ -8466,49 +8430,25 @@ var mainGC = function() {
                     buildEventMoreAF(log);
                 }
             }
-            if (settings_show_edit_links_for_logs) {
-                css += '.gclh_buttons {display: flex;}';
-                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
-            }
-            // Show cache/TB type in front of log type in Latest Activity list.
-            function buildCacheTypeIconAF(log) {
-                if (!settings_show_cache_type_icons_in_dashboard) return;
-                if (!$(log).find('.gclh_cache-type')[0]) {
-                    if ($(log).find('.activity-footer .meta-data span:first .icon')[0] && $(log).find('.activity-label .label-text .icon:first')[0]) {
-                        var ct = $(log).find('.activity-footer .meta-data span:first .icon');
-                        $(log).find('.activity-label .label-text .icon:first').before(ct);
-                        $(log).find('.activity-label .label-text .icon:first').addClass('gclh_cache-type');
-                    }
-                    buildEventMoreAF(log);
-                }
-            }
-            if (settings_show_cache_type_icons_in_dashboard) {
-                css += '.activity-label .icon:nth-child(1) {margin-right: 0px;}';
-                css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
-                css += '.activity-label.has-favorite a {margin-left: 0;}';
-            }
-            // Common functions for features in Latest Activity list.
-            function buildWaitAF(log, waitCount) {
+            function buildLinksWaitAF(log, waitCount) {
                 buildLinksAF(log);
-                buildCacheTypeIconAF(log);
-                waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildLinksWaitAF(log, waitCount);}, 100);
             }
             function buildEventMoreAF(log) {
                 if (!$(log).find('.activity-details').hasClass('gclh_event')) {
-                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildWaitAF($(this).closest('.activity-item'), 0);}, false);
+                    $(log).find('.activity-details')[0].addEventListener("click", function(){buildLinksWaitAF($(this).closest('.activity-item'), 0);}, false);
                     $($(log).find('.activity-details')[0]).addClass('gclh_event');
                 }
             }
             function processLogsAF(waitCount) {
                 if ($('#ActivityFeed .activity-item').length > 0) {
                     for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
-                        buildCacheTypeIconAF($('#ActivityFeed .activity-item')[i]);
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
                         }
                     }
                 }
-                waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
+                waitCount++; if (waitCount <= 25) setTimeout(function(){processLogsAF(waitCount);}, 200);
             }
             function buildEventQtipAF(waitCount) {
                 if ($('#ActivityFeed .btn-settings')[0] && $('#ActivityFeed .btn-settings').attr('data-hasqtip') && $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] && !$( $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] ).hasClass('gclh_event')) {
@@ -8534,8 +8474,10 @@ var mainGC = function() {
                 buildEventLatestActivityAF(0);
                 processLogsAF(0);
             }
-            if (settings_show_edit_links_for_logs || settings_show_cache_type_icons_in_dashboard) {
+            if (settings_show_edit_links_for_logs) {
                 startAF();
+                css += '.gclh_buttons {display: flex;}';
+                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
             }
 
             // Show unpublished hides.
@@ -10288,12 +10230,6 @@ var mainGC = function() {
 // Add layers, control to map and set default layers.
     function addLayersOnBrowseMap() {
         try {
-            //>> Issue 2016
-            // [Browse Map] Map overlay "Hillshadow" doesn't work. Issue: https://github.com/2Abendsegler/GClh/issues/2016
-            // The "Hillshadow" service is no longer available. We have removed the feature. We'll keep an eye on it, maybe the service will be reactivated,
-            // then we'll reinstall it. The adjustments in the script are marked with "Issue 2016".
-            settings_show_hillshadow = false;
-            //<< Issue 2016
             // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
@@ -10326,12 +10262,10 @@ var mainGC = function() {
                                 if (name == settings_map_default_layer) defaultLayer = layerToAdd;
                                 else if (defaultLayer == null) defaultLayer = layerToAdd;
                             }
-                            //>> Issue 2016
-                            //for (name in map_overlays) {
-                            //    layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
-                            //    layerControl.addOverlay(layerToAdd, name);
-                            //}
-                            //<< Issue 2016
+                            for (name in map_overlays) {
+                                layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
+                                layerControl.addOverlay(layerToAdd, name);
+                            }
                             window.MapSettings.Map.addControl(layerControl);
                             layerControl._container.className += " gclh_layers gclh_used";
                             window.MapSettings.Map.addLayer(defaultLayer);
@@ -12668,8 +12602,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/ijV"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/2jCy/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/ihJ"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/Hau9/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13862,7 +13796,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "26.07.2022";
+            var thanksLastUpdate = "23.06.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14227,9 +14161,7 @@ var mainGC = function() {
             html += "<tr><td colspan='3'>Default layer &nbsp; <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a layer from the right list and push the button \"Set default layer\".");
             html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
-            //>> Issue 2016
-            //html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
-            //<< Issue 2016
+            html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
             html += "</td></tr>";
             html += "</tbody></table>";
             html += newParameterOn2;
@@ -14348,11 +14280,6 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
-            html += newParameterOn2;
-            html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += newParameterOn1;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
 
@@ -14636,7 +14563,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
-            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log') + "<br>";
+            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log with new log form') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15946,7 +15873,6 @@ var mainGC = function() {
                 'settings_drafts_go_automatic_back',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
-                'settings_show_cache_type_icons_in_dashboard',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
