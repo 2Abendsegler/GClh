@@ -2503,6 +2503,18 @@ var mainGC = function() {
         } catch(e) {gclh_error("Add link to waypoint list and cache logs",e);}
     }
 
+// Add link to admin tools to right sidebar.
+    if (is_page("cache_listing") && document.getElementById("ctl00_ContentBody_GeoNav_adminTools")) {
+        try {
+            if (document.getElementById('ctl00_ContentBody_GeoNav_uxArchivedLogType').children[0].href) {
+                var maintenance_link = document.getElementById('ctl00_ContentBody_GeoNav_uxArchivedLogType').children[0].href.replace('LogType=5', 'LogType=46')
+                $("#ctl00_ContentBody_GeoNav_adminTools").append('<li><a href="' + maintenance_link + '">Owner Maintenance</a></li>');
+                var css = '.CacheDetailNavigation a[href$="LogType=46"] {background-image: url(/images/logtypes/46.png); }';
+                appendCssStyle(css);
+            }
+        } catch(e) {gclh_error("Add link to admin tools",e);}
+    }
+
 // Button to copy data to clipboard at right sidebar.
     function create_copydata_menu() {
         var css = "";
