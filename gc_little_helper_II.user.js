@@ -15,7 +15,7 @@
 // @include      https://www.google.tld/maps*
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
-// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/
+// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -68,7 +68,7 @@ var start = function(c) {
                         mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
-                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/)) {
+                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/)) {
                         mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
