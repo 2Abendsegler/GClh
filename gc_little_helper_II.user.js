@@ -15,7 +15,7 @@
 // @include      https://www.google.tld/maps*
 // @include      https://project-gc.com/Tools/PQSplit*
 // @include      https://www.openstreetmap.org*
-// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/
+// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -68,7 +68,7 @@ var start = function(c) {
                         mainGCWait();
                     } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
-                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=GC[A-Z0-9]{1,10})/)) {
+                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/)) {
                         mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
@@ -3020,6 +3020,18 @@ var mainGC = function() {
                 create_copydata_menu();
             } catch(e) {gclh_error("Create 'Copy Data to Clipboard' menu",e);}
         }
+    }
+
+// Add link to admin tools to right sidebar.
+    if (is_page("cache_listing") && document.getElementById("ctl00_ContentBody_GeoNav_adminTools")) {
+        try {
+            if (document.getElementById('ctl00_ContentBody_GeoNav_uxArchivedLogType').children[0].href) {
+                var maintenance_link = document.getElementById('ctl00_ContentBody_GeoNav_uxArchivedLogType').children[0].href.replace('LogType=5', 'LogType=46')
+                $("#ctl00_ContentBody_GeoNav_adminTools").append('<li><a href="' + maintenance_link + '">Owner Maintenance</a></li>');
+                var css = '.CacheDetailNavigation a[href$="LogType=46"] {background-image: url(/images/logtypes/46.png); }';
+                appendCssStyle(css);
+            }
+        } catch(e) {gclh_error("Add link to admin tools",e);}
     }
 
 // Build map overview.
