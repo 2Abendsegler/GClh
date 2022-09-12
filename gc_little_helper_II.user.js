@@ -9750,6 +9750,20 @@ var mainGC = function() {
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
                     }
+
+                    // Gets the weekday if the geocache is an event and adds the weekday after the date.
+                    if (settings_show_eventday && (text.match(/eventCacheData/) != null)) {
+                        var matchDate = text.match(/(<meta name="description" content=").*([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*?(\/>)/);
+                        if (matchDate != null) {
+                            var date = new Date(matchDate[4], matchDate[2], matchDate[3]);
+                            if (date != "Invalid Date") {
+                                var weekdays = new Array(7);
+                                weekdays[0] = "Sunday"; weekdays[1] = "Monday"; weekdays[2] = "Tuesday"; weekdays[3] = "Wednesday"; weekdays[4] = "Thursday"; weekdays[5] = "Friday"; weekdays[6] = "Saturday";
+                                var weekday = weekdays[date.getDay()];
+                                document.getElementsByClassName('gclhOwner')[0].lastChild.append(' ('+weekday+')');
+                            }
+                        }
+                    }
                 });
             }
             // Get favorite score.
@@ -11025,6 +11039,20 @@ var mainGC = function() {
                                 var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
                                 locations.push(coords[0]+","+coords[1]);
                                 if (locations && locations.length == countMapItems) getElevations(0,locations);
+                            }
+                            
+                            // Gets the weekday if the geocache is an event and adds the weekday after the date.
+                            if (settings_show_eventday && (text.match(/eventCacheData/) != null)) {
+                                var matchDate = text.match(/(<meta name="description" content=").*([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*?(\/>)/);
+                                if (matchDate != null) {
+                                    var date = new Date(matchDate[4], matchDate[2], matchDate[3]);
+                                    if (date != "Invalid Date") {
+                                        var weekdays = new Array(7);
+                                        weekdays[0] = "Sunday"; weekdays[1] = "Monday"; weekdays[2] = "Tuesday"; weekdays[3] = "Wednesday"; weekdays[4] = "Thursday"; weekdays[5] = "Friday"; weekdays[6] = "Saturday";
+                                        var weekday = weekdays[date.getDay()];
+                                        document.getElementById('gmCacheInfo').children[0].children[0].children[3].children[1].append(' ('+weekday+')');
+                                    }
+                                }
                             }
                         });
 
