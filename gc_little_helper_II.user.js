@@ -2091,9 +2091,7 @@ var mainGC = function() {
             if (match != null) {
                 var date = new Date(match[3], match[1]-1, match[2]);
                 if (date != "Invalid Date") {
-                    var weekday = new Array(7);
-                    weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
-                    var name = " (" + weekday[date.getDay()] + ") ";
+                    var name = " (" + date.getWeekday() + ") ";
                     var elem = document.createTextNode(name);
                     var side = $('#ctl00_ContentBody_mcd2')[0];
                     side.insertBefore(elem, side.childNodes[1]);
@@ -9511,6 +9509,7 @@ var mainGC = function() {
             var sidebar_enhancements_buffer = {}
             var sidebar_enhancements_favi_buffer = {}
             var sidebar_enhancements_addToList_buffer = {}
+            var sidebar_enhancements_date_buffer = {}
             function showSearchmapSidebarEnhancements(){
                 if (!settings_show_enhanced_map_popup) return true;
                 var locations = []; // Location for the Cache
@@ -9541,6 +9540,10 @@ var mainGC = function() {
                     if ($('.cache-preview-action-menu ul li.add-to-list')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
+                    }
+                    if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')) {
+                        let root = $('.gclhOwner') || $('.geocache-placed-date');
+                        $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
                     }
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_premium')[0] && !$('.gclh_cache_details_premium')[0]) {
                         regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
@@ -9749,6 +9752,22 @@ var mainGC = function() {
                         sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
+                    }
+
+                    // Add Weekday for Events
+                    if ($('.status-and-type').html().match(/(Cache In Trash Out.|(Mega|Giga)-|) ?Event Cache|Community Celebration Event|GPS Adventures Exhibit Cache/ig)) {
+                        // Get Date line
+                        let from = text.indexOf('eventCacheData');
+                        from = text.indexOf('Date', from);
+                        let length = text.indexOf(')', from) - from;
+                        let dateText = text.substr(from, length);
+                        // Get Date
+                        let date = [...dateText.matchAll(/(\d{4}), (\d{2})-1, (\d{2})/ig)][0]; // YYYY, MM, DD
+                        date = new Date(date[1], date[2]-1, date[3]);
+                        // Save and Show
+                        sidebar_enhancements_date_buffer[new_gc_code] = `<span class="gclh_weekday">&nbsp;(${date.getWeekday()})</span>`;
+                        let root = $('.gclhOwner') || $('.geocache-placed-date');
+                        $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
                     }
                 });
             }
@@ -11025,6 +11044,19 @@ var mainGC = function() {
                                 var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
                                 locations.push(coords[0]+","+coords[1]);
                                 if (locations && locations.length == countMapItems) getElevations(0,locations);
+                            }
+
+                            // Show Weekday for Events
+                            if ($('#box h4 img')[0] && [6, 13, 453, 7005, 3653].includes(parseInt($('#box h4 img')[0].src.match(/\d+/)[0]))) {
+                                let from = text.indexOf('eventCacheData');
+                                from = text.indexOf('Date', from);
+                                let length = text.indexOf(')', from) - from;
+                                let dateText = text.substr(from, length);
+                                // Get Date
+                                let date = [...dateText.matchAll(/(\d{4}), (\d{2})-1, (\d{2})/ig)][0]; // YYYY, MM, DD
+                                date = new Date(date[1], date[2]-1, date[3]);
+                                let dateRoot = $('.map-item.map-item-row-1 dl')[1].querySelector('dd');
+                                dateRoot.innerHTML += ` (${date.getWeekday()})`;
                             }
                         });
 
@@ -17437,6 +17469,7 @@ var mainGC = function() {
             else if (cacheType.match(/(Project A\.P\.E\.|Project APE)/i)) cacheSymbol = '#ape';
             else if (cacheType.match(/Groundspeak HQ/i)) cacheSymbol = '#hq';
             else if (cacheType.match(/event/i)) cacheSymbol = '#event';
+            else if (cacheType.match(/GPS Adventures Exhibit Cache/i)) cacheSymbol = '#gpsa';
         }
         return cacheSymbol;
     }
@@ -17930,6 +17963,11 @@ String.prototype.gcCodeToID = function () {
         id += abc.indexOf(letter) * Math.pow(base, i);
     });
     return id;
+}
+
+Date.prototype.getWeekday = function() {
+    let weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return weekdays[this.getDay()];
 }
 
 start(this);
