@@ -9541,7 +9541,7 @@ var mainGC = function() {
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
-                    if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')) {
+                    if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')[0] && sidebar_enhancements_date_buffer[new_gc_code]) {
                         let root = $('.gclhOwner') || $('.geocache-placed-date');
                         $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
                     }
