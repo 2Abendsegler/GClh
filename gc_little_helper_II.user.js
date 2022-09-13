@@ -9754,20 +9754,17 @@ var mainGC = function() {
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
                     }
 
-                    // Add Weekday for Events
-                    if ($('.status-and-type').html().match(/(Cache In Trash Out.|(Mega|Giga)-|) ?Event Cache|Community Celebration Event|GPS Adventures Exhibit Cache/ig)) {
-                        // Get Date line
-                        let from = text.indexOf('eventCacheData');
-                        from = text.indexOf('Date', from);
-                        let length = text.indexOf(')', from) - from;
-                        let dateText = text.substr(from, length);
-                        // Get Date
-                        let date = [...dateText.matchAll(/(\d{4}), (\d{2})-1, (\d{2})/ig)][0]; // YYYY, MM, DD
-                        date = new Date(date[1], date[2]-1, date[3]);
-                        // Save and Show
-                        sidebar_enhancements_date_buffer[new_gc_code] = `<span class="gclh_weekday">&nbsp;(${date.getWeekday()})</span>`;
-                        let root = $('.gclhOwner') || $('.geocache-placed-date');
-                        $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
+                    // Show Weekday for Events.
+                    if (settings_show_eventday && text.match(/eventCacheData/) && !$('.gclh_weekday')[0]) {
+                        var matchDate = text.match(/(<meta name="description" content=").*([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*?(\/>)/);
+                        if (matchDate != null) {
+                            var date = new Date(matchDate[4], matchDate[2], matchDate[3]);
+                            if (date != "Invalid Date") {
+                                sidebar_enhancements_date_buffer[new_gc_code] = `<span class="gclh_weekday">&nbsp;(${date.getWeekday()})</span>`;
+                                let root = $('.gclhOwner') || $('.geocache-placed-date');
+                                $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
+                            }
+                        }
                     }
                 });
             }
@@ -11046,17 +11043,16 @@ var mainGC = function() {
                                 if (locations && locations.length == countMapItems) getElevations(0,locations);
                             }
 
-                            // Show Weekday for Events
-                            if ($('#box h4 img')[0] && [6, 13, 453, 7005, 3653].includes(parseInt($('#box h4 img')[0].src.match(/\d+/)[0]))) {
-                                let from = text.indexOf('eventCacheData');
-                                from = text.indexOf('Date', from);
-                                let length = text.indexOf(')', from) - from;
-                                let dateText = text.substr(from, length);
-                                // Get Date
-                                let date = [...dateText.matchAll(/(\d{4}), (\d{2})-1, (\d{2})/ig)][0]; // YYYY, MM, DD
-                                date = new Date(date[1], date[2]-1, date[3]);
-                                let dateRoot = $('.map-item.map-item-row-1 dl')[1].querySelector('dd');
-                                dateRoot.innerHTML += ` (${date.getWeekday()})`;
+                            // Show Weekday for Events.
+                            if (settings_show_eventday && text.match(/eventCacheData/)) {
+                                var matchDate = text.match(/(<meta name="description" content=").*([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*?(\/>)/);
+                                if (matchDate != null) {
+                                    var date = new Date(matchDate[4], matchDate[2], matchDate[3]);
+                                    if (date != "Invalid Date") {
+                                        let dateRoot = $('.map-item.map-item-row-1 dl')[1].querySelector('dd');
+                                        dateRoot.innerHTML += ` (${date.getWeekday()})`;
+                                    }
+                                }
                             }
                         });
 
