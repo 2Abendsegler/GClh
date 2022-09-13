@@ -9756,9 +9756,9 @@ var mainGC = function() {
 
                     // Show Weekday for Events.
                     if (settings_show_eventday && text.match(/eventCacheData/) && !$('.gclh_weekday')[0]) {
-                        var matchDate = text.match(/(<meta name="description" content=").*([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*?(\/>)/);
+                        var matchDate = text.match(/new Date\((\d{4}), (\d{2})-1, (\d{2})/);
                         if (matchDate != null) {
-                            var date = new Date(matchDate[4], matchDate[2], matchDate[3]);
+                            var date = new Date(matchDate[1], matchDate[2]-1, matchDate[3]);
                             if (date != "Invalid Date") {
                                 sidebar_enhancements_date_buffer[new_gc_code] = `<span class="gclh_weekday">&nbsp;(${date.getWeekday()})</span>`;
                                 let root = $('.gclhOwner') || $('.geocache-placed-date');
@@ -10817,6 +10817,11 @@ var mainGC = function() {
 
             var pos = template.lastIndexOf('</div>');
             template = template.substring(0,pos) + new_template + '</div>';
+
+            // Add section for weekday for events.
+            template = template.replace('{{=hidden}}', '{{=hidden}}<span id="gclh_weekday_{{=gc}}"></span>');
+
+            // Insert new template
             $("#cacheDetailsTemplate").html(template);
 
             // Select the target node.
@@ -11045,12 +11050,11 @@ var mainGC = function() {
 
                             // Show Weekday for Events.
                             if (settings_show_eventday && text.match(/eventCacheData/)) {
-                                var matchDate = text.match(/(<meta name="description" content=").*([0-9]{2})\/([0-9]{2})\/([0-9]{4}).*?(\/>)/);
+                                var matchDate = text.match(/new Date\((\d{4}), (\d{2})-1, (\d{2})/);
                                 if (matchDate != null) {
-                                    var date = new Date(matchDate[4], matchDate[2], matchDate[3]);
+                                    var date = new Date(matchDate[1], matchDate[2]-1, matchDate[3]);
                                     if (date != "Invalid Date") {
-                                        let dateRoot = $('.map-item.map-item-row-1 dl')[1].querySelector('dd');
-                                        dateRoot.innerHTML += ` (${date.getWeekday()})`;
+                                        $('#gclh_weekday_'+local_gc_code).html(` (${date.getWeekday(short = true)})`);
                                     }
                                 }
                             }
@@ -17961,8 +17965,9 @@ String.prototype.gcCodeToID = function () {
     return id;
 }
 
-Date.prototype.getWeekday = function() {
-    let weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+Date.prototype.getWeekday = function(short = false) {
+    let weekdays = short ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] :
+                   ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return weekdays[this.getDay()];
 }
 
