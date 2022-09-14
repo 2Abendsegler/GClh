@@ -962,7 +962,7 @@ var mainPGC = function() {
 // Get selection parameter.
     function getSelection() {
         var sel = new Object();
-        $('#filtertoggle2div > div:not(.row) select, #filtertoggle2div > div:not(.row) input').each(function() {
+        $('#filtertoggle2div > div:not(.row,.hide) div > select, #filtertoggle2div > div:not(.row,.hide) div > input').each(function() {
             if ($(this).val() != null && $(this).val() != '') {
                 var name = $(this).attr('name').replace(/(\[|\])/g, '');
                 if ($(this).attr('multiple')) {
