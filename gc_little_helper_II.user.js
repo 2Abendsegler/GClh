@@ -2304,25 +2304,14 @@ var mainGC = function() {
                     dd.style.borderTop = "1px solid #f0edeb";
                     dd.style.borderTopLeftRadius = "5px";
                     dd.style.minWidth = "190px";
-                    getFavoriteScore(userToken);
+                    var gccode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                    getFavoriteScore(gccode, function(score) {
+                        if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">('+score+"%)"+'</span>');
+                    });
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
             gclh_load_score(0);
         } catch(e) {gclh_error("Show favorite percentage",e);}
-    }
-    // Get favorite score.
-    function getFavoriteScore(userToken) {
-       $.ajax({
-           type: "POST",
-           cache: false,
-           url: '/datastore/favorites.svc/score?u=' + userToken,
-           success: function (scoreResult) {
-               var score = 0;
-               if (scoreResult) score = scoreResult;
-               if (score > 100) score = 100;
-               if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">'+score+"%"+'</span>');
-           }
-       });
     }
 
 // Highlight usercoords. Improve screen "Enter solved coordinates" (only in english).
@@ -3768,7 +3757,7 @@ var mainGC = function() {
     if (settings_hide_top_button) $("#topScroll").attr("id", "_topScroll").hide();
 
 // Show additional cache info in old log page.
-    if (document.location.href.match(/\.com\/seek\/log\.aspx\?(ID|wp|PLogGuid)\=/) && settings_show_add_cache_info_in_log_page && $('.PostLogList > dd:nth-child(2)')[0]) {
+    if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) && settings_show_add_cache_info_in_log_page && $('.PostLogList > dd:nth-child(2)')[0]) {
         try {
             $('.PostLogList > dd:nth-child(2)')[0].append(createAreaACI());
             buildContentACI($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.href);
@@ -3808,9 +3797,6 @@ var mainGC = function() {
             if (favoritePoints) {
                 favoritePoints = favoritePoints.replace('.','').replace(',','');
                 favoritePoints = parseInt(favoritePoints);
-                var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
-                var length = text.indexOf("';", from) - from;
-                var userTokenACI = text.substr(from, length);
                 aci += separator(aci) + '<span class="favorites" title="Favorites">';
                 aci += '<svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16"></image></svg>';
                 aci += '<span class="favorite_points" title="Favorite points"> ' + favoritePoints + '</span>';
@@ -3829,7 +3815,14 @@ var mainGC = function() {
             // Output and further load.
             if (aci != '') {
                 $('#aci')[0].innerHTML = aci;
-                if (favoritePoints) getFavoritePercent(userTokenACI, $('.favorite_percent')[0]);
+                let gccode;
+                // old logging page
+                if ($('#uxNewLoggingBannerLink')[0]) gccode = $('#uxNewLoggingBannerLink').attr('href').split('/').at(-2);
+                // new logging page
+                else gccode = window.location.href.split('/').at(-2);
+                if (favoritePoints) getFavoriteScore(gccode, function(score) {
+                    $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
+                });
             }
         });
     }
@@ -9728,11 +9721,15 @@ var mainGC = function() {
                     }
 
                     // Get favorite score.
-                    var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
-                    var length = text.indexOf("';", from) - from;
-                    var userToken = text.substr(from, length);
-
-                    getFavScoreSearchmapSidebarEnhancements($('.favorites-text'), userToken, local_gc_code);
+                    getFavoriteScore(local_gc_code, function(score) {
+                        if ($('.favorites-text')[0]) {
+                           $('.favi_score_percent').each(function(){
+                               removeElement(this);
+                           });
+                           $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
+                           sidebar_enhancements_favi_buffer[local_gc_code] = ' <span class="favi_score_percent">('+score+'%)';
+                       }
+                    });
 
                     // Get elevations.
                     if (settings_show_elevation_of_waypoints) {
@@ -11015,10 +11012,10 @@ var mainGC = function() {
                             }
 
                             // Get favorite score.
-                            var from = text.indexOf('userToken', text.indexOf('MapTilesEnvironment')) + 13;
-                            var length = text.indexOf("';", from) - from;
-                            var userToken = text.substr(from, length);
-                            getFavScore(local_gc_code, userToken);
+                            getFavoriteScore(local_gc_code, function(score) {
+                                var id = '#popup_additional_info_' + local_gc_code + ' .favi_points';
+                                if ($(id)[0] && $(id)[0].childNodes[1]) $(id)[0].childNodes[1].data = " "+score+"%";
+                            });
 
                             // Get elevations.
                             if (settings_show_elevation_of_waypoints) {
@@ -11053,21 +11050,6 @@ var mainGC = function() {
             // Pass in the target node, as well as the observer options.
             observer.observe(target, config);
         } catch(e) {gclh_error("enhance cache popup",e);}
-    }
-    // Get favorite score.
-    function getFavScore(gccode, userToken) {
-       $.ajax({
-           type: "POST",
-           cache: false,
-           url: '/datastore/favorites.svc/score?u=' + userToken,
-           success: function (scoreResult) {
-               var score = 0;
-               if (scoreResult) score = scoreResult;
-               if (score > 100) score = 100;
-               var id = '#popup_additional_info_' + gccode + ' .favi_points';
-               if ($(id)[0] && $(id)[0].childNodes[1]) $(id)[0].childNodes[1].data = " "+score+"%";
-           }
-       });
     }
 
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
@@ -13408,19 +13390,19 @@ var mainGC = function() {
         else return ' | ';
     }
 
-// Get favorite percent.
-    function getFavoritePercent(userToken, position) {
-       $.ajax({
-           type: "POST",
-           cache: false,
-           url: '/datastore/favorites.svc/score?u=' + userToken,
-           success: function (scoreResult) {
-               var score = 0;
-               if (scoreResult) score = scoreResult;
-               if (score > 100) score = 100;
-               position.innerHTML = ' ' + score + '%';
-           }
-       });
+// Get favorite score and use in custom function.
+    function getFavoriteScore(gccode, func) {
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: '/api/proxy/web/v1/geocache/'+gccode+'/favoritepoints/score',
+            success: function(scoreResult) {
+                var score = '<1';
+                if (scoreResult) score = scoreResult;
+                if (score > 100) score = 100;
+                func(score);
+            }
+        });
     }
 
 ////////////////////////////////////////
