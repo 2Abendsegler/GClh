@@ -2306,7 +2306,7 @@ var mainGC = function() {
                     dd.style.minWidth = "190px";
                     var gccode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
                     getFavoriteScore(gccode, function(score) {
-                        if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">('+score+"%)"+'</span>');
+                        if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">'+score+"%"+'</span>');
                     });
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
@@ -3821,7 +3821,7 @@ var mainGC = function() {
                 // new logging page
                 else gccode = window.location.href.split('/').at(-2);
                 if (favoritePoints) getFavoriteScore(gccode, function(score) {
-                    $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
+                    $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
                 });
             }
         });
@@ -13397,7 +13397,7 @@ var mainGC = function() {
             cache: false,
             url: '/api/proxy/web/v1/geocache/'+gccode+'/favoritepoints/score',
             success: function(scoreResult) {
-                var score = '<1';
+                var score = 0;
                 if (scoreResult) score = scoreResult;
                 if (score > 100) score = 100;
                 func(score);
