@@ -10231,6 +10231,7 @@ var mainGC = function() {
         try {
             function checkBrowseMap(waitCount) {
                 if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
+                    var css = '';
                     // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
@@ -10238,13 +10239,11 @@ var mainGC = function() {
                         addLayersOnBrowseMap();
                     } else {
                         // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
-                        var css = '';
                         css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
                         if (is_page('map')) {
                             // Damit auch mehr als 2 Buttons handlebar.
                             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
                         }
-                        appendCssStyle(css);
                     }
                     // Hide Map Header.
                     hideHeaderOnBrowseMap();
@@ -10268,6 +10267,9 @@ var mainGC = function() {
                     if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
                         cachePopupOnBrowseMap();
                     }
+                    // Improve clickability on list names of add to list popup.
+                    css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
+                    appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
             checkBrowseMap(0);
