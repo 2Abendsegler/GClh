@@ -2091,9 +2091,7 @@ var mainGC = function() {
             if (match != null) {
                 var date = new Date(match[3], match[1]-1, match[2]);
                 if (date != "Invalid Date") {
-                    var weekday = new Array(7);
-                    weekday[0] = "Sunday"; weekday[1] = "Monday"; weekday[2] = "Tuesday"; weekday[3] = "Wednesday"; weekday[4] = "Thursday"; weekday[5] = "Friday"; weekday[6] = "Saturday";
-                    var name = " (" + weekday[date.getDay()] + ") ";
+                    var name = " (" + date.getWeekday() + ") ";
                     var elem = document.createTextNode(name);
                     var side = $('#ctl00_ContentBody_mcd2')[0];
                     side.insertBefore(elem, side.childNodes[1]);
@@ -9504,6 +9502,7 @@ var mainGC = function() {
             var sidebar_enhancements_buffer = {}
             var sidebar_enhancements_favi_buffer = {}
             var sidebar_enhancements_addToList_buffer = {}
+            var sidebar_enhancements_date_buffer = {}
             function showSearchmapSidebarEnhancements(){
                 if (!settings_show_enhanced_map_popup) return true;
                 var locations = []; // Location for the Cache
@@ -9534,6 +9533,10 @@ var mainGC = function() {
                     if ($('.cache-preview-action-menu ul li.add-to-list')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
+                    }
+                    if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')[0] && sidebar_enhancements_date_buffer[new_gc_code]) {
+                        let root = $('.gclhOwner') || $('.geocache-placed-date');
+                        $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
                     }
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_premium')[0] && !$('.gclh_cache_details_premium')[0]) {
                         regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
@@ -9746,6 +9749,19 @@ var mainGC = function() {
                         sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
                         $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
+                    }
+
+                    // Show Weekday for Events.
+                    if (settings_show_eventday && text.match(/eventCacheData/) && !$('.gclh_weekday')[0]) {
+                        var matchDate = text.match(/new Date\((\d{4}), (\d{2})-1, (\d{2})/);
+                        if (matchDate != null) {
+                            var date = new Date(matchDate[1], matchDate[2]-1, matchDate[3]);
+                            if (date != "Invalid Date") {
+                                sidebar_enhancements_date_buffer[new_gc_code] = `<span class="gclh_weekday">&nbsp;(${date.getWeekday()})</span>`;
+                                let root = $('.gclhOwner') || $('.geocache-placed-date');
+                                $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
+                            }
+                        }
                     }
                 });
             }
@@ -10798,6 +10814,11 @@ var mainGC = function() {
 
             var pos = template.lastIndexOf('</div>');
             template = template.substring(0,pos) + new_template + '</div>';
+
+            // Add section for weekday for events.
+            template = template.replace('{{=hidden}}', '{{=hidden}}<span id="gclh_weekday_{{=gc}}"></span>');
+
+            // Insert new template
             $("#cacheDetailsTemplate").html(template);
 
             // Select the target node.
@@ -11022,6 +11043,17 @@ var mainGC = function() {
                                 var coords = toDec($(text).find('#uxLatLon')[0].innerHTML);
                                 locations.push(coords[0]+","+coords[1]);
                                 if (locations && locations.length == countMapItems) getElevations(0,locations);
+                            }
+
+                            // Show Weekday for Events.
+                            if (settings_show_eventday && text.match(/eventCacheData/)) {
+                                var matchDate = text.match(/new Date\((\d{4}), (\d{2})-1, (\d{2})/);
+                                if (matchDate != null) {
+                                    var date = new Date(matchDate[1], matchDate[2]-1, matchDate[3]);
+                                    if (date != "Invalid Date") {
+                                        $('#gclh_weekday_'+local_gc_code).html(` (${date.getWeekday(short = true)})`);
+                                    }
+                                }
                             }
                         });
 
@@ -14138,6 +14170,7 @@ var mainGC = function() {
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
+            html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone Circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
@@ -15275,6 +15308,7 @@ var mainGC = function() {
             setEvForDouPara("settings_hide_upvotes", "click");
             setEvForDouPara("settings_smaller_upvotes_icons", "click");
             setEvForDouPara("settings_no_wiggle_upvotes_click", "click");
+            setEvForDouPara("settings_show_eventday", "click");
 
             // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
             // deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
@@ -17419,6 +17453,7 @@ var mainGC = function() {
             else if (cacheType.match(/(Project A\.P\.E\.|Project APE)/i)) cacheSymbol = '#ape';
             else if (cacheType.match(/Groundspeak HQ/i)) cacheSymbol = '#hq';
             else if (cacheType.match(/event/i)) cacheSymbol = '#event';
+            else if (cacheType.match(/GPS Adventures Exhibit Cache/i)) cacheSymbol = '#gpsa';
         }
         return cacheSymbol;
     }
@@ -17912,6 +17947,12 @@ String.prototype.gcCodeToID = function () {
         id += abc.indexOf(letter) * Math.pow(base, i);
     });
     return id;
+}
+
+Date.prototype.getWeekday = function(short = false) {
+    let weekdays = short ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] :
+                   ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return weekdays[this.getDay()];
 }
 
 start(this);
