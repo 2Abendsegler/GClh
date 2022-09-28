@@ -2449,6 +2449,8 @@ var mainGC = function() {
                     + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
             // Ugly display in Add to List Popup (GS bug since weeks).
             css += "#newListName {height: 42px;} .add-list-submit {display: inline-block;}";
+            // Improve clickability on list names of add to list popup.
+            css += '.add-list li button {width: 100%; text-align: left;}';
             appendCssStyle(css);
             $('.add-to-list').addClass('working');
             function check_for_add_to_list(waitCount) {
