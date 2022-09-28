@@ -855,6 +855,7 @@ var mainPGC = function() {
             html += '<h5>Instruction:</h5>';
             html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
             html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected.</p>';
+            html += '<p>This is a feature of GC little helper II.</p>';
             html += '</td></tr></tfoot>';
             $(side).append(html);
             $(side).find('.pq_name')[0].addEventListener("change", function() {
