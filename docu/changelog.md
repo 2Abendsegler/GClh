@@ -1,3 +1,4 @@
+<a href="#v01120" title="GClh II version 0.11.20 (03.10.2022)">v0.11.20</a> &nbsp;
 <a href="#v01119" title="GClh II version 0.11.19 (26.07.2022)">v0.11.19</a> &nbsp;
 <a href="#v01118" title="GClh II version 0.11.18 (04.07.2022)">v0.11.18</a> &nbsp;
 <a href="#v01117" title="GClh II version 0.11.17 (23.06.2022)">v0.11.17</a> &nbsp;
@@ -43,6 +44,44 @@
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 
 ---
+## v0.11.20:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Search Map / Browse Map] Show Weekday of an Event. [<a href="https://github.com/2Abendsegler/GClh/issues/2091" title="Issue 2091">2091</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		Search Map:<br>
+		<img src="../images/0.11.20/Screen02.jpg" alt="Screen02.jpg"><br>
+		Browse Map:<br>
+		<img src="../images/0.11.20/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_show_btn_hide_header" title="Link to your GClh II Config">Settings -> Map:</a><br>
+		<img src="../images/0.11.20/Screen04.jpg" alt="Screen04.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Add for own caches the link "Owner Maintenance" to Admin Tools in the right sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/2182" title="Issue 2182">2182</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		<img src="../images/0.11.20/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Browse Map] Improve clickability on list names of add to list popup. [<a href="https://github.com/2Abendsegler/GClh/issues/2194" title="Issue 2194">2194</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing / Search Map / Browse Map / Cache Log] Favorite score missing. [<a href="https://github.com/2Abendsegler/GClh/issues/2191" title="Issue 2191">2191</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong>[PQ-Splitter] "Create PQ(s)" button on Project-GC's PQ Splitter page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2177" title="Issue 2177">2177</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map / Browse Map] The additional cache data is not displayed correctly if the display of VIPs is disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/2183" title="Issue 2183">2183</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Green signs in config fields. [<a href="https://github.com/2Abendsegler/GClh/issues/2189" title="Issue 2189">2189</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(03.10.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+
+---
 ## v0.11.19:
 &nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
 <ul>
@@ -57,12 +96,12 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_cache_type_icons_in_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:</a><br>
 		<img src="../images/0.11.19/Screen01.jpg" alt="Screen01.jpg"><br>
 		If you want to use this feature, you have to activate it.<br><br>
+	</li>
 	<li>
 		<strong>Fix:</strong> [Friends List] Friends List will not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2159" title="Issue 2159">2159</a> / <a href="https://www.geocaching.com/profile/?u=Herr Ma" title="Thanks to Herr Ma">Herr Ma</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Drafts / Old log form] Bugfix - Automatic go back to drafts after sending to log with old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2161" title="Issue 2161">2161</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
 	</li>
 </ul>
 <br>
