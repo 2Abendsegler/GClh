@@ -9308,7 +9308,7 @@ var mainGC = function() {
 
             // Add VIP, VUP and mail icon to owner.
             function addVipVupMailToOwner() {
-                if (($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0]) || (!$('.gclhOwner a')[0] && $('.geocache-owner-name a')[0] && !$('.geocache-owner-name .gclh_vip')[0])) {
+                if (($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0] && !$('.gclhOwner a[href*="email"]')[0]) || (!$('.gclhOwner a')[0] && $('.geocache-owner-name a')[0] && !$('.geocache-owner-name .gclh_vip')[0] && !$('.geocache-owner a[href*="email"]')[0])) {
                     var user = $('.gclhOwner a, .geocache-owner-name a')[0].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
                     if (user && user[2]) {
                         if ($('.gclh-cache-link')[0] && $('.gclh-cache-link')[0].childNodes[1] && $('.gclh-cache-link')[0].childNodes[1].data && $('.cache-metadata-code')[0]) {
@@ -9316,8 +9316,13 @@ var mainGC = function() {
                             global_code = $('.cache-metadata-code')[0].innerHTML;
                             global_link = 'https://coord.info/' + global_code;
                         }
-                        if ($('.gclhOwner a')[0]) gclh_build_vipvupmail($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]));
-                        else gclh_build_vipvupmail($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]));
+                        if (settings_show_vip_list) {
+                            if ($('.gclhOwner a')[0]) gclh_build_vipvupmail($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]));
+                            else gclh_build_vipvupmail($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]));
+                        } else {
+                            if ($('.gclhOwner a')[0]) buildSendIcons($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]), "per u");
+                            else buildSendIcons($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]), "per u");
+                        }
                     }
                 }
             }
@@ -11066,15 +11071,17 @@ var mainGC = function() {
                         guid = side.attr('href').substring(15,36+15);
                         username = side.text();
                         buildSendIcons(side[0], username, "per guid", guid);
-                        var link = gclh_build_vipvup(username, global_vips, "vip");
-                        link.children[0].style.marginLeft = "5px";
-                        link.children[0].style.marginRight = "3px";
-                        side[0].appendChild(link);
-                        // Build VUP Icon.
-                        if (settings_process_vup && username != global_activ_username) {
-                            link = gclh_build_vipvup(username, global_vups, "vup");
-                            link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                        if (settings_show_vip_list) {
+                            var link = gclh_build_vipvup(username, global_vips, "vip");
+                            link.children[0].style.marginLeft = "5px";
+                            link.children[0].style.marginRight = "3px";
                             side[0].appendChild(link);
+                            // Build VUP Icon.
+                            if (settings_process_vup && username != global_activ_username) {
+                                link = gclh_build_vipvup(username, global_vups, "vup");
+                                link.children[0].setAttribute("style", "margin-left: 0px; margin-right: 0px");
+                                side[0].appendChild(link);
+                            }
                         }
                         addCopyToClipboardLink(gccode, $(this).find('h4')[0], "GC Code", "float: right;");
                     });
