@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.19
+// @version      0.11.20
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -855,6 +855,7 @@ var mainPGC = function() {
             html += '<h5>Instruction:</h5>';
             html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
             html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected.</p>';
+            html += '<p>This is a feature of GC little helper II.</p>';
             html += '</td></tr></tfoot>';
             $(side).append(html);
             $(side).find('.pq_name')[0].addEventListener("change", function() {
@@ -2304,7 +2305,7 @@ var mainGC = function() {
                     dd.style.minWidth = "190px";
                     var gccode = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
                     getFavoriteScore(gccode, function(score) {
-                        if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">('+score+"%)"+'</span>');
+                        if ($('.favorite-value')[0]) $('.favorite-value').after('<span class="gclh_favorite-score">'+score+"%"+'</span>');
                     });
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){gclh_load_score(waitCount);}, 100);}
             }
@@ -3821,7 +3822,7 @@ var mainGC = function() {
                 // new logging page
                 else gccode = window.location.href.split('/').at(-2);
                 if (favoritePoints) getFavoriteScore(gccode, function(score) {
-                    $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
+                    $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
                 });
             }
         });
@@ -12705,8 +12706,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/ijV"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/2jCy/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/ine"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/HqcA/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13440,7 +13441,7 @@ var mainGC = function() {
             cache: false,
             url: '/api/proxy/web/v1/geocache/'+gccode+'/favoritepoints/score',
             success: function(scoreResult) {
-                var score = '<1';
+                var score = 0;
                 if (scoreResult) score = scoreResult;
                 if (score > 100) score = 100;
                 func(score);
@@ -13878,6 +13879,7 @@ var mainGC = function() {
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("Chrono81",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Die C-SAU Bande",      "UJstr",                    false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
             html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
@@ -13899,7 +13901,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "26.07.2022";
+            var thanksLastUpdate = "02.10.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
