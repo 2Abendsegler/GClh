@@ -67,7 +67,7 @@
 		<strong>Fix:</strong> [Cache Listing / Search Map / Browse Map / Cache Log] Favorite score missing. [<a href="https://github.com/2Abendsegler/GClh/issues/2191" title="Issue 2191">2191</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong>[PQ-Splitter] "Create PQ(s)" button on Project-GC's PQ Splitter page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2177" title="Issue 2177">2177</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [PQ-Splitter] "Create PQ(s)" button on Project-GC's PQ Splitter page does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2177" title="Issue 2177">2177</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map / Browse Map] The additional cache data is not displayed correctly if the display of VIPs is disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/2183" title="Issue 2183">2183</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
