@@ -829,6 +829,11 @@ table .markdown-output~tr.AlternatingRow td {
     text-decoration: underline;
     color: #3d76c5;
 }
+.gclh_content select:hover,
+.gclh_content select:active,
+.gclh_content select:focus {
+    background-image: none;
+}
 .gclh_content table {
     margin-bottom: 0px;
     font-size: 14px;
