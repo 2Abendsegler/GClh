@@ -53,7 +53,7 @@
 		<img src="../images/0.11.20/Screen02.jpg" alt="Screen02.jpg"><br>
 		Browse Map:<br>
 		<img src="../images/0.11.20/Screen03.jpg" alt="Screen03.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_show_btn_hide_header" title="Link to your GClh II Config">Settings -> Map:</a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventdayX0" title="Link to your GClh II Config">Settings -> Map:</a><br>
 		<img src="../images/0.11.20/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
