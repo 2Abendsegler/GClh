@@ -6770,25 +6770,25 @@ var mainGC = function() {
                 }
                 var css =
                     "a.gclh_log:hover {" +
-                    "  text-decoration:underline;" +
+                    "  text-decoration: underline;" +
                     "  position: relative;}" +
                     "a.gclh_log span {" +
                     "  display: none;" +
                     "  position: absolute;" +
-                    "  top:-310px;" +
-                    "  left:-702px;" +
+                    "  top: -310px;" +
+                    "  left: -702px;" +
                     "  width: 700px;" +
                     "  padding: 5px;" +
-                    "  text-decoration:none;" +
-                    "  text-align:left;" +
-                    "  vertical-align:top;" +
+                    "  text-decoration: none;" +
+                    "  text-align: left;" +
+                    "  vertical-align: top;" +
                     "  color: #000000;}" +
                     "a.gclh_log:hover span {" +
                     "  display: block;" +
                     "  top: 15px;" +
                     "  border: 1px solid #8c9e65;" +
-                    "  background-color:#dfe1d2;" +
-                    "  z-index:10000;}";
+                    "  background-color: #dfe1d2;" +
+                    "  z-index: 10000;}";
                 appendCssStyle(css);
 
                 gclh_build_vip_list = function() {
@@ -6831,8 +6831,8 @@ var mainGC = function() {
                                 var profile = document.createElement("a");
                                 profile.setAttribute("href", "/profile/?u=" + urlencode(user));
                                 profile.innerHTML = user;
-                                if (settings_show_mail_in_viplist && settings_show_mail && settings_show_vip_list) noBreakInLine(profile, 93, user);
-                                else noBreakInLine(profile, 112, user);
+                                if (settings_show_mail_in_viplist && settings_show_mail && settings_show_vip_list) noBreakInLine(profile, 86, user);
+                                else noBreakInLine(profile, 106, user);
                                 if (owner_name && owner_name == user) profile.style.color = '#8C0B0B';
                                 else if (user == myself) profile.style.color = 'rgb(91, 200, 51)';
                                 span.appendChild(profile);
@@ -8042,14 +8042,14 @@ var mainGC = function() {
                                     log_infos[user][index]["id"] = json.data[i].LogID;
                                     log_infos[user][index]["date"] = json.data[i].Visited;
                                     log_infos[user][index]["log"] = json.data[i].LogText;
-                                    log_infos[user][index]["membership_level"] = json.data[i].creator.GroupTitle;
+                                    log_infos[user][index]["membership_level"] = (json.data[i].creator.GroupTitle == "Lackey" ? "Reviewer" : json.data[i].creator.GroupTitle);
                                     log_infos_long[index] = new Object();
                                     log_infos_long[index]["user"] = user;
                                     log_infos_long[index]["icon"] = "/images/logtypes/" + json.data[i].LogTypeImage;
                                     log_infos_long[index]["id"] = json.data[i].LogID;
                                     log_infos_long[index]["date"] = json.data[i].Visited;
                                     log_infos_long[index]["log"] = json.data[i].LogText;
-                                    log_infos_long[index]["membership_level"] = json.data[i].creator.GroupTitle;
+                                    log_infos_long[index]["membership_level"] = (json.data[i].creator.GroupTitle == "Lackey" ? "Reviewer" : json.data[i].creator.GroupTitle);
                                     if (json.data[i].LogType == "Publish Listing") {
                                         log_infos[user][index]["membership_level"] = "Reviewer";
                                         log_infos_long[index]["membership_level"] = "Reviewer";
