@@ -6117,11 +6117,12 @@ var mainGC = function() {
                  "  text-decoration:none;} " +
                  "a.gclh_resetBtn:hover {" +
                  "  text-decoration:underline;" +
-                 "  font-weight: bold;}" +
+                 "  font-weight:bold;}" +
                  "a.gclh_resetBtn {" +
                  "  color:#00AA00;" +
                  "  text-decoration:none;" +
-                 "  font-weight: bold;} ";
+                 "  margin-left:10px;" +
+                 "  font-weight:bold;} ";
             appendCssStyle(myf);
 
             var sNewF = "";
@@ -6257,7 +6258,7 @@ var mainGC = function() {
             button.setAttribute("href", "javascript:void(0);");
             button.addEventListener("click", gclh_reset_counter, false);
             button.innerHTML = "Reset Counter";
-            document.getElementsByClassName('spanTclass')[0].appendChild(button);
+            document.getElementsByClassName('FriendSort')[0].appendChild(button);
         } catch(e) {gclh_error("Improve friends list",e);}
     }
 
