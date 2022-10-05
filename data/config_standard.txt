@@ -256,6 +256,7 @@
   "settings_pq_previewmap_layer": "Geocaching",
   "settings_map_overview_layer": "Geocaching",
   "settings_show_reviewer_as_vip": true,
+  "settings_show_lackey_as_vip": false,
   "settings_hide_found_count": false,
   "settings_show_compact_logbook_but": true,
   "settings_cache_type_icon_visible": true,
