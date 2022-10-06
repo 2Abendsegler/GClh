@@ -604,6 +604,7 @@ var variablesInit = function(c) {
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
     c.settings_show_log_totals = getValue("settings_show_log_totals", true);
     c.settings_show_reviewer_as_vip = getValue("settings_show_reviewer_as_vip", true);
+    c.settings_show_lackey_as_vip = getValue("settings_show_lackey_as_vip", false);
     c.settings_hide_found_count = getValue("settings_hide_found_count", false);
     c.settings_show_compact_logbook_but = getValue("settings_show_compact_logbook_but", true);
     c.settings_log_status_icon_visible = getValue("settings_log_status_icon_visible", true);
@@ -6814,25 +6815,25 @@ var mainGC = function() {
                 }
                 var css =
                     "a.gclh_log:hover {" +
-                    "  text-decoration:underline;" +
+                    "  text-decoration: underline;" +
                     "  position: relative;}" +
                     "a.gclh_log span {" +
                     "  display: none;" +
                     "  position: absolute;" +
-                    "  top:-310px;" +
-                    "  left:-702px;" +
+                    "  top: -310px;" +
+                    "  left: -702px;" +
                     "  width: 700px;" +
                     "  padding: 5px;" +
-                    "  text-decoration:none;" +
-                    "  text-align:left;" +
-                    "  vertical-align:top;" +
+                    "  text-decoration: none;" +
+                    "  text-align: left;" +
+                    "  vertical-align: top;" +
                     "  color: #000000;}" +
                     "a.gclh_log:hover span {" +
                     "  display: block;" +
                     "  top: 15px;" +
                     "  border: 1px solid #8c9e65;" +
-                    "  background-color:#dfe1d2;" +
-                    "  z-index:10000;}";
+                    "  background-color: #dfe1d2;" +
+                    "  z-index: 10000;}";
                 appendCssStyle(css);
 
                 gclh_build_vip_list = function() {
@@ -6868,15 +6869,15 @@ var mainGC = function() {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         for (var i = 0; i < log_infos_long.length; i++) {
                             var user = log_infos_long[i]["user"];
-                            if (in_array(user, global_vips) || (settings_show_owner_vip_list && user == owner_name) || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer")) {
+                            if (in_array(user, global_vips) || (settings_show_owner_vip_list && user == owner_name) || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer") || (settings_show_lackey_as_vip && log_infos_long[i]["membership_level"] == "Lackey")) {
                                 if (!log_infos_long[i]["date"]) continue;
                                 if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
                                 var profile = document.createElement("a");
                                 profile.setAttribute("href", "/profile/?u=" + urlencode(user));
                                 profile.innerHTML = user;
-                                if (settings_show_mail_in_viplist && settings_show_mail && settings_show_vip_list) noBreakInLine(profile, 93, user);
-                                else noBreakInLine(profile, 112, user);
+                                if (settings_show_mail_in_viplist && settings_show_mail && settings_show_vip_list) noBreakInLine(profile, 86, user);
+                                else noBreakInLine(profile, 106, user);
                                 if (owner_name && owner_name == user) profile.style.color = '#8C0B0B';
                                 else if (user == myself) profile.style.color = 'rgb(91, 200, 51)';
                                 span.appendChild(profile);
@@ -6910,7 +6911,7 @@ var mainGC = function() {
                             }
                         }
                     }
-                    function gclh_build_list(user, is_reviewer = false) {
+                    function gclh_build_list(user, is_specialMember = false) {
                         if (getValue("settings_load_logs_with_gclh") == false) return;
                         if (!show_owner && owner_name && owner_name == user) return true;
                         if (in_array(user, all_users) || (owner_name == user)) {
@@ -6923,8 +6924,8 @@ var mainGC = function() {
                                 show_owner = false;
                             } else if (user == myself) {
                                 span.appendChild(document.createTextNode("Me: "));
-                            } else if (is_reviewer) {
-                                span.appendChild(document.createTextNode("Reviewer: "));
+                            } else if (is_specialMember) {
+                                span.appendChild(document.createTextNode(is_specialMember+": "));
                             }
                             span.appendChild(profile);
                             // Build VIP Icon. Wenn es Owner ist und Owner in VUP array, dann VUP Icon.
@@ -6964,26 +6965,25 @@ var mainGC = function() {
                             list.appendChild(document.createElement("br"));
                         }
                     }
-                    var reviewer = new Array();
+                    var specialMember = new Array();
                     owner_name = html_to_str(owner_name);
                     if (settings_show_long_vip) gclh_build_long_list();
                     else {
                         if (!log_infos[owner_name]) log_infos[owner_name] = new Array();
                         gclh_build_list(owner_name);
-                        // Add Reviewer data.
-                        if (settings_show_reviewer_as_vip) {
-                            for (var i = 0; i < log_infos_long.length; i++) {
-                                if (log_infos_long[i]["membership_level"] == "Reviewer") {
-                                    // Test if we already added him
-                                    if (in_array(log_infos_long[i]["user"], reviewer)) continue;
-                                    gclh_build_list(log_infos_long[i]["user"], true);
-                                    reviewer.push(log_infos_long[i]["user"]);
-                                }
+                        // Add data of special members like Reviewer or Lackey.
+                        for (var i = 0; i < log_infos_long.length; i++) {
+                            if ((settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer") ||
+                                (settings_show_lackey_as_vip && log_infos_long[i]["membership_level"] == "Lackey")        ) {
+                                // Test if we already added him.
+                                if (in_array(log_infos_long[i]["user"], specialMember)) continue;
+                                gclh_build_list(log_infos_long[i]["user"], log_infos_long[i]["membership_level"]);
+                                specialMember.push(log_infos_long[i]["user"]);
                             }
                         }
                         for (var i = 0; i < global_vips.length; i++) {
-                            // Do not add Reviewer again.
-                            if (in_array(global_vips[i], reviewer)) continue;
+                            // Do not add special member again.
+                            if (in_array(global_vips[i], specialMember)) continue;
                             gclh_build_list(global_vips[i]);
                         }
                     }
@@ -14607,6 +14607,9 @@ var mainGC = function() {
             html += newParameterOn3;
             html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
+            html += newParameterOn2;
+            html += "&nbsp; " + checkboxy('settings_show_lackey_as_vip', 'Show lackey in VIP list')  + show_help("If you enable this option, lackeys which logged the cache are VIPs for the cache. Behind the logs of lackeys are primarily employees of Groundspeak who cache. In addition, administrative logs can also be performed by these lackeys. Administrative user of Groundspeak may also be flagged as lackeys. An example of the latter are the logs for archiving older events.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.") + "<br>";
@@ -15424,6 +15427,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_vip_list", "settings_lines_color_vip");
             setEvForDepPara("settings_show_vip_list", "restore_settings_lines_color_vip");
             setEvForDepPara("settings_show_vip_list", "settings_show_reviewer_as_vip");
+            setEvForDepPara("settings_show_vip_list", "settings_show_lackey_as_vip");
             setEvForDepPara("settings_show_vip_list", "settings_show_owner_vip_list");
             setEvForDepPara("settings_show_vip_list", "settings_show_long_vip");
             setEvForDepPara("settings_show_vip_list", "settings_vip_show_nofound");
@@ -15439,6 +15443,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_vip_listX0", "settings_lines_color_vip");
             setEvForDepPara("settings_show_vip_listX0", "restore_settings_lines_color_vip");
             setEvForDepPara("settings_show_vip_listX0", "settings_show_reviewer_as_vip");
+            setEvForDepPara("settings_show_vip_listX0", "settings_show_lackey_as_vip");
             setEvForDepPara("settings_show_vip_listX0", "settings_show_owner_vip_list");
             setEvForDepPara("settings_show_vip_listX0", "settings_show_long_vip");
             setEvForDepPara("settings_show_vip_listX0", "settings_vip_show_nofound");
@@ -15979,6 +15984,7 @@ var mainGC = function() {
                 'settings_past_events_on_bm',
                 'settings_show_log_totals',
                 'settings_show_reviewer_as_vip',
+                'settings_show_lackey_as_vip',
                 'settings_hide_found_count',
                 'settings_show_compact_logbook_but',
                 'settings_log_status_icon_visible',
