@@ -697,6 +697,8 @@ var variablesInit = function(c) {
     c.settings_drafts_old_log_form = getValue("settings_drafts_old_log_form", false);
     c.settings_drafts_log_icons = getValue("settings_drafts_log_icons", true);
     c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
+    c.settings_drafts_after_new_logging_view_log = getValue("settings_drafts_after_new_logging_view_log", false);
+    c.settings_after_new_logging_view_log = getValue("settings_after_new_logging_view_log", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
     c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
@@ -2056,6 +2058,28 @@ var mainGC = function() {
                 });
             } catch(e) {gclh_error("Show draft indicator in header",e);}
         }
+    }
+
+// Automatic processing from listing after logging with new log form.
+    if (is_page("cache_listing")) {
+        try {
+            // Link to new log after logging with new log form.
+            if ($('#uxViewNewLogLink')[0] && $('#uxViewNewLogLink')[0].href) {
+                // Drafts related.
+                if (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success")) {
+                    // Go automatic to drafts page.
+                    if (settings_drafts_go_automatic_back) {
+                        document.location = 'https://www.geocaching.com/account/drafts';
+                    // Go automatic to view log page.
+                    } else if (settings_drafts_after_new_logging_view_log) {
+                        document.location = $('#uxViewNewLogLink')[0].href;
+                    }
+                // Not drafts related. Go automatic to view log page.
+                } else if (settings_after_new_logging_view_log) {
+                    document.location = $('#uxViewNewLogLink')[0].href;
+                }
+            }
+        } catch(e) {gclh_error("Automatic processing from listing after logging",e);}
     }
 
 // Collection of css for cache listings.
@@ -6470,10 +6494,6 @@ var mainGC = function() {
             css += '.gclh_double {background:#FE9C9C !important;}'
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
-    }
-    // Automatic back to Drafts after sending log.
-    if ((settings_drafts_go_automatic_back) && (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success"))) {
-        document.location = 'https://www.geocaching.com/account/drafts';
     }
 
 // Linklist on old dashboard.
@@ -14700,7 +14720,8 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
-            html += checkboxy('settings_drafts_go_automatic_back', 'Automatic go back to Drafts after sending to log') + "<br>";
+            var content_settings_after_sending_draft_related_log = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help('After sending a new log using the new log form, the listing will appear. If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>" + checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help('After sending a new log using the new log form, the listing will appear. If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            html += content_settings_after_sending_draft_related_log;
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -14737,6 +14758,10 @@ var mainGC = function() {
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
             html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
+            html += newParameterOn2;
+            html += content_settings_after_sending_draft_related_log.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0").replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
+            html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help('After sending a new log using the new log form, the listing will appear. If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_pseudo_as_owner', 'Replace placeholder owner, although there could be a pseudonym') + show_help("If you disable this option, the placeholder for the owner cannot be replaced on the newly designed log page.<br><br>If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
@@ -15293,6 +15318,18 @@ var mainGC = function() {
             $('#settings_bookmarks_top_menu_h')[0].addEventListener("click", handleRadioTopMenu, false);
             handleRadioTopMenu(true);
             $('#settings_load_logs_with_gclh')[0].addEventListener("click", alert_settings_load_logs_with_gclh, false);
+            $('#settings_drafts_go_automatic_back')[0].addEventListener("click", function() {
+                if ($('#settings_drafts_go_automatic_back').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
+            }, false);
+            $('#settings_drafts_go_automatic_backX0')[0].addEventListener("click", function() {
+                if ($('#settings_drafts_go_automatic_backX0').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
+            }, false);
+            $('#settings_drafts_after_new_logging_view_log')[0].addEventListener("click", function() {
+                if ($('#settings_drafts_after_new_logging_view_log').prop('checked')) $('#settings_drafts_go_automatic_back,#settings_drafts_go_automatic_backX0').prop('checked', false);
+            }, false);
+            $('#settings_drafts_after_new_logging_view_logX0')[0].addEventListener("click", function() {
+                if ($('#settings_drafts_after_new_logging_view_logX0').prop('checked')) $('#settings_drafts_go_automatic_back,#settings_drafts_go_automatic_backX0').prop('checked', false);
+            }, false);
             $('#restore_settings_lines_color_zebra')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lines_color_user')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lines_color_owner')[0].addEventListener("click", restoreField, false);
@@ -15346,6 +15383,8 @@ var mainGC = function() {
             setEvForDouPara("settings_smaller_upvotes_icons", "click");
             setEvForDouPara("settings_no_wiggle_upvotes_click", "click");
             setEvForDouPara("settings_show_eventday", "click");
+            setEvForDouPara("settings_drafts_go_automatic_back", "click");
+            setEvForDouPara("settings_drafts_after_new_logging_view_log", "click");
 
             // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
             // deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
@@ -16009,6 +16048,8 @@ var mainGC = function() {
                 'settings_drafts_old_log_form',
                 'settings_drafts_log_icons',
                 'settings_drafts_go_automatic_back',
+                'settings_drafts_after_new_logging_view_log',
+                'settings_after_new_logging_view_log',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
                 'settings_show_cache_type_icons_in_dashboard',
