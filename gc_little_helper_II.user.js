@@ -2042,7 +2042,7 @@ var mainGC = function() {
         }
     }
 
-    // Automatic processing from listing after logging with new log form.
+// Automatic processing from listing after logging with new log form.
     if (is_page("cache_listing")) {
         try {
             // Link to new log after logging with new log form.
