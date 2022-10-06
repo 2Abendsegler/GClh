@@ -9081,6 +9081,21 @@ var mainGC = function() {
                     buildThumb(links[i].href, links[i].children[0].alt, (links[i].href.match(/log/) ? false : true), false);
                 }
             }
+//xxxx
+            // Public Profile, Avatar.
+            if (is_page("publicProfile")) {
+                var img = document.createElement('img');
+                img.src = $('div.profile-image-wrapper')[0].style.backgroundImage.replace(/url\(('|")/, '').replace(/('|")\)/, '');
+                img.setAttribute("style", "margin-bottom: 0px; height: 94px; width: 94px;");
+                var a = document.createElement('a');
+                a.href = "#";
+                a.className = "profile-image-wrapper";
+                a.setAttribute("style", "position: absolute; top: unset; left: unset; margin-top: -69px; margin-left: 80px; z-index: 1;");
+                a.appendChild(img);
+                $('div.profile-image-wrapper')[0].parentNode.parentNode.insertBefore(a, $('div.profile-image-wrapper')[0].parentNode);
+                $('div.profile-image-wrapper').remove();
+                avatarThumbnail($('a.profile-image-wrapper')[0]);
+            }
 
             css +=
                 "a.gclh_thumb:hover {" +
@@ -9121,9 +9136,12 @@ var mainGC = function() {
     }
     function avatarThumbnail(link) {
         var thumb = link.children[0];
-        thumb.setAttribute("style", "margin-bottom: 0px; height: 48px;");
+//xxxx
+//        thumb.setAttribute("style", "margin-bottom: 0px; height: 48px;");
         var img = document.createElement('img');
-        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images").replace(/img\.geocaching\.com\/user\/display/, "s3.amazonaws.com/gs-geo-images");;
+//xxxx
+//        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images").replace(/img\.geocaching\.com\/user\/display/, "s3.amazonaws.com/gs-geo-images");
+        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/(avatar|display|square250)/, "s3.amazonaws.com/gs-geo-images");
         img.className = "gclh_max";
         img.setAttribute("style", "display: unset;");
         var span = document.createElement('span');
@@ -9144,6 +9162,8 @@ var mainGC = function() {
                 var links = document.getElementsByClassName("logOwnerAvatar");
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
+//xxxx
+                        links[i].children[0].children[0].setAttribute("style", "margin-bottom: 0px; height: 48px;");
                         avatarThumbnail(links[i].children[0]);
                     }
                 }
