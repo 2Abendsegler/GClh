@@ -686,7 +686,10 @@ var variablesInit = function(c) {
     c.settings_show_add_cache_info_in_log_page = getValue("settings_show_add_cache_info_in_log_page", true);
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
     c.settings_pq_splitter_how_often = getValue("settings_pq_splitter_how_often", 2);
+    c.settings_pq_splitter_not_ignored = getValue("settings_pq_splitter_not_ignored", false);
+    c.settings_pq_splitter_is_enabled = getValue("settings_pq_splitter_is_enabled", false);
     c.settings_pq_splitter_email = getValue("settings_pq_splitter_email", 1);
+    c.settings_pq_splitter_include_pq_name = getValue("settings_pq_splitter_include_pq_name", false);
     c.settings_show_create_pq_from_pq_splitter = getValue("settings_show_create_pq_from_pq_splitter", true);
     c.settings_drafts_cache_link = getValue("settings_drafts_cache_link", true);
     c.settings_drafts_cache_link_new_tab = getValue("settings_drafts_cache_link_new_tab", false);
@@ -848,10 +851,13 @@ var mainPGC = function() {
             html += '<input id="how_often_' + table_index + '_0" class="how_often" name="how_often_' + table_index + '" type="radio" index="0"><label for="how_often_' + table_index + '_0">Uncheck the day of the week after the PQ(s) run</label><br>';
             html += '<input id="how_often_' + table_index + '_1" class="how_often" name="how_often_' + table_index + '" type="radio" index="1"><label for="how_often_' + table_index + '_1">Run the PQ(s) every week on the days checked</label><br>';
             html += '<input id="how_often_' + table_index + '_2" class="how_often" name="how_often_' + table_index + '" type="radio" index="2"><label for="how_often_' + table_index + '_2">Run the PQ(s) once then delete it</label></p>';
+            html += '<p><input id="not_ignored_' + table_index + '" class="not_ignored" type="checkbox" ' + (settings_pq_splitter_not_ignored ? "checked=''" : "") + '"><label for="not_ignored">Are not on my ignore list</label><br>';
+            html += '<input id="is_enabled_' + table_index + '" class="is_enabled" type="checkbox" ' + (settings_pq_splitter_is_enabled ? "checked=''" : "") + '"><label for="is_enabled">Is Enabled</label></p>';
             html += '<p>Output to email: <select class="output_email">';
             html += '<option value="1">Primary</option>';
             html += '<option value="2">Secondary</option></select><br>';
             html += '<span>The secondary email will only work if you have two or more email addresses in your profile.</span></p>';
+            html += '<p><input id="include_pq_name_' + table_index + '" class="include_pq_name" type="checkbox" ' + (settings_pq_splitter_include_pq_name ? "checked=''" : "") + '"><label for="include_pq_name">Include pocket query name in download file name</label></p>';
             html += '<h5>Instruction:</h5>';
             html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
             html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected.</p>';
@@ -868,9 +874,18 @@ var mainPGC = function() {
                     setValue('settings_pq_splitter_how_often', $(this).attr('index'));
                 });
             });
+            $(side).find('.not_ignored')[0].addEventListener("click", function() {
+                setValue('settings_pq_splitter_not_ignored', $(this).prop('checked'));
+            });
+            $(side).find('.is_enabled')[0].addEventListener("click", function() {
+                setValue('settings_pq_splitter_is_enabled', $(this).prop('checked'));
+            });
             $(side).find('.output_email')[0].value = settings_pq_splitter_email;
             $(side).find('.output_email')[0].addEventListener("change", function() {
                 setValue('settings_pq_splitter_email', $(this)[0].value);
+            });
+            $(side).find('.include_pq_name')[0].addEventListener("click", function() {
+                setValue('settings_pq_splitter_include_pq_name', $(this).prop('checked'));
             });
         }
     }
@@ -909,8 +924,11 @@ var mainPGC = function() {
                 var cache_count = parseInt($(current_table).find('.pq_name').attr('cache_count'));
                 var pq_name = $(current_table).find('.pq_name').val() + $(this).context.rowIndex.toString(10).padStart(nDigits, '0');
                 var how_often = $(current_table).find('.how_often:checked').attr('index');
+                var not_ignored = $(current_table).find('.not_ignored').prop('checked') ? 1 : 0;
+                var is_enabled = $(current_table).find('.is_enabled').prop('checked') ? 1 : 0;
                 var email = $(current_table).find('.output_email').val();
-                var param = {PQSplit: 1, n: pq_name, c: cache_count, ho: how_often, e: email, sm: start_month, sd: start_day, sy: start_year, em: end_month, ed: end_day, ey: end_year};
+                var include_pq_name = $(current_table).find('.include_pq_name').prop('checked') ? 1 : 0;
+                var param = {PQSplit: 1, n: pq_name, c: cache_count, ho: how_often, e: email, sm: start_month, sd: start_day, sy: start_year, em: end_month, ed: end_day, ey: end_year, ni: not_ignored, ie: is_enabled, in: include_pq_name};
                 var sel = getSelection();
                 var new_url = "https://www.geocaching.com/pocket/gcquery.aspx?" + $.param(param) + '&' + $.param(sel);
                 urls_for_pqs_to_create.push(new_url);
@@ -4857,6 +4875,10 @@ var mainGC = function() {
                 if (findGetParameter('hideowned')) $('#ctl00_ContentBody_cbOptions_2').attr('checked', true);
                 // Hide premium.
                 if (findGetParameter('hidepremium')) $('#ctl00_ContentBody_cbOptions_4').attr('checked', true);
+                // Are not on my ignore list.
+                if (findGetParameter('ni') == 1) $('#ctl00_ContentBody_cbOptions_6').attr('checked', true);
+                // Is Enabled.
+                if (findGetParameter('ie') == 1) $('#ctl00_ContentBody_cbOptions_13').attr('checked', true);
                 // Difficulty and terrain. We assume that feasible combinations will be delivered.
                 function setDtFromPQSplit(dt) {
                     var n = 0;
@@ -4959,6 +4981,8 @@ var mainGC = function() {
                         $('#ctl00_ContentBody_ddlAltEmails option:eq(1)').attr('selected', 'selected');
                     }
                 }
+                // Include pocket query name in download file name.
+                if (findGetParameter('in') == 1) $('#ctl00_ContentBody_cbIncludePQNameInFileName').attr('checked', true);
                 // All values are set, submit the form.
                 document.getElementById('ctl00_ContentBody_btnSubmit').click();
             }
