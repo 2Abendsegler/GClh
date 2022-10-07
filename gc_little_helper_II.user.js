@@ -703,6 +703,7 @@ var variablesInit = function(c) {
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
     c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
+    c.settings_public_profile_avatar_show_thumbnail = getValue("settings_public_profile_avatar_show_thumbnail", true);
 
     tlc('START userToken');
     try {
@@ -9081,6 +9082,20 @@ var mainGC = function() {
                     buildThumb(links[i].href, links[i].children[0].alt, (links[i].href.match(/log/) ? false : true), false);
                 }
             }
+            // Public Profile. Show bigger avatar image while hovering with the mouse.
+            if (is_page("publicProfile") && settings_public_profile_avatar_show_thumbnail && $('div.profile-image-wrapper')[0]) {
+                var img = document.createElement('img');
+                img.src = $('div.profile-image-wrapper')[0].style.backgroundImage.replace(/url\(('|")/, '').replace(/('|")\)/, '');
+                img.setAttribute("style", "margin-bottom: 0px; height: 94px; width: 94px;");
+                var a = document.createElement('a');
+                a.className = "profile-image-wrapper";
+                a.setAttribute("style", "position: absolute; top: unset; left: unset; margin-top: -69px; margin-left: 80px; z-index: 1;");
+                a.appendChild(img);
+                $('div.profile-image-wrapper')[0].parentNode.parentNode.insertBefore(a, $('div.profile-image-wrapper')[0].parentNode);
+                $('div.profile-image-wrapper').remove();
+                avatarThumbnail($('a.profile-image-wrapper')[0]);
+                a.href = $('a.profile-image-wrapper .gclh_max')[0].src;
+            }
 
             css +=
                 "a.gclh_thumb:hover {" +
@@ -9121,9 +9136,8 @@ var mainGC = function() {
     }
     function avatarThumbnail(link) {
         var thumb = link.children[0];
-        thumb.setAttribute("style", "margin-bottom: 0px; height: 48px;");
         var img = document.createElement('img');
-        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/avatar/, "s3.amazonaws.com/gs-geo-images").replace(/img\.geocaching\.com\/user\/display/, "s3.amazonaws.com/gs-geo-images");;
+        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/(avatar|display|square250)/, "s3.amazonaws.com/gs-geo-images");
         img.className = "gclh_max";
         img.setAttribute("style", "display: unset;");
         var span = document.createElement('span');
@@ -9144,6 +9158,7 @@ var mainGC = function() {
                 var links = document.getElementsByClassName("logOwnerAvatar");
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].children[0] && links[i].children[0].children[0] && !links[i].children[0].children[1]) {
+                        links[i].children[0].children[0].setAttribute("style", "margin-bottom: 0px; height: 48px;");
                         avatarThumbnail(links[i].children[0]);
                     }
                 }
@@ -14369,6 +14384,9 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","profile")+"<label for='lnk_gclh_config_profile'>Public Profile</label></h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
+            html += newParameterOn2;
+            html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
             html += checkboxy('settings_profile_old_links', 'Use old links to finds and hides caches') + show_help("The links to finds and hides caches in the public profile run through the new search. With this option you can use the old search again.") + "<br>";
@@ -14376,7 +14394,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary data are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all data, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
-            var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries and in the public profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it works too for the avatars in the shown logs in cache listing.") + "&nbsp; Max size of big image <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
+            var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries and in the public profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it also works for the avatars in the displayed logs in cache listing. <br><br>And if you activate \"Show bigger avatar image while hovering with the mouse\", it also works for avatars in public profiles.") + "&nbsp; Max size of big image <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX1").replace("max_size", "max_sizeX1");
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX1', 'Show caption on top');
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 140px; margin-top: 4px;'> (Alternative <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a>" + show_help("A great alternative to the GC little helper II bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script <a class='gclh_ref_ht_ext' href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> (Geocaching Thumbnails). <br><br>The script works like GC little helper II with Firefox, Google Chrome and Opera via Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GC little helper II bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
@@ -15478,12 +15496,15 @@ var mainGC = function() {
             setEvForDepPara("settings_show_thumbnails", "settings_hover_image_max_size");
             setEvForDepPara("settings_show_thumbnails", "settings_imgcaption_on_top");
             setEvForDepPara("settings_show_thumbnails", "settings_spoiler_strings");
+            setEvForDepPara("settings_show_thumbnails", "settings_public_profile_avatar_show_thumbnail");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_hover_image_max_size");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_imgcaption_on_top");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_spoiler_strings");
+            setEvForDepPara("settings_show_thumbnailsX0", "settings_public_profile_avatar_show_thumbnail");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_hover_image_max_size");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_imgcaption_on_top");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_spoiler_strings");
+            setEvForDepPara("settings_show_thumbnailsX1", "settings_public_profile_avatar_show_thumbnail");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon");
@@ -16067,6 +16088,7 @@ var mainGC = function() {
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
                 'settings_show_cache_type_icons_in_dashboard',
+                'settings_public_profile_avatar_show_thumbnail',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
