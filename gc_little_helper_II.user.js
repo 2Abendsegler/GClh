@@ -9083,18 +9083,18 @@ var mainGC = function() {
                 }
             }
             // Public Profile. Show bigger avatar image while hovering with the mouse.
-            if (is_page("publicProfile") && settings_public_profile_avatar_show_thumbnail) {
+            if (is_page("publicProfile") && settings_public_profile_avatar_show_thumbnail && $('div.profile-image-wrapper')[0]) {
                 var img = document.createElement('img');
                 img.src = $('div.profile-image-wrapper')[0].style.backgroundImage.replace(/url\(('|")/, '').replace(/('|")\)/, '');
                 img.setAttribute("style", "margin-bottom: 0px; height: 94px; width: 94px;");
                 var a = document.createElement('a');
-                a.href = "#";
                 a.className = "profile-image-wrapper";
                 a.setAttribute("style", "position: absolute; top: unset; left: unset; margin-top: -69px; margin-left: 80px; z-index: 1;");
                 a.appendChild(img);
                 $('div.profile-image-wrapper')[0].parentNode.parentNode.insertBefore(a, $('div.profile-image-wrapper')[0].parentNode);
                 $('div.profile-image-wrapper').remove();
                 avatarThumbnail($('a.profile-image-wrapper')[0]);
+                a.href = $('a.profile-image-wrapper .gclh_max')[0].src;
             }
 
             css +=
