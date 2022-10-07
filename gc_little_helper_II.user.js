@@ -6251,17 +6251,17 @@ var mainGC = function() {
                 }
             }
             function waitForInvitationButton(waitCount) {
-                 if (document.getElementById('invitation-button-root').firstChild) {
-                     var buttonClasses = document.getElementById('invitation-button-root').firstChild.className
-                     buttonClasses = buttonClasses.replace('send-invitation-btn','');
-                     buttonClasses = buttonClasses.replace('gc-button-disabled','');
-                     buttonClasses = buttonClasses + ' gclh_resetBtn';
-                     var button = document.createElement("a");
-                     button.setAttribute("class", buttonClasses);
-                     button.setAttribute("href", "javascript:void(0);");
-                     button.addEventListener("click", gclh_reset_counter, false);
-                     button.innerHTML = "Reset Counter";
-                     document.getElementById("invitation-button-root").lastChild.after(button);
+                if (document.getElementById('invitation-button-root').firstChild) {
+                    var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
+                    buttonClasses = buttonClasses.replace('send-invitation-btn','');
+                    buttonClasses = buttonClasses.replace('gc-button-disabled','');
+                    buttonClasses = buttonClasses + ' gclh_resetBtn';
+                    var button = document.createElement("a");
+                    button.setAttribute("class", buttonClasses);
+                    button.setAttribute("href", "javascript:void(0);");
+                    button.addEventListener("click", gclh_reset_counter, false);
+                    button.innerHTML = "Reset Counter";
+                    document.getElementById("invitation-button-root").lastChild.after(button);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForInvitationButton(waitCount);}, 100);}
             }
             waitForInvitationButton(0);
