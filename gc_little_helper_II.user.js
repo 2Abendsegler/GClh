@@ -13669,6 +13669,9 @@ var mainGC = function() {
         $('#ctxMenu').hide();
         $('#filterCtxMenu').removeClass('btn-user-active');
     }
+//--> #2170 #2055 Temporäre Deaktivierung des "Manage Filter Sets" Buttons bis die Funktionalität wieder hergestellt ist.
+    settings_search_enable_user_defined = false;
+//<-- #2170 #2055
     if (settings_search_enable_user_defined && is_page("find_cache")) {
         try {
             if (!($(".results").length || settings_search_data.length)) {
@@ -15014,6 +15017,9 @@ var mainGC = function() {
                     $(this)[0].parentNode.innerHTML = $(this)[0].parentNode.innerHTML.replace(/<x/g, '<a').replace(/<\/x/g, '</a');
                 }
             });
+//--> #2170 #2055 Temporäre Deaktivierung des "Manage Filter Sets" Buttons bis die Funktionalität wieder hergestellt ist.
+            disableDepPara("settings_search_enable_user_defined", true);
+//<-- #2170 #2055
             $('#gclh_config_content2').hide();
             $('#gclh_config_content_thanks').hide();
             $('label[for="settings_use_gclh_layercontrol"], label[for="settings_show_homezone"]').addClass('gclh_ref');
