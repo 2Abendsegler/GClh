@@ -6110,19 +6110,16 @@ var mainGC = function() {
                 setValue("friends_founds_last_autoreset", new Date().getTime());
             }
             var myf =
-                 "a.myfriends:hover {" +
-                 "  text-decoration:underline;}" +
-                 "a.myfriends {" +
-                 "  color:#00AA00;" +
-                 "  text-decoration:none;} " +
-                 "a.gclh_resetBtn:hover {" +
-                 "  text-decoration:underline;" +
-                 "  font-weight:bold;}" +
-                 "a.gclh_resetBtn {" +
-                 "  color:#00AA00;" +
-                 "  text-decoration:none;" +
-                 "  margin-left:10px;" +
-                 "  font-weight:bold;} ";
+                "a.myfriends:hover {" +
+                "  text-decoration:underline;}" +
+                "a.myfriends {" +
+                "  color:#00AA00;" +
+                "  text-decoration:none;} " +
+                "a.gclh_resetBtn {" +
+                "  font-family:'Noto Sans',Arial,Helvetica,sans-serif;" +
+                "  padding-top:0.4em !important;}" +
+                ".AddFriendTextbox {" +
+                "  width:50%;}";
             appendCssStyle(myf);
 
             var sNewF = "";
@@ -6253,12 +6250,21 @@ var mainGC = function() {
                     document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
                 }
             }
-            var button = document.createElement("a");
-            button.setAttribute("class", "gclh_resetBtn");
-            button.setAttribute("href", "javascript:void(0);");
-            button.addEventListener("click", gclh_reset_counter, false);
-            button.innerHTML = "Reset Counter";
-            document.getElementsByClassName('FriendSort')[0].appendChild(button);
+            function waitForInvitationButton(waitCount) {
+                 if (document.getElementById('invitation-button-root').firstChild) {
+                     var buttonClasses = document.getElementById('invitation-button-root').firstChild.className
+                     buttonClasses = buttonClasses.replace('send-invitation-btn','');
+                     buttonClasses = buttonClasses.replace('gc-button-disabled','');
+                     buttonClasses = buttonClasses + ' gclh_resetBtn';
+                     var button = document.createElement("a");
+                     button.setAttribute("class", buttonClasses);
+                     button.setAttribute("href", "javascript:void(0);");
+                     button.addEventListener("click", gclh_reset_counter, false);
+                     button.innerHTML = "Reset Counter";
+                     document.getElementById("invitation-button-root").lastChild.after(button);
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForInvitationButton(waitCount);}, 100);}
+            }
+            waitForInvitationButton(0);
         } catch(e) {gclh_error("Improve friends list",e);}
     }
 
