@@ -10230,6 +10230,8 @@ var mainGC = function() {
             } else {
                 css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 84px !important}';
             }
+            // The checkboxes in the cache list are no longer one below the other on the right edge. (GS Bug)
+            css += '.geocache-item-details-container {width: calc(100% - 18px);}';
             // No unsuitably field border if field focused.
             css += '#main a:focus {outline: none !important;}';
             // Adapt the width of the pop up by right mouse click to a cache in the map.
