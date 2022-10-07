@@ -3281,7 +3281,7 @@ var mainGC = function() {
         try {
             if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
             if (settings_remove_banner_blue) {
-                if ($('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1) {
+                if ($('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1 && !$('div.banner #uxViewNewLogLink')[0]) {
                     var styles = window.getComputedStyle($('div.banner')[0]);
                     if (styles && (styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)")) $('div.banner').remove();
                 }
