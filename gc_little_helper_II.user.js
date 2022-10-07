@@ -6119,7 +6119,7 @@ var mainGC = function() {
                 "  font-family:'Noto Sans',Arial,Helvetica,sans-serif;" +
                 "  padding-top:0.4em !important;}" +
                 ".AddFriendTextbox {" +
-                "  width:50%;}";
+                "  width:48%;}";
             appendCssStyle(myf);
 
             var sNewF = "";
