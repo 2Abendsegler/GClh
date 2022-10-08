@@ -6545,10 +6545,10 @@ var mainGC = function() {
                     let iconNum = $(this).find('svg[width="48"] use').attr('xlink:href').match(/icon-(\d+)/)[1]; // because use xlink:href is not readable.
                     $(this).find('svg[width="48"]').parents('.draft-item').attr('cache_type', iconNum);
                 });
-                // Show Cache Statistic button.
-                statsBtn();
                 // Show download button.
                 if (settings_drafts_download_show_button) showDownloadBtn();
+                // Show Cache Statistic button.
+                statsBtn();
             }
             // Build mutation observer.
             function buildObserverDrafts() {
