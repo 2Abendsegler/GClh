@@ -6352,13 +6352,10 @@ var mainGC = function() {
             // type: count     Found it  Didn't find it  Write note  Archive  Will attend  Attended  Disable  Enable  Webcam photo taken  Needs maintenance  Owner maintenance  Announcement
             let logTypesCount={2:0,      3:0,            4:0,        5:0,     9:0,         10:0,     22:0,    23:0,   11:0,               45:0,              46:0,              74:0};
             function statsBtn() {
-                if ($('#gclh_download_btn')[0] && !$('li.drafts-empty')[0]) return;
-                else if ($('#gclh_download_btn')[0] && $('li.drafts-empty')[0]) $('#gclh_download_btn').remove();
-                else if (!$('#gclh_download_btn')[0] && !$('li.drafts-empty')[0] && $('button.btn-upload')[0]) {
-                    let html = '<button id="gclh_download_btn" class="gclh_btn" type="button" style="margin-left:2em;">Download drafts</button>';
-                    $('button.btn-upload').after(html);
-                    $('#gclh_download_btn')[0].addEventListener("click", downloadDrafts, false);
-                }
+                if ($('#gclh_stats_btn')[0]) return;
+                let html = '<button id="gclh_stats_btn" style="margin-left:2em;">Count cache and log types</button>';
+                $('.sort-action').after(html);
+                $('#gclh_stats_btn').bind('click', showStats);
             }
             function showStats() {
                 // Remember scroll position.
@@ -6545,8 +6542,6 @@ var mainGC = function() {
                     let iconNum = $(this).find('svg[width="48"] use').attr('xlink:href').match(/icon-(\d+)/)[1]; // because use xlink:href is not readable.
                     $(this).find('svg[width="48"]').parents('.draft-item').attr('cache_type', iconNum);
                 });
-                // Show download button.
-                if (settings_drafts_download_show_button) showDownloadBtn();
                 // Show Cache Statistic button.
                 statsBtn();
                 // Update Draft Indicator on Upload and Delete.
@@ -6554,6 +6549,8 @@ var mainGC = function() {
                     let totalDrafts = $('#draftsHeadingContiner h1').html().match(/\((\d+)\)/)[1];
                     $('.draft-indicator a').html(totalDrafts);
                 }
+                // Show download button.
+                if (settings_drafts_download_show_button) showDownloadBtn();
             }
             // Build mutation observer.
             function buildObserverDrafts() {
