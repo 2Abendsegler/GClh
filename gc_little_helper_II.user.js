@@ -6361,21 +6361,21 @@ var mainGC = function() {
                 // Remember scroll position.
                 var scrollPosition = window.pageYOffset;
                 // Loading all Drafts.
-                var count = $('.draft-list li').length;
+                var count = $('.draft-list li:not(.drafts-empty)').length;
                 function scrollAndCheck() {
-                    window.scrollTo({
-                        top: document.body.scrollHeight,
-                        left: 0,
-                        behavior: 'smooth'
-                    });
+                    // Bei kleinen Bildschirmen wurde mit "top: document.body.scrollHeight" zu weit und zu schnell nach unten gescrollt, so dass der
+                    // Spinner keine Zeit hatte anzulaufen. Mit dem Scrollen zum letzten Draft passiert das nicht.
+                    $('.draft-item:last')[0].scrollIntoView({behavior: 'smooth'});
                     function waitForDrafts(waitCount) {
-                        if ($('.draft-list li').length > count) {
-                            count = $('.draft-list li').length;
+                        if ($('.draft-list li:not(.drafts-empty)').length > count) {
+                            count = $('.draft-list li:not(.drafts-empty)').length;
                             scrollAndCheck();
                         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDrafts(waitCount);}, 100);}
                     }
-                    if (count != $('.draft-indicator a').html()) waitForDrafts(0);
-                    else statsUpdateUi();
+                    if ($('#draftsHub > div h1')[0] && $('#draftsHub > div h1')[0].innerHTML && $('#draftsHub > div h1')[0].innerHTML.match(/\s\((\d+)\)/)) {
+                        if (count != $('#draftsHub > div h1')[0].innerHTML.match(/\s\((\d+)\)/)[1]) waitForDrafts(0);
+                        else statsUpdateUi();
+                    } else statsUpdateUi();
                 }
                 // Loading
                 $('body').append(loadingPopup.replace('message', 'The GClh loads all your Drafts and counts cache and log types, as well as mark double Logs.'));
@@ -6420,12 +6420,11 @@ var mainGC = function() {
                     $('.draft-list').before(html);
                     $('.draft-list').after(html);
                     // Mark double Logs.
-                    let gcCodes = $('.draft-list li');
+                    let gcCodes = $('.draft-list li:not(.drafts-empty)');
                     gcCodes = Array.from(gcCodes).map(li => $(li).attr('code'));
                     gcCodes = gcCodes.filter((code, pos) => gcCodes.indexOf(code) != pos);
                     gcCodes.forEach(code => $(`li[code*="${code}"]`).each((_i, elem) => $(elem).addClass('gclh_double')));
-
-                    $('#gclh_stats_btn').remove();
+                    $('#gclh_stats_btn')[0].style.display = 'none';
                     $('.gclh_popup').remove();
                 }
             }
@@ -6433,7 +6432,7 @@ var mainGC = function() {
             // Download all drafts.
             function downloadDrafts() {
                 function getCountOfDrafts() {
-                    if ($('#draftsHub > div h1')[0] && $('#draftsHub > div h1')[0].innerHTML) {
+                    if ($('#draftsHub > div h1')[0] && $('#draftsHub > div h1')[0].innerHTML && $('#draftsHub > div h1')[0].innerHTML.match(/\s\((\d+)\)/)) {
                         var count = $('#draftsHub > div h1')[0].innerHTML.match(/\s\((\d+)\)/);
                         if (count && count[1]) {
                             count = count[1];
@@ -6544,11 +6543,6 @@ var mainGC = function() {
                 });
                 // Show Cache Statistic button.
                 statsBtn();
-                // Update Draft Indicator on Upload and Delete.
-                if ($('.draft-indicator a').html() != $('#draftsHeadingContiner h1').html().match(/\((\d+)\)/)[1]) {
-                    let totalDrafts = $('#draftsHeadingContiner h1').html().match(/\((\d+)\)/)[1];
-                    $('.draft-indicator a').html(totalDrafts);
-                }
                 // Show download button.
                 if (settings_drafts_download_show_button) showDownloadBtn();
             }
