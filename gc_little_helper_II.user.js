@@ -704,6 +704,8 @@ var variablesInit = function(c) {
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
     c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
     c.settings_public_profile_avatar_show_thumbnail = getValue("settings_public_profile_avatar_show_thumbnail", true);
+    c.settings_drafts_download_show_button = getValue("settings_drafts_download_show_button", true);
+    c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
 
     tlc('START userToken');
     try {
@@ -6335,18 +6337,32 @@ var mainGC = function() {
                 'Owner maintenance:': 46,
                 'Announcement:': 74,
             };
+            // Loading popup.
+            let loadingPopup = `
+                <div class="gclh_popup">
+                    <div class="gclh_popup_content">
+                        <div class="loading"></div>
+                        <div class="msg">message</div>
+                    </div>
+                </div>`;
+
+            // Statistic of cache types and log types.
             // type: count            Tradi  Multi  Virtual  Letterbox  Event  Mystery  APE  Webcam  Locationless (Reverse) Cache  CITO  EC     Mega   GPS Maze  Wherigo  CC Event  GC HQ   GC HQ Celebration  GC HQ Block Party  Giga
             let cacheTypesFoundCount={2:0,   3:0,   4:0,     5:0,       6:0,   8:0,     9:0, 11:0,   12:0,                         13:0, 137:0, 453:0, 1304:0,   1858:0,  3653:0,   3773:0, 3774:0,            4738:0,            7005:0};
             // type: count     Found it  Didn't find it  Write note  Archive  Will attend  Attended  Disable  Enable  Webcam photo taken  Needs maintenance  Owner maintenance  Announcement
             let logTypesCount={2:0,      3:0,            4:0,        5:0,     9:0,         10:0,     22:0,    23:0,   11:0,               45:0,              46:0,              74:0};
-            // Statistic of cache types and log types.
             function statsBtn() {
-                if ($('#gclh_stats_btn')[0]) return;
-                let html = '<button id="gclh_stats_btn" style="margin-left:2em;">Count cache and log types</button>';
-                $('.sort-action').after(html);
-                $('#gclh_stats_btn').bind('click', showStats)
+                if ($('#gclh_download_btn')[0] && !$('li.drafts-empty')[0]) return;
+                else if ($('#gclh_download_btn')[0] && $('li.drafts-empty')[0]) $('#gclh_download_btn').remove();
+                else if (!$('#gclh_download_btn')[0] && !$('li.drafts-empty')[0] && $('button.btn-upload')[0]) {
+                    let html = '<button id="gclh_download_btn" class="gclh_btn" type="button" style="margin-left:2em;">Download drafts</button>';
+                    $('button.btn-upload').after(html);
+                    $('#gclh_download_btn')[0].addEventListener("click", downloadDrafts, false);
+                }
             }
             function showStats() {
+                // Remember scroll position.
+                var scrollPosition = window.pageYOffset;
                 // Loading all Drafts.
                 var count = $('.draft-list li').length;
                 function scrollAndCheck() {
@@ -6365,18 +6381,11 @@ var mainGC = function() {
                     else statsUpdateUi();
                 }
                 // Loading
-                let html = `
-                <div class="gclh_popup">
-                    <div class="gclh_popup_content">
-                        <div class="loading"></div>
-                        <div>The GClh loads all your Drafts and counts cache and log types, as well as mark double Logs</div>
-                    </div>
-                </div>`;
-                $('body').append(html);
+                $('body').append(loadingPopup.replace('message', 'The GClh loads all your Drafts and counts cache and log types, as well as mark double Logs.'));
                 scrollAndCheck();
 
                 function statsUpdateUi() {
-                    $(window).scrollTop(0);
+                    $(window).scrollTop(scrollPosition);
                     for (type in cacheTypesFoundCount) {
                         cacheTypesFoundCount[type] = Array.from(document.querySelectorAll(`li[cache_type="${type}"]`))
                             .map(elem => elem.innerHTML)
@@ -6424,6 +6433,85 @@ var mainGC = function() {
                 }
             }
 
+            // Download all drafts.
+            function downloadDrafts() {
+                function getCountOfDrafts() {
+                    if ($('#draftsHub > div h1')[0] && $('#draftsHub > div h1')[0].innerHTML) {
+                        var count = $('#draftsHub > div h1')[0].innerHTML.match(/\s\((\d+)\)/);
+                        if (count && count[1]) {
+                            count = count[1];
+                            return count;
+                        }
+                    }
+                }
+                function checkForDownloadDrafts(content, errorMsg) {
+                    function startDownloadDrafts(content) {
+                        var link = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content).replace(/%0A%2C/g, '%0A');
+                        var [d, t, dt, dtBig] = getDateTime('yy.mm.dd');
+                        var filename = dtBig.replace(/:/g, '') + ' Drafts.txt';
+                        $('body').append('<a id="gclh_download" href="' + link + '" download="' + filename + '" style="display: none;">');
+                        $('#gclh_download')[0].click();
+                        $('#gclh_download').remove();
+                    }
+                    $('.gclh_popup').remove();
+                    if (errorMsg) alert(errorMsg);
+                    else if (content && content.length == count) startDownloadDrafts(content)
+                    else if (content) alert('Error: Not all Drafts could be loaded.\nDownload not executed.');
+                    else alert('Error: Drafts could not be loaded.\nDownload not executed.');
+                }
+                function getDrafts(count) {
+                    var lines = new Array();
+                    $('body').append(loadingPopup.replace('message', 'Drafts are loading, please wait.'));
+                    function getDraftsPart(skip) {
+                        var url = '/api/proxy/web/v1/logdrafts?skip=' + skip + '&take=50';
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            success: function(response) {
+                                for (var i = 0; i < response.data.length; i++) {
+                                    var line = '';
+                                    line += response.data[i].geocache.referenceCode + ',';
+                                    if (settings_drafts_download_change_logdate) {
+                                        // String "2022-10-05T01:02:11Z" wird durch Date.parse ein Timestamp "1664931731000" und durch new Date ein Datums Objekt.
+                                        var date = new Date(Date.parse(response.data[i].dateLoggedUtc + 'Z') - 1000);
+                                        line += date.toISOString().replace(/\.(\d+)Z/, 'Z') + ',';
+                                    } else {
+                                        line += response.data[i].dateLoggedUtc + 'Z,';
+                                    }
+                                    for (logType in logTypes) {
+                                        if (logTypes[logType] == response.data[i].logTypeId) {
+                                            line += logType.replace(':', '') + ',';
+                                        }
+                                    }
+                                    line += '"' + response.data[i].notePreview + '"\n';
+                                    lines.push(line);
+                                }
+                                $('.gclh_popup_content .msg')[0].innerHTML = 'Drafts are loading, please wait. ' + lines.length + ' von ' + count + ' Drafts are loaded.';
+                                if (lines.length == count) checkForDownloadDrafts(lines);
+                                else getDraftsPart(lines.length);
+                            },
+                            error: function(error) {
+                                var errorMsg = 'Error: Loading Drafts ended with error.\nStatus: ' + error.status + ' ' + error.statusText + '\nurl: ' + url + '\n\nDownload not executed.';
+                                checkForDownloadDrafts(lines, errorMsg);
+                            }
+                        });
+                    }
+                    getDraftsPart(0);
+                }
+                var count = getCountOfDrafts();
+                if (count) getDrafts(count);
+                else alert("Error: Count of Drafts could not be determined.\nDownload not executed.");
+            }
+            function showDownloadBtn() {
+                if ($('#gclh_download_btn')[0] && !$('li.drafts-empty')[0]) return;
+                else if ($('#gclh_download_btn')[0] && $('li.drafts-empty')[0]) $('#gclh_download_btn').remove();
+                else if (!$('#gclh_download_btn')[0] && !$('li.drafts-empty')[0] && $('button.btn-upload')[0]) {
+                    let html = '<button id="gclh_download_btn" class="gclh_btn" type="button" style="margin-left:2em;">Download drafts</button>';
+                    $('button.btn-upload').after(html);
+                    $('#gclh_download_btn')[0].addEventListener("click", downloadDrafts, false);
+                }
+            }
+
             // Processing drafts.
             function processDrafts() {
                 $('li.draft-item:not(.gclh_done)').each(function() {
@@ -6457,8 +6545,10 @@ var mainGC = function() {
                     let iconNum = $(this).find('svg[width="48"] use').attr('xlink:href').match(/icon-(\d+)/)[1]; // because use xlink:href is not readable.
                     $(this).find('svg[width="48"]').parents('.draft-item').attr('cache_type', iconNum);
                 });
-                // Show Cache Statistic.
+                // Show Cache Statistic button.
                 statsBtn();
+                // Show download button.
+                if (settings_drafts_download_show_button) showDownloadBtn();
             }
             // Build mutation observer.
             function buildObserverDrafts() {
@@ -6493,14 +6583,17 @@ var mainGC = function() {
             }
             // Always show time.
             css += '.timestamp {display: inline !important;}';
-            // Stats
+            // Statistic und download drafts.
             css += 'button {cursor: pointer;}'
             css += '.gclh_popup {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(74,74,74,.4);}';
-            css += '.gclh_popup_content {position:absolute;transform:translate(-50%,-50%);top:50%;left:50%;padding:1em;background:rgba(255,255,255,.4);}';
+            css += '.gclh_popup_content {position:absolute;transform:translate(-50%,-50%);top:50%;left:50%;padding:1em;background:rgba(255,255,255,.9);}';
+            // Statistic.
             css += '.gclh_stats {display: flex; justify-content: space-between;}';
             css += '.gclh_stats div {display: flex;align-items: center;}';
             css += '.gclh_stats_num:not(:last-child) {margin: 0 .5em 0 .1em;}';
             css += '.gclh_double {background:#FE9C9C !important;}'
+            // Download drafts.
+            css += '.gclh_btn:hover {text-decoration: underline;}'
             appendCssStyle(css);
         } catch(e) {gclh_error("New drafts page",e);}
     }
@@ -14755,6 +14848,8 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
             var content_settings_after_sending_draft_related_log = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help('After sending a new log using the new log form, the listing will appear. If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>" + checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help('After sending a new log using the new log form, the listing will appear. If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += content_settings_after_sending_draft_related_log;
+            html += checkboxy('settings_drafts_download_show_button', 'Enable draft download feature') + show_help("With this option you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_drafts_download_change_logdate', 'Change log dates of the drafts in download file') + show_help("With this option you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
@@ -15610,6 +15705,7 @@ var mainGC = function() {
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_old_log_form");
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_log_icons");
             setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
+            setEvForDepPara("settings_drafts_download_show_button", "settings_drafts_download_change_logdate");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -16096,6 +16192,8 @@ var mainGC = function() {
                 'settings_listing_links_new_tab',
                 'settings_show_cache_type_icons_in_dashboard',
                 'settings_public_profile_avatar_show_thumbnail',
+                'settings_drafts_download_show_button',
+                'settings_drafts_download_change_logdate',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -17301,7 +17399,6 @@ var mainGC = function() {
                 document.body.appendChild(element);
                 element.click();
                 document.body.removeChild(element);
-
             }, false);
             $('#btn_ImportConfig')[0].addEventListener("click", function() {
                 var data = $('#configData')[0].innerText;
@@ -17477,16 +17574,19 @@ var mainGC = function() {
     }
 
 // Current date, time.
-    function getDateTime() {
+    function getDateTime(format = 'dd.mm.yy') {
         var now = new Date();
-        var aDate = $.datepicker.formatDate('dd.mm.yy', now);
+        var aDate = $.datepicker.formatDate(format, now);
         var hrs = now.getHours();
         var min = now.getMinutes();
+        var sec = now.getSeconds();
         hrs = ((hrs < 10) ? '0' + hrs : hrs);
         min = ((min < 10) ? '0' + min : min);
+        sec = ((sec < 10) ? '0' + sec : sec);
         var aTime = hrs+':'+min;
         var aDateTime = aDate+' '+aTime;
-        return [aDate, aTime, aDateTime];
+        var aDateBigtime = aDate+' '+hrs+':'+min+':'+sec;
+        return [aDate, aTime, aDateTime, aDateBigtime];
     }
 
 // Build time string.
