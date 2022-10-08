@@ -6374,7 +6374,7 @@ var mainGC = function() {
                     function waitForDrafts(waitCount) {
                         if ($('.draft-list li').length > count) {
                             count = $('.draft-list li').length;
-                            scrollAndCheck();
+                            scrollAndCheck()
                         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForDrafts(waitCount);}, 100);}
                     }
                     if (count != $('.draft-indicator a').html()) waitForDrafts(0);
@@ -6534,7 +6534,7 @@ var mainGC = function() {
                     }
                     // Show Logtype as icon.
                     if (settings_drafts_log_icons && $(this).find('.meta dt')[0] && $(this).find('.draft-icon')[0]) {
-                        let type = $(this).find('.meta dt').last().html().trim();
+                        let type = $(this).find('.meta dt').html().trim();
                         let typeHtml = `<div class="gclh_icon">
                                             ${$(this).find('.draft-icon').html()}
                                             <svg class="status-icon" height="22" width="22"><use xlink:href="https://www.geocaching.com/account/app/ui-icons/sprites/log-types.svg#icon-${logTypes[type]}"></use></svg>
@@ -6549,19 +6549,12 @@ var mainGC = function() {
                 if (settings_drafts_download_show_button) showDownloadBtn();
                 // Show Cache Statistic button.
                 statsBtn();
-                // Update Draft Indicator on Upload and Delete.
-                if ($('.draft-indicator a').html() != $('#draftsHeadingContiner h1').html().match(/\((\d+)\)/)[1]) {
-                    let totalDrafts = $('#draftsHeadingContiner h1').html().match(/\((\d+)\)/)[1];
-                    $('.draft-indicator a').html(totalDrafts);
-                }
             }
             // Build mutation observer.
             function buildObserverDrafts() {
                 var observerDrafts = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
-                        observerDrafts.disconnect();
                         processDrafts();
-                        observerDrafts.observe($('ul.draft-list')[0], {childList: true});
                     });
                 });
                 observerDrafts.observe($('ul.draft-list')[0], {childList: true});
