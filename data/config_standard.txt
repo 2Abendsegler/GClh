@@ -357,5 +357,6 @@
   "settings_show_cache_type_icons_in_dashboard": false,
   "settings_public_profile_avatar_show_thumbnail": true,
   "settings_drafts_download_show_button": true,
-  "settings_drafts_download_change_logdate": false
+  "settings_drafts_download_change_logdate": false,
+  "settings_dashboard_show_logs_in_markdown": true
 }

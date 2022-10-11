@@ -706,6 +706,7 @@ var variablesInit = function(c) {
     c.settings_public_profile_avatar_show_thumbnail = getValue("settings_public_profile_avatar_show_thumbnail", true);
     c.settings_drafts_download_show_button = getValue("settings_drafts_download_show_button", true);
     c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
+    c.settings_dashboard_show_logs_in_markdown = getValue("settings_dashboard_show_logs_in_markdown", true);
 
     tlc('START userToken');
     try {
@@ -8636,10 +8637,38 @@ var mainGC = function() {
                 css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
                 css += '.activity-label.has-favorite a {margin-left: 0;}';
             }
+
+            // Build log texts in Markdown.
+            function buildLogtextMarkdownAF(log) {
+                if (!settings_dashboard_show_logs_in_markdown || $(log).find('.gclh_logText')[0] || !$(log).hasClass('active') || !$(log).attr('logId') || !$(log).find('.note-text')[0]) return;
+                var logText = decode_innerHTML($('#gclh_logId_' + $(log).attr('logId'))[0]);
+                $(log).find('.note-text').after('<textarea class="gclh_logText" style="display: none;">'+logText+'</textarea>');
+                $(log).find('.gclh_logText').after('<div class="mdd_preview markdown-output note-text" style="height: 100%"></div>');
+                $(log).find('.note-text')[0].style.display = 'none';
+                showInMarkdown($(log).find('.gclh_logText'), resizebar = false, toolbar = false);
+                $('.mdd_preview').removeClass('mdd_preview');
+            }
+            // Back up log texts for Markdown.
+            // Die Logtexte stehen nicht immer in guter Qualität zur Verfügung, weil GS scheinbar manuell an den Logtexten rumbastelt, beispielsweise
+            // wenn der more Button gedrückt wurde. Manchmal gibt es sichtbare "<br>" oder unsichtbare Steuerzeichen, die die Markdown Verarbeitung nicht
+            // behandeln kann. Das passiert insbesonder wenn Markdown Elemente im Text vorhanden sind. Deshalb werden die Logtexte hier in ihrem
+            // Anfangszustand gesichert, um immer wieder darauf zuzugreifen.
+            var logId = 0;
+            function backupLogtextMarkdownAF(log) {
+                if (!settings_dashboard_show_logs_in_markdown || $(log).attr('logId') || !$(log).find('.note-text')[0]) return;
+                if (!$('#gclh_logs')[0]) $('#ActivityFeed').append('<div id="gclh_logs" style="display: none"><ul></ul></div>');
+                logId++;
+                var logIdLocal = logId;
+                var logText = decode_innerHTML($(log).find('.note-text')[0]);
+                $('#gclh_logs ul').append('<li id="gclh_logId_' + logIdLocal + '">' + logText + '</li>');
+                $(log).attr('logId', logIdLocal);
+            }
+
             // Common functions for features in Latest Activity list.
             function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
                 buildCacheTypeIconAF(log);
+                buildLogtextMarkdownAF(log);
                 waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
             }
             function buildEventMoreAF(log) {
@@ -8655,6 +8684,7 @@ var mainGC = function() {
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
                         }
+                        backupLogtextMarkdownAF($($('#ActivityFeed .activity-item')[i]));
                     }
                 }
                 waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
@@ -13608,6 +13638,30 @@ var mainGC = function() {
         });
     }
 
+// Show text in Markdown.
+// If HTML code is also to be processed, SafeMode must not be used.
+// If toolbar (class mdd_toolbar) or resizebar (class mdd_resizebar) is not built, it must be noted here.
+    function showInMarkdown(side, SafeMode = true, toolbar = true, resizebar = true) {
+        var md = side.MarkdownDeep({
+            SafeMode: SafeMode,
+            toolbar: toolbar,
+            resizebar: resizebar,
+            AllowInlineImages: false,
+            ExtraMode: false,
+            RequireHeaderClosingTag: true,
+            disableShortCutKeys: true,
+            DisabledBlockTypes: [
+                BLOCKTYPE_CONST.h4,
+                BLOCKTYPE_CONST.h5,
+                BLOCKTYPE_CONST.h6
+            ],
+            help_location: "/guide/markdown.aspx",
+            active_modal_class: "modal-open",
+            active_modal_selector: "html",
+            additionalPreviewFilter: SmileyConvert()
+        });
+    }
+
 ////////////////////////////////////////
 // 6.3 GC - User defined searchs ($$cap) (User defined searchs on the geocaching webpages.)
 ////////////////////////////////////////
@@ -14556,6 +14610,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
+            html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
@@ -16192,6 +16247,7 @@ var mainGC = function() {
                 'settings_public_profile_avatar_show_thumbnail',
                 'settings_drafts_download_show_button',
                 'settings_drafts_download_change_logdate',
+                'settings_dashboard_show_logs_in_markdown',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
