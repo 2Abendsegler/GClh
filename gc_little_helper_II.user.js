@@ -8640,7 +8640,7 @@ var mainGC = function() {
 
             // Build log texts in Markdown.
             function buildLogtextMarkdownAF(log) {
-                if (!settings_dashboard_show_logs_in_markdown || $(log).find('.gclh_logText')[0] || !$(log).attr('logId') || !$(log).find('.note-text')[0]) return;
+                if (!settings_dashboard_show_logs_in_markdown || $(log).find('.gclh_logText')[0] || !$(log).hasClass('active') || !$(log).attr('logId') || !$(log).find('.note-text')[0]) return;
                 var logText = decode_innerHTML($('#gclh_logId_' + $(log).attr('logId'))[0]);
                 $(log).find('.note-text').after('<textarea class="gclh_logText" style="display: none;">'+logText+'</textarea>');
                 $(log).find('.gclh_logText').after('<div class="mdd_preview markdown-output note-text" style="height: 100%"></div>');
@@ -8654,7 +8654,7 @@ var mainGC = function() {
             // behandeln kann. Das passiert insbesonder wenn Markdown Elemente im Text vorhanden sind. Deshalb werden die Logtexte hier in ihrem
             // Anfangszustand gesichert, um immer wieder darauf zuzugreifen.
             var logId = 0;
-            function sichernLogtextMarkdownAF(log) {
+            function backupLogtextMarkdownAF(log) {
                 if (!settings_dashboard_show_logs_in_markdown || $(log).attr('logId') || !$(log).find('.note-text')[0]) return;
                 if (!$('#gclh_logs')[0]) $('#ActivityFeed').append('<div id="gclh_logs" style="display: none"><ul></ul></div>');
                 logId++;
@@ -8684,8 +8684,7 @@ var mainGC = function() {
                         if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
                         }
-                        sichernLogtextMarkdownAF($($('#ActivityFeed .activity-item')[i]));
-                        buildLogtextMarkdownAF($($('#ActivityFeed .activity-item')[i]));
+                        backupLogtextMarkdownAF($($('#ActivityFeed .activity-item')[i]));
                     }
                 }
                 waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
