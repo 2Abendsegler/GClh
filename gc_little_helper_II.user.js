@@ -2073,11 +2073,19 @@ var mainGC = function() {
             // Automatic go back to drafts page.
             if (settings_drafts_go_automatic_back) document.location = 'https://www.geocaching.com/account/drafts';
             // Automatic go to view log page.
-            else if (settings_drafts_after_new_logging_view_log && $('#uxViewNewLogLink')[0]) document.location = $('#uxViewNewLogLink')[0].href;
+            else if (settings_drafts_after_new_logging_view_log && $('#uxViewNewLogLink')[0]) document.location = $('#uxViewNewLogLink')[0].href + '&gclhDraft';
         // Non Drafts related logging with new log form.
         } else if (is_page("cache_listing") && $('#uxViewNewLogLink')[0] && !$('#uxNewLogExtraLink')[0]) {
             // Automatic go to view log page.
             if (settings_after_new_logging_view_log) document.location = $('#uxViewNewLogLink')[0].href;
+        }
+        // After automatic go to view log page, because of Drafts related logging with new log form.
+        if (document.location.href.match(/\.com\/seek\/log\.aspx\?LUID=(.*)&gclhDraft/) && $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p')[0]) {
+            if (!document.location.href.match(/&edit=true/) && !$('#ctl00_ContentBody_LogBookPanel1_btnCancel')[0]) {
+                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel')[0].style.float = 'none';
+                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p')[0].style.float = 'right';
+                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p').before('<span id="ctl00_ContentBody_LogBookPanel1_lblErrorMessage" class="Warning" style="float: left"><p class="Success">You have submitted your draft. <a href="/my/fieldnotes.aspx" title="Submit more drafts">Submit more drafts</a>.</p></span>');
+            }
         }
     } catch(e) {gclh_error("Automatic processing from listing after logging",e);}
 
