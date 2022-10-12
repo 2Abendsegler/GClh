@@ -1170,11 +1170,11 @@ var mainCertitudes = function() {
                     output += '<br>Info: ' + information;
                 }
                 if (document.getElementsByTagName('a')[5]) {
-                    if ((document.getElementsByTagName('a')[5].children[0]) && (document.getElementsByTagName('a')[5].children[0].tagName == 'IMG')) {
+                    if (document.getElementsByTagName('a')[5].children[0] && document.getElementsByTagName('a')[5].children[0].tagName == 'IMG') {
                         var spoiler = document.getElementsByTagName('a')[5].children[0].src;
                         output += '<br>Spoiler: ' + spoiler;
                     }
-                    if ((document.getElementsByTagName('a')[5].href) && (document.getElementsByTagName('a')[5].download)) {
+                    if (document.getElementsByTagName('a')[5].href && document.getElementsByTagName('a')[5].download) {
                         var fileurl = document.getElementsByTagName('a')[5].href;
                         var filename = document.getElementsByTagName('a')[5].download;
                         output += '<br>' + filename + ': ' + fileurl;
