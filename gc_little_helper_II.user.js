@@ -4789,6 +4789,20 @@ var mainGC = function() {
                     $('.pq-legend')[0].remove();
                 }
             }
+            // Mark up to 10 PQs with right click in active and downloadable table.
+            $('table.PocketQueryListTable tbody input[type*="checkbox"]').each(function() {
+                this.oncontextmenu = function(){return false;};
+                this.title = 'click to mark\n(right click to mark 10)';
+                $(this).bind('contextmenu.new', function(e) {
+                    var rowIndex = this.closest('tr').rowIndex;
+                    var checked = $(this).prop('checked') ? false : true;
+                    $(this).closest('table').find('tbody input[type*="checkbox"]').each(function() {
+                        if (this.closest('tr').rowIndex >= rowIndex && this.closest('tr').rowIndex < rowIndex+10) {
+                            $(this).prop('checked', checked);
+                        }
+                    });
+                });
+            });
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
             // Delete button on both tabs (Active and Downloadable).
