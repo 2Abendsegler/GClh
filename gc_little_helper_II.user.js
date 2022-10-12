@@ -1181,11 +1181,13 @@ var mainCertitudes = function() {
                     }
                 }
                 output += '</div></div><br>';
-                document.getElementById('inputArea').nextElementSibling.outerHTML += output;
-                var copyBtn = document.querySelector('.gclh_copy_btn');
-                copyBtn.addEventListener('click', function(event) {
-                    copyElementByIdToClipboard('gclh_solution');
-                })
+                if (document.getElementById('inputArea')) {
+                    document.getElementById('inputArea').nextElementSibling.outerHTML += output;
+                    var copyBtn = document.querySelector('.gclh_copy_btn');
+                    copyBtn.addEventListener('click', function(event) {
+                        copyElementByIdToClipboard('gclh_solution');
+                    })
+                }
             }
             function copyElementByIdToClipboard(element) {
                 try {
