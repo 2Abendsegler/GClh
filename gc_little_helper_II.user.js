@@ -858,13 +858,13 @@ var mainPGC = function() {
             html += '<input id="how_often_' + table_index + '_0" class="how_often" name="how_often_' + table_index + '" type="radio" index="0"><label for="how_often_' + table_index + '_0">Uncheck the day of the week after the PQ(s) run</label><br>';
             html += '<input id="how_often_' + table_index + '_1" class="how_often" name="how_often_' + table_index + '" type="radio" index="1"><label for="how_often_' + table_index + '_1">Run the PQ(s) every week on the days checked</label><br>';
             html += '<input id="how_often_' + table_index + '_2" class="how_often" name="how_often_' + table_index + '" type="radio" index="2"><label for="how_often_' + table_index + '_2">Run the PQ(s) once then delete it</label></p>';
-            html += '<p><input id="not_ignored_' + table_index + '" class="not_ignored" type="checkbox" ' + (settings_pq_splitter_not_ignored ? "checked=''" : "") + '"><label for="not_ignored">Are not on my ignore list</label><br>';
-            html += '<input id="is_enabled_' + table_index + '" class="is_enabled" type="checkbox" ' + (settings_pq_splitter_is_enabled ? "checked=''" : "") + '"><label for="is_enabled">Is Enabled</label></p>';
+            html += '<p><input id="not_ignored_' + table_index + '" class="not_ignored" type="checkbox" ' + (settings_pq_splitter_not_ignored ? "checked=''" : "") + '"><label for="not_ignored_' + table_index + '">Are not on my ignore list</label><br>';
+            html += '<input id="is_enabled_' + table_index + '" class="is_enabled" type="checkbox" ' + (settings_pq_splitter_is_enabled ? "checked=''" : "") + '"><label for="is_enabled_' + table_index + '">Is Enabled</label></p>';
             html += '<p>Output to email: <select class="output_email">';
             html += '<option value="1">Primary</option>';
             html += '<option value="2">Secondary</option></select><br>';
             html += '<span>The secondary email will only work if you have two or more email addresses in your profile.</span></p>';
-            html += '<p><input id="include_pq_name_' + table_index + '" class="include_pq_name" type="checkbox" ' + (settings_pq_splitter_include_pq_name ? "checked=''" : "") + '"><label for="include_pq_name">Include pocket query name in download file name</label></p>';
+            html += '<p><input id="include_pq_name_' + table_index + '" class="include_pq_name" type="checkbox" ' + (settings_pq_splitter_include_pq_name ? "checked=''" : "") + '"><label for="include_pq_name_' + table_index + '">Include pocket query name in download file name</label></p>';
             html += '<h5>Instruction:</h5>';
             html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
             html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected.</p>';
@@ -4798,6 +4798,20 @@ var mainGC = function() {
                     $('.pq-legend')[0].remove();
                 }
             }
+            // Mark up to 10 PQs with right click in active and downloadable table.
+            $('table.PocketQueryListTable tbody input[type*="checkbox"]').each(function() {
+                this.oncontextmenu = function(){return false;};
+                this.title = 'click to mark\n(right click to mark 10)';
+                $(this).bind('contextmenu.new', function(e) {
+                    var rowIndex = this.closest('tr').rowIndex;
+                    var checked = $(this).prop('checked') ? false : true;
+                    $(this).closest('table').find('tbody input[type*="checkbox"]').each(function() {
+                        if (this.closest('tr').rowIndex >= rowIndex && this.closest('tr').rowIndex < rowIndex+10) {
+                            $(this).prop('checked', checked);
+                        }
+                    });
+                });
+            });
             // "Find cache along a route" als Button.
             if ($('#uxFindCachesAlongaRoute.btn.btn-secondary').length > 0) $('#uxFindCachesAlongaRoute')[0].className = "btn btn-primary";
             // Delete button on both tabs (Active and Downloadable).
