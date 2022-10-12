@@ -1161,11 +1161,11 @@ var mainCertitudes = function() {
                 output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
                 output += '<div id="gclh_solution" style="word-break: break-word;">';
                 output += 'Certitude: ' + solution;
-                if (document.getElementsByTagName('h1')[2]) {
+                if (document.getElementsByTagName('h1')[2] && document.getElementsByTagName('h1')[2].children[0]) {
                     var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
                     output += '<br><br>Final: ' + coord;
                 }
-                if (document.getElementsByTagName('h3')[1]) {
+                if (document.getElementsByTagName('h3')[1] && document.getElementsByTagName('h3')[1].children[0]) {
                     var information = document.getElementsByTagName('h3')[1].children[0].textContent;
                     output += '<br>Info: ' + information;
                 }
