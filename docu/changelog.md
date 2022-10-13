@@ -59,6 +59,9 @@
 	</li>
 	<li>
 		<strong>New:</strong> [New Dashboard] Show log text in Markdown as it is in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2223" title="Issue 2223">2223</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Without Markdown:<br>
+		<img src="../images/0.12/Screen07.jpg" alt="Screen07.jpg"><br>
+		With Markdown:
 		<img src="../images/0.12/Screen08.jpg" alt="Screen08.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_show_logs_in_markdown" title="Link to your GClh II Config">Settings -> Dashboard - New Dashboard Only:</a><br>
 		<img src="../images/0.12/Screen09.jpg" alt="Screen09.jpg"><br><br>
@@ -80,6 +83,13 @@
 		If you want to use one of the features, you have to activate it.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Cache Listing] Add logs by Lackeys to VIP-List. [<a href="https://github.com/2Abendsegler/GClh/issues/2203" title="Issue 2203">2203</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen12.jpg" alt="Screen12.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_lackey_as_vip" title="Link to your GClh II Config">Settings -> Dashboard - New Dashboard Only:</a><br>
+		<img src="../images/0.12/Screen13.jpg" alt="Screen13.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Certitude] Error if a file is specified. [<a href="https://github.com/2Abendsegler/GClh/issues/2227" title="Issue 2227">2227</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
 	</li>
 	<li>
@@ -90,6 +100,9 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] The checkboxes in the cache list are no longer one below the other on the right side. [<a href="https://github.com/2Abendsegler/GClh/issues/2213" title="Issue 2213">2213</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Friends List] Error on page if "Show summary for new finds/hides in friends list" is deactivated. [<a href="https://github.com/2Abendsegler/GClh/issues/2205" title="Issue 2205">2205</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
 	</li>
 </ul>
 <br>
