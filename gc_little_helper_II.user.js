@@ -12920,8 +12920,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/ine"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/HqcA/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/inM"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/6nL1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14142,7 +14142,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "02.10.2022";
+            var thanksLastUpdate = "14.10.2022";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14191,9 +14191,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple') + "<br>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += checkboxy('settings_remove_banner', 'Hide banner') + "<br>";
             html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
@@ -14287,20 +14285,16 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List of Pocket Queries</b></div>";
             html += checkboxy('settings_fixed_pq_header', 'Show fixed header and footer') + show_help("Convenient for large list of pocket queries. With this option, you get a permanent view of the headers (weekday information) and footer (the number of running / remaining PQs) even if your list of pocket quieries is larger than your monitor.") + "<br>"
             html += checkboxy('settings_compact_layout_list_of_pqs', 'Show compact layout') + "<br>";
-            html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_both_tabs_list_of_pqs_one_page', 'Show both tabs of one page') + show_help("Show the both tabs \"Active Pocket Queries\" and \"Pocket Queries Ready for Download\" together of one page.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Pocket Query</b></div>";
             html += checkboxy('settings_pq_warning', "Show a message in case of wrong settings") + show_help("Show a message if one or more options are in conflict. This helps to avoid pocket queries without results.") + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_pq_previewmap','Show preview map for coordinates from origin') + "&nbsp;";
             html += '<select class="gclh_form" id="settings_pq_previewmap_layer" style="width: 200px;">';
             for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_pq_previewmap_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
             html += '</select>'+ "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Default Values for a New Pocket Query</b></div>";
             html += checkboxy('settings_pq_set_cachestotal', "Set number of caches to ") + "<input class='gclh_form' size=4 type='text' id='settings_pq_cachestotal' value='" + settings_pq_cachestotal + "'><br>";
@@ -14317,9 +14311,7 @@ var mainGC = function() {
             var content_settings_show_log_it = checkboxy('settings_show_log_it', 'Show \"Log it\" icon in PQ, nearest and recently viewed caches list') + show_help("The GC little helper II \"Log it\" icon is displayed beside cache titles in a pocket query caches list, in a nearest caches list and in a recently viewed caches list. If you click it, you will be redirected directly to the log form.<br><br>You can use it too as basic member to log premium member only (PMO) caches.") + "<br>";
             html += content_settings_show_log_it;
             html += checkboxy('settings_compact_layout_pqs', 'Show compact layout') + "<br>";
-            html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_fav_proz_pqs', 'Show favorites percentage') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             var content_settings_open_tabs = " &nbsp; " + checkboxy('settings_open_tabs_pqs', 'Show a button to open selected caches in new browser tabs') + show_help("This option displays a button to open selected caches in new browser tabs. The feature is available in a pocket query caches list and in a nearest caches list if the compact layout feature for the pocket query caches list respectively the compact layout for the nearest caches list is activated.<br><br>If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.") + "<br>";
             html += content_settings_open_tabs;
@@ -14332,9 +14324,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_nearestuser_profil_link', 'Show profile link at search lists for caches created or found by user') + show_help("This option adds an link to the public user profile, when you are searching for caches created or found by a certain user.") + "<br>";
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX0");
             html += checkboxy('settings_compact_layout_nearest', 'Show compact layout') + "<br>";
-            html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_fav_proz_nearest', 'Show favorites percentage') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += content_settings_open_tabs.replace('settings_open_tabs_pqs','settings_open_tabs_nearest');
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -14342,11 +14332,9 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","recview")+"<label for='lnk_gclh_config_recview'>Recently Viewed Caches List</label></h4>";
             html += "<div id='gclh_config_recview' class='gclh_block'>";
-            html += newParameterOn3;
             html += content_settings_show_log_it.replace("show_log_it","show_log_itX1");
             html += checkboxy('settings_compact_layout_recviewed', 'Show compact layout') + "<br>";
             html += " &nbsp; " + checkboxy('settings_fav_proz_recviewed', 'Show favorites percentage') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","bm")+"<label for='lnk_gclh_config_bm'>Bookmark List</label>" + prem + "</h4>";
@@ -14374,9 +14362,7 @@ var mainGC = function() {
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_lists_open_tabs', 'Open selected caches in new browser tabs') + show_help("This feature add an entry in the dropdown menu to open selected caches in new browser tabs. The feature is available in own and foreign bookmark lists and in the ignore list.<br><br>If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
-            html += newParameterOn3;
             html += checkboxy('settings_bm_changed_and_go', 'After change of old bookmark go to bookmark list automatically') + show_help("With this option you can switch to the bookmark list automatically after a change of a bookmark (old form). The confirmation page of this change will skip.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","friends")+"<label for='lnk_gclh_config_friends'>Friends List</label></h4>";
@@ -14542,7 +14528,6 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack Page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterOn3;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the popup on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
@@ -14550,7 +14535,6 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a popup.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the place') + show_help("With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -14561,9 +14545,9 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","profile")+"<label for='lnk_gclh_config_profile'>Public Profile</label></h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
-            html += newParameterOn2;
+            html += newParameterOn3;
             html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
             html += checkboxy('settings_profile_old_links', 'Use old links to finds and hides caches') + show_help("The links to finds and hides caches in the public profile run through the new search. With this option you can use the old search again.") + "<br>";
@@ -14616,14 +14600,12 @@ var mainGC = function() {
             html += checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" list on your dashboard') + show_help("With this option there will be an small mail icon beside every user in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)") + "<br>";
 
             html += "<div class='gclh_old_new_line'>New Dashboard Only</div>";
-            html += newParameterOn3;
             html += checkboxy('settings_show_default_links', 'Show all default links on your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar on your dashboard.") + "<br>";
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to ignore list in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
@@ -14635,8 +14617,10 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
-            html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             html += newParameterVersionSetzen('0.10') + newParameterOff;
@@ -14664,9 +14648,7 @@ var mainGC = function() {
             }
             html += "</select> latest logs symbols at the top" + show_help("With this option, the choosen count of the latest logs symbols is shown at the top of the cache listing.") + "<br>";
             html += checkboxy('settings_show_fav_percentage', 'Show percentage of favorite points') + show_help("This option loads the favorite stats of a cache in the backround and display the percentage under the amount of favorites a cache got.") + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_show_log_totals', 'Show the log totals icons at the top') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for premium member only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + "<br>";
 
@@ -14674,7 +14656,6 @@ var mainGC = function() {
             html += "&nbsp;" + "Highlight user changed coordinates with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">preferences</a>" + "<br>";
-            html += newParameterOn3;
             html += "&nbsp;&nbsp;&nbsp;" + "First service <select class='gclh_form' id='settings_primary_elevation_service' style='width: 160px;'>";
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
@@ -14685,7 +14666,6 @@ var mainGC = function() {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select><br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_show_link_to_browse_map', 'Show link to Browse Map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Disclaimer</b>" + "</div>";
@@ -14699,9 +14679,7 @@ var mainGC = function() {
             }
             html += "</select> px" + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += newParameterOn3;
             html += checkboxy('settings_adapt_height_cache_notes', 'Adapt the height of the personal cache note edit field') + show_help("The height of the personal cache note edit field will be expand to show the complete note.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_hide_empty_cache_notes', 'Hide personal cache notes if empty') + show_help("You can hide the personal cache notes if they are empty. There will be a link to show them to add a note.") + "<br>";
             html += checkboxy('settings_hide_cache_notes', 'Hide personal cache notes completely') + show_help("You can hide the personal cache notes completely, if you don't want to use them.") + "<br>";
             html += newParameterOn2;
@@ -14729,11 +14707,9 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show radius around caches on Flopp\'s Map') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use geocaching icons on GPSVisualizer map') + show_help("Instead of default icons, geocaching icons are used. If the URL is too long, disable this option.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help("Transfer for every waypoint the type as text in the description. If the URL is too long, disable this option.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh II Config, as start point and first waypoint for the route calculation.") + "<br>";
@@ -14783,7 +14759,6 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Overview Map <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location.") + "<br>";
-            html += newParameterOn3;
             html += ' &nbsp; &nbsp;Map layer <select class="gclh_form" id="settings_map_overview_layer">';
             for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
@@ -14794,7 +14769,6 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select>" + show_help("With this option you can choose the zoom value to start in the map. \"1\" is the hole world and \"19\" is the maximal enlargement. Default is \"11\".") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += "&nbsp; " + checkboxy('settings_map_overview_browse_map_icon', 'Show icon with link to Browse Map in overview map') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_map_overview_browse_map_icon_new_tab', 'Open link in new browser tab') + "<br>";
@@ -14805,12 +14779,10 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>VIP-Lists <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_show_vip_listX0', 'Process VIPs') + show_help(content_settings_show_vip_list + "<br><br>You can adjust details about this feature also in the Dashboard topic.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.")+ "<br>";
-            html += newParameterOn3;
             html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
-            html += newParameterOn2;
+            html += newParameterOn3;
             html += "&nbsp; " + checkboxy('settings_show_lackey_as_vip', 'Show lackey in VIP list')  + show_help("If you enable this option, lackeys which logged the cache are VIPs for the cache. Behind the logs of lackeys are primarily employees of Groundspeak who cache. In addition, administrative logs can also be performed by these lackeys. Administrative user of Groundspeak may also be flagged as lackeys. An example of the latter are the logs for archiving older events.") + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
             html += "&nbsp; " + checkboxy('settings_make_vip_lists_hideable', 'Make VIP lists in listing hideable') + show_help("With this option you can hide and show the VIP lists \"VIP-List\" and \"VIP-List not found\" in cache listing with one click.") + "<br>";
@@ -14836,7 +14808,6 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypointsX0', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">preferences</a>" + "<br>";
-            html += newParameterOn3;
             html += "&nbsp;&nbsp;&nbsp;" + "First service <select class='gclh_form' id='settings_primary_elevation_serviceX0' style='width: 160px;'>";
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
@@ -14847,7 +14818,6 @@ var mainGC = function() {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select><br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Owner Images</b>" + "</div>";
             html += checkboxy('settings_link_big_listing', 'Replace image links in cache listing to bigger image') + show_help("With this option the links of owner images in the cache listing points to the bigger, original image.") + "<br>";
@@ -14871,17 +14841,13 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_add_search_in_logs_func', 'Add "Search in logs" feature') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += newParameterOn3;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
-            html += newParameterOn3;
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             var content_upvotes_help = show_help("With this option you can show/hide the whole upvotes feature consist of the logs sort button \"Order by\" above the logs and the buttons \"Great story\" and \"Helpful\" in the logs.");
             html += checkboxy('settings_show_hide_upvotes_but', 'Show button \"Hide upvotes\" above the logs') + content_upvotes_help + "<br>";
@@ -14915,9 +14881,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","draft")+"<label for='lnk_gclh_config_draft'>Draft</label></h4>";
             html += "<div id='gclh_config_draft' class='gclh_block'>";
-            html += newParameterOn3;
             html += checkboxy('settings_modify_new_drafts_page', 'Change the look and functionality of draft items') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += "&nbsp; " + checkboxy('settings_drafts_cache_link', 'Use cache name as link to the cache listing') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_new_tab', 'Open link in new browser tab') + "<br>";
@@ -14925,8 +14889,14 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
             var content_settings_after_sending_log = 'After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br><br>';
-            var content_settings_after_sending_draft_related_log = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>" + checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
-            html += content_settings_after_sending_draft_related_log;
+            var content_settings_after_sending_draft_related_log1 = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>";
+            var content_settings_after_sending_draft_related_log2 = checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            html += content_settings_after_sending_draft_related_log1;
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn3;
+            html += content_settings_after_sending_draft_related_log2;
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
+            html += newParameterOn2;
             html += checkboxy('settings_drafts_download_show_button', 'Enable draft download feature') + show_help("With this option you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_download_change_logdate', 'Change log dates of the drafts in download file') + show_help("With this option you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -14936,9 +14906,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_auto_open_tb_inventory_list', 'Auto open trackable inventory') + show_help("If you enable this option, the list of your trackables is automatically expended when you load the log page.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_autovisit_default', 'Set \"AutoVisit\" for all TBs by default') + show_help("With this option all new TBs in your inventory are automatically set to \"AutoVisit\".") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
@@ -14949,9 +14917,12 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
-            html += content_settings_after_sending_draft_related_log.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0").replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
-            html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            html += content_settings_after_sending_draft_related_log1.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0");
             html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn3;
+            html += content_settings_after_sending_draft_related_log2.replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
+            html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
@@ -14967,9 +14938,7 @@ var mainGC = function() {
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
             html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
-            html += newParameterOn3;
             html += checkboxy('settings_show_pseudo_as_owner', 'Replace placeholder owner, although there could be a pseudonym') + show_help("If you disable this option, the placeholder for the owner cannot be replaced on the newly designed log page.<br><br>If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<div class='gclh_old_new_line'>Old Log Page Only</div>";
             html += newParameterOn2;
@@ -15022,9 +14991,7 @@ var mainGC = function() {
             html += "&nbsp;" + checkboxy('remove_navi_community', 'Community') + "<br>";
             html += "&nbsp;" + checkboxy('remove_navi_shop', 'Shop') + "<br>";
             html += checkboxy('settings_bookmarks_search', 'Show searchfield. Default value ') + "<input class='gclh_form' type='text' id='settings_bookmarks_search_default' value='" + settings_bookmarks_search_default + "' size='4'>" + show_help("If you enable this option, there will be a searchfield on the top of all GC pages. In this field you can search for GC Ids, TB Ids, tracking numbers, coordinates, ... . Also you can define a default value if you want (like GC ...).<br><br>This option requires \"Show Linklist on top\".") + "<br>";
-            html += newParameterOn3;
             html += checkboxy('settings_show_draft_indicator', 'Show draft indicator') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
 
             html += "<input type='radio' " + (settings_bookmarks_top_menu ? "checked='checked'" : "" ) + " name='top_menu' id='settings_bookmarks_top_menu' style='margin-top: 9px;'><label for='settings_bookmarks_top_menu' class='gclh_ref'>Show Linklist at menu as dropdown list</label>" + show_help("With this option your Linklist will be shown at the navigation menu as a dropdown list beside the others.") + "<br>";
             html += "<div id='box_top_menu_v' style='margin-left: 16px; margin-bottom: 2px; height: 141px;' >";
@@ -15169,7 +15136,6 @@ var mainGC = function() {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
-                    if (num >= 70 && num <= 74 || num == 25) html += newParameterLL3;
                     if (num >= 75 && num <= 88) html += newParameterLL1;
                 }
                 html += "  </td>";
@@ -15179,7 +15145,6 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
-                    if (num >= 70 && num <= 74 || num == 25) html += newParameterLLVersionSetzen(0.9);
                     if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10");
                 }
                 html += "  </td></tr>";
@@ -15191,9 +15156,7 @@ var mainGC = function() {
             // Section Development.
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","development")+"<label for='lnk_gclh_config_development'>Development</label></h4>";
             html += "<div id='gclh_config_development' class='gclh_block'>";
-            html += newParameterOn3;
             html += checkboxy('settings_gclherror_alert', 'Show an alert if an internal error occurs') + "<br>";
-            html += newParameterVersionSetzen(0.9) + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_test_log_console', 'Checks log to console') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -16338,12 +16301,12 @@ var mainGC = function() {
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span class='gclh_new_para#' style='float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
 //--> $$001
-    newParameterOn1 = d.replace("#", "06");
-    newParameterOn2 = d.replace("#", "10");
-    newParameterOn3 = d.replace("#", "03");
-    newParameterLL1 = s.replace("#", "06");
-    newParameterLL2 = s.replace("#", "10");
-    newParameterLL3 = s.replace("#", "03");
+    newParameterOn1 = d.replace("#", "03");
+    newParameterOn2 = d.replace("#", "06");
+    newParameterOn3 = d.replace("#", "10");
+    newParameterLL1 = s.replace("#", "03");
+    newParameterLL2 = s.replace("#", "06");
+    newParameterLL3 = s.replace("#", "10");
 //<-- $$001
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
