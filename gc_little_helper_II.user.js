@@ -2074,27 +2074,29 @@ var mainGC = function() {
         }
     }
 
-// Automatic processing from listing after logging with new log form.
-    if (is_page("cache_listing")) {
-        try {
-            // Link to new log after logging with new log form.
-            if ($('#uxViewNewLogLink')[0] && $('#uxViewNewLogLink')[0].href) {
-                // Drafts related.
-                if (document.location.href.match(/\.com\/geocache\/GC[A-Z0-9]{1,10}\?dluid/) || (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0] && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage')[0].children[0].className.toLowerCase() == "success")) {
-                    // Go automatic to drafts page.
-                    if (settings_drafts_go_automatic_back) {
-                        document.location = 'https://www.geocaching.com/account/drafts';
-                    // Go automatic to view log page.
-                    } else if (settings_drafts_after_new_logging_view_log) {
-                        document.location = $('#uxViewNewLogLink')[0].href;
-                    }
-                // Not drafts related. Go automatic to view log page.
-                } else if (settings_after_new_logging_view_log) {
-                    document.location = $('#uxViewNewLogLink')[0].href;
-                }
+// Automatic processing after logging with new or old log form.
+    try {
+        // Drafts related logging with new or old log form.
+        if ((is_page("cache_listing") && $('#uxViewNewLogLink')[0] && $('#uxNewLogExtraLink')[0]) ||
+            (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage .Success')[0])) {
+            // Automatic go back to drafts page.
+            if (settings_drafts_go_automatic_back) document.location = 'https://www.geocaching.com/account/drafts';
+            // Automatic go to view log page.
+            else if (settings_drafts_after_new_logging_view_log && $('#uxViewNewLogLink')[0]) document.location = $('#uxViewNewLogLink')[0].href + '&gclhDraft';
+        // Non Drafts related logging with new log form.
+        } else if (is_page("cache_listing") && $('#uxViewNewLogLink')[0] && !$('#uxNewLogExtraLink')[0]) {
+            // Automatic go to view log page.
+            if (settings_after_new_logging_view_log) document.location = $('#uxViewNewLogLink')[0].href;
+        }
+        // After automatic go to view log page, because of Drafts related logging with new log form.
+        if (document.location.href.match(/\.com\/seek\/log\.aspx\?LUID=(.*)&gclhDraft/) && $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p')[0]) {
+            if (!document.location.href.match(/&edit=true/) && !$('#ctl00_ContentBody_LogBookPanel1_btnCancel')[0]) {
+                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel')[0].style.float = 'none';
+                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p')[0].style.float = 'right';
+                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p').before('<span id="ctl00_ContentBody_LogBookPanel1_lblErrorMessage" class="Warning" style="float: left"><p class="Success">You have submitted your draft. <a href="/my/fieldnotes.aspx" title="Submit more drafts">Submit more drafts</a>.</p></span>');
             }
-        } catch(e) {gclh_error("Automatic processing from listing after logging",e);}
-    }
+        }
+    } catch(e) {gclh_error("Automatic processing from listing after logging",e);}
 
 // Collection of css for cache listings.
     if (is_page("cache_listing")) {
@@ -14922,7 +14924,8 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
-            var content_settings_after_sending_draft_related_log = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help('After sending a new log using the new log form, the listing will appear. If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>" + checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help('After sending a new log using the new log form, the listing will appear. If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            var content_settings_after_sending_log = 'After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br><br>';
+            var content_settings_after_sending_draft_related_log = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>" + checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += content_settings_after_sending_draft_related_log;
             html += checkboxy('settings_drafts_download_show_button', 'Enable draft download feature') + show_help("With this option you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_download_change_logdate', 'Change log dates of the drafts in download file') + show_help("With this option you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible.") + "<br>";
@@ -14946,6 +14949,8 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
+            html += content_settings_after_sending_draft_related_log.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0").replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
+            html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
@@ -14962,10 +14967,6 @@ var mainGC = function() {
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
 
             html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
-            html += newParameterOn2;
-            html += content_settings_after_sending_draft_related_log.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0").replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
-            html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help('After sending a new log using the new log form, the listing will appear. If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_pseudo_as_owner', 'Replace placeholder owner, although there could be a pseudonym') + show_help("If you disable this option, the placeholder for the owner cannot be replaced on the newly designed log page.<br><br>If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
             html += newParameterVersionSetzen(0.9) + newParameterOff;
