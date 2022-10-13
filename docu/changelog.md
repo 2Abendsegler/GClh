@@ -61,7 +61,7 @@
 		<strong>New:</strong> [New Dashboard] Show log text in Markdown as it is in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2223" title="Issue 2223">2223</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Without Markdown:<br>
 		<img src="../images/0.12/Screen07.jpg" alt="Screen07.jpg"><br>
-		With Markdown:
+		With Markdown:<br>
 		<img src="../images/0.12/Screen08.jpg" alt="Screen08.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_show_logs_in_markdown" title="Link to your GClh II Config">Settings -> Dashboard - New Dashboard Only:</a><br>
 		<img src="../images/0.12/Screen09.jpg" alt="Screen09.jpg"><br><br>
@@ -90,6 +90,19 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Draft] Download der eigenen Drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/645" title="Issue 645">645</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		You can use the download of the drafts for a backup, especially if you have many drafts, and you can use the downloaded file to process the drafts somewhere elsewhere.<br>
+		<img src="../images/0.12/Screen05.gif" alt="Screen05.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_download_show_button" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<img src="../images/0.12/Screen06.jpg" alt="Screen06.jpg"><br>
+		With the first parameter you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.<br>
+		With the second parameter you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible. If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [PQ-Splitter] Additional settings on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2196" title="Issue 2196">2196</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Certitude] Error if a file is specified. [<a href="https://github.com/2Abendsegler/GClh/issues/2227" title="Issue 2227">2227</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
 	</li>
 	<li>
@@ -100,6 +113,10 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] The checkboxes in the cache list are no longer one below the other on the right side. [<a href="https://github.com/2Abendsegler/GClh/issues/2213" title="Issue 2213">2213</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Searchs] "Manage Filter Sets" button is no longer displayed correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2170" title="Issue 2170">2170</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The feature is not available. The parameter has been deactivated.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Friends List] Error on page if "Show summary for new finds/hides in friends list" is deactivated. [<a href="https://github.com/2Abendsegler/GClh/issues/2205" title="Issue 2205">2205</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
