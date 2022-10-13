@@ -8,7 +8,7 @@
 
 ## Supported Browsers
 <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">&nbsp;
-<img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom">&nbsp;
+<img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrom">&nbsp;
 <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">&nbsp;
 <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
 <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">&nbsp;
@@ -46,7 +46,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 
 ## Unterstützte Browsers
 <img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">&nbsp;
-<img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom">&nbsp;
+<img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrome">&nbsp;
 <img src="/images/safari_logo_small.png" title="Safari" alt="Safari">&nbsp;
 <img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
 <img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">&nbsp;
