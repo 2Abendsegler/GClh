@@ -49,13 +49,29 @@
 &nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>New:</strong> [Draft] Download der eigenen Drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/645" title="Issue 645">645</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		You can use the download of the drafts for a backup, especially if you have many drafts, and you can use the downloaded file to process the drafts somewhere elsewhere.<br>
+		<img src="../images/0.12/Screen05.gif" alt="Screen05.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_download_show_button" title="Link to your GClh II Config">Settings -> Draft:</a><br>
+		<img src="../images/0.12/Screen06.jpg" alt="Screen06.jpg"><br>
+		With the first parameter you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.<br>
+		With the second parameter you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible. If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Log Form] Automatic view posted log after logging. [<a href="https://github.com/2Abendsegler/GClh/issues/2208" title="Issue 2208">2208</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear. If it was a draft related log, you can enable an option to automatic go back to the drafts page (older parameter) or you can enable an option to automatic go to view log page. If it was a non draft related log, you can enable an option to automatic go to view log page.<br>		
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_automatic_backX0" title="Link to your GClh II Config">Settings -> Log:</a><br>
+		<img src="../images/0.12/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use one of the features, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [PQ-Splitter] Additional settings on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2196" title="Issue 2196">2196</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [PQ-Splitter] Add information on how to change pop-up blocker settings on Project-GC's PQ splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2234" title="Issue 2234">2234</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		We have added links to information on how to change pop-up blocker settings on Project-GC's PQ splitter page. We have added links for browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting">Mozilla Firefox</a> and browser <a href="https://support.google.com/chrome/answer/95472">Google Chrome</a>.<br>
 		<img src="../images/0.12/Screen11.jpg" alt="Screen11.jpg"><br><br>
-	</li>
-	<li>
-		<strong>New:</strong> [Pocket Query] Mark 10 PQs with right click. [<a href="https://github.com/2Abendsegler/GClh/issues/2228" title="Issue 2228">2228</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.12/Screen10.gif" alt="Screen10.gif"><br><br> 
 	</li>
 	<li>
 		<strong>New:</strong> [New Dashboard] Show log text in Markdown as it is in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2223" title="Issue 2223">2223</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -74,13 +90,8 @@
 		This option requires <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX1" title="Link to your GClh II Config">"Show thumbnails of images"</a>.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Log Form] Automatic view posted log after logging. [<a href="https://github.com/2Abendsegler/GClh/issues/2208" title="Issue 2208">2208</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br>
-		If it was a draft related log, you can enable an option to automatic go back to the drafts page (older parameter) or you can enable an option to automatic go to view log page.<br>
-		If it was a non draft related log, you can enable an option to automatic go to view log page.<br>		
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_automatic_backX0" title="Link to your GClh II Config">Settings -> Log:</a><br>
-		<img src="../images/0.12/Screen02.jpg" alt="Screen02.jpg"><br>
-		If you want to use one of the features, you have to activate it.<br><br>
+		<strong>New:</strong> [Pocket Query] Mark 10 PQs with right click. [<a href="https://github.com/2Abendsegler/GClh/issues/2228" title="Issue 2228">2228</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen10.gif" alt="Screen10.gif"><br><br> 
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Add logs by Lackeys to VIP-List. [<a href="https://github.com/2Abendsegler/GClh/issues/2203" title="Issue 2203">2203</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -88,19 +99,6 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_lackey_as_vip" title="Link to your GClh II Config">Settings -> Dashboard - New Dashboard Only:</a><br>
 		<img src="../images/0.12/Screen13.jpg" alt="Screen13.jpg"><br>
 		If you want to use this feature, you have to activate it.<br><br>
-	</li>
-	<li>
-		<strong>New:</strong> [Draft] Download der eigenen Drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/645" title="Issue 645">645</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		You can use the download of the drafts for a backup, especially if you have many drafts, and you can use the downloaded file to process the drafts somewhere elsewhere.<br>
-		<img src="../images/0.12/Screen05.gif" alt="Screen05.gif"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_download_show_button" title="Link to your GClh II Config">Settings -> Draft:</a><br>
-		<img src="../images/0.12/Screen06.jpg" alt="Screen06.jpg"><br>
-		With the first parameter you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.<br>
-		With the second parameter you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible. If you want to use this feature, you have to activate it.<br><br>
-	</li>
-	<li>
-		<strong>New:</strong> [PQ-Splitter] Additional settings on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2196" title="Issue 2196">2196</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Certitude] Error if a file is specified. [<a href="https://github.com/2Abendsegler/GClh/issues/2227" title="Issue 2227">2227</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
