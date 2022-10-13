@@ -1,3 +1,4 @@
+<a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="#v01120" title="GClh II version 0.11.20 (03.10.2022)">v0.11.20</a> &nbsp;
 <a href="#v01119" title="GClh II version 0.11.19 (26.07.2022)">v0.11.19</a> &nbsp;
 <a href="#v01118" title="GClh II version 0.11.18 (04.07.2022)">v0.11.18</a> &nbsp;
@@ -42,6 +43,59 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.12:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [PQ-Splitter] Add information on how to change pop-up blocker settings on Project-GC's PQ splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2234" title="Issue 2234">2234</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		We have added links to information on how to change pop-up blocker settings on Project-GC's PQ splitter page. We have added links for browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting">Mozilla Firefox</a> and browser <a href="https://support.google.com/chrome/answer/95472">Google Chrome</a>.<br>
+		<img src="../images/0.12/Screen11.jpg" alt="Screen11.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Pocket Query] Mark 10 PQs with right click. [<a href="https://github.com/2Abendsegler/GClh/issues/2228" title="Issue 2228">2228</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen10.gif" alt="Screen10.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Show log text in Markdown as it is in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2223" title="Issue 2223">2223</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen08.jpg" alt="Screen08.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_show_logs_in_markdown" title="Link to your GClh II Config">Settings -> Dashboard - New Dashboard Only:</a><br>
+		<img src="../images/0.12/Screen09.jpg" alt="Screen09.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Public Profile] Show bigger avatar image while hovering with the mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/2211" title="Issue 2211">2211</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.12/Screen03.gif" alt="Screen03.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_public_profile_avatar_show_thumbnail" title="Link to your GClh II Config">Settings -> Public Profile:</a><br>
+		<img src="../images/0.12/Screen04.jpg" alt="Screen04.jpg"><br>
+		This option requires <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX1" title="Link to your GClh II Config">"Show thumbnails of images"</a>.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Log Form] Automatic view posted log after logging. [<a href="https://github.com/2Abendsegler/GClh/issues/2208" title="Issue 2208">2208</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br>
+		If it was a draft related log, you can enable an option to automatic go back to the drafts page (older parameter) or you can enable an option to automatic go to view log page.<br>
+		If it was a non draft related log, you can enable an option to automatic go to view log page.<br>		
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_automatic_backX0" title="Link to your GClh II Config">Settings -> Log:</a><br>
+		<img src="../images/0.12/Screen02.jpg" alt="Screen02.jpg"><br>
+		If you want to use one of the features, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Certitude] Error if a file is specified. [<a href="https://github.com/2Abendsegler/GClh/issues/2227" title="Issue 2227">2227</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing / Draft] GClh remove blue banner with button "Back to Drafts" after sending log related to a draft. [<a href="https://github.com/2Abendsegler/GClh/issues/2216" title="Issue 2216">2216</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Drafts] "Count cache and log types" does not work correctly after uploading or deleting drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/2215" title="Issue 2215">2215</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] The checkboxes in the cache list are no longer one below the other on the right side. [<a href="https://github.com/2Abendsegler/GClh/issues/2213" title="Issue 2213">2213</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(15.10.2022)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.11.20:
