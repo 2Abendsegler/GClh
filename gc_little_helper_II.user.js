@@ -14088,8 +14088,8 @@ var mainGC = function() {
 //--> $$006
             // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
             html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  true,  true,  false);
-            html += thanksLineBuild("Ruko2010",             "",                         true,  true,  true,  true,  false);
-            html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  true );
+            html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  false);
+            html += thanksLineBuild("Ruko2010",             "",                         false, true,  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
@@ -14098,7 +14098,7 @@ var mainGC = function() {
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
-            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  false, false);
+            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
             html += thanksLineBuild("CastParo",             "LittleJohn-DD",            false, false, true,  true,  false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
