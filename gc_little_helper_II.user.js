@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.11.20
+// @version      0.12
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -6455,7 +6455,7 @@ var mainGC = function() {
                 }
             }
 
-            // Download all drafts.
+            // Download drafts.
             function downloadDrafts() {
                 function getCountOfDrafts() {
                     if ($('#draftsHub > div h1')[0] && $('#draftsHub > div h1')[0].innerHTML && $('#draftsHub > div h1')[0].innerHTML.match(/\s\((\d+)\)/)) {
@@ -14886,7 +14886,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_cache_link', 'Use cache name as link to the cache listing') + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_drafts_cache_link_new_tab', 'Open link in new browser tab') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
-            html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + "<br>";
+            html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + show_help("If you enable this option, you always get the old log form instead of the new one to log drafts related logs.<br><br>Please look also the parameter \"Use old-fashioned log form to log non drafts related logs\" in the \"Log\" area.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
             var content_settings_after_sending_log = 'After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br><br>';
             var content_settings_after_sending_draft_related_log1 = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>";
@@ -14942,7 +14942,7 @@ var mainGC = function() {
 
             html += "<div class='gclh_old_new_line'>Old Log Page Only</div>";
             html += newParameterOn2;
-            html += checkboxy('settings_logs_old_fashioned', 'Log caches always old-fashioned') + show_help("If you enable this option, you always get the old log page instead of the new one. This does not apply to drafts / field notes. <br> Background: geocaching.com saves the log page you are using in a cookie. If you always delete cookies when you close your browser, the data will be lost.<br>To get the old design for Fieldnotes, you have to use the old Fieldnotes page and activate \"Logging drafts old-fashioned\" here in the GClh config.") + "<br>";
+            html += checkboxy('settings_logs_old_fashioned', 'Use old-fashioned log form to log non drafts related logs') + show_help("If you enable this option, you always get the old log form instead of the new one to log non drafts related logs.<br><br>Please look also the parameter \"Use old-fashioned log form to log a draft\" in the \"Draft\" area.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
