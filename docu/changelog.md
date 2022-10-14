@@ -55,23 +55,23 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_download_show_button" title="Link to your GClh II Config">Settings -> Draft:</a><br>
 		<img src="../images/0.12/Screen06.jpg" alt="Screen06.jpg"><br>
 		With the first parameter you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.<br>
-		With the second parameter you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible. If you want to use this feature, you have to activate it.<br><br>
+		With the second parameter you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible. If you want to use this feature, you have to activate it.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Log Form] Automatic view posted log after logging. [<a href="https://github.com/2Abendsegler/GClh/issues/2208" title="Issue 2208">2208</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear. If it was a draft related log, you can enable an option to automatic go back to the drafts page (older parameter) or you can enable an option to automatic go to view log page. If it was a non draft related log, you can enable an option to automatic go to view log page.<br>		
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_go_automatic_backX0" title="Link to your GClh II Config">Settings -> Log:</a><br>
 		<img src="../images/0.12/Screen02.jpg" alt="Screen02.jpg"><br>
-		If you want to use one of the features, you have to activate it.<br><br>
+		If you want to use one of the features, you have to activate it.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [PQ-Splitter] Additional settings on Project-GC's PQ Splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2196" title="Issue 2196">2196</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		<img src="../images/0.12/Screen01.jpg" alt="Screen01.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [PQ-Splitter] Add information on how to change pop-up blocker settings on Project-GC's PQ splitter page. [<a href="https://github.com/2Abendsegler/GClh/issues/2234" title="Issue 2234">2234</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		We have added links to information on how to change pop-up blocker settings on Project-GC's PQ splitter page. We have added links for browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting">Mozilla Firefox</a> and browser <a href="https://support.google.com/chrome/answer/95472">Google Chrome</a>.<br>
-		<img src="../images/0.12/Screen11.jpg" alt="Screen11.jpg"><br><br>
+		<img src="../images/0.12/Screen11.jpg" alt="Screen11.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [New Dashboard] Show log text in Markdown as it is in cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2223" title="Issue 2223">2223</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -80,25 +80,25 @@
 		With Markdown:<br>
 		<img src="../images/0.12/Screen08.jpg" alt="Screen08.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_show_logs_in_markdown" title="Link to your GClh II Config">Settings -> Dashboard - New Dashboard Only:</a><br>
-		<img src="../images/0.12/Screen09.jpg" alt="Screen09.jpg"><br><br>
+		<img src="../images/0.12/Screen09.jpg" alt="Screen09.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Public Profile] Show bigger avatar image while hovering with the mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/2211" title="Issue 2211">2211</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.12/Screen03.gif" alt="Screen03.gif"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_public_profile_avatar_show_thumbnail" title="Link to your GClh II Config">Settings -> Public Profile:</a><br>
 		<img src="../images/0.12/Screen04.jpg" alt="Screen04.jpg"><br>
-		This option requires <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX1" title="Link to your GClh II Config">"Show thumbnails of images"</a>.<br><br>
+		This option requires <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX1" title="Link to your GClh II Config">"Show thumbnails of images"</a>.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Pocket Query] Mark 10 PQs with right click. [<a href="https://github.com/2Abendsegler/GClh/issues/2228" title="Issue 2228">2228</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.12/Screen10.gif" alt="Screen10.gif"><br><br> 
+		<img src="../images/0.12/Screen10.gif" alt="Screen10.gif"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Add logs by Lackeys to VIP-List. [<a href="https://github.com/2Abendsegler/GClh/issues/2203" title="Issue 2203">2203</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.12/Screen12.jpg" alt="Screen12.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_lackey_as_vip" title="Link to your GClh II Config">Settings -> Listing - VIP-Lists:</a><br>
 		<img src="../images/0.12/Screen13.jpg" alt="Screen13.jpg"><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		If you want to use this feature, you have to activate it.<br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Drafts] "Count cache and log types" does not work correctly after uploading or deleting drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/2215" title="Issue 2215">2215</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
