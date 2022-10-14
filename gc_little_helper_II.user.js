@@ -598,7 +598,6 @@ var variablesInit = function(c) {
     c.settings_show_latest_logs_symbols_count_map = getValue("settings_show_latest_logs_symbols_count_map", 16);
     c.settings_modify_new_drafts_page = getValue("settings_modify_new_drafts_page", true);
     c.settings_gclherror_alert = getValue("settings_gclherror_alert", false);
-    c.settings_auto_open_tb_inventory_list = getValue("settings_auto_open_tb_inventory_list", true);
     c.settings_embedded_smartlink_ignorelist = getValue("settings_embedded_smartlink_ignorelist", true);
     c.settings_both_tabs_list_of_pqs_one_page = getValue("settings_both_tabs_list_of_pqs_one_page", false);
     c.settings_past_events_on_bm = getValue("settings_past_events_on_bm", true);
@@ -4164,10 +4163,6 @@ var mainGC = function() {
                         ".tb_action_buttons a{margin-right: 12px; text-decoration:underline;}" +
                         ".tb_action_buttons a:last-child{margin-right:0px;}"
                     appendCssStyle(css);
-                    // Open Trackable Inventory.
-                    if (settings_auto_open_tb_inventory_list && $('#trackablesPanel .inventory-panel').css('display') == 'none') {
-                        $("#trackablesPanel button.btn-handle").trigger( "click" );
-                    }
                     clearInterval(checkExistTBHeader);
                 }
             }, 500);
@@ -14904,7 +14899,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
-            html += checkboxy('settings_auto_open_tb_inventory_list', 'Auto open trackable inventory') + show_help("If you enable this option, the list of your trackables is automatically expended when you load the log page.") + "<br>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_autovisit_default', 'Set \"AutoVisit\" for all TBs by default') + show_help("With this option all new TBs in your inventory are automatically set to \"AutoVisit\".") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
@@ -16148,7 +16142,6 @@ var mainGC = function() {
                 'settings_show_enhanced_map_coords',
                 'settings_modify_new_drafts_page',
                 'settings_gclherror_alert',
-                'settings_auto_open_tb_inventory_list',
                 'settings_embedded_smartlink_ignorelist',
                 'settings_both_tabs_list_of_pqs_one_page',
                 'settings_past_events_on_bm',
