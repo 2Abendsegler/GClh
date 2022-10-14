@@ -7,7 +7,7 @@
 * Install the script manager [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/) or [Violentmonkey](https://addons.mozilla.org/firefox/addon/violentmonkey/) as Add-on in Firefox.<br> 
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager.<br>
 
-### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
+### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"> Google Chrome:
 * Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) or [Violentmonkey](https://chrome.google.com/webstore/detail/violent-monkey/jinjaccalgkegednnccohejagnlnfdag) as Add-on in Chrome.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager.<br>
 
@@ -46,7 +46,7 @@ Process the following instructions on your Android device:<br><br>
 * Installiere den Scriptmanager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) oder [Violentmonkey](https://addons.mozilla.org/firefox/addon/violentmonkey/) als Add-On in Firefox.<br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
 
-### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrom" alt="Google Chrom"> Google Chrome:
+### <a id="chrome_de"></a><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"> Google Chrome:
 * Installiere den Scriptmanager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) oder [Violentmonkey](https://chrome.google.com/webstore/detail/violent-monkey/jinjaccalgkegednnccohejagnlnfdag) als Add-On in Chrome.<br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
 
