@@ -350,6 +350,7 @@ var variablesInit = function(c) {
     c.settings_new_width = getValue("settings_new_width", 1000);
     c.settings_hide_facebook = getValue("settings_hide_facebook", false);
     c.settings_hide_socialshare = getValue("settings_hide_socialshare", false);
+    c.settings_hide_firsttime = getValue("settings_hide_firsttime", false);
     c.settings_hide_disclaimer = getValue("settings_hide_disclaimer", true);
     c.settings_hide_cache_notes = getValue("settings_hide_cache_notes", false);
     c.settings_adapt_height_cache_notes = getValue("settings_adapt_height_cache_notes", true);
@@ -4533,7 +4534,12 @@ var mainGC = function() {
             if ($('#SocialShareWrapper')[0]) $('#SocialShareWrapper')[0].style.display = "none";
         } catch(e) {gclh_error("Hide socialshare3",e);}
     }
-
+// Hide "First time logging a trackable?" button 
+    if(settings_hide_firsttime && document.location.href.match(/\.com\/track\/details\.aspx?(.*)/)){
+        try {
+            if($('#ctl00_ContentBody_BugDetails_uxFirstTime')) $('#ctl00_ContentBody_BugDetails_uxFirstTime')[0].parentElement.parentElement.remove();
+        } catch(e) {gclh_error("Hide first time",e);}
+    }
 // Remove advertisement link.
     if (settings_hide_advert_link) {
         try {
@@ -14186,6 +14192,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple') + "<br>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
+            html += checkboxy('settings_hide_firsttime', 'Hide "First time logging a trackable?" button on TB page') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += checkboxy('settings_remove_banner', 'Hide banner') + "<br>";
@@ -15942,6 +15949,7 @@ var mainGC = function() {
                 'settings_redirect_to_map',
                 'settings_hide_facebook',
                 'settings_hide_socialshare',
+                'settings_hide_firsttime',
                 'settings_hide_disclaimer',
                 'settings_hide_cache_notes',
                 'settings_hide_empty_cache_notes',
