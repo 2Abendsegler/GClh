@@ -4249,6 +4249,8 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0].addEventListener("input", buildAutosO, false);
                 buildAutosO(true);
                 window.addEventListener("load", function(){buildAutosO(true);}, false);
+//xxxx
+                setTimeout(function(){buildAutosO(true);}, 1000);
             }
             function buildAutosO(start) {
                 var type = getTypeO();
