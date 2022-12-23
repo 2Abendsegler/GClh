@@ -7447,6 +7447,8 @@ var mainGC = function() {
             if (settings_mail_icon_new_win) mailNewWin = 'target="_blank" ';
             var messageNewWin = "";
             if (settings_message_icon_new_win) messageNewWin = 'target="_blank" ';
+            let fav_img = '';
+            if (settings_show_who_gave_favorite_but) fav_img = '<img title="Favorited" src="/images/icons/fave_fill_16.svg" style="padding-left:2px;display:none;">';
 
             var new_tmpl = "";
             new_tmpl +=
@@ -7497,8 +7499,6 @@ var mainGC = function() {
                 '          {{else}}' +
                 '          <img width="48" height="48" src="/images/default_avatar.jpg">' +
                 '          {{/if}}';
-            let fav_img = '';
-            if (settings_show_who_gave_favorite_but) fav_img = '<img title="Favorited" src="/images/icons/fave_fill_16.svg" style="padding-left:2px;display:none;">';
             new_tmpl +=
                 '      </a></p>' +
                 '      <p class="logOwnerStats">' +
@@ -7510,7 +7510,7 @@ var mainGC = function() {
                 '    <div class="FloatLeft LogDisplayRight">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
-            '           <img title="${LogType}" alt="${LogType}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${LogType}</strong><small class="gclh_logCounter"></small></div>' +
+                '           <img title="${LogType}" alt="${LogType}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${LogType}</strong><small class="gclh_logCounter"></small></div>' +
                 '      <div class="HalfRight AlignRight">' +
                 '        <span class="minorDetails LogDate">${Visited}</span></div>' +
                 '      <div class="Clear LogContent markdown-output">' +
@@ -8161,12 +8161,7 @@ var mainGC = function() {
                         onload: function(response) {
                             requestCount--;
                             var dataElement = JSON.parse(response.responseText);
-                            try {
-                                data[dataElement.pageInfo.idx] = dataElement;
-                            } catch(e) {
-                                console.log(response.responseText);
-                                throw(e);
-                            }
+                            data[dataElement.pageInfo.idx] = dataElement;
                             if (numPages == 1) {
                                 numPages = data[count].pageInfo.totalPages;
                                 for (curIdx = 2; curIdx <= numPages; curIdx++) {
@@ -15030,13 +15025,13 @@ var mainGC = function() {
             html += newParameterOn1;
             html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
             html += newParameterVersionSetzen("0.10") + newParameterOff;
+            html += newParameterOn3;
+            html += checkboxy('settings_show_who_gave_favorite_but', 'Show button \"Show who favorited\" above the logs') + show_help("With this option you can choose to show a button \"Show who favorited\" above the logs. Pressing this button will add a favorite icon to the logs of users who gave a favorite. Additionally, a filter for those logs will be added above the logs.<br><br>For performance reasons this functionality must be restricted to caches with 500 favorites or less.") + "<br>";
+            html += newParameterVersionSetzen(0.12) + newParameterOff;
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterOn2;
-            html += checkboxy('settings_show_who_gave_favorite_but', 'Show button \"Show who favorited\" above the logs') + show_help("With this option you can choose to show a button \"Show who favorited\" above the logs. Pressing this button will add a favorite icon to the logs of users who gave a favorite. Additionally, a filter for those logs will be added above the logs.<br><br>For performance reasons this functionality must be restricted to caches with 500 favorites or less.") + "<br>";
-            html += newParameterVersionSetzen(0.13) + newParameterOff;
-            html += newParameterOn3;
             var content_upvotes_help = show_help("With this option you can show/hide the whole upvotes feature consist of the logs sort button \"Order by\" above the logs and the buttons \"Great story\" and \"Helpful\" in the logs.");
             html += checkboxy('settings_show_hide_upvotes_but', 'Show button \"Hide upvotes\" above the logs') + content_upvotes_help + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
