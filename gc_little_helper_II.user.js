@@ -590,6 +590,7 @@ var variablesInit = function(c) {
     c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
     c.settings_show_log_counter = getValue("settings_show_log_counter", false);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
+    c.settings_show_who_gave_favorite_but = getValue("settings_show_who_gave_favorite_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
@@ -6862,6 +6863,7 @@ var mainGC = function() {
                 var all_users = new Array();
                 var log_infos = new Object();
                 var log_infos_long = new Array();
+                if (settings_show_who_gave_favorite_but) var fav_guids = new Array();
                 var index = 0;
                 var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
@@ -7495,6 +7497,8 @@ var mainGC = function() {
                 '          {{else}}' +
                 '          <img width="48" height="48" src="/images/default_avatar.jpg">' +
                 '          {{/if}}';
+            let fav_img = '';
+            if (settings_show_who_gave_favorite_but) fav_img = '<img title="Favorited" src="/images/icons/fave_fill_16.svg" style="padding-left:2px;display:none;">';
             new_tmpl +=
                 '      </a></p>' +
                 '      <p class="logOwnerStats">' +
@@ -7506,7 +7510,7 @@ var mainGC = function() {
                 '    <div class="FloatLeft LogDisplayRight">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
-                '           <img title="${LogType}" alt="${LogType}" src="/images/logtypes/${LogTypeImage}">&nbsp;${LogType}</strong><small class="gclh_logCounter"></small></div>' +
+            '           <img title="${LogType}" alt="${LogType}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${LogType}</strong><small class="gclh_logCounter"></small></div>' +
                 '      <div class="HalfRight AlignRight">' +
                 '        <span class="minorDetails LogDate">${Visited}</span></div>' +
                 '      <div class="Clear LogContent markdown-output">' +
@@ -7772,6 +7776,7 @@ var mainGC = function() {
                                 unsafeWindow.appendUpvotesToLogs(log_ids);
                                 updateUpvoteEvents(logs);
                             }
+                            showFavIcons();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
                             isBusy = false;
@@ -7792,6 +7797,7 @@ var mainGC = function() {
                 if (isUpvoteActive && settings_show_hide_upvotes_but) showHideUpvotesLink();
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
+                if (settings_show_who_gave_favorite_but) addShowWhoGaveFavoriteButton();
                 if (isUpvoteActive) {
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
@@ -7821,6 +7827,7 @@ var mainGC = function() {
                         if (isUpvoteActive) updateUpvoteEvents(logs);
                         setMarkerDisableDynamicLogLoad();
                         if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
+                        showFavIcons();
                     }
                     activateLoadAndSearch();
                 }, 100);
@@ -7833,6 +7840,7 @@ var mainGC = function() {
                     var log_type = this.childNodes[0].title;
                     if (!log_type) return false;
                     if (log_type.match(/VIP/)) log_type = "VIP";
+                    if (log_type.match(/Favorite/)) log_type = "FAV";
                     if (this.name && this.name == "vip_list") {
                         document.getElementById("ctl00_ContentBody_lblFindCounts").scrollIntoView();
                         window.scrollBy(0, -30);
@@ -7842,7 +7850,7 @@ var mainGC = function() {
                     if (!logs) return false;
                     $(logsTab).find('tbody').children().remove();
                     for (var i = 0; i < logs.length; i++) {
-                        if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)))) {
+                        if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
                             var newBody = unsafeWindow.$(document.createElement("TBODY"));
                             unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                             unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
@@ -7854,6 +7862,7 @@ var mainGC = function() {
                     if (isUpvoteActive) updateUpvoteEvents(logs);
                     setMarkerDisableDynamicLogLoad();
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
+                    showFavIcons();
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -7871,6 +7880,25 @@ var mainGC = function() {
                     li.appendChild(link);
                     new_legend.appendChild(li);
                 }
+
+                if (settings_show_who_gave_favorite_but) {
+                    // Add filter link for favorite logs (hidden until favoriters are available).
+                    let li = document.createElement("li");
+                    li.setAttribute("style", "display: none;");
+                    let link = document.createElement("a");
+                    link.setAttribute("href", "javascript:void(0);");
+                    link.setAttribute("style", "text-decoration: none;");
+                    link.id = "gclh_show_favorite_logs";
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    let img = document.createElement("img");
+                    img.setAttribute("src", "/images/icons/fave_fill_16.svg");
+                    img.setAttribute("title", "Favorite logs");
+                    link.appendChild(img);
+                    link.innerHTML += ' ' + $('.favorite-value').text().trim();
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
+                }
+
                 if (settings_show_vip_list) {
                     var li = document.createElement("li");
                     var link = document.createElement("a");
@@ -7986,6 +8014,7 @@ var mainGC = function() {
 
                     $('#search_logs_number_of_hits')[0].innerHTML = numberOfHits + ' / ' + $('#cache_logs_table2 .log-row').length;
                     if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
+                    showFavIcons();
                     activateLoadAndSearch();
                 }
 
@@ -8102,6 +8131,7 @@ var mainGC = function() {
                                 gclh_add_vip_icon();
                                 setLinesColorInCacheListing();
                                 if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
+                                showFavIcons();
                                 updateUpvoteEvents(logs);
                             }
                             $('#sort_logs_working').remove();
@@ -8131,7 +8161,12 @@ var mainGC = function() {
                         onload: function(response) {
                             requestCount--;
                             var dataElement = JSON.parse(response.responseText);
-                            data[dataElement.pageInfo.idx] = dataElement;
+                            try {
+                                data[dataElement.pageInfo.idx] = dataElement;
+                            } catch(e) {
+                                console.log(response.responseText);
+                                throw(e);
+                            }
                             if (numPages == 1) {
                                 numPages = data[count].pageInfo.totalPages;
                                 for (curIdx = 2; curIdx <= numPages; curIdx++) {
@@ -13184,6 +13219,160 @@ var mainGC = function() {
         }
     }
 
+// Show who gave the cache a favorite.
+    function addShowWhoGaveFavoriteButton() {
+        addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "Show in logs who gave a favorite");
+        // disable button for caches with >500 favorites and add an explanation to the title
+        const favs = Number($('.favorite-value').text().trim());
+        const maxFav = 500;
+        if (favs > maxFav) {
+            $('#gclh_show_who_gave_favorite').prop("title", "Unfortunately not available for caches\nwith more than " + maxFav + " favorites").addClass('working');
+            $('#gclh_show_who_gave_favorite input').prop("disabled", true);
+        }
+        // disable button for events and caches without favorites and add an explanation to the title
+        if (isEventInCacheListing() || Number($('.favorite-value').text().trim()) === 0) {
+            $('#gclh_show_who_gave_favorite').prop("title", "Cache doesn't have any favorites").addClass('working');
+            $('#gclh_show_who_gave_favorite input').prop("disabled", true);
+        }
+
+    }
+    async function showWhoGaveFavorite() {
+        // disable button (data only needs to be fetched once)
+        $('#gclh_show_who_gave_favorite').addClass("working");
+        $('#gclh_show_who_gave_favorite input').prop("disabled", true).prop('value', 'Loading ...');
+
+        try {
+            const t0 = Date.now();
+            // url of "Users Who Favorited This Cache"
+            const url = 'https://www.geocaching.com/seek/cache_favorited.aspx?guid=' + unsafeWindow.guid;
+
+            // get 1st page
+            let dataForward = '';
+            let pageForward = await $.post(url, dataForward);
+            storeGuidsOfUsersWhoFavorited(pageForward);
+
+            // calculate number of forward/backward cycles
+            const favs = Number($('.favorite-value').text().trim());
+            const nPages = Math.ceil(favs / 10);
+            let numForwardBackward;
+            if (nPages % 2 === 1) {
+                numForwardBackward = (nPages - 1) / 2;
+            }
+            else {
+                numForwardBackward = (nPages - 2) / 2;
+            }
+
+            // for numForwardBackward cycles, get 2 pages at the same time - one in forward and one in backward direction
+            let dataBackward, pageBackward, promises;
+            for (let i = 1; i <= numForwardBackward; i++) {
+                if (i === 1) { // 2nd and last page in parallel
+                    // get form data of first page to retrieve next page
+                    dataForward = getFormData(pageForward, 'next');
+                    // get form data of first page to retrieve last page
+                    dataBackward = getFormData(pageForward, 'last');
+
+                    promises = [];
+                    promises.push($.post(url, dataForward));
+                    promises.push($.post(url, dataBackward));
+                    [pageForward, pageBackward] = await Promise.all(promises);
+
+                    storeGuidsOfUsersWhoFavorited(pageForward);
+                    storeGuidsOfUsersWhoFavorited(pageBackward);
+                }
+                else { // next(forward) and previous(backward) pages in parallel
+                    // get form data of forward page to retrieve next page
+                    dataForward = getFormData(pageForward, 'next');
+                    // get form data of backward page to retrieve previous page
+                    dataBackward = getFormData(pageBackward, 'previous');
+
+                    promises = [];
+                    promises.push($.post(url, dataForward));
+                    promises.push($.post(url, dataBackward));
+                    [pageForward, pageBackward] = await Promise.all(promises);
+
+                    storeGuidsOfUsersWhoFavorited(pageForward);
+                    storeGuidsOfUsersWhoFavorited(pageBackward);
+                }
+            }
+
+            // for an even number of total pages, one page remains to get in next(forward) mode
+            if (nPages % 2 === 0) {
+                // get form data of forward page to retrieve next page
+                dataForward = getFormData(pageForward, 'next');
+                pageForward = await $.post(url, dataForward);
+                storeGuidsOfUsersWhoFavorited(pageForward);
+            }
+
+            let t1 = (Date.now() - t0) / 1000;
+            $("#gclh_show_who_gave_favorite input").prop('value', 'Show who favorited');
+            $("#gclh_show_who_gave_favorite").prop('title', $("#gclh_show_who_gave_favorite").prop('title') + ' (took ' + t1.toFixed(1) + 's)');
+
+            // we're finished, now show filter link
+            $('a#gclh_show_favorite_logs').parent().show();
+
+            showFavIcons();
+        } catch (e) {
+            fav_guids = [];
+            $("#gclh_show_who_gave_favorite input").prop('value', 'Show who favorited (error)');
+            gclh_error("showWhoGaveFavorite", e);
+        }
+
+        // Get form data of current page to retrieve following page.
+        function getFormData(page, mode) {
+            switch (mode) {
+                case 'previous':
+                    mode = '03';
+                    break;
+                case 'next':
+                    mode = '04';
+                    break;
+                case 'last':
+                    mode = '05';
+                    break;
+                default:
+                    mode = '04';
+            }
+            let aspNetHidden = $('div.aspNetHidden', page).first().find('input'),
+                input;
+            data = '__EVENTTARGET=' + encodeURIComponent('ctl00$ContentBody$pgrTop$ctl' + mode);
+            data += '&__EVENTARGUMENT=';
+            for (let i = 2; i < aspNetHidden.length; i++) {
+                input = aspNetHidden[i];
+                data += '&' + input.name + '=' + encodeURIComponent(input.value);
+            }
+            data += '&navi_search=';
+            return data;
+        }
+
+        // Store guids of users who gave a favorite.
+        function storeGuidsOfUsersWhoFavorited(page) {
+            let userInfo = $('table.Table>tbody>tr>td>a:nth-child(2)', page);
+            for (let i = 0; i < userInfo.length; i++) {
+                fav_guids.push(userInfo[i].search.split('=')[1]);
+            }
+        }
+    }
+    // Show fav icon in logs for users who gave a favorite.
+    function showFavIcons() {
+        // only if activated
+        if (!settings_show_who_gave_favorite_but || !$('#gclh_show_who_gave_favorite.working')[0]) return;
+
+        try {
+            $('.logOwnerAvatar>a').each(function() {
+                let guid = this.search.split('=')[1];
+                let hasFavorited = in_array(guid, fav_guids);
+                if (hasFavorited) {
+                    let logImg = $(this).parent().parent().next().find('.LogType img');
+                    if (logImg[0].src.split('/').pop() === '2.png') { // only show for finds, no other log types
+                        logImg.next().show();
+                    }
+                }
+            });
+        } catch(e) {
+            gclh_error("showFavIcons", e);
+        }
+    }
+
 // Show log counter.
     function showLogCounterLink() {
         addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
@@ -13201,7 +13390,8 @@ var mainGC = function() {
                 var logTypes = $('#ctl00_ContentBody_lblFindCounts .LogTotals a');
                 for (var i = 0; i < logTypes.length; i++) {
                     var matches = logTypes[i].innerHTML.replace(/(,|\.)/g, "").match(/>(\s*)(\d+)/);
-                    if (matches && matches[2]) {
+                    // exclude Favorite logs filter
+                    if (matches && matches[2] && !logTypes[i].innerHTML.match('fave_fill_16.svg')) {
                         logCounter[logTypes[i].childNodes[0].title] = parseInt(matches[2]);
                         logCounter["all"] += parseInt(matches[2]);
                     }
@@ -14844,6 +15034,9 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
             html += newParameterOn2;
+            html += checkboxy('settings_show_who_gave_favorite_but', 'Show button \"Show who favorited\" above the logs') + show_help("With this option you can choose to show a button \"Show who favorited\" above the logs. Pressing this button will add a favorite icon to the logs of users who gave a favorite. Additionally, a filter for those logs will be added above the logs.<br><br>For performance reasons this functionality must be restricted to caches with 500 favorites or less.") + "<br>";
+            html += newParameterVersionSetzen(0.13) + newParameterOff;
+            html += newParameterOn3;
             var content_upvotes_help = show_help("With this option you can show/hide the whole upvotes feature consist of the logs sort button \"Order by\" above the logs and the buttons \"Great story\" and \"Helpful\" in the logs.");
             html += checkboxy('settings_show_hide_upvotes_but', 'Show button \"Hide upvotes\" above the logs') + content_upvotes_help + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -16135,6 +16328,7 @@ var mainGC = function() {
                 'settings_show_log_counter_but',
                 'settings_show_log_counter',
                 'settings_show_bigger_avatars_but',
+                'settings_show_who_gave_favorite_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',
