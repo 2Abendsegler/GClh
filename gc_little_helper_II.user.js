@@ -8956,18 +8956,18 @@ var mainGC = function() {
                 if ($('.owned-geocache-types')[0]) {
                     var linkToList = 'https://www.geocaching.com/seek/nearest.aspx?u=' + global_me + '&tx=';
                     var cacheTypes = {
-                        'Traditional Cache'           : linkToList + '32bc9333-5e52-4957-b0f6-5a2c8fc7b257',
-                        'Multi-Cache'                 : linkToList + 'a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74',
-                        'Mystery Cache'               : linkToList + '40861821-1835-4e11-b666-8d41064d03fe',
-                        'Letterbox Cache'             : linkToList + '4bdd8fb2-d7bc-453f-a9c5-968563b15d24',
-                        'Wherigo Cache'               : linkToList + '0544fa55-772d-4e5c-96a9-36a51ebcf5c9',
-                        'Earth Cache'                 : linkToList + 'c66f5cf3-9523-4549-b8dd-759cd2f18db8',
-                        'Virtual Cache'               : linkToList + '294d4360-ac86-4c83-84dd-8113ef678d7e',
-                        'Webcam Cache'                : linkToList + '31d2ae3c-c358-4b5f-8dcd-2185bf472d3d',
-                        'Event Cache'                 : linkToList + '69eb8534-b718-4b35-ae3c-a856a55b0874',
-                        'CITO Event'                  : linkToList + '57150806-bc1a-42d6-9cf0-538d171a2d22',
-                        'Community Celebration Event' : linkToList + '3ea6533d-bb52-42fe-b2d2-79a3424d4728',
-                        'Lab Cache'                   : 'https://labs.geocaching.com/builder/adventures'
+                        'Traditional Cache'                 : linkToList + '32bc9333-5e52-4957-b0f6-5a2c8fc7b257',
+                        'Multi-Cache'                       : linkToList + 'a5f6d0ad-d2f2-4011-8c14-940a9ebf3c74',
+                        'Mystery Cache'                     : linkToList + '40861821-1835-4e11-b666-8d41064d03fe',
+                        'Letterbox Cache'                   : linkToList + '4bdd8fb2-d7bc-453f-a9c5-968563b15d24',
+                        'Wherigo Cache'                     : linkToList + '0544fa55-772d-4e5c-96a9-36a51ebcf5c9',
+                        'Earth Cache'                       : linkToList + 'c66f5cf3-9523-4549-b8dd-759cd2f18db8',
+                        'Virtual Cache'                     : linkToList + '294d4360-ac86-4c83-84dd-8113ef678d7e',
+                        'Webcam Cache'                      : linkToList + '31d2ae3c-c358-4b5f-8dcd-2185bf472d3d',
+                        'Event Cache'                       : linkToList + '69eb8534-b718-4b35-ae3c-a856a55b0874',
+                        'CITO Event'                        : linkToList + '57150806-bc1a-42d6-9cf0-538d171a2d22',
+                        'Community Celebration Event Cache' : linkToList + '3ea6533d-bb52-42fe-b2d2-79a3424d4728',
+                        'Lab Cache'                         : 'https://labs.geocaching.com/builder/adventures'
                     }
                     let html = '<a href="' + linkToList + '" target="_blank" class="gclh_cacheTypeLinks" style="background:#f5f5f5;">';
                     html += $('.owned-geocache-total').html() + '</a>';
