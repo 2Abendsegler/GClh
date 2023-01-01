@@ -51,8 +51,8 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Cache listing] Show who gave a favorite in cache listings. [<a href="https://github.com/2Abendsegler/GClh/issues/2247" title="Issue 2247">2247</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		<img src="../images/0.12.1/Screen02.gif" alt="Screen02.gif"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_who_gave_favorite_but" title="Link to your GClh II Config">Settings -> Listing - Logs Header:</a><br><br>
+		<img src="../images/0.12.1/Screen02.gif" alt="Screen02.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_who_gave_favorite_but" title="Link to your GClh II Config">Settings -> Listing - Logs Header:</a><br>
 		<img src="../images/0.12.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
