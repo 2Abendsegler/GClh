@@ -241,6 +241,7 @@
   "settings_show_log_counter_but": true,
   "settings_show_log_counter": false,
   "settings_show_bigger_avatars_but": true,
+  "settings_show_who_gave_favorite_but": true,
   "settings_hide_feedback_icon": false,
   "settings_compact_layout_new_dashboard": false,
   "settings_show_draft_indicator": true,

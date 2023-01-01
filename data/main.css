@@ -566,12 +566,6 @@ gclh_nav .profile-panel ul::after {
     color: #00b265;
     font-weight: bold;
 }
-.markdown-output blockquote p::before {
-    content: 'â';
-}
-.markdown-output blockquote p::after {
-    content: 'â';
-}
 .markdown-output a,
 #bd .markdown-output a {
     color: #006cff;

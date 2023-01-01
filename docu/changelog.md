@@ -1,3 +1,4 @@
+<a href="#v0121" title="GClh II version 0.12.1 (02.01.2023)">v0.12.1</a> &nbsp;
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="#v01120" title="GClh II version 0.11.20 (03.10.2022)">v0.11.20</a> &nbsp;
 <a href="#v01119" title="GClh II version 0.11.19 (26.07.2022)">v0.11.19</a> &nbsp;
@@ -43,6 +44,32 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.12.1:
+&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache listing] Show who gave a favorite in cache listings. [<a href="https://github.com/2Abendsegler/GClh/issues/2247" title="Issue 2247">2247</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		With a new button above the logs in cache listings, the favorite points can be reloaded for a cache, in order to show in the logs, who has assigned a favorite point. There is also a new filter option that only shows logs with a favorite point.<br> 
+		<img src="../images/0.12.1/Screen02.gif" alt="Screen02.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_who_gave_favorite_but" title="Link to your GClh II Config">Settings -> Listing - Logs Header:</a><br>
+		<img src="../images/0.12.1/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Owner Dashboard] Link to CCE are undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/2248" title="Issue 2248">2248</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Pocket Query Splitter] eSwatini is not a country. [<a href="https://github.com/2Abendsegler/GClh/issues/2245" title="Issue 2245">2245</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [View/Edit Log] Scripts sometimes add strange things in logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2244" title="Issue 2244">2244</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(02.01.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.12:
