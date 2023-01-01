@@ -2,9 +2,9 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.12
+// @version      0.12.1
 //<-- $$000
-// @copyright    2010-2016 Torsten Amshove, 2016-2022 2Abendsegler, 2017-2022 Ruko2010, 2019-2022 capoaira
+// @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
@@ -12945,8 +12945,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/inM"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/6nL1/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/irc"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/0Mnx/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14322,7 +14322,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "14.10.2022";
+            var thanksLastUpdate = "01.01.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -15048,7 +15048,7 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Logs</b>" + "</div>";
             html += checkboxy('settings_load_logs_with_gclh', 'Load logs with GClh II') + show_help("This option should be enabled. <br><br>You just should disable it, if you have problems with loading the logs. <br><br>If this option is disabled, there are no VIP-, VUP-, mail-, message- and top icons, no line colors and no mouse activated big images at the logs. Also the VIP and VUP lists, hide avatars, log filter and log search won't work.") + "<br>";
-            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + countOfLogsInListing() + "'> logs" + show_help("With this option you can choose how many logs should be shown at least if you start with the listing. The default and the minimum are 30 logs. The maximum are 500 logs, because of performance reasons. <br><br>(If you want to list more then 500 logs, you can use the button \"Show all logs\" above the logs section. And if you go to the end of the listed logs, the logs will be dynamically loaded there anyway.)") + "<br>";
+            html += checkboxy('settings_show_all_logs', 'Show at least ') + " <input class='gclh_form' type='text' size='2' id='settings_show_all_logs_count' value='" + countOfLogsInListing() + "'> logs" + show_help("With this option you can choose how many logs should be shown at least if you start with the listing. The default and the minimum are 30 logs. The maximum are 500 logs, because of performance reasons. <br><br>(If you want to list more then 500 logs, you can use the button \"Show all logs\" above the logs section in the listing. And if you go to the end of the listed logs, the logs will be dynamically loaded there anyway.)") + "<br>";
             html += checkboxy('settings_hide_avatar', 'Hide avatars in logs') + show_help("This option hides the avatars in logs. This prevents loading the hundreds of images. You have to change the option here, because GC little helper II overrides the log-load-logic of GC, so the avatar option of GC doesn't work with GC little helper II.") + "<br>";
             html += checkboxy('settings_hide_found_count', 'Hide found count') + "<br>";
             html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX0").replace("max_size", "max_sizeX0");
@@ -15347,7 +15347,7 @@ var mainGC = function() {
             html += "&nbsp;" + "<input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' title='Save the configuration data and\nupload it to your own DropBox' style='height: 25px;' value='Save & Upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right; font-size: 9px;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-"+end+" <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a>, 2019-"+end+" <a href='/profile/?u=capoaira' target='_blank' title='GC profile of capoaira'>capoaira</a></div>";
+            html += "<div align='right' class='gclh_small' style='float: right; font-size: 9px;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-2021 <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a>, 2019-"+end+" <a href='/profile/?u=capoaira' target='_blank' title='GC profile of capoaira'>capoaira</a></div>";
             html += "</div></div>";
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
