@@ -7753,10 +7753,11 @@ var mainGC = function() {
                     // Fire every 500ms at maximum.
                     lastFired = + new Date();
                     var isBusy = false;
-                    var startReloadAtThisPixel = (($(document).height() - $("#cache_logs_container").offset().top) + 50)
+                    var startReloadAtThisPixel = $(document).height() - $("#cache_logs_container").offset().top + 50;
                     var currentPosition = $(this).scrollTop();
                     if (currentPosition > startReloadAtThisPixel) {
-                        if (!isBusy && !document.getElementById("gclh_all_logs_marker")) {
+                        // If dynamic log load is busy, disabled or all logs are already loaded, no need to continue.
+                        if (!isBusy && !document.getElementById("gclh_all_logs_marker") && global_num < global_logs.length) {
                             isBusy = true;
                             $("#pnlLazyLoad").show();
                             var log_ids = [];
@@ -7766,8 +7767,8 @@ var mainGC = function() {
                                     var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                     unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(global_logs[global_num]).appendTo(newBody);
                                     unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                                    global_num++;  // Num kommt vom vorherigen laden "aller" logs.
                                 }
-                                global_num++;  // Num kommt vom vorherigen laden "aller" logs.
                             }
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
@@ -7825,7 +7826,10 @@ var mainGC = function() {
                         gclh_add_vip_icon();
                         setLinesColorInCacheListing();
                         if (isUpvoteActive) updateUpvoteEvents(logs);
-                        setMarkerDisableDynamicLogLoad();
+                        if (countLogs === logs.length) setMarkerDisableDynamicLogLoad(); // all logs loaded
+                        else removeMarkerDisableDynamicLogLoad();
+                        global_num = countLogs; // set dynamic log counter to current number of logs
+
                         if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         showFavIcons();
                     }
@@ -8059,12 +8063,17 @@ var mainGC = function() {
                 }, 200);
             }
 
-            // Marker to disable dynamic log load.
+            // Set marker to disable dynamic log load.
             function setMarkerDisableDynamicLogLoad() {
-                var marker = document.createElement("a");
-                marker.setAttribute("id", "gclh_all_logs_marker");
-                document.getElementsByTagName("body")[0].appendChild(marker);
-                $("#pnlLazyLoad").hide();
+                if (!$('#gclh_all_logs_marker')[0]) { // add marker only once
+                    var marker = document.createElement("a");
+                    marker.setAttribute("id", "gclh_all_logs_marker");
+                    document.getElementsByTagName("body")[0].appendChild(marker);
+                }
+            }
+            // Remove marker that disabled dynamic log load.
+            function removeMarkerDisableDynamicLogLoad() {
+                $('#gclh_all_logs_marker').remove();
             }
 
             // Load "num" Logs.
@@ -8269,6 +8278,22 @@ var mainGC = function() {
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         if (isUpvoteActive) {
+                            /*
+                            // TODO: 
+                            // is the following call to 'unsafeWindow.appendUpvotesToLogs(log_ids)' required?
+                            // the upvote info is already fetched by 'getUpvoteData()' and stored in logs
+                            // (same goes for the call in dynamic load function, approx. line 7777)
+                            // if really necessary, then here's a fix to prevent a server error if default num of logs to load is > 160:
+                            //
+                            // for more than 160 log ids GS server throws an error
+                            //       --> get info in slices of max. 100 log ids
+                            let floor = Math.floor(log_ids.length/100),
+                                rest = log_ids.length % 100;
+                            for (let i=0; i<floor; i++) {
+                                unsafeWindow.appendUpvotesToLogs(log_ids.slice(i*100, (i+1)*100));
+                            }
+                            unsafeWindow.appendUpvotesToLogs(log_ids.slice(runs*100, rest));
+                            */
                             unsafeWindow.appendUpvotesToLogs(log_ids);
                             updateUpvoteEvents(logs);
                         }
