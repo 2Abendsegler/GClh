@@ -8278,22 +8278,6 @@ var mainGC = function() {
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         if (isUpvoteActive) {
-                            /*
-                            // TODO: 
-                            // is the following call to 'unsafeWindow.appendUpvotesToLogs(log_ids)' required?
-                            // the upvote info is already fetched by 'getUpvoteData()' and stored in logs
-                            // (same goes for the call in dynamic load function, approx. line 7777)
-                            // if really necessary, then here's a fix to prevent a server error if default num of logs to load is > 160:
-                            //
-                            // for more than 160 log ids GS server throws an error
-                            //       --> get info in slices of max. 100 log ids
-                            let floor = Math.floor(log_ids.length/100),
-                                rest = log_ids.length % 100;
-                            for (let i=0; i<floor; i++) {
-                                unsafeWindow.appendUpvotesToLogs(log_ids.slice(i*100, (i+1)*100));
-                            }
-                            unsafeWindow.appendUpvotesToLogs(log_ids.slice(runs*100, rest));
-                            */
                             unsafeWindow.appendUpvotesToLogs(log_ids);
                             updateUpvoteEvents(logs);
                         }
