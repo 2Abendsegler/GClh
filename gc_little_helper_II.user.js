@@ -10581,20 +10581,22 @@ var mainGC = function() {
             } else {
                 new_settings_map_layers = settings_map_layers;
             }
-            // Map layer sort.
-            if (settings_sort_map_layers) new_settings_map_layers.sort(function(a, b){return a.toUpperCase()>b.toUpperCase();});
             for (var i = 0; i < new_settings_map_layers.length; i++) { map_layers[new_settings_map_layers[i]] = all_map_layers[new_settings_map_layers[i]]; }
             // Layer Control aufbauen.
             function addLayerControl() {
-                injectPageScriptFunction(function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
-                    window["GCLittleHelper_MapLayerHelper"] = function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow) {
+                injectPageScriptFunction(function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
+                    window["GCLittleHelper_MapLayerHelper"] = function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
                         if (!window.MapSettings.Map) {
-                            setTimeout(function() {window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);}, 10);
+                            setTimeout(function() { window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);}, 10);
                         } else {
                             var layerControl = new window.L.Control.Layers();
                             var layerToAdd = null;
                             var defaultLayer = null;
-                            for (name in map_layers) {
+                            // Map layer sort (Chrome doesn't respect the key order in objects, FF does)
+                            let keys = Object.keys(map_layers);
+                            if (settings_sort_map_layers) keys = keys.sort();
+                            for (let i = 0; i < keys.length; i++) {
+                                let name = keys[i];
                                 layerToAdd = new L.tileLayer(map_layers[name].tileUrl, map_layers[name]);
                                 layerControl.addBaseLayer(layerToAdd, name);
                                 if (name == settings_map_default_layer) defaultLayer = layerToAdd;
@@ -10628,8 +10630,8 @@ var mainGC = function() {
                             } catch(e) {};
                         }
                     };
-                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow);
-                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + ")");
+                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
+                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + "," + settings_sort_map_layers + ")");
             }
             // Layer Defaults setzen.
             function setDefaultsInLayer() {
