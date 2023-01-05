@@ -7793,7 +7793,7 @@ var mainGC = function() {
                 }
                 var para = document.getElementById('ctl00_ContentBody_lblFindCounts').nextSibling.nextSibling.nextSibling.nextSibling;
                 if (para && para.nodeName == 'P') para.className = para.className + ' Clear';
-                if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "");
+                if (settings_show_all_logs_but) addButtonOverLogs(gclh_load_all_logs, "gclh_load_all_logs", false, "Show all logs", "", "Show all logs");
                 if (settings_hide_upvotes) showHideUpvotes();
                 if (isUpvoteActive && settings_show_hide_upvotes_but) showHideUpvotesLink();
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
@@ -7804,7 +7804,7 @@ var mainGC = function() {
                     $('#new_sort_element_upvote').removeClass("isDisabled");
                 }
                 if (settings_show_compact_logbook_but) {
-                    addButtonOverLogs(toggle_compact_logbook, "toggle_compact_logbook", false, "Show compact logs", "Show/hide compact logs");
+                    addButtonOverLogs(toggle_compact_logbook, "toggle_compact_logbook", false, "Show compact logs", "", "Show/hide compact logs");
                     var unimportant_css = ".compact_logbook .logIcons, .compact_logbook .logOwnerAvatar, .compact_logbook .logOwnerStats, .compact_logbook .LogContent, .compact_logbook .TableLogContent, .compact_logbook .AlignRight small {display:none;}"
                                         + ".compact_logbook .upvotes {display:none !important;}";
                     appendCssStyle(unimportant_css);
@@ -8027,8 +8027,8 @@ var mainGC = function() {
                 if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
                 $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 4px;" id="search_logs_input"></form>');
                 $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
-                addButtonOverLogs(gclh_search_logs, "search_logs_go", false, "Go", "", $('#search_logs'));
-                addButtonOverLogs(function(){searchLogsReset(logs);}, "search_logs_reset", false, "Reset", "", $('#search_logs'));
+                addButtonOverLogs(gclh_search_logs, "search_logs_go", false, "Go", "", "", $('#search_logs'));
+                addButtonOverLogs(function(){searchLogsReset(logs);}, "search_logs_reset", false, "Reset", "", "", $('#search_logs'));
                 $('#search_logs').append('<span id="search_logs_number_of_hits" style="padding: 0px 5px; cursor: default;" title="Number of hits / Number of logs with hits"></span>');
             }
 
@@ -9334,7 +9334,7 @@ var mainGC = function() {
         link.appendChild(span);
     }
     function showBiggerAvatarsLink() {
-        addButtonOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Show bigger avatar images while hovering with the mouse");
+        addButtonOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Bigger avatars", "Show bigger avatar images while hovering with the mouse");
     }
     function showBiggerAvatars() {
         try {
@@ -13199,7 +13199,7 @@ var mainGC = function() {
 
 // Show/hide upvotes with "Order by", "Great story" and "Helpful".
     function showHideUpvotesLink() {
-        addButtonOverLogs(showHideUpvotes, "gclh_show_hide_upvotes", true, "Hide upvotes", "Show/hide upvotes with \"Order by\", \"Great story\" and \"Helpful\"");
+        addButtonOverLogs(showHideUpvotes, "gclh_show_hide_upvotes", true, "Hide upvotes", "", "Show/hide upvotes with \"Order by\", \"Great story\" and \"Helpful\"");
         setUpvotesButTitle();
     }
     function showHideUpvotes() {
@@ -13227,7 +13227,7 @@ var mainGC = function() {
 
 // Show who gave the cache a favorite.
     function addShowWhoGaveFavoriteButton() {
-        addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "Show in logs who gave a favorite");
+        addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "", "Show in logs who gave a favorite");
         // disable button for caches with >500 favorites and add an explanation to the title
         const favs = Number($('.favorite-value').text().trim());
         const maxFav = 500;
@@ -13381,7 +13381,7 @@ var mainGC = function() {
 
 // Show log counter.
     function showLogCounterLink() {
-        addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Show log counter for log type and total");
+        addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Log counter", "Show log counter for log type and total");
         if (settings_show_log_counter_but && settings_show_log_counter) showLogCounter();
         appendCssStyle(".gclh_logCounter {font-size: 10px !important; padding-left: 6px; font-style: italic;}");
     }
@@ -13438,12 +13438,17 @@ var mainGC = function() {
     }
 
 // Add button over logs in cache listing.
-    function addButtonOverLogs(func, id, right, txt, title, adhere) {
+    function addButtonOverLogs(func, id, right, txt, txtshort, title, adhere) {
         if (!$('#ctl00_ContentBody_uxLogbookLink')[0]) return;
         var span = document.createElement("span");
         span.id = id;
         if (title != "") span.title = title;
-        span.innerHTML = '<input type="button" href="javascript:void(0);" value="'+txt+'">';
+        if (txtshort != "" && settings_new_width < 1040 && settings_show_all_logs_but && settings_show_compact_logbook_but && settings_show_who_gave_favorite_but && settings_show_log_counter_but && settings_show_bigger_avatars_but && settings_show_hide_upvotes_but) {
+            var text = txtshort;
+        } else {
+            var text = txt;
+        }
+        span.innerHTML = '<input type="button" href="javascript:void(0);" value="'+text+'">';
         span.addEventListener("click", func, false);
         if (right) span.className = "gclh_rlol";
         else span.className = "gclh_llol";
