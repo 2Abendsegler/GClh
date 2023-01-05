@@ -707,6 +707,7 @@ var variablesInit = function(c) {
     c.settings_drafts_download_show_button = getValue("settings_drafts_download_show_button", true);
     c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
     c.settings_dashboard_show_logs_in_markdown = getValue("settings_dashboard_show_logs_in_markdown", true);
+    c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
 
     tlc('START userToken');
     try {
@@ -12466,6 +12467,50 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Souvenirs",e);}
     }
 
+// Show smaller privacy buttons - has to run after Souveniers.
+    if (settings_public_profile_smaller_privacy_btn && is_page("publicProfile")) {
+        try {
+            let url = document.location.href;
+            if (url.match(/tab=geocaches/i)) {
+                let link = $('#full-privacy-text a').attr('href');
+                let icon = $('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyIcon').attr('src');
+                $('#ctl00_ContentBody_ProfilePanel1_geocachesOwnerViewSettings').hide();
+                $('.finds-col-header h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
+                // Hidden Caches
+                $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
+                $('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings').hide();
+            } else if (url.match(/tab=trackables/i)) {
+                let link = $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings a').attr('href');
+                $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings').hide();
+                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_trackablesPrivacyText').html().trim()} - Change it here"><img src="/images/icons/public_icon.svg" /></a>`);
+            } else if (url.match(/tab=souvenirs/i)) {
+                let link = $('#ctl00_ContentBody_ProfilePanel1_souvenirsOwnerViewSettings a').attr('href');
+                let icon = $('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyIcon').attr('src');
+                $('#ctl00_ContentBody_ProfilePanel1_souvenirsOwnerViewSettings').hide();
+                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
+            } else if (url.match(/tab=gallery/i)) {
+                let link = $('#ctl00_ContentBody_ProfilePanel1_galleryOwnerViewSettings a').attr('href');
+                let icon = $('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyIcon').attr('src');
+                $('#ctl00_ContentBody_ProfilePanel1_galleryOwnerViewSettings').hide();
+                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
+            } else if (url.match(/tab=stats/i)) {
+                let link = $('#ctl00_ContentBody_ProfilePanel1_statisticsOwnerViewSettings a').attr('href');
+                let icon = $('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyIcon').attr('src');
+                $('#ctl00_ContentBody_ProfilePanel1_statisticsOwnerViewSettings').hide();
+                $('h3').first().append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
+            } else if (!url.match(/tab=lists/i)) { // Profilinformationen
+                let link = $('#ctl00_ContentBody_ProfilePanel1_profileOwnerViewSettings a').attr('href');
+                let icon = $('#ctl00_ContentBody_ProfilePanel1_profilePrivacyIcon').attr('src');
+                $('#ctl00_ContentBody_ProfilePanel1_profileOwnerViewSettings').hide();
+                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_profilePrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
+            }
+            let css = 'h3 {display:flex;}';
+            css += '.gclh_privacy {display: inline-flex;}';
+            css += '.gclh_privacy img, .minorDetails {align-self: end;}';
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Replace privacy text links by icon link",e);}
+    }
+
 // Improve view log and edit log page.
     if (document.location.href.match(/\.com\/(seek|track)\/log\.aspx\?/)) {
         // Improve alignment of icons.
@@ -14738,6 +14783,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += newParameterOn3;
             html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
+            html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button") + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
@@ -16426,6 +16472,7 @@ var mainGC = function() {
                 'settings_drafts_download_show_button',
                 'settings_drafts_download_change_logdate',
                 'settings_dashboard_show_logs_in_markdown',
+                'settings_public_profile_smaller_privacy_btn',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
