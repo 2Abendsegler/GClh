@@ -707,7 +707,6 @@ var variablesInit = function(c) {
     c.settings_drafts_download_show_button = getValue("settings_drafts_download_show_button", true);
     c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
     c.settings_dashboard_show_logs_in_markdown = getValue("settings_dashboard_show_logs_in_markdown", true);
-    c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
 
     tlc('START userToken');
     try {
@@ -2102,8 +2101,8 @@ var mainGC = function() {
 // Collection of css for cache listings.
     if (is_page("cache_listing")) {
         var css = ''
-        // Define class "working" and "isDisabled".
-        css += ".working, .isDisabled {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
+        // Define class "working".
+        css += ".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
         // Display listing images not over the maximum available width for FF and chrome.
         css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
         appendCssStyle(css);
@@ -7774,13 +7773,8 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            if (isUpvoteActive) {
-                                unsafeWindow.appendUpvotesToLogs(log_ids);
-                                updateUpvoteEvents(logs);
-                            }
+                            if (isUpvoteActive) updateUpvoteEvents(logs);
                             showFavIcons();
-                            // Display log counters for dynamically loaded logs, if the display of the log counters is active.
-                            if ($('.gclh_logCounter')[0] && !$('.gclh_logCounter')[0].innerHTML == "") showLogCounter();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
                             isBusy = false;
@@ -7832,13 +7826,11 @@ var mainGC = function() {
                         if (countLogs === logs.length) setMarkerDisableDynamicLogLoad(); // all logs loaded
                         else removeMarkerDisableDynamicLogLoad();
                         global_num = countLogs; // set dynamic log counter to current number of logs
+
+                        if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         showFavIcons();
                     }
                     activateLoadAndSearch();
-                    $('#gclh_show_log_counter').removeClass("working");
-                    if ($('#gclh_show_log_counter input')[0] && !$('#gclh_show_log_counter').hasClass('isDisabled')) {
-                        $('#gclh_show_log_counter input')[0].removeAttribute('disabled', '');
-                    }
                 }, 100);
             }
 
@@ -7857,24 +7849,21 @@ var mainGC = function() {
                     if (settings_show_owner_vip_list) var vip_owner = get_real_owner();
                     else var vip_owner = "#";
                     if (!logs) return false;
-                    searchLogsReset('');
-                    setTimeout(function() { // Force direct display refresh.
-                        $(logsTab).find('tbody').children().remove();
-                        for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
-                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
-                            }
+                    $(logsTab).find('tbody').children().remove();
+                    for (var i = 0; i < logs.length; i++) {
+                        if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
                         }
-                        unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                        gclh_add_vip_icon();
-                        setLinesColorInCacheListing();
-                        if (isUpvoteActive) updateUpvoteEvents(logs);
-                        setMarkerDisableDynamicLogLoad();
-                        showFavIcons();
-                        activateLoadAndSearch();
-                    }, 0);
+                    }
+                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                    gclh_add_vip_icon();
+                    setLinesColorInCacheListing();
+                    if (isUpvoteActive) updateUpvoteEvents(logs);
+                    setMarkerDisableDynamicLogLoad();
+                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
+                    showFavIcons();
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -8025,6 +8014,7 @@ var mainGC = function() {
                     });
 
                     $('#search_logs_number_of_hits')[0].innerHTML = numberOfHits + ' / ' + $('#cache_logs_table2 .log-row').length;
+                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                     showFavIcons();
                     activateLoadAndSearch();
                 }
@@ -8046,7 +8036,6 @@ var mainGC = function() {
                     deactivateLoadAndSearch();
                     $('#search_logs_input')[0].value = '';
                     $('#search_logs_number_of_hits')[0].innerHTML = '';
-                    if (!logs) return; // Filter action is active.
                     if (all) loadNumLogs(logs, logs.length);
                     else if (settings_show_all_logs) loadNumLogs(logs, countOfLogsInListing());
                     else loadNumLogs(logs, 30);
@@ -8055,20 +8044,19 @@ var mainGC = function() {
 
             // Deactivate/activate load and search buttons and fields.
             function deactivateLoadAndSearch() {
-                $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset, #gclh_show_log_counter').addClass("working");
-                if ($('#gclh_load_all_logs input')[0]) $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
-                if ($('#search_logs_input')[0]) $('#search_logs_input')[0].setAttribute('disabled', '');
-                if ($('#search_logs_go input')[0]) $('#search_logs_go input')[0].setAttribute('disabled', '');
-                if ($('#search_logs_reset input')[0]) $('#search_logs_reset input')[0].setAttribute('disabled', '');
-                if ($('#gclh_show_log_counter input')[0]) $('#gclh_show_log_counter input')[0].setAttribute('disabled', '');
+                $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset').addClass("working");
+                $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
+                $('#search_logs_input')[0].setAttribute('disabled', '');
+                $('#search_logs_go input')[0].setAttribute('disabled', '');
+                $('#search_logs_reset input')[0].setAttribute('disabled', '');
             }
             function activateLoadAndSearch() {
                 setTimeout(function() {
                     $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset').removeClass("working");
-                    if ($('#gclh_load_all_logs input')[0]) $('#gclh_load_all_logs input')[0].removeAttribute('disabled', '');
-                    if ($('#search_logs_input')[0]) $('#search_logs_input')[0].removeAttribute('disabled');
-                    if ($('#search_logs_go input')[0]) $('#search_logs_go input')[0].removeAttribute('disabled');
-                    if ($('#search_logs_reset input')[0]) $('#search_logs_reset input')[0].removeAttribute('disabled');
+                    $('#gclh_load_all_logs input')[0].removeAttribute('disabled', '');
+                    $('#search_logs_input')[0].removeAttribute('disabled');
+                    $('#search_logs_go input')[0].removeAttribute('disabled');
+                    $('#search_logs_reset input')[0].removeAttribute('disabled');
                 }, 200);
             }
 
@@ -8104,6 +8092,8 @@ var mainGC = function() {
                 }
                 if (isUpvoteActive) {
                     // Remove the sorting select.
+                    appendCssStyle("#new_sort_element_upvote.isDisabled{opacity: 0.5;}")
+                    appendCssStyle("#gclh_show_log_counter.isDisabled{opacity: 0.5;}")
                     var new_sort_element = document.createElement('select');
                     new_sort_element.setAttribute('id', 'new_sort_element_upvote');
                     new_sort_element.classList.add("isDisabled");;
@@ -8111,12 +8101,16 @@ var mainGC = function() {
                     new_sort_element.onchange = function() {
                         if (!$('#search_logs_number_of_hits')[0].innerHTML == '') searchLogsReset(logs);
                         var sorting_key = this.value;
-                        // Deactivate buttons "Show log counter" and "Hide upvotes".
-                        if (sorting_key != 'newest') {
-                            $('#gclh_show_log_counter').addClass('isDisabled');
-                            if ($('#gclh_show_log_counter input')[0]) $('#gclh_show_log_counter input')[0].setAttribute('disabled', '');
-                            $('#gclh_show_hide_upvotes').addClass('isDisabled');
-                            if ($('#gclh_show_hide_upvotes input')[0]) $('#gclh_show_hide_upvotes input')[0].setAttribute('disabled', '');
+                        // Deactivate gclh_show_log_counter_button when sorting is not "newest".
+                        var gclh_show_log_counter_button = $("#gclh_show_log_counter input")[0];
+                        if (gclh_show_log_counter_button) {
+                            if (sorting_key == 'newest') {
+                                $("#gclh_show_log_counter").removeClass("isDisabled");
+                                gclh_show_log_counter_button.disabled = false;
+                            } else {
+                                $("#gclh_show_log_counter").addClass("isDisabled");
+                                gclh_show_log_counter_button.disabled = true;
+                            }
                         }
                         $(this).after(' <img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
                         // Sort all the logs.
@@ -8142,17 +8136,9 @@ var mainGC = function() {
                                 unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                                 gclh_add_vip_icon();
                                 setLinesColorInCacheListing();
+                                if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                                 showFavIcons();
                                 updateUpvoteEvents(logs);
-                            }
-                            // Activate buttons "Show log counter" and "Hide upvotes".
-                            if (sorting_key == 'newest') {
-                                $('#gclh_show_log_counter').removeClass('isDisabled');
-                                if ($('#gclh_show_log_counter')[0] && !$('#gclh_show_log_counter').hasClass('working')) {
-                                    if ($('#gclh_show_log_counter input')[0]) $('#gclh_show_log_counter input')[0].removeAttribute('disabled', '');
-                                }
-                                $('#gclh_show_hide_upvotes').removeClass('isDisabled');
-                                if ($('#gclh_show_hide_upvotes input')[0]) $('#gclh_show_hide_upvotes input')[0].removeAttribute('disabled', '');
                             }
                             $('#sort_logs_working').remove();
                         }, 100);
@@ -8204,12 +8190,21 @@ var mainGC = function() {
                         },
                         success: function (data) {
                             for (var i = 0; i < logIds.length; i++) {
-                                // Append Great Story and Helpful to our loaded logs
+                                // Add the upvotes data Great Story and Helpful to the loaded logs data.
                                 logs[i+starting_index].greatStory = data[logIds[i]].greatStory.count;
                                 logs[i+starting_index].greatStoryupvotedByUser = data[logIds[i]].greatStory.upvotedByUser;
                                 logs[i+starting_index].helpful = data[logIds[i]].helpful.count;
                                 logs[i+starting_index].helpfulupvotedByUser = data[logIds[i]].helpful.upvotedByUser;
                                 logs[i+starting_index].newest = i+starting_index;
+                                // Update already displayed logs.
+                                if (logs[i+starting_index].greatStory > 0 && $('#'+logIds[i])[0] && $('#'+logIds[i]).closest('tr').find('.great-story-btn span')[0]) {
+                                    if (logs[i+starting_index].greatStoryupvotedByUser) $('#'+logIds[i]).closest('tr').find('.great-story-btn').addClass('upvoted');
+                                    $('#'+logIds[i]).closest('tr').find('.great-story-btn span')[0].innerHTML = "Great story (" + logs[i+starting_index].greatStory + ")";
+                                }
+                                if (logs[i+starting_index].helpful > 0 && $('#'+logIds[i])[0] && $('#'+logIds[i]).closest('tr').find('.helpful-btn span')[0]) {
+                                    if (logs[i+starting_index].helpfulupvotedByUser) $('#'+logIds[i]).closest('tr').find('.helpful-btn').addClass('upvoted');
+                                    $('#'+logIds[i]).closest('tr').find('.helpful-btn span')[0].innerHTML = "Helpful (" + logs[i+starting_index].helpful + ")";
+                                }
                             }
                         }
                     });
@@ -8262,7 +8257,7 @@ var mainGC = function() {
                                     index++;
                                 }
                             }
-                            // Add Great story / helpful data to logs. Give starting index to the function, so it knows what index has to be updated.
+                            // Load the upvotes data Great Story and Helpful to the loaded logs data and update already displayed logs. Give index of first log.
                             if (isUpvoteActive) getUpvoteData(all_ids,((z-1)*100));
                         }
                         // Add Links.
@@ -8279,10 +8274,7 @@ var mainGC = function() {
                             }
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                        if (isUpvoteActive) {
-                            unsafeWindow.appendUpvotesToLogs(log_ids);
-                            updateUpvoteEvents(logs);
-                        }
+                        if (isUpvoteActive) updateUpvoteEvents(logs);
                         gclh_dynamic_load(logs, num);
                         if (settings_show_vip_list) {
                             gclh_build_vip_list();
@@ -12468,53 +12460,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Souvenirs",e);}
     }
 
-// Show smaller privacy buttons - has to run after Souveniers.
-    if (settings_public_profile_smaller_privacy_btn && is_page("publicProfile")) {
-        try {
-            let url = document.location.href;
-            if (url.match(/tab=geocaches/i)) {
-                let link = $('#full-privacy-text a').attr('href');
-                let icon = $('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyIcon').attr('src');
-                $('#ctl00_ContentBody_ProfilePanel1_geocachesOwnerViewSettings').hide();
-                $('.finds-col-header h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-                // Hidden Caches
-                $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
-                $('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings').hide();
-                // Links to Caches
-                $('.minorDetails').html('&nbsp;'+$('.minorDetails').html());
-            } else if (url.match(/tab=trackables/i)) {
-                let link = $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings a').attr('href');
-                $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings').hide();
-                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_trackablesPrivacyText').html().trim()} - Change it here"><img src="/images/icons/public_icon.svg" /></a>`);
-            } else if (url.match(/tab=souvenirs/i)) {
-                let link = $('#ctl00_ContentBody_ProfilePanel1_souvenirsOwnerViewSettings a').attr('href');
-                let icon = $('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyIcon').attr('src');
-                $('#ctl00_ContentBody_ProfilePanel1_souvenirsOwnerViewSettings').hide();
-                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-            } else if (url.match(/tab=gallery/i)) {
-                let link = $('#ctl00_ContentBody_ProfilePanel1_galleryOwnerViewSettings a').attr('href');
-                let icon = $('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyIcon').attr('src');
-                $('#ctl00_ContentBody_ProfilePanel1_galleryOwnerViewSettings').hide();
-                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-            } else if (url.match(/tab=stats/i)) {
-                let link = $('#ctl00_ContentBody_ProfilePanel1_statisticsOwnerViewSettings a').attr('href');
-                let icon = $('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyIcon').attr('src');
-                $('#ctl00_ContentBody_ProfilePanel1_statisticsOwnerViewSettings').hide();
-                $('h3').first().append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-            } else if (!url.match(/tab=lists/i)) { // Profilinformationen
-                let link = $('#ctl00_ContentBody_ProfilePanel1_profileOwnerViewSettings a').attr('href');
-                let icon = $('#ctl00_ContentBody_ProfilePanel1_profilePrivacyIcon').attr('src');
-                $('#ctl00_ContentBody_ProfilePanel1_profileOwnerViewSettings').hide();
-                $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_profilePrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-            }
-            let css = 'h3 {display:flex;}';
-            css += '.gclh_privacy {display: inline-flex;}';
-            css += '.gclh_privacy img {align-self: end;}';
-            css += '.minorDetails {align-self: center;}';
-            appendCssStyle(css);
-        } catch(e) {gclh_error("Replace privacy text links by icon link",e);}
-    }
-
 // Improve view log and edit log page.
     if (document.location.href.match(/\.com\/(seek|track)\/log\.aspx\?/)) {
         // Improve alignment of icons.
@@ -14792,7 +14737,6 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += newParameterOn3;
             html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button") + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
@@ -16481,7 +16425,6 @@ var mainGC = function() {
                 'settings_drafts_download_show_button',
                 'settings_drafts_download_change_logdate',
                 'settings_dashboard_show_logs_in_markdown',
-                'settings_public_profile_smaller_privacy_btn',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
