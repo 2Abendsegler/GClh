@@ -12479,6 +12479,8 @@ var mainGC = function() {
                 // Hidden Caches
                 $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
                 $('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings').hide();
+                // Links to Caches
+                $('.minorDetails').html('&nbsp;'+$('.minorDetails').html());
             } else if (url.match(/tab=trackables/i)) {
                 let link = $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings a').attr('href');
                 $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings').hide();
@@ -12506,7 +12508,8 @@ var mainGC = function() {
             }
             let css = 'h3 {display:flex;}';
             css += '.gclh_privacy {display: inline-flex;}';
-            css += '.gclh_privacy img, .minorDetails {align-self: end;}';
+            css += '.gclh_privacy img {align-self: end;}';
+            css += '.minorDetails {align-self: center;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Replace privacy text links by icon link",e);}
     }
