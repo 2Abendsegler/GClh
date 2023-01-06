@@ -7773,10 +7773,7 @@ var mainGC = function() {
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
                             setLinesColorInCacheListing();
-                            if (isUpvoteActive) {
-                                unsafeWindow.appendUpvotesToLogs(log_ids);
-                                updateUpvoteEvents(logs);
-                            }
+                            if (isUpvoteActive) updateUpvoteEvents(logs);
                             showFavIcons();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
@@ -8200,12 +8197,21 @@ var mainGC = function() {
                                 },
                                 success: function (data) {
                                     for (var i = 0; i < logIds.length; i++) {
-                                        // Append Great Story and Helpful to our loaded logs
+                                        // Add the upvotes data Great Story and Helpful to the loaded logs data.
                                         logs[i+starting_index].greatStory = data[logIds[i]].greatStory.count;
                                         logs[i+starting_index].greatStoryupvotedByUser = data[logIds[i]].greatStory.upvotedByUser;
                                         logs[i+starting_index].helpful = data[logIds[i]].helpful.count;
                                         logs[i+starting_index].helpfulupvotedByUser = data[logIds[i]].helpful.upvotedByUser;
                                         logs[i+starting_index].newest = i+starting_index;
+                                        // Update already displayed logs.
+                                        if (logs[i+starting_index].greatStory > 0 && $('#'+logIds[i])[0] && $('#'+logIds[i]).closest('tr').find('.great-story-btn span')[0]) {
+                                            if (logs[i+starting_index].greatStoryupvotedByUser) $('#'+logIds[i]).closest('tr').find('.great-story-btn').addClass('upvoted');
+                                            $('#'+logIds[i]).closest('tr').find('.great-story-btn span')[0].innerHTML = "Great story (" + logs[i+starting_index].greatStory + ")";
+                                        }
+                                        if (logs[i+starting_index].helpful > 0 && $('#'+logIds[i])[0] && $('#'+logIds[i]).closest('tr').find('.helpful-btn span')[0]) {
+                                            if (logs[i+starting_index].helpfulupvotedByUser) $('#'+logIds[i]).closest('tr').find('.helpful-btn').addClass('upvoted');
+                                            $('#'+logIds[i]).closest('tr').find('.helpful-btn span')[0].innerHTML = "Helpful (" + logs[i+starting_index].helpful + ")";
+                                        }
                                     }
                                 }
                             });
@@ -8260,7 +8266,7 @@ var mainGC = function() {
                                     index++;
                                 }
                             }
-                            // Add Great story / helpful data to logs. Give starting index to the function, so it knows what index has to be updated.
+                            // Load the upvotes data Great Story and Helpful to the loaded logs data and update already displayed logs. Give index of first log.
                             if (isUpvoteActive) getUpvoteData(all_ids,((z-1)*100));
                         }
                         // Add Links.
@@ -8277,10 +8283,7 @@ var mainGC = function() {
                             }
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                        if (isUpvoteActive) {
-                            unsafeWindow.appendUpvotesToLogs(log_ids);
-                            updateUpvoteEvents(logs);
-                        }
+                        if (isUpvoteActive) updateUpvoteEvents(logs);
                         gclh_dynamic_load(logs, num);
                         if (settings_show_vip_list) {
                             gclh_build_vip_list();
