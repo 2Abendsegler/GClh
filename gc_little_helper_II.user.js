@@ -9407,6 +9407,27 @@ var mainGC = function() {
 
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
+        // Add layers, control to map and set default layers.
+        if (settings_use_gclh_layercontrol) {
+            // Add proxy to get map instance.
+            unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                apply: (target, thisArg, argArray) => {
+                    let useState = target.apply(thisArg, argArray);
+                    if (useState && useState[0]) {
+                        getMapInstance(useState);
+                    }
+                    return useState;
+                }
+            });
+            // Get and preserve map instance.
+            unsafeWindow.MapSettings = { 'Map': null };
+            const getMapInstance = (state) => {
+                if (unsafeWindow.MapSettings.Map !== null) return;
+                if (state[0]._map) unsafeWindow.MapSettings.Map = state[0]._map;
+            }
+            addLayersOnMap();
+        }
+
         try {
             // After go back from cache details to cache list, scroll to last position.
             var global_scrollTop = 0;
@@ -10513,7 +10534,7 @@ var mainGC = function() {
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
                     if (settings_use_gclh_layercontrol && getValue("gclhLeafletMapActive")) {
-                        addLayersOnBrowseMap();
+                        addLayersOnMap();
                     } else {
                         // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
                         css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
@@ -10574,7 +10595,7 @@ var mainGC = function() {
     }
 
 // Add layers, control to map and set default layers.
-    function addLayersOnBrowseMap() {
+    function addLayersOnMap() {
         try {
             //>> Issue 2016
             // [Browse Map] Map overlay "Hillshadow" doesn't work. Issue: https://github.com/2Abendsegler/GClh/issues/2016
@@ -10626,8 +10647,8 @@ var mainGC = function() {
                             layerControl._container.className += " gclh_layers gclh_used";
                             window.MapSettings.Map.addLayer(defaultLayer);
                             if (settings_show_hillshadow) $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
-                            $('.leaflet-control-layers.gclh_layers')[0].setAttribute("id", "gclh_layers");
-                            var side = $('.leaflet-control-layers')[0];
+                            document.querySelector('.leaflet-control-layers.gclh_layers').id = "gclh_layers";
+                            var side = document.querySelector('.leaflet-control-layers');
                             var div = document.createElement("div");
                             div.setAttribute("class", "gclh_dummy gclh_used");
                             var aTag = document.createElement("a");
@@ -10635,13 +10656,20 @@ var mainGC = function() {
                             div.appendChild(aTag);
                             side.parentNode.insertBefore(div, side);
                             // Defekte Layer entfernen. (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
-                            try {
-                                for (layerId in window.MapSettings.Map._layers) {
-                                    if (window.MapSettings.Map._layers[layerId]._url !== -1) {
-                                        window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                            // (for Browse map only)
+                            if (document.location.pathname.match(/^\/map/)) {
+                                try {
+                                    for (layerId in window.MapSettings.Map._layers) {
+                                        if (window.MapSettings.Map._layers[layerId]._url !== -1) {
+                                            window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                                        }
                                     }
-                                }
-                            } catch(e) {};
+                                } catch (e) {};
+                            } else {
+                                // Search map: remove default GS map tiles and adapt layer control dimensions.
+                                document.querySelector('.mapboxgl-canvas').remove();
+                                document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width:40px; height:40px;');
+                            }
                         }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
@@ -10656,14 +10684,16 @@ var mainGC = function() {
                 }
                 var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label');
                 if (labels) {
-                    for (var i=0; i<labels.length; i++) {
-                        if (labels[i].children[1].innerHTML.match(defaultLayer)) {
+                    for (var i = 0; i < labels.length; i++) {
+                        // In Search map the list items do have an additional div element as 1st child
+                        // (as opposed to list items in Browse map).
+                        if ($('span', labels[i])[0].innerHTML.match(defaultLayer)) {
                             // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
-                            if (labels[i].children[0].checked && labels.length > 1) {
-                                if (i == 0) labels[i+1].children[0].click();
-                                else labels[i-1].children[0].click();
+                            if ($('input', labels[i])[0].checked && labels.length > 1) {
+                                if (i == 0) $('input', labels[i+1])[0].click();
+                                else $('input', labels[i-1])[0].click();
                             }
-                            labels[i].children[0].click();
+                            $('input', labels[i])[0].click();
                             break;
                         }
                     }
@@ -10696,6 +10726,11 @@ var mainGC = function() {
                         if ($('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').length != 0) {
                             somethingDone++;
                             $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').remove();
+                        }
+                        if ($('.layer-control').length != 0) {
+                            somethingDone++;
+                            // Remove default GS layer control on Search map.
+                            $('.layer-control').parent().remove();
                         }
                     }
                     if (somethingDone != 0) setDefaultsInLayer();
@@ -14730,7 +14765,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the layer menu of the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II layers to use the layers for example from GME or also from GC.<br><br>It is important, that GC little helper II run at first, particularly in front of other layer used scripts like GME.") + onlyBrowseMap + "</div>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the layer menu of the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II layers to use the layers for example from GME or also from GC.<br><br>It is important, that GC little helper II run at first, particularly in front of other layer used scripts like GME.") + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers') + "<br>";
             html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + "; margin-left: 10px;'>";
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
