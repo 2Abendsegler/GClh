@@ -7779,6 +7779,8 @@ var mainGC = function() {
                                 updateUpvoteEvents(logs);
                             }
                             showFavIcons();
+                            // Display log counters for dynamically loaded logs, if the display of the log counters is active.
+                            if ($('.gclh_logCounter')[0] && !$('.gclh_logCounter')[0].innerHTML == "") showLogCounter();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
                             $("#pnlLazyLoad").hide();
                             isBusy = false;
