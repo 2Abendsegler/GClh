@@ -2102,8 +2102,8 @@ var mainGC = function() {
 // Collection of css for cache listings.
     if (is_page("cache_listing")) {
         var css = ''
-        // Define class "working".
-        css += ".working {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
+        // Define class "working" and "isDisabled".
+        css += ".working, .isDisabled {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
         // Display listing images not over the maximum available width for FF and chrome.
         css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
         appendCssStyle(css);
@@ -7832,11 +7832,13 @@ var mainGC = function() {
                         if (countLogs === logs.length) setMarkerDisableDynamicLogLoad(); // all logs loaded
                         else removeMarkerDisableDynamicLogLoad();
                         global_num = countLogs; // set dynamic log counter to current number of logs
-
-                        if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                         showFavIcons();
                     }
                     activateLoadAndSearch();
+                    $('#gclh_show_log_counter').removeClass("working");
+                    if ($('#gclh_show_log_counter input')[0] && !$('#gclh_show_log_counter').hasClass('isDisabled')) {
+                        $('#gclh_show_log_counter input')[0].removeAttribute('disabled', '');
+                    }
                 }, 100);
             }
 
@@ -7855,21 +7857,24 @@ var mainGC = function() {
                     if (settings_show_owner_vip_list) var vip_owner = get_real_owner();
                     else var vip_owner = "#";
                     if (!logs) return false;
-                    $(logsTab).find('tbody').children().remove();
-                    for (var i = 0; i < logs.length; i++) {
-                        if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
-                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
-                            unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                    searchLogsReset('');
+                    setTimeout(function() { // Force direct display refresh.
+                        $(logsTab).find('tbody').children().remove();
+                        for (var i = 0; i < logs.length; i++) {
+                            if (logs[i] && (logs[i].LogType == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                                var newBody = unsafeWindow.$(document.createElement("TBODY"));
+                                unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
+                                unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
+                            }
                         }
-                    }
-                    unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
-                    gclh_add_vip_icon();
-                    setLinesColorInCacheListing();
-                    if (isUpvoteActive) updateUpvoteEvents(logs);
-                    setMarkerDisableDynamicLogLoad();
-                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
-                    showFavIcons();
+                        unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
+                        gclh_add_vip_icon();
+                        setLinesColorInCacheListing();
+                        if (isUpvoteActive) updateUpvoteEvents(logs);
+                        setMarkerDisableDynamicLogLoad();
+                        showFavIcons();
+                        activateLoadAndSearch();
+                    }, 0);
                 }
 
                 if (!document.getElementById("ctl00_ContentBody_lblFindCounts").childNodes[0]) return false;
@@ -8020,7 +8025,6 @@ var mainGC = function() {
                     });
 
                     $('#search_logs_number_of_hits')[0].innerHTML = numberOfHits + ' / ' + $('#cache_logs_table2 .log-row').length;
-                    if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "hidden";
                     showFavIcons();
                     activateLoadAndSearch();
                 }
@@ -8042,6 +8046,7 @@ var mainGC = function() {
                     deactivateLoadAndSearch();
                     $('#search_logs_input')[0].value = '';
                     $('#search_logs_number_of_hits')[0].innerHTML = '';
+                    if (!logs) return; // Filter action is active.
                     if (all) loadNumLogs(logs, logs.length);
                     else if (settings_show_all_logs) loadNumLogs(logs, countOfLogsInListing());
                     else loadNumLogs(logs, 30);
@@ -8050,19 +8055,20 @@ var mainGC = function() {
 
             // Deactivate/activate load and search buttons and fields.
             function deactivateLoadAndSearch() {
-                $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset').addClass("working");
-                $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
-                $('#search_logs_input')[0].setAttribute('disabled', '');
-                $('#search_logs_go input')[0].setAttribute('disabled', '');
-                $('#search_logs_reset input')[0].setAttribute('disabled', '');
+                $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset, #gclh_show_log_counter').addClass("working");
+                if ($('#gclh_load_all_logs input')[0]) $('#gclh_load_all_logs input')[0].setAttribute('disabled', '');
+                if ($('#search_logs_input')[0]) $('#search_logs_input')[0].setAttribute('disabled', '');
+                if ($('#search_logs_go input')[0]) $('#search_logs_go input')[0].setAttribute('disabled', '');
+                if ($('#search_logs_reset input')[0]) $('#search_logs_reset input')[0].setAttribute('disabled', '');
+                if ($('#gclh_show_log_counter input')[0]) $('#gclh_show_log_counter input')[0].setAttribute('disabled', '');
             }
             function activateLoadAndSearch() {
                 setTimeout(function() {
                     $('#gclh_load_all_logs, #search_logs_input, #search_logs_go, #search_logs_reset').removeClass("working");
-                    $('#gclh_load_all_logs input')[0].removeAttribute('disabled', '');
-                    $('#search_logs_input')[0].removeAttribute('disabled');
-                    $('#search_logs_go input')[0].removeAttribute('disabled');
-                    $('#search_logs_reset input')[0].removeAttribute('disabled');
+                    if ($('#gclh_load_all_logs input')[0]) $('#gclh_load_all_logs input')[0].removeAttribute('disabled', '');
+                    if ($('#search_logs_input')[0]) $('#search_logs_input')[0].removeAttribute('disabled');
+                    if ($('#search_logs_go input')[0]) $('#search_logs_go input')[0].removeAttribute('disabled');
+                    if ($('#search_logs_reset input')[0]) $('#search_logs_reset input')[0].removeAttribute('disabled');
                 }, 200);
             }
 
@@ -8098,8 +8104,6 @@ var mainGC = function() {
                 }
                 if (isUpvoteActive) {
                     // Remove the sorting select.
-                    appendCssStyle("#new_sort_element_upvote.isDisabled{opacity: 0.5;}")
-                    appendCssStyle("#gclh_show_log_counter.isDisabled{opacity: 0.5;}")
                     var new_sort_element = document.createElement('select');
                     new_sort_element.setAttribute('id', 'new_sort_element_upvote');
                     new_sort_element.classList.add("isDisabled");;
@@ -8107,16 +8111,12 @@ var mainGC = function() {
                     new_sort_element.onchange = function() {
                         if (!$('#search_logs_number_of_hits')[0].innerHTML == '') searchLogsReset(logs);
                         var sorting_key = this.value;
-                        // Deactivate gclh_show_log_counter_button when sorting is not "newest".
-                        var gclh_show_log_counter_button = $("#gclh_show_log_counter input")[0];
-                        if (gclh_show_log_counter_button) {
-                            if (sorting_key == 'newest') {
-                                $("#gclh_show_log_counter").removeClass("isDisabled");
-                                gclh_show_log_counter_button.disabled = false;
-                            } else {
-                                $("#gclh_show_log_counter").addClass("isDisabled");
-                                gclh_show_log_counter_button.disabled = true;
-                            }
+                        // Deactivate buttons "Show log counter" and "Hide upvotes".
+                        if (sorting_key != 'newest') {
+                            $('#gclh_show_log_counter').addClass('isDisabled');
+                            if ($('#gclh_show_log_counter input')[0]) $('#gclh_show_log_counter input')[0].setAttribute('disabled', '');
+                            $('#gclh_show_hide_upvotes').addClass('isDisabled');
+                            if ($('#gclh_show_hide_upvotes input')[0]) $('#gclh_show_hide_upvotes input')[0].setAttribute('disabled', '');
                         }
                         $(this).after(' <img id="sort_logs_working" src="' + urlImages + 'ajax-loader.gif" />');
                         // Sort all the logs.
@@ -8142,9 +8142,17 @@ var mainGC = function() {
                                 unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                                 gclh_add_vip_icon();
                                 setLinesColorInCacheListing();
-                                if (document.getElementById("gclh_show_log_counter")) document.getElementById("gclh_show_log_counter").style.visibility = "";
                                 showFavIcons();
                                 updateUpvoteEvents(logs);
+                            }
+                            // Activate buttons "Show log counter" and "Hide upvotes".
+                            if (sorting_key == 'newest') {
+                                $('#gclh_show_log_counter').removeClass('isDisabled');
+                                if ($('#gclh_show_log_counter')[0] && !$('#gclh_show_log_counter').hasClass('working')) {
+                                    if ($('#gclh_show_log_counter input')[0]) $('#gclh_show_log_counter input')[0].removeAttribute('disabled', '');
+                                }
+                                $('#gclh_show_hide_upvotes').removeClass('isDisabled');
+                                if ($('#gclh_show_hide_upvotes input')[0]) $('#gclh_show_hide_upvotes input')[0].removeAttribute('disabled', '');
                             }
                             $('#sort_logs_working').remove();
                         }, 100);
