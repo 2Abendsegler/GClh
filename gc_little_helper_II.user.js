@@ -12468,7 +12468,7 @@ var mainGC = function() {
     }
 
 // Show smaller privacy buttons - has to run after Souveniers.
-    if (settings_public_profile_smaller_privacy_btn && is_page("publicProfile")) {
+    if (settings_public_profile_smaller_privacy_btn && isOWnPublicProfile()) {
         try {
             let url = document.location.href;
             if (url.match(/tab=geocaches/i)) {
@@ -17820,6 +17820,11 @@ var mainGC = function() {
             return false;
         }
         return true;
+    }
+
+// Is page own public profile
+    function isOWnPublicProfile() {
+        return is_page('publicProfile') && $('#ctl00_ProfileHead_ProfileHeader_lblMemberName').html() == global_me;
     }
 
 // Is page own statistics?
