@@ -1717,6 +1717,10 @@ var mainGC = function() {
                         else if (settings_menu_number_of_lines == 2) css += "ul.#m {top:  -8px !important; position: inherit; flex-wrap: wrap;}";
                         else if (settings_menu_number_of_lines == 3) css += "ul.#m {top: -13px !important; position: inherit; flex-wrap: wrap;}";
                     }
+                    // Prevent the user area in the header from moving to the left on narrow screens.
+                    css += "ul.menu {order: unset;} #ctl00_uxLoginStatus_divSignedIn {height: auto;} .messagecenterheaderwidget.li-messages {position: static;}";
+                    // Prevent the play menu from disappear on narrow screens.
+                    css += ".menu .attention-link-parent > a {display: block;};";
 
                 // Altes Seiten Design und restliche Seiten:
                 // ----------
