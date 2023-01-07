@@ -9407,28 +9407,28 @@ var mainGC = function() {
 
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
-        // Add layers, control to map and set default layers.
-        if (settings_use_gclh_layercontrol) {
-            // Add proxy to get map instance.
-            unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
-                apply: (target, thisArg, argArray) => {
-                    let useState = target.apply(thisArg, argArray);
-                    if (useState && useState[0]) {
-                        getMapInstance(useState);
-                    }
-                    return useState;
-                }
-            });
-            // Get and preserve map instance.
-            unsafeWindow.MapSettings = { 'Map': null };
-            const getMapInstance = (state) => {
-                if (unsafeWindow.MapSettings.Map !== null) return;
-                if (state[0]._map) unsafeWindow.MapSettings.Map = state[0]._map;
-            }
-            addLayersOnMap();
-        }
-
         try {
+            // Add layers, control to map and set default layers.
+            if (settings_use_gclh_layercontrol) {
+                // Add proxy to get map instance.
+                unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                    apply: (target, thisArg, argArray) => {
+                        let useState = target.apply(thisArg, argArray);
+                        if (useState && useState[0]) {
+                            getMapInstance(useState);
+                        }
+                        return useState;
+                    }
+                });
+                // Get and preserve map instance.
+                unsafeWindow.MapSettings = { 'Map': null };
+                const getMapInstance = (state) => {
+                    if (unsafeWindow.MapSettings.Map !== null) return;
+                    if (state[0]._map) unsafeWindow.MapSettings.Map = state[0]._map;
+                }
+                addLayersOnMap();
+            }
+
             // After go back from cache details to cache list, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
@@ -10655,18 +10655,18 @@ var mainGC = function() {
                             aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
                             div.appendChild(aTag);
                             side.parentNode.insertBefore(div, side);
-                            // Defekte Layer entfernen. (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
-                            // (for Browse map only)
                             if (document.location.pathname.match(/^\/map/)) {
+                                // Defekte Layer entfernen. (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
                                 try {
                                     for (layerId in window.MapSettings.Map._layers) {
                                         if (window.MapSettings.Map._layers[layerId]._url !== -1) {
                                             window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
                                         }
                                     }
-                                } catch (e) {};
-                            } else {
-                                // Search map: remove default GS map tiles and adapt layer control dimensions.
+                                } catch(e) {};
+                            }
+                            if (document.location.pathname.match(/^\/play\/map/)) {
+                                // Remove default GS map tiles and adapt layer control dimensions.
                                 document.querySelector('.mapboxgl-canvas').remove();
                                 document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width:40px; height:40px;');
                             }
@@ -10684,17 +10684,32 @@ var mainGC = function() {
                 }
                 var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label');
                 if (labels) {
-                    for (var i = 0; i < labels.length; i++) {
-                        // In Search map the list items do have an additional div element as 1st child
-                        // (as opposed to list items in Browse map).
-                        if ($('span', labels[i])[0].innerHTML.match(defaultLayer)) {
-                            // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
-                            if ($('input', labels[i])[0].checked && labels.length > 1) {
-                                if (i == 0) $('input', labels[i+1])[0].click();
-                                else $('input', labels[i-1])[0].click();
+                    if (is_page("map")) {
+                        for (var i=0; i<labels.length; i++) {
+                            if (labels[i].children[1].innerHTML.match(defaultLayer)) {
+                                // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
+                                if (labels[i].children[0].checked && labels.length > 1) {
+                                    if (i == 0) labels[i+1].children[0].click();
+                                    else labels[i-1].children[0].click();
+                                }
+                                labels[i].children[0].click();
+                                break;
                             }
-                            $('input', labels[i])[0].click();
-                            break;
+                        }
+                    }
+                    if (is_page("searchmap")) {
+                        // In Search map the list items do have an additional div element as 1st child
+                        // (whereas list items in Browse map don't).
+                        for (var i=0; i<labels.length; i++) {
+                            if (labels[i].children[0].children[1].innerHTML.match(defaultLayer)) {
+                                // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
+                                if (labels[i].children[0].children[0].checked && labels.length > 1) {
+                                    if (i == 0) labels[i+1].children[0].children[0].click();
+                                    else labels[i-1].children[0].children[0].click();
+                                }
+                                labels[i].children[0].children[0].click();
+                                break;
+                            }
                         }
                     }
                 }
@@ -10727,11 +10742,6 @@ var mainGC = function() {
                             somethingDone++;
                             $('.leaflet-control-layers:not(".gclh_used"):not(".gclh_layers")').remove();
                         }
-                        if ($('.layer-control').length != 0) {
-                            somethingDone++;
-                            // Remove default GS layer control on Search map.
-                            $('.layer-control').parent().remove();
-                        }
                     }
                     if (somethingDone != 0) setDefaultsInLayer();
                 }
@@ -10739,7 +10749,18 @@ var mainGC = function() {
                 if (waitCount <= 100) setTimeout(function(){loopAtLayerControls(waitCount);}, 50);
             }
             addLayerControl();
-            loopAtLayerControls(0);
+            if (is_page('map')) loopAtLayerControls(0);
+            if (is_page('searchmap')) {
+                setDefaultsInLayer();
+                // Remove default GS layer control.
+                (function removeGSLayerControl(waitCount = 0) {
+                    if ($('.layer-control')[0]) {
+                        $('.layer-control').parent().remove();
+                        return;
+                    }
+                    if (++waitCount <= 100) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
+                })();
+            }
 
             var css = '';
             css += '.leaflet-control-layers-expanded .leaflet-control-layers-list {display: block !important;}';
