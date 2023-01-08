@@ -12480,6 +12480,7 @@ var mainGC = function() {
         try {
             let url = document.location.href;
             if (url.match(/tab=geocaches/i)) {
+                if (!$('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyIcon')[0]) return;
                 let link = $('#full-privacy-text a').attr('href');
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_geocachesOwnerViewSettings').hide();
@@ -12490,25 +12491,30 @@ var mainGC = function() {
                 // Links to Caches
                 $('.minorDetails').html('&nbsp;'+$('.minorDetails').html());
             } else if (url.match(/tab=trackables/i)) {
+                if (!$('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings a').attr('href');
                 $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings').hide();
                 $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_trackablesPrivacyText').html().trim()} - Change it here"><img src="/images/icons/public_icon.svg" /></a>`);
             } else if (url.match(/tab=souvenirs/i)) {
+                if (!$('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyIcon')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_souvenirsOwnerViewSettings a').attr('href');
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_souvenirsOwnerViewSettings').hide();
                 $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_souvenirsPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
             } else if (url.match(/tab=gallery/i)) {
+                if (!$('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyIcon')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_galleryOwnerViewSettings a').attr('href');
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_galleryOwnerViewSettings').hide();
                 $('h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_galleryPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
             } else if (url.match(/tab=stats/i)) {
+                if (!$('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyIcon')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_statisticsOwnerViewSettings a').attr('href');
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_statisticsOwnerViewSettings').hide();
                 $('h3').first().append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_statisticsPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
             } else if (!url.match(/tab=lists/i)) { // Profilinformationen
+                if (!$('#ctl00_ContentBody_ProfilePanel1_profilePrivacyIcon')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_profileOwnerViewSettings a').attr('href');
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_profilePrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_profileOwnerViewSettings').hide();
