@@ -10669,6 +10669,8 @@ var mainGC = function() {
                                 // Remove default GS map tiles and adapt layer control dimensions.
                                 document.querySelector('.mapboxgl-canvas').remove();
                                 document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width:40px; height:40px;');
+                                // Ensure that map selection area is on top of map control buttons.
+                                document.querySelector('.leaflet-top.leaflet-right').setAttribute('style', 'z-index:1020;');
                             }
                         }
                     };
@@ -10758,7 +10760,7 @@ var mainGC = function() {
                         $('.layer-control').parent().remove();
                         return;
                     }
-                    if (++waitCount <= 100) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
+                    if (++waitCount <= 200) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
                 })();
             }
 
