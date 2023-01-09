@@ -10666,11 +10666,15 @@ var mainGC = function() {
                                 } catch(e) {};
                             }
                             if (document.location.pathname.match(/^\/play\/map/)) {
-                                // Remove default GS map tiles and adapt layer control dimensions.
+                                // Remove default GS map tiles.
                                 document.querySelector('.mapboxgl-canvas').remove();
-                                document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width:40px; height:40px;');
+                                // Adapt layout of gclh map layer control to GS controls.
+                                document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width: 39px; height: 39px;');
+                                document.querySelector('#gclh_layers').setAttribute('style', 'border: 1px solid rgb(0, 178, 101);');
                                 // Ensure that map selection area is on top of map control buttons.
                                 document.querySelector('.leaflet-top.leaflet-right').setAttribute('style', 'z-index:1020;');
+                                // Hide GME dummy
+                                document.querySelector('.dummy_for_gme').setAttribute('style', 'display:none');              
                             }
                         }
                     };
@@ -10762,6 +10766,8 @@ var mainGC = function() {
                     }
                     if (++waitCount <= 200) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
                 })();
+                // Move map selection button downwards.
+                if (!settings_relocate_other_map_buttons) appendCssStyle('#gclh_layers {top: 58px;}');
             }
 
             var css = '';
