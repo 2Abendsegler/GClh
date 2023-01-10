@@ -61,10 +61,10 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Public Profile] Replace privacy text links by icon link. [<a href="https://github.com/2Abendsegler/GClh/issues/2240" title="Issue 2240">2240</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		The long and numerous user privacy links in the own Public Profile are reduced to simple icons.<br>
-		For example the Public Profile Geocachespage:<br>
+		The long and numerous user privacy links in the own Public Profile are reduced to simple icons.<br><br>
+		For example the Public Profile Geocaches page:<br>
 		Old:<br>
-		<img src="../images/0.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		<img src="../images/0.14/Screen01.jpg" alt="Screen01.jpg"><br><br>
 		New:<br>
 		<img src="../images/0.14/Screen02.jpg" alt="Screen02.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_public_profile_smaller_privacy_btn" title="Link to your GClh II Config">Settings -> Public Profile:</a><br>
