@@ -14372,7 +14372,7 @@ var mainGC = function() {
             html += "<div class='gclh_content'>";
 
             html += "<div id='gclh_config_content1'>";
-            html += "<img src='" + urlImages + "flag_uk.png' alt='' title='Stand with Ukraine' style='margin-bottom: -14px;'>";
+            html += "<img src='" + urlImages + "flag_ua.png' alt='' title='Stand with Ukraine' style='margin-bottom: -14px;'>";
             html += "&nbsp;" + "<font style='float: right; font-size: 11px; ' >";
             html += "<a href='"+urlFaqHelp+"' title='How can I get help? (GitHub)' target='_blank'>Help</a> | ";
             html += "<a href='"+urlFaq+"' title='Frequently asked questions (GitHub)' target='_blank'>FAQ</a> | ";
