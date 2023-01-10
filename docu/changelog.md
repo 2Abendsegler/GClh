@@ -57,7 +57,7 @@
 		<img src="../images/0.14/Screen04.gif" alt="Screen04.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
 		<img src="../images/0.14/Screen05.jpg" alt="Screen05.jpg"><br>
-		This parameter is not new. The parameter already adds the additional map layer for the Browse Map. Now the parameter also adds the additional map layer for the Search Map. If you want to use this feature, maybe you have to activate it and maybe you have to do some more settings.<br><br>
+		This parameter is not new. The parameter already adds the additional map layer for the Browse Map. Now the parameter also adds the additional map layer for the Search Map. If you want to use this feature, maybe you have to activate it and maybe you have to do some more settings.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Public Profile] Replace privacy text links by icon link. [<a href="https://github.com/2Abendsegler/GClh/issues/2240" title="Issue 2240">2240</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
@@ -69,7 +69,7 @@
 		<img src="../images/0.14/Screen02.jpg" alt="Screen02.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_public_profile_smaller_privacy_btn" title="Link to your GClh II Config">Settings -> Public Profile:</a><br>
 		<img src="../images/0.14/Screen03.jpg" alt="Screen03.jpg"><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		If you want to use this feature, you have to activate it.<br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Sorting of map layers doesn't work in Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/2259" title="Issue 2259">2259</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
