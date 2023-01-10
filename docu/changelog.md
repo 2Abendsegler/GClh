@@ -1,3 +1,5 @@
+<a href="#v014" title="GClh II version 0.14 (??.01.2023)">v0.14</a> &nbsp;
+<a href="#v013" title="GClh II version 0.13 (??.01.2023)">v0.13</a> &nbsp;
 <a href="#v0121" title="GClh II version 0.12.1 (02.01.2023)">v0.12.1</a> &nbsp;
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="#v01120" title="GClh II version 0.11.20 (03.10.2022)">v0.11.20</a> &nbsp;
@@ -44,6 +46,62 @@
 <a href="#v0101" title="GClh II version 0.10.1 (20.12.2019)">v0.10.1</a> &nbsp;
 <a href="#v010" title="GClh II version 0.10 (13.12.2019)">v0.10</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.14:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Search Map] Additional Map Layer. [<a href="https://github.com/2Abendsegler/GClh/issues/960" title="Issue 960">960</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		This feature implements the additional Map Layer also in der Search Map.<br> 
+		<img src="../images/0.14/Screen04.gif" alt="Screen04.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
+		<img src="../images/0.14/Screen05.jpg" alt="Screen05.jpg"><br>
+		This parameter is not new. The parameter already adds the additional map layer for the Browse Map. Now the parameter also adds the additional map layer for the Search Map. If you want to use this feature, maybe you have to activate it and maybe you have to do some more settings.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Public Profile] Replace privacy text links by icon link. [<a href="https://github.com/2Abendsegler/GClh/issues/2240" title="Issue 2240">2240</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		The long and numerous user privacy links in the own Public Profile are reduced to simple icons.<br>
+		For example the Public Profile Geocachespage:<br>
+		Old:<br>
+		<img src="../images/0.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		New:<br>
+		<img src="../images/0.14/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_public_profile_smaller_privacy_btn" title="Link to your GClh II Config">Settings -> Public Profile:</a><br>
+		<img src="../images/0.14/Screen03.jpg" alt="Screen03.jpg"><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Sorting of map layers doesn't work in Chrome. [<a href="https://github.com/2Abendsegler/GClh/issues/2259" title="Issue 2259">2259</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] After pressing the reset button, dynamic reloading of logs no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2252" title="Issue 2252">2252</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Possible unneeded (and dangerous) call to append upvotes to logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2258" title="Issue 2258">2258</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Log counters are not displayed for dynamically loaded logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2264" title="Issue 2264">2264</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Search in logs" is not reset when a log type selection is clicked. [<a href="https://github.com/2Abendsegler/GClh/issues/2266" title="Issue 2266">2266</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Prevent the button line above the logs from breaking. [<a href="https://github.com/2Abendsegler/GClh/issues/2253" title="Issue 2253">2253</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Prevent the user area in the header from moving to the left and the play menu from disappear on narrow screens. [<a href="https://github.com/2Abendsegler/GClh/issues/2269" title="Issue 2269">2269</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(??.01.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+
+---
+## v0.13:
+&nbsp; &nbsp; Lost in space ...<br>
+<br>
 
 ---
 ## v0.12.1:
