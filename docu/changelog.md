@@ -100,7 +100,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.13:
-&nbsp; &nbsp; Lost in space ...<br>
+&nbsp; &nbsp; Lost in space.<br>
 <br>
 
 ---
