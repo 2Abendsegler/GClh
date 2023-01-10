@@ -7895,7 +7895,7 @@ var mainGC = function() {
                 }
 
                 if (settings_show_who_gave_favorite_but) {
-                    // Add filter link for favorite logs (hidden until favoriters are available).
+                    // Add filter link for favorite logs (hidden until favorites are available).
                     let li = document.createElement("li");
                     li.setAttribute("style", "display: none;");
                     let link = document.createElement("a");
@@ -10480,6 +10480,7 @@ var mainGC = function() {
             // Build map control buttons.
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
+            css += '#browse-map-cta {right: 10px;}';
             if (settings_relocate_other_map_buttons) {
                 css += '#browse-map-cta {display: none !important;}';
             }
@@ -12540,7 +12541,7 @@ var mainGC = function() {
     }
 
 // Show smaller privacy buttons - has to run after Souveniers.
-    if (settings_public_profile_smaller_privacy_btn && isOWnPublicProfile()) {
+    if (settings_public_profile_smaller_privacy_btn && isOwnPublicProfile()) {
         try {
             let url = document.location.href;
             if (url.match(/tab=geocaches/i)) {
@@ -12587,7 +12588,7 @@ var mainGC = function() {
             let css = 'h3 {display:flex;}';
             css += '.gclh_privacy {display: inline-flex;}';
             css += '.gclh_privacy img {align-self: end;}';
-            css += '.minorDetails {align-self: center;}';
+            css += '.minorDetails {align-self: center; padding-top: 4px;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Replace privacy text links by icon link",e);}
     }
@@ -14869,7 +14870,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += newParameterOn3;
             html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button") + "<br>";
+            html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button.") + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
@@ -17905,8 +17906,8 @@ var mainGC = function() {
         return true;
     }
 
-// Is page own public profile
-    function isOWnPublicProfile() {
+// Is page own public profile?
+    function isOwnPublicProfile() {
         return is_page('publicProfile') && $('#ctl00_ProfileHead_ProfileHeader_lblMemberName').html() == global_me;
     }
 
