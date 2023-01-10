@@ -105,7 +105,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.12.1:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Cache listing] Show who gave a favorite in cache listings. [<a href="https://github.com/2Abendsegler/GClh/issues/2247" title="Issue 2247">2247</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
@@ -131,7 +131,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.12:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Draft] Download der eigenen Drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/645" title="Issue 645">645</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -212,7 +212,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.20:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Search Map / Browse Map] Show Weekday of an Event. [<a href="https://github.com/2Abendsegler/GClh/issues/2091" title="Issue 2091">2091</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
@@ -250,7 +250,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.19:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>Info:</strong> [Browse Map] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
@@ -278,7 +278,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.18:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Drafts / Old log form] Automatic go back to drafts after sending to log also with old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2150" title="Issue 2150">2150</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br><br>
@@ -300,7 +300,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.17:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Certitude] Show compact solution information. [<a href="https://github.com/2Abendsegler/GClh/issues/2129" title="Issue 2129">2129</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
@@ -341,7 +341,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.16:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Drafts] Statistic of cache types and log types, mark double caches and load all drafts. [<a href="https://github.com/2Abendsegler/GClh/issues/2108" title="Issue 2108">2108</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
@@ -378,7 +378,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.15:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Draft] Show log type icons and show time always. [<a href="https://github.com/2Abendsegler/GClh/issues/2095" title="Issue 2095">2095</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
@@ -418,7 +418,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.14:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>Info:</strong> [Browse Map] Map layer errors regarding "<i>Hillshadow</i>". [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a>]<br>
@@ -448,7 +448,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 
 ---
 ## v0.11.13:
-&nbsp; &nbsp; <img src="../images/flag_uk.png" alt="" title="Stand with Ukraine"><br>
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
 		<strong>New:</strong> [Cache Listing] Set language in Driving Directions links for the cache coordinates and the waypoints to system language. [<a href="https://github.com/2Abendsegler/GClh/issues/2045" title="Issue 2045">2045</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
