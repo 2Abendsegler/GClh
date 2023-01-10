@@ -14415,8 +14415,8 @@ var mainGC = function() {
             html += thanksLineBuild("Ruko2010",             "",                         false, true,  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
-            html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
+            html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
