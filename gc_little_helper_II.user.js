@@ -10480,6 +10480,7 @@ var mainGC = function() {
             // Build map control buttons.
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
+            css += '#browse-map-cta {right: 10px;}';
             if (settings_relocate_other_map_buttons) {
                 css += '#browse-map-cta {display: none !important;}';
             }
@@ -14318,7 +14319,7 @@ var mainGC = function() {
         // Linklist right column.
         css += ".gclh_linklist_right {border: 1.5px solid #" + settings_color_bo + ";}";
         // Headlines.
-        css += ".gclh_headline {background-color: #" + settings_color_bo + ";}";
+        css += ".gclh_headline {background-color: #" + settings_color_bo + "; display: block;}";
         // Other areas.
         css += ".gclh_rc_area, .gclh_thanks_area {border: 1px solid #" + settings_color_bo + ";}";
         // New parameter with version.
