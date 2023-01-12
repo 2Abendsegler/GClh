@@ -9462,7 +9462,7 @@ var mainGC = function() {
             const processCaches = (state) => {
                 if (!isActive && !resetToPostedCoords) return;
 
-                // Move caches to corrected position or reset to posted coords.
+                // Move caches to corrected position or reset to original coords.
                 if (state[0].results && state[0].results[0]) {
                     let caches = state[0].results;
                     let gc = null;
@@ -9470,7 +9470,7 @@ var mainGC = function() {
                         gc = caches[i];
                         // If cache has corrected coords, process it.
                         if (gc.userCorrectedCoordinates) {
-                            // Reset to posted coords.
+                            // Reset to original coords.
                             if (resetToPostedCoords) {
                                 gc.postedCoordinates = gc.postedCoordinatesSave;
                                 delete gc.postedCoordinatesSave;
@@ -9480,7 +9480,7 @@ var mainGC = function() {
                                 // If coords are already corrected we're finished.
                                 return;
                             } else {
-                                // Store posted coords for reset.
+                                // Store original coords for reset.
                                 gc.postedCoordinatesSave = gc.postedCoordinates;
                             }
                             // Set corrected coords.
@@ -9491,7 +9491,7 @@ var mainGC = function() {
                     return;
                 }
 
-                // Keep selected cache marker at corrected position (otherwise it jumps to posted coords).
+                // Keep selected cache marker at corrected position (otherwise it jumps to original coords).
                 if (state[0].userCorrectedCoordinates) {
                     state[0].postedCoordinates = state[0].userCorrectedCoordinates;
                 }
@@ -9507,14 +9507,14 @@ var mainGC = function() {
                     const li =
                         '<li role="menuitem">' +
                         '<button id="gclh_corrected_coords" class="map-control" title="Show caches at corrected coordinates">' +
-                        '<svg aria-hidden="true"><use xlink:href="#pencil"></use></svg>' +
+                        '<svg aria-hidden="true" style="width:20px;height: 20px;"><use xlink:href="#pencil"></use></svg>' +
                         '</button>' +
                         '</li>';
                     $('.map-setting-controls>ul').prepend(li);
 
                     // When changing map layers preserve current button state.
                     if (isActive) {
-                        $('#gclh_corrected_coords').prop('title', 'Show caches at posted coordinates').css('background-color', 'rgb(230, 247, 239)');
+                        $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
                     }
 
                     // Toggle button for corrected coordinates.
@@ -9522,12 +9522,12 @@ var mainGC = function() {
                         if (!isActive) {
                             isActive = true;
                             setValue('showCorrectedCoords', isActive);
-                            $('#gclh_corrected_coords').prop('title', 'Show caches at posted coordinates').css('background-color', 'rgb(230, 247, 239)');
+                            $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
                         } else {
                             isActive = false;
                             setValue('showCorrectedCoords', isActive);
                             resetToPostedCoords = true;
-                            $('#gclh_corrected_coords').prop('title', 'Show caches at corrected coordinates').css('background-color', 'rgb(255, 255, 255)');
+                            $('#gclh_corrected_coords').prop('title', 'Show found caches at corrected coordinates').css('background-color', 'rgb(255, 255, 255)');
                         }
                         redrawMap();
                     });
@@ -9538,7 +9538,7 @@ var mainGC = function() {
             if (settings_use_gclh_layercontrol) {
                 addLayersOnMap();
             }
-            // Add button to toggle display of found caches between posted and corrected coordinates.
+            // Add button to toggle display of found caches between original and corrected coordinates.
             if (settings_show_found_caches_at_corrected_coords_but) {
                 var isActive = getValue('showCorrectedCoords', false);
                 var resetToPostedCoords = false;
@@ -14880,7 +14880,7 @@ var mainGC = function() {
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += checkboxy('settings_show_found_caches_at_corrected_coords_but', 'Show button to display found caches at corrected coordinates') + show_help("With this option you can show a button to display found caches at corrected coordinates. The button toggles the state between corrected and posted coordinates. The last state is always preserved.") + onlySearchMap + "<br>";
+            html += checkboxy('settings_show_found_caches_at_corrected_coords_but', 'Show button to display found caches at corrected coordinates') + show_help("With this option you can show a button to display found caches at corrected coordinates. The button toggles the state between corrected and original coordinates. The last state is always preserved.") + onlySearchMap + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone Circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
