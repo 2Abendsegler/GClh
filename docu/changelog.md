@@ -60,6 +60,13 @@
 		This parameter is not new. The parameter already adds the additional map layer for the Browse Map. Now the parameter also adds the additional map layer for the Search Map. If you want to use this feature, maybe you have to activate it and maybe you have to do some more settings.<br><br><br>
 	</li>
 	<li>
+		<strong>New:</strong> [Search Map] Show found caches at corrected coordinates. [<a href="https://github.com/2Abendsegler/GClh/issues/2274" title="Issue 2274">2274</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Found caches are displayed on the Search Map at the original coordinates, even if they have corrected coordinates. This is nice for displaying GeoArts, but there are also occasions when you would rather see the caches at the corrected coordinates on the map. This is now possible with a simple click on the new button.<br> 
+		<img src="../images/0.14/Screen06.gif" alt="Screen06.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_found_caches_at_corrected_coords_but" title="Link to your GClh II Config">Settings -> Map:</a><br>
+		<img src="../images/0.14/Screen07.jpg" alt="Screen07.jpg"><br><br><br>
+	</li>
+	<li>
 		<strong>New:</strong> [Public Profile] Replace privacy text links by icon link. [<a href="https://github.com/2Abendsegler/GClh/issues/2240" title="Issue 2240">2240</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		The long and numerous user privacy links in the own Public Profile are reduced to simple icons.<br><br>
 		For example the Public Profile Geocaches page:<br>
