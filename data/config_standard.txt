@@ -322,6 +322,7 @@
   "settings_color_nv": "F0DFC6",
   "settings_color_navi_search": false,
   "settings_map_show_btn_hide_header": true,
+  "settings_show_found_caches_at_corrected_coords_but": true,
   "settings_save_as_pq_set_defaults": false,
   "settings_save_as_pq_set_all": true,
   "settings_compact_layout_cod": false,
