@@ -9417,6 +9417,7 @@ var mainGC = function() {
             if (settings_use_gclh_layercontrol || settings_show_found_caches_at_corrected_coords_but) {
                 unsafeWindow.MapSettings = { 'Map': null };
                 // Add proxy to get map instance and cache data.
+                // (credits to skywalker90 for the idea in https://github.com/GCComment/GCComment2)
                 unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
                     apply: (target, thisArg, argArray) => {
                         let useState = target.apply(thisArg, argArray);
