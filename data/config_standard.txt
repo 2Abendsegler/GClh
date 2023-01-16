@@ -163,6 +163,8 @@
   "settings_map_hide_sidebar": true,
   "settings_vip_show_nofound": true,
   "settings_use_gclh_layercontrol": true,
+  "settings_use_gclh_layercontrol_on_browse_map": true,
+  "settings_use_gclh_layercontrol_on_search_map": true,
   "settings_fixed_pq_header": true,
   "remove_navi_play": false,
   "remove_navi_community": false,
