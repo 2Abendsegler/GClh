@@ -49,7 +49,8 @@
 	<li>
 		<strong>New:</strong> [Browse Map / Search Map] Separate parameters for Browse Map and Search Map to add map layers. [<a href="https://github.com/2Abendsegler/GClh/issues/2278" title="Issue 2278">2278</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
-		<img src="../images/0.14/Screen08.jpg" alt="Screen08.jpg"><br><br>
+		<img src="../images/0.14/Screen08.jpg" alt="Screen08.jpg"><br>
+		If you want to use these features, maybe you have to activate its and maybe you have to do some more settings.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Public Profile] Replace privacy text links by icon link. [<a href="https://github.com/2Abendsegler/GClh/issues/2240" title="Issue 2240">2240</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
