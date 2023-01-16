@@ -521,6 +521,8 @@ var variablesInit = function(c) {
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
     c.settings_use_gclh_layercontrol = getValue("settings_use_gclh_layercontrol", true);
+    c.settings_use_gclh_layercontrol_on_browse_map = getValue("settings_use_gclh_layercontrol_on_browse_map", true);
+    c.settings_use_gclh_layercontrol_on_search_map = getValue("settings_use_gclh_layercontrol_on_search_map", true);
     c.settings_fixed_pq_header = getValue("settings_fixed_pq_header", true);
     c.settings_friendlist_summary = getValue("settings_friendlist_summary", true);
     c.settings_friendlist_summary_viponly = getValue("settings_friendlist_summary_viponly", false);
@@ -9414,7 +9416,7 @@ var mainGC = function() {
     if (is_page('searchmap')) {
         try {
             // Map control and display of found caches at corrected coordinates.
-            if (settings_use_gclh_layercontrol || settings_show_found_caches_at_corrected_coords_but) {
+            if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
                 unsafeWindow.MapSettings = { 'Map': null };
                 // Add proxy to get map instance and cache data.
                 // (credits to skywalker90 for the idea in https://github.com/GCComment/GCComment2)
@@ -9536,7 +9538,7 @@ var mainGC = function() {
             }
 
             // Add layer control.
-            if (settings_use_gclh_layercontrol) {
+            if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 addLayersOnMap();
             }
             // Add button to toggle display of found caches between original and corrected coordinates.
@@ -9547,7 +9549,7 @@ var mainGC = function() {
             }
             // Re-add corrected coordinates button when necessary.
             // (for GS layer control, a map layer change between Leaflet maps removes all control buttons whereas GM keeps them).
-            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol) {
+            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol && !settings_use_gclh_layercontrol_on_search_map) {
                 waitForElementThenRun('button.layer-control', () => {
                     const addClickEventToLayerControl = () => {
                         // On click to layer control start observing as long as layer control is open.
@@ -10683,7 +10685,7 @@ var mainGC = function() {
                     // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
-                    if (settings_use_gclh_layercontrol && getValue("gclhLeafletMapActive")) {
+                    if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_browse_map && getValue("gclhLeafletMapActive")) {
                         addLayersOnMap();
                     } else {
                         // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
@@ -13268,6 +13270,14 @@ var mainGC = function() {
             }
             setValue("migration_task_07", true);
         }
+        // Migrate new parameter for map related "Replace map layers" to false if general parameter for it is false (zu v0.14).
+        if (getValue("migration_task_08", false) != true) {
+            if (settings_use_gclh_layercontrol == false) {
+                setValue("settings_use_gclh_layercontrol_on_browse_map", false);
+                setValue("settings_use_gclh_layercontrol_on_search_map", false);
+            }
+            setValue("migration_task_08", true);
+        }
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
@@ -14953,9 +14963,13 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_map_hide_5', "<img "+imgStyle+" src='" + imageBaseUrl + "5.png' title='Letterbox'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the layer menu of the map. With this option you can reduce the long list to the layers you really need. If the right list of layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\" GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II layers to use the layers for example from GME or also from GC.<br><br>It is important, that GC little helper II run at first, particularly in front of other layer used scripts like GME.") + "</div>";
-            html += checkboxy('settings_use_gclh_layercontrol', 'Replace layers') + "<br>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the map layers menu of the maps. With this option you can reduce the long list to the map layers you really need. If the right list of map layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\", GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II map layers to use the map layers for example from \"Geocaching Map Enhancements\"  or also from \"geocaching.com\".<br><br>It is important, that GC little helper II run at first, particularly in front of other map layer used scripts like \"Geocaching Map Enhancements\".") + "</div>";
+            html += checkboxy('settings_use_gclh_layercontrol', 'Replace map layers') + "<br>";
             html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + "; margin-left: 10px;'>";
+            html += newParameterOn1;
+            html += checkboxy('settings_use_gclh_layercontrol_on_browse_map', 'Replace map layers in Browse Map') + onlyBrowseMap + "<br>";
+            html += checkboxy('settings_use_gclh_layercontrol_on_search_map', 'Replace map layers in Search Map') + onlySearchMap + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
             html += "<tr>";
             html += "<td><select class='gclh_form' style='width: 260px; height: 150px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
@@ -16554,6 +16568,8 @@ var mainGC = function() {
                 'settings_log_signature_on_fieldnotes',
                 'settings_vip_show_nofound',
                 'settings_use_gclh_layercontrol',
+                'settings_use_gclh_layercontrol_on_browse_map',
+                'settings_use_gclh_layercontrol_on_search_map',
                 'settings_fixed_pq_header',
                 'settings_sync_autoImport',
                 'settings_map_hide_sidebar',
