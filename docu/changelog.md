@@ -1,5 +1,5 @@
-<a href="#v014" title="GClh II version 0.14 (??.01.2023)">v0.14</a> &nbsp;
-<a href="#v013" title="GClh II version 0.13 (??.01.2023)">v0.13</a> &nbsp;
+<a href="#v014" title="GClh II version 0.14 (17.01.2023)">v0.14</a> &nbsp;
+<a href="#v013" title="GClh II version 0.13">v0.13</a> &nbsp;
 <a href="#v0121" title="GClh II version 0.12.1 (02.01.2023)">v0.12.1</a> &nbsp;
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="#v01120" title="GClh II version 0.11.20 (03.10.2022)">v0.11.20</a> &nbsp;
@@ -38,6 +38,12 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
 		<img src="../images/0.14/Screen05.jpg" alt="Screen05.jpg"><br>
 		This parameter is not new. The parameter already adds the additional map layer for the Browse Map. Now the parameter also adds the additional map layer for the Search Map. If you want to use this feature, maybe you have to activate it and maybe you have to do some more settings.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Browse Map / Search Map] Separate parameters for Browse Map and Search Map to add map layers. [<a href="https://github.com/2Abendsegler/GClh/issues/2278" title="Issue 2278">2278</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_use_gclh_layercontrol_on_browse_map" title="Link to your GClh II Config">Settings -> Map - Layers in Map:</a><br>
+		<img src="../images/0.14/Screen08.jpg" alt="Screen08.jpg"><br>
+		If you want to use these features, maybe you have to activate its and maybe you have to do some more settings.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Search Map] Show found caches at corrected coordinates. [<a href="https://github.com/2Abendsegler/GClh/issues/2274" title="Issue 2274">2274</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
@@ -81,7 +87,7 @@
 	</li>
 </ul>
 <br>
-(??.01.2023)<br>
+(17.01.2023)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
