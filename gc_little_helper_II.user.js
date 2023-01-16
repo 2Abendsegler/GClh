@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.12.1
+// @version      0.14
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -9419,7 +9419,6 @@ var mainGC = function() {
             if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
                 unsafeWindow.MapSettings = { 'Map': null };
                 // Add proxy to get map instance and cache data.
-                // (credits to skywalker90 for the idea in https://github.com/GCComment/GCComment2)
                 unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
                     apply: (target, thisArg, argArray) => {
                         let useState = target.apply(thisArg, argArray);
@@ -9435,7 +9434,6 @@ var mainGC = function() {
             // Get map instance.
             const getMapInstance = (state) => {
                 if (unsafeWindow.MapSettings.Map !== null) return;
-
                 // Leaflet maps.
                 if (state[0]._mapPane) {
                     unsafeWindow.MapSettings.Map = state[0];
@@ -9454,8 +9452,8 @@ var mainGC = function() {
                     unsafeWindow.MapSettings.Map.fireEvent('click');
                 } else if (unsafeWindow.MapSettings.Map.__gm) {
                     // Google maps.
-                    // To force a map redraw, select the 1st cache from the list, then trigger a click into the map
-                    // ("map.fitBounds(map.getBounds())" would do the same but zooms out one level afterwards, reason unknown).
+                    // To force a map redraw, select the 1st cache from the list, then trigger a click into the map.
+                    // ("map.fitBounds(map.getBounds())" would do the same but zooms out one level afterwards, reason unknown.)
                     $('.geocache-item-details-container').first().click();
                     // Clear cache selection.
                     google.maps.event.trigger(unsafeWindow.MapSettings.Map, 'click');
@@ -9464,7 +9462,6 @@ var mainGC = function() {
             // Process cache data.
             const processCaches = (state) => {
                 if (!isActive && !resetToPostedCoords) return;
-
                 // Move caches to corrected position or reset to original coords.
                 if (state[0].results && state[0].results[0]) {
                     let caches = state[0].results;
@@ -9493,7 +9490,6 @@ var mainGC = function() {
                     if (resetToPostedCoords) resetToPostedCoords = false;
                     return;
                 }
-
                 // Keep selected cache marker at corrected position (otherwise it jumps to original coords).
                 if (state[0].userCorrectedCoordinates) {
                     state[0].postedCoordinates = state[0].userCorrectedCoordinates;
@@ -9506,7 +9502,6 @@ var mainGC = function() {
                     unsafeWindow.MapSettings.Map = null;
                     // Add button, but only once.
                     if ($("#gclh_corrected_coords")[0]) return;
-
                     const li =
                         '<li role="menuitem">' +
                         '<button id="gclh_corrected_coords" class="map-control" title="Show caches at corrected coordinates">' +
@@ -9514,12 +9509,10 @@ var mainGC = function() {
                         '</button>' +
                         '</li>';
                     $('.map-setting-controls>ul').prepend(li);
-
                     // When changing map layers preserve current button state.
                     if (isActive) {
                         $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
                     }
-
                     // Toggle button for corrected coordinates.
                     $("#gclh_corrected_coords").bind("click", () => {
                         if (!isActive) {
@@ -9548,7 +9541,7 @@ var mainGC = function() {
                 addCorrectedCoordsButton();
             }
             // Re-add corrected coordinates button when necessary.
-            // (for GS layer control, a map layer change between Leaflet maps removes all control buttons whereas GM keeps them).
+            // (For GS layer control, a map layer change between Leaflet maps removes all control buttons whereas GM keeps them.)
             if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol && !settings_use_gclh_layercontrol_on_search_map) {
                 waitForElementThenRun('button.layer-control', () => {
                     const addClickEventToLayerControl = () => {
@@ -9561,7 +9554,7 @@ var mainGC = function() {
                                     observer.disconnect();
                                     // Remove click event from (possibly deleted) layer control.
                                     $('button.layer-control').unbind('click', clickFunc);
-                                    // Re-add click event to (possibly new) layer control
+                                    // Re-add click event to (possibly new) layer control.
                                     setTimeout(() => {
                                         addClickEventToLayerControl();
                                     }, 2000);
@@ -10625,12 +10618,12 @@ var mainGC = function() {
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
             // Build map control buttons.
+            css += '.map-control {margin-bottom: 10px !important;}';
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
             css += '#browse-map-cta {right: 10px;}';
-            if (settings_relocate_other_map_buttons) {
-                css += '#browse-map-cta {display: none !important;}';
-            }
+            if (settings_relocate_other_map_buttons) css += '#browse-map-cta {display: none !important;}';
+            else css += '#gclh_layers {top: 52px;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -10774,12 +10767,12 @@ var mainGC = function() {
                 injectPageScriptFunction(function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
                     window["GCLittleHelper_MapLayerHelper"] = function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
                         if (!window.MapSettings.Map) {
-                            setTimeout(function() { window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);}, 10);
+                            setTimeout(function() {window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);}, 10);
                         } else {
                             var layerControl = new window.L.Control.Layers();
                             var layerToAdd = null;
                             var defaultLayer = null;
-                            // Map layer sort (Chrome doesn't respect the key order in objects, FF does)
+                            // Map layer sort (Chrome doesn't respect the key order in objects, FF does).
                             let keys = Object.keys(map_layers);
                             if (settings_sort_map_layers) keys = keys.sort();
                             for (let i = 0; i < keys.length; i++) {
@@ -10826,7 +10819,7 @@ var mainGC = function() {
                                     document.querySelector('#gclh_layers').setAttribute('style', 'border: 1px solid rgb(0, 178, 101);');
                                     // Ensure that map selection area is on top of map control buttons.
                                     document.querySelector('.leaflet-top.leaflet-right').setAttribute('style', 'z-index:1020;');
-                                    // Hide GME dummy
+                                    // Hide GME dummy.
                                     document.querySelector('.dummy_for_gme').setAttribute('style', 'display:none');
                                 }, 0);
                             }
@@ -10906,7 +10899,7 @@ var mainGC = function() {
                     if (somethingDone != 0) setDefaultsInLayer();
                 }
                 waitCount++;
-                if (waitCount <= 100) setTimeout(function(){loopAtLayerControls(waitCount);}, 50);
+                if (waitCount <= 200) setTimeout(function(){loopAtLayerControls(waitCount);}, 50);
             }
             addLayerControl();
             if (is_page('map')) loopAtLayerControls(0);
@@ -10920,8 +10913,6 @@ var mainGC = function() {
                     }
                     if (++waitCount <= 200) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
                 })();
-                // Move map selection button downwards.
-                if (!settings_relocate_other_map_buttons) appendCssStyle('#gclh_layers {top: 58px;}');
             }
 
             var css = '';
@@ -13232,8 +13223,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/irc"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/0Mnx/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/irP"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/W2GQ/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14622,7 +14613,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "01.01.2023";
+            var thanksLastUpdate = "16.01.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14819,7 +14810,6 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","bm")+"<label for='lnk_gclh_config_bm'>Bookmark List</label>" + prem + "</h4>";
             html += "<div id='gclh_config_bm' class='gclh_block'>";
-            html += newParameterOn1;
             html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
             var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
             html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through, in color ');
@@ -14838,7 +14828,6 @@ var mainGC = function() {
             html += checkboxy('settings_lists_show_dd', 'Show dropdown menu with additional stuff') + show_help("Add an icon with dropdown menu in own and foreign bookmark lists, in the favorites list and in the ignore list with additional GC little helper II functionality.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_lists_hide_desc', 'Show/hide cache descriptions') + show_help("Add an entry in the dropdown menu to show and hide the cache descriptions.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_lists_upload_file', 'Upload caches from file') + show_help("Add an entry in the dropdown menu to upload caches from a file into the bookmark list.<br><br>The caches in .gpx and .loc files are expected in the standard scheme of such files.<br><br>The caches in other files are expected with an usual separator like for example a blank, a komma or an other usual sign.") + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_lists_open_tabs', 'Open selected caches in new browser tabs') + show_help("This feature add an entry in the dropdown menu to open selected caches in new browser tabs. The feature is available in own and foreign bookmark lists and in the ignore list.<br><br>If you have only two or three caches to open, you can also open the listings manually. However, if you want to do this for a full page with for example twenty caches, this feature can be helpful.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
@@ -14863,9 +14852,7 @@ var mainGC = function() {
             html += checkboxy('settings_search_enable_user_defined', 'Enable user defined filter sets for geocache searchs') + show_help("This features enables you to store favorites filter settings in the geocache search and call them quickly.") + prem + "<br>";
             html += checkboxy('settings_show_sums_in_watchlist', 'Show number of caches in your watchlist') + show_help("With this option the number of caches and the number of selected caches in the categories \"All\", \"Archived\" and \"Deactivated\", corresponding to the select buttons, are shown in your watchlist at the end of the list.") + "<br>";
             html += checkboxy('settings_hide_archived_in_owned', 'Hide archived caches in owned list') + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_show_button_for_hide_archived', 'Show button to display all, active or archived caches in owned list') + show_help('With this option a button is shown in owned caches list to display all caches, only active caches or only archived caches in the owned caches list.') + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_compact_layout_cod', 'Show compact layout on your cache owner dashboard') + "<br>";
             html += checkboxy('settings_show_button_fav_proz_cod', 'Show button to show the favorite percentage of your hidden caches') + show_help("Only for published and archived caches, not for events and unpublished caches.") + "<br>";
@@ -14876,7 +14863,6 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
-            html += newParameterOn1;
             html += checkboxy('settings_relocate_other_map_buttons', 'Relocate the buttons \"Search\" and \"Browse geocaches\" to the other buttons') + "<br>";
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on cache detail screen') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
@@ -14886,13 +14872,14 @@ var mainGC = function() {
             html += show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + '<br>';
             html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the Search Map to save the actual map view as a pocket query (like on the Browse Map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += newParameterOn1;
             html += checkboxy('settings_show_found_caches_at_corrected_coords_but', 'Show button to display found caches at corrected coordinates') + show_help("With this option you can show a button to display found caches at corrected coordinates. The button toggles the state between corrected and original coordinates. The last state is always preserved.") + onlySearchMap + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone Circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
@@ -14943,9 +14930,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("Note that you can only hide the header by default if you have activated the setting <a class='gclh_ref_ht_int' href='#settings_map_show_btn_hide_header' title='Link to setting \"Show button \"Hide Header\"\"'>Show button \"Hide Header\"</a>.") + "<br>";
             html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
             html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_map_hide_dnfs', 'Hide DNF smileys by default') + onlyBrowseMap + prem + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "&nbsp;" + "Hide cache types by default " + prem + "<br>";
 
             var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'";
@@ -14992,19 +14977,15 @@ var mainGC = function() {
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
             html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to Browse Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in Browse Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_google_maps_to_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_add_link_new_gc_map_on_google_maps', 'Add link to Search Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in Search Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_google_maps_to_new_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Google Maps.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap Page</b></div>";
             html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to Browse Map on Openstreetmap') + show_help("With this option an icon are placed on the Openstreetmap page to link to the same area in Browse Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_add_link_new_gc_map_on_osm', 'Add link to Search Map on Openstreetmap') + show_help("With this option an icon are placed on the Openstreetmap page to link to the same area in Search Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_new_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Openstreetmap.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map Page</b></div>";
@@ -15023,21 +15004,19 @@ var mainGC = function() {
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the place') + show_help("With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += newParameterOn1;
             html += " &nbsp; " + checkboxy('settings_show_enhanced_map_coords', 'Show the cache coordinates') + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","profile")+"<label for='lnk_gclh_config_profile'>Public Profile</label></h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += newParameterOn3;
             html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button.") + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
-            html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += newParameterOn1;
+            html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button.") + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
+            html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += checkboxy('settings_profile_old_links', 'Use old links to finds and hides caches') + show_help("The links to finds and hides caches in the public profile run through the new search. With this option you can use the old search again.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary data are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all data, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
@@ -15075,9 +15054,7 @@ var mainGC = function() {
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br>";
             html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country on statistic map') + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","db")+"<label for='lnk_gclh_config_db'>Dashboard</label></h4>";
@@ -15092,7 +15069,6 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to ignore list in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort'>";
@@ -15100,13 +15076,10 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += newParameterOn1;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
@@ -15120,10 +15093,8 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","listing")+"<label for='lnk_gclh_config_listing'>Listing</label></h4>";
             html += "<div id='gclh_config_listing' class='gclh_block'>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Listing Header</b>" + "</div>";
-            html += newParameterOn1;
             html += checkboxy('settings_cache_type_icon_visible', 'Set cache type icon always visible') + show_help("With this option, the cache type icon is always displayed complete, even if the cache is deactivated or archived.") + "<br>";
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += checkboxy('settings_strike_archived', 'Strike through title of archived and disabled caches') + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If this option is enabled, the alias that an owner used to publish the cache is replaced with the real owner name.") + "<br>";
             html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
@@ -15185,18 +15156,13 @@ var mainGC = function() {
             }
             html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
-            html += newParameterOn1;
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + "<br>";
-            html += newParameterOn1;
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show radius around caches on Flopp\'s Map') + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use geocaching icons on GPSVisualizer map') + show_help("Instead of default icons, geocaching icons are used. If the URL is too long, disable this option.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help("Transfer for every waypoint the type as text in the description. If the URL is too long, disable this option.") + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh II Config, as start point and first waypoint for the route calculation.") + "<br>";
             html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 200px;'>";
@@ -15241,7 +15207,6 @@ var mainGC = function() {
             }
             html += closeCff('cdos');
             cssCff('cdos', '14', '200', '460', '54');
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Overview Map <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location.") + "<br>";
@@ -15328,9 +15293,7 @@ var mainGC = function() {
             html += checkboxy('settings_add_search_in_logs_func', 'Add "Search in logs" feature') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
-            html += newParameterVersionSetzen("0.10") + newParameterOff;
             html += newParameterOn3;
             html += checkboxy('settings_show_who_gave_favorite_but', 'Show button \"Show who favorited\" above the logs') + show_help("With this option you can choose to show a button \"Show who favorited\" above the logs. Pressing this button will add a favorite icon to the logs of users who gave a favorite. Additionally, a filter for those logs will be added above the logs.<br><br>For performance reasons this functionality must be restricted to caches with 500 favorites or less.") + "<br>";
             html += newParameterVersionSetzen(0.12) + newParameterOff;
@@ -15397,9 +15360,7 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_autovisit_default', 'Set \"AutoVisit\" for all TBs by default') + show_help("With this option all new TBs in your inventory are automatically set to \"AutoVisit\".") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
-            html += newParameterOn1;
             html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled.") + "<br>";
-            html += newParameterVersionSetzen('0.10') + newParameterOff;
             html += newParameterOn2;
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
             html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
@@ -15622,7 +15583,7 @@ var mainGC = function() {
                     }
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
-                    if (num >= 75 && num <= 88) html += newParameterLL1;
+                    // if (num >= 75 && num <= 88) html += newParameterLL1; // Zeile belassen als Beispiel für zukünftige Einträge.
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -15631,7 +15592,7 @@ var mainGC = function() {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Description for custom link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
-                    if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10");
+                    // if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10"); // Zeile belassen als Beispiel für zukünftige Einträge.
                 }
                 html += "  </td></tr>";
             }
@@ -16791,12 +16752,12 @@ var mainGC = function() {
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span class='gclh_new_para#' style='float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
 //--> $$001
-    newParameterOn1 = d.replace("#", "03");
-    newParameterOn2 = d.replace("#", "06");
-    newParameterOn3 = d.replace("#", "10");
-    newParameterLL1 = s.replace("#", "03");
-    newParameterLL2 = s.replace("#", "06");
-    newParameterLL3 = s.replace("#", "10");
+    newParameterOn1 = d.replace("#", "10");
+    newParameterOn2 = d.replace("#", "03");
+    newParameterOn3 = d.replace("#", "06");
+    newParameterLL1 = s.replace("#", "10");
+    newParameterLL2 = s.replace("#", "03");
+    newParameterLL3 = s.replace("#", "06");
 //<-- $$001
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
