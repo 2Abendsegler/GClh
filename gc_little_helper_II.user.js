@@ -1636,7 +1636,7 @@ var mainGC = function() {
                 // Im neuen Dashboard Upgrade Erinnerung entfernen.
                 $('.sidebar-upsell').remove();
                 // Icons aus Play Menü entfernen.
-                $('.charcoal').remove();
+                $('#ctl00_gcNavigation .menu .charcoal').remove();
                 $('.li-attention').removeClass('li-attention').addClass('li-attention_gclh');
                 css +=
                     // Schriftfarbe Menü.
