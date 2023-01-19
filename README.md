@@ -7,12 +7,12 @@
 *Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
-<img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">&nbsp;
-<img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome">&nbsp;
-<img src="/images/safari_logo_small.png" title="Safari" alt="Safari">&nbsp;
-<img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
-<img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">&nbsp;
-<img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
+<a href="#"><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a>&nbsp;
+<a href="#"><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"></a>&nbsp;
+<a href="#"><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"></a>&nbsp;
+<a href="#"><img src="/images/opera_logo_small.png" title="Opera" alt="Opera"></a>&nbsp;
+<a href="#"><img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge"></a>&nbsp;
+<a href="#"><img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"></a>
 
 ## How to install
 If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
@@ -45,12 +45,12 @@ All Geocacher and others are encouraged to help with the development or the supp
 *Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*
 
 ## Unterstützte Browsers
-<img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">&nbsp;
-<img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome">&nbsp;
-<img src="/images/safari_logo_small.png" title="Safari" alt="Safari">&nbsp;
-<img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
-<img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">&nbsp;
-<img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
+<a href="#"><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a>&nbsp;
+<a href="#"><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"></a>&nbsp;
+<a href="#"><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"></a>&nbsp;
+<a href="#"><img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
+<a href="#"><img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge"></a>&nbsp;
+<a href="#"><img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"></a>
 
 ## Installationshinweise
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#de) fündig.
