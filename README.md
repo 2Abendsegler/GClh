@@ -15,7 +15,7 @@
 <a href="//"><img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"></a>
 
 ## How to install
-If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
+If you need any help with the installation, you can have a look at our [installation tips](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
 
 ## Help
 If you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English): 
