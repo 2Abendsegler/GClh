@@ -7,7 +7,7 @@
 *Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
-<a href="//"><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a>&nbsp;
+<a href="//" style="cursor: auto;"><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a>&nbsp;
 <a href="//"><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"></a>&nbsp;
 <a href="//"><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"></a>&nbsp;
 <a href="//"><img src="/images/opera_logo_small.png" title="Opera" alt="Opera"></a>&nbsp;
