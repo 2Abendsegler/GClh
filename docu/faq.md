@@ -158,7 +158,7 @@ We are happy about improvement suggestions, bugfixes or new features. This is re
 ## 8. Where can I get help with the GClh?
 If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... :<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
-- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Discussions page](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
@@ -316,7 +316,7 @@ Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies
 ## 8. Wo bekomme ich Hilfe zum GClh?
 Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden:<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
-- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Diskussions Seite](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
