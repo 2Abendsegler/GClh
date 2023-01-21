@@ -9461,7 +9461,15 @@ var mainGC = function() {
             }
             // Process cache data.
             const processCaches = (state) => {
+                // Ensure that last selected cache marker is reset to original coords.
+                if (!isActive && state[0].postedCoordinatesSave) {
+                    state[0].postedCoordinates = state[0].postedCoordinatesSave;
+                    delete state[0].postedCoordinatesSave;
+                    return;
+                }
+                // Nothing to be done.
                 if (!isActive && !resetToPostedCoords) return;
+
                 // Move caches to corrected position or reset to original coords.
                 if (state[0].results && state[0].results[0]) {
                     let caches = state[0].results;
@@ -9491,7 +9499,8 @@ var mainGC = function() {
                     return;
                 }
                 // Keep selected cache marker at corrected position (otherwise it jumps to original coords).
-                if (state[0].userCorrectedCoordinates) {
+                if (state[0].userCorrectedCoordinates && !state[0].postedCoordinatesSave) {
+                    state[0].postedCoordinatesSave = state[0].postedCoordinates;
                     state[0].postedCoordinates = state[0].userCorrectedCoordinates;
                 }
             }
