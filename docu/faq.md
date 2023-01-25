@@ -82,10 +82,10 @@ If the GClh does not start, these are usually matching problems between the brow
 		Drag & drop operations do not work.<br>
 		<ul>
 			<li>
-				GClh Config: In chapter "Linklist / Navigation", no new entries can be placed in the right column "Linklist" from the left column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Default links</a>.<br>
+				GClh Config: In chapter "Linklist / Navigation", no new entries can be placed in the right column "Linklist" from the left column <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Default links</a>.<br>
 			</li>
 			<li>
-				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
+				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
 			</li>
 		</ul>
 		<br>
@@ -97,7 +97,7 @@ If the GClh does not start, these are usually matching problems between the brow
 				Icons on map: The icon "Go to Map" can not be selected in the map. All other icons in the map work.<br>
 			</li>
 			<li>
-				Preview pictures (thumbnails) in listings and galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
+				Preview pictures (thumbnails) in listings and galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
 				<br/>
 			</li>
 		</ul>
@@ -151,7 +151,7 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests on the plattform GitHub. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests on the plattform GitHub. You can read how to create a Pull-Request here: <a href="../docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
@@ -240,10 +240,10 @@ Abhilfe:<br>
 		Drag & Drop Operationen funktionieren nicht.<br>
 		<ul>
 			<li>
-				GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linkliste" gehängt werden.<br>
+				GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linkliste" gehängt werden.<br>
 			</li>
 			<li>
-				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linkliste</a> die Reihenfolge nicht geändert werden.<br>
+				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linkliste</a> die Reihenfolge nicht geändert werden.<br>
 				<br/>
 			</li>
 		</ul>
@@ -255,7 +255,7 @@ Abhilfe:<br>
 				Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren.<br>
 			</li>
 			<li>
-				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durch das Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte im Config deaktiviert werden.<br>
+				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durch das Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte im Config deaktiviert werden.<br>
 				<br/>
 			</li>
 		</ul>
@@ -309,7 +309,7 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 
 <a id="7-de"></a>
 ## 7. Wie kann ich etwas zum GClh beitragen?
-Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht über Pull Requests auf der Plattform GitHub. Wie du dort einen Pull Request anlegst, kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht über Pull Requests auf der Plattform GitHub. Wie du dort einen Pull Request anlegst, kannst du hier nachlesen: <a href="../docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
 <br>
 
 <a id="8-de"></a>
