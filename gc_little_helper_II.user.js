@@ -16106,7 +16106,9 @@ var mainGC = function() {
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon_new_tab");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_search_map_icon");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_count_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_color_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "restore_settings_count_own_matrix_show_color_next");
