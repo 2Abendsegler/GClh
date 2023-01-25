@@ -1,4 +1,5 @@
-<a href="#user-content-en" title="(EN) GNU GENERAL PUBLIC LICENSE; Version 2, June 1991"><img src="../images/flag_en.png"></a> &nbsp; &nbsp; <a href="#user-content-de" title="(DE) GNU GENERAL PUBLIC LICENSE; Deutsche Übersetzung der Version 2, Juni 1991"><img src="../images/flag_de.png"></a>
+<a href="#user-content-en" title="(EN) GNU GENERAL PUBLIC LICENSE; Version 2, June 1991"><img src="../images/flag_en.png"></a>
+<a href="#user-content-de" title="(DE) GNU GENERAL PUBLIC LICENSE; Deutsche Übersetzung der Version 2, Juni 1991"><img src="../images/flag_de.png"></a>
 
 --- 
 <h3><a id="user-content-en">GNU GENERAL PUBLIC LICENSE</a></h3>
