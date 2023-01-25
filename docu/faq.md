@@ -160,13 +160,13 @@ If you need help with the GClh, or if you have questions about the GClh, you can
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- [Discussions page](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
-- [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
+- [Discussions page](https://github.com/2Abendsegler/GClh/discussions) on our development platform at GitHub
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at GitHub
 <br>
 
 <a id="9-en"></a>
 ## 9. How can I report a bug or a feature request?
-For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
+For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at GitHub.<br>
 Or you can create a note in one of the forums or on our discussions page. See <a href="#8-en">FAQ 8</a>.<br>
 <br>
 
@@ -318,12 +318,12 @@ Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kanns
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- [Diskussions Seite](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
-- [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
+- [Diskussions Seite](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei GitHub
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei GitHub
 <br>
 
 <a id="9-de"></a>
 ## 9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?
-Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
+Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei GitHub eröffnen.<br>
 Oder du kannst dich in einem der Foren oder auf unserer Diskussions Seite melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
 <br>
