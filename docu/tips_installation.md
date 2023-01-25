@@ -31,7 +31,7 @@
 The key F4 for calling the GClh Config and the key F2 for saving from GClh Config respectively for saving of a log, a Bookmark, a Pocket Query ... , are enabled by default. They can be changed in GClh Config in the GClh Config / Sync area or in the Logging area.<br>
 In Vivaldi browser, these keys are also enabled by default. They can be changed in Vivaldi via settings / keyboard.<br>
 
-### <a href="//" id="android_en"></a><a href="//" id="android_firefox_en"></a><img src="/images/android_logo_small.png" title="Android" alt="Android"></a> Android under different browsers:
+### <a href="//" id="android_en"></a><a href="//" id="android_firefox_en"><img src="/images/android_logo_small.png" title="Android" alt="Android"></a> Android under different browsers:
 * We do not support Android devices at the moment. Nevertheless, the GClh is functional on Android with only a few restrictions. <a href="/docu/faq.md#4-en" title="Link to 'FAQ 4. Hints for using on Android devices.'">Here</a> are some hints for using the GClh on Android devices.<br><br>
 Process the following instructions on your Android device:<br><br>
 * Install a browser on your Android device.<br>
