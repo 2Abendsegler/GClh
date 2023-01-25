@@ -26,7 +26,7 @@
 		Maybe the GClh is installed more than once in a single script manager. You can check this by viewing the script overview. If so, uninstall all but one instance of the GClh and the problem should be resolved.<br>
 	</li>
 </ol>
-If you still get the warning, please leave a bug report <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.<br>
+If you still get the warning, please leave a bug report <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">here</a> and we will try to assist you.<br>
 <br>
 
 <a id="2-en"></a>
@@ -184,7 +184,7 @@ Der *GC little helper II* funktioniert nur korrekt, wenn er nur einmal im Browse
 		Eventuell ist der GClh mehr als einmal in einem einzigen Scriptmanager installiert. Das kann in der Scriptübersicht geprüft werden. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 </ol>
-Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues">hier</a> ein neues Issue und wir werden versuchen dir zu helfen.<br>
+Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">hier</a> ein neues Issue und wir werden versuchen dir zu helfen.<br>
 <br>
 
 <a id="2-de"></a>
