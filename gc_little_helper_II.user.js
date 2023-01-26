@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14
+// @version      0.14.1
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -1636,7 +1636,7 @@ var mainGC = function() {
                 // Im neuen Dashboard Upgrade Erinnerung entfernen.
                 $('.sidebar-upsell').remove();
                 // Icons aus Play Menü entfernen.
-                $('.charcoal').remove();
+                $('#ctl00_gcNavigation .menu .charcoal').remove();
                 $('.li-attention').removeClass('li-attention').addClass('li-attention_gclh');
                 css +=
                     // Schriftfarbe Menü.
@@ -9461,7 +9461,15 @@ var mainGC = function() {
             }
             // Process cache data.
             const processCaches = (state) => {
+                // Ensure that last selected cache marker is reset to original coords.
+                if (!isActive && state[0].postedCoordinatesSave) {
+                    state[0].postedCoordinates = state[0].postedCoordinatesSave;
+                    delete state[0].postedCoordinatesSave;
+                    return;
+                }
+                // Nothing to be done.
                 if (!isActive && !resetToPostedCoords) return;
+
                 // Move caches to corrected position or reset to original coords.
                 if (state[0].results && state[0].results[0]) {
                     let caches = state[0].results;
@@ -9491,7 +9499,8 @@ var mainGC = function() {
                     return;
                 }
                 // Keep selected cache marker at corrected position (otherwise it jumps to original coords).
-                if (state[0].userCorrectedCoordinates) {
+                if (state[0].userCorrectedCoordinates && !state[0].postedCoordinatesSave) {
+                    state[0].postedCoordinatesSave = state[0].postedCoordinates;
                     state[0].postedCoordinates = state[0].userCorrectedCoordinates;
                 }
             }
@@ -12767,7 +12776,7 @@ var mainGC = function() {
             var time = new Date().getTime();
 
             if (next_check < time || manual == true) {
-                time += 1 * 60 * 60 * 1000;  // 1 Stunde warten, bis zum nächsten Check.
+                time += 8 * 60 * 60 * 1000;  // 8 Stunden warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
                 if (GM_xmlhttpRequest) {
                     GM_xmlhttpRequest({
@@ -12787,9 +12796,6 @@ var mainGC = function() {
                                         if (window.confirm(text)) {
                                             btnClose();
                                             document.location.href = urlScript;
-                                        } else {
-                                            time += 7 * 60 * 60 * 1000;  // 1+7 Stunden warten, bis zum nächsten Check.
-                                            setValue('update_next_check', time.toString());
                                         }
                                     } else if (manual == true) {
                                         var text = "Version " + scriptVersion + " of script GC little helper II \n" +
@@ -13223,8 +13229,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://www.worldflagcounter.com/irP"' + prop;
-        code += '<img src="https://s11.flagcounter.com/count2/W2GQ/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/NSwK/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/isg"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14613,7 +14619,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "16.01.2023";
+            var thanksLastUpdate = "26.01.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16097,7 +16103,9 @@ var mainGC = function() {
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon_new_tab");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_search_map_icon");
+            setEvForDepPara("settings_map_overview_build", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_count_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "settings_count_own_matrix_show_color_next");
             setEvForDepPara("settings_count_own_matrix_show_next", "restore_settings_count_own_matrix_show_color_next");

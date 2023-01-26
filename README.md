@@ -7,20 +7,20 @@
 *Powerful, configurable tool to improve and expand the geocaching pages.*
 
 ## Supported Browsers
-<img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">&nbsp;
-<img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome">&nbsp;
-<img src="/images/safari_logo_small.png" title="Safari" alt="Safari">&nbsp;
-<img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
-<img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">&nbsp;
-<img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
+<a href="//"><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a>&nbsp;
+<a href="//"><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"></a>&nbsp;
+<a href="//"><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"></a>&nbsp;
+<a href="//"><img src="/images/opera_logo_small.png" title="Opera" alt="Opera"></a>&nbsp;
+<a href="//"><img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge"></a>&nbsp;
+<a href="//"><img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"></a>
 
 ## How to install
-If you need any help with the installation, you can have a look at our [Installationtipps](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#en).
+If you need any help with the installation, you can have a look at our [installation tips](/docu/tips_installation.md#en).
 
 ## Help
 If you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English): 
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
-- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Forum](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
@@ -32,10 +32,10 @@ It is free of charge, without any advertising and is already used by thousands o
 
 The tool is developed in Javascript and can be used with the script manager Tampermonkey, Violentmonkey and others under the browsers Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge and Vivaldi.
 
-[Here](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) are some screenshots of the geocaching pages with *GC little helper II* activated.
+[Here](/docu/overview_screenshots.md#readme) are some screenshots of the geocaching pages with *GC little helper II* activated.
 
 ## How can you help?
-If you'd like to implement features, bug fixes, or improvements yourself, read [here](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en) how you can contribute. 
+If you'd like to implement features, bug fixes, or improvements yourself, read [here](/docu/how_to_contribute.md#en) how you can contribute. 
 
 All Geocacher and others are encouraged to help with the development or the support of this tool.
 
@@ -45,20 +45,20 @@ All Geocacher and others are encouraged to help with the development or the supp
 *Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*
 
 ## Unterstützte Browsers
-<img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox">&nbsp;
-<img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome">&nbsp;
-<img src="/images/safari_logo_small.png" title="Safari" alt="Safari">&nbsp;
-<img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
-<img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge">&nbsp;
-<img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi">
+<a href="//"><img src="/images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a>&nbsp;
+<a href="//"><img src="/images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"></a>&nbsp;
+<a href="//"><img src="/images/safari_logo_small.png" title="Safari" alt="Safari"></a>&nbsp;
+<a href="//"><img src="/images/opera_logo_small.png" title="Opera" alt="Opera">&nbsp;
+<a href="//"><img src="/images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge"></a>&nbsp;
+<a href="//"><img src="/images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"></a>
 
 ## Installationshinweise
-Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](https://github.com/2Abendsegler/GClh/blob/master/docu/tips_installation.md#de) fündig.
+Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](/docu/tips_installation.md#de) fündig.
 
 ## Hilfe
 Wer Fehler melden möchte, Fragen stellen möchte oder neue Features beantragen möchte, der kann das auf folgenden Plattformen tun (Deutsch und Englisch): 
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
-- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Forum](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
@@ -70,9 +70,9 @@ Es ist kostenlos, ohne Werbung und wird bereits von tausenden von Usern genutzt.
 
 Das Tool ist in Javascript entwickelt und läuft mit den Script-Managern Tampermonkey, Violentmonkey und anderen unter den Browsern Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.
 
-[Hier](https://github.com/2Abendsegler/GClh/blob/master/docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*. 
+[Hier](/docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*. 
 
 ## Wie kannst du helfen?
-Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du [hier](https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de) nachlesen wie das geht.
+Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du [hier](/docu/how_to_contribute.md#de) nachlesen wie das geht.
 
 Alle Geocacher und Interessierte sind herzlich eingeladen, am Support und der Weiterentwicklung des Tools mitzuwirken.  

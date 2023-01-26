@@ -26,7 +26,7 @@
 		Maybe the GClh is installed more than once in a single script manager. You can check this by viewing the script overview. If so, uninstall all but one instance of the GClh and the problem should be resolved.<br>
 	</li>
 </ol>
-If you still get the warning, please leave a bug report <a href="https://github.com/2Abendsegler/GClh/issues">here</a> and we will try to assist you.<br>
+If you still get the warning, please leave a bug report <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">here</a> and we will try to assist you.<br>
 <br>
 
 <a id="2-en"></a>
@@ -82,10 +82,10 @@ If the GClh does not start, these are usually matching problems between the brow
 		Drag & drop operations do not work.<br>
 		<ul>
 			<li>
-				GClh Config: In chapter "Linklist / Navigation", no new entries can be placed in the right column "Linklist" from the left column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Default links</a>.<br>
+				GClh Config: In chapter "Linklist / Navigation", no new entries can be placed in the right column "Linklist" from the left column <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Default links</a>.<br>
 			</li>
 			<li>
-				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
+				GClh Config: In chapter "Linklist / Navigation" the order can not be changed in the right column <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link to your GClh Config">Linklist</a>.<br>
 			</li>
 		</ul>
 		<br>
@@ -97,7 +97,7 @@ If the GClh does not start, these are usually matching problems between the brow
 				Icons on map: The icon "Go to Map" can not be selected in the map. All other icons in the map work.<br>
 			</li>
 			<li>
-				Preview pictures (thumbnails) in listings and galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
+				Preview pictures (thumbnails) in listings and galleries: They work by touching, but at the same time touching also activates the normal display of the large picture. The <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link to your GClh Config">preview of the pictures</a> should be deactivated.<br>
 				<br/>
 			</li>
 		</ul>
@@ -151,22 +151,22 @@ See <a href="../docu/tips_installation.md#android_en" title="Link to 'Tips for t
 
 <a id="7-en"></a>
 ## 7. How can I contribute to GClh?
-We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests on the plattform GitHub. You can read how to create a Pull-Request here: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#en">How to contribute</a><br>
+We are happy about improvement suggestions, bugfixes or new features. This is realised via pull requests on the plattform GitHub. You can read how to create a Pull-Request here: <a href="../docu/how_to_contribute.md#en">How to contribute</a><br>
 <br>
 
 <a id="8-en"></a>
 ## 8. Where can I get help with the GClh?
 If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... :<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
-- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- [Discussions page](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
-- [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
+- [Discussions page](https://github.com/2Abendsegler/GClh/discussions) on our development platform at GitHub
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at GitHub
 <br>
 
 <a id="9-en"></a>
 ## 9. How can I report a bug or a feature request?
-For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at Github.<br>
+For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at GitHub.<br>
 Or you can create a note in one of the forums or on our discussions page. See <a href="#8-en">FAQ 8</a>.<br>
 <br>
 
@@ -184,7 +184,7 @@ Der *GC little helper II* funktioniert nur korrekt, wenn er nur einmal im Browse
 		Eventuell ist der GClh mehr als einmal in einem einzigen Scriptmanager installiert. Das kann in der Scriptübersicht geprüft werden. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 </ol>
-Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues">hier</a> ein neues Issue und wir werden versuchen dir zu helfen.<br>
+Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">hier</a> ein neues Issue und wir werden versuchen dir zu helfen.<br>
 <br>
 
 <a id="2-de"></a>
@@ -240,10 +240,10 @@ Abhilfe:<br>
 		Drag & Drop Operationen funktionieren nicht.<br>
 		<ul>
 			<li>
-				GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linkliste" gehängt werden.<br>
+				GClh Config: Im Kapitel "Linklist / Navigation" können von der linken Spalte <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Default links</a> keine neuen Einträge in die rechte Spalte "Linkliste" gehängt werden.<br>
 			</li>
 			<li>
-				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linkliste</a> die Reihenfolge nicht geändert werden.<br>
+				GClh Config: Im Kapitel "Linklist / Navigation" kann in der rechten Spalte <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#ll#settings_bookmarks_top_menu_h" title="Link zu deinem GClh Config">Linkliste</a> die Reihenfolge nicht geändert werden.<br>
 				<br/>
 			</li>
 		</ul>
@@ -255,7 +255,7 @@ Abhilfe:<br>
 				Icons auf Karte: In der Karte läßt sich das Icon "Go to Map" nicht anwählen. Alle anderen Icons in der Karte funktionieren.<br>
 			</li>
 			<li>
-				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durch das Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte im Config deaktiviert werden.<br>
+				Vorschau der Bilder (thumbnails) in Listings and Gallerien: Sie funktionieren durch antippen, gleichzeitig wird durch das Antippen jedoch auch die normale Anzeige des Bildes in groß aktiviert. Die <a href="https://www.geocaching.com/account/dashboard#GClhShowConfig#a#settings_show_thumbnailsX0" title="Link zu deinem GClh Config">Vorschau der Bilder</a> sollte im Config deaktiviert werden.<br>
 				<br/>
 			</li>
 		</ul>
@@ -309,21 +309,21 @@ Siehe <a href="../docu/tips_installation.md#android_de" title="Link zu 'Tipps f�
 
 <a id="7-de"></a>
 ## 7. Wie kann ich etwas zum GClh beitragen?
-Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht über Pull Requests auf der Plattform GitHub. Wie du dort einen Pull Request anlegst, kannst du hier nachlesen: <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
+Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies geschieht über Pull Requests auf der Plattform GitHub. Wie du dort einen Pull Request anlegst, kannst du hier nachlesen: <a href="../docu/how_to_contribute.md#de">Wie kannst du etwas beitragen?</a><br>
 <br>
 
 <a id="8-de"></a>
 ## 8. Wo bekomme ich Hilfe zum GClh?
 Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden:<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
-- [Geoclub Geocaching Forum](https://geoclub.de/forum/viewforum.php?f=117)
+- [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
-- [Diskussions Seite](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
-- [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
+- [Diskussions Seite](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei GitHub
+- [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei GitHub
 <br>
 
 <a id="9-de"></a>
 ## 9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?
-Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei Github eröffnen.<br>
+Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei GitHub eröffnen.<br>
 Oder du kannst dich in einem der Foren oder auf unserer Diskussions Seite melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
 <br>
