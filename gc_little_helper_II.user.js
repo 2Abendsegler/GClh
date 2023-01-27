@@ -6871,7 +6871,6 @@ var mainGC = function() {
                 var all_users = new Array();
                 var log_infos = new Object();
                 var log_infos_long = new Array();
-                if (settings_show_who_gave_favorite_but) var fav_guids = new Array();
                 var index = 0;
                 var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
@@ -13507,6 +13506,7 @@ var mainGC = function() {
     }
 
 // Show who gave the cache a favorite.
+    if (is_page("cache_listing") && settings_show_who_gave_favorite_but) var fav_guids = [];
     function addShowWhoGaveFavoriteButton() {
         addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "", "Show in logs who gave a favorite");
         // disable button for caches with >500 favorites and add an explanation to the title
