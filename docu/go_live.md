@@ -78,9 +78,9 @@ Bisher in folgenden Foren:
 
 Vorschlag Posting:<br>
 <br>
-Die neue Version 0.14.2 zum GC little helper II steht [hier](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) zur Verfügung. Sie kommt auch per automatischem Update. 
+Die neue Version 0.14.2 zum GC little helper II steht hier (https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) zur Verfügung. Sie kommt auch per automatischem Update. 
 
-Details zu den Anpassungen gibt es im [Changelog](https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme).
+Details zu den Anpassungen gibt es im Changelog (https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme).
 
 Liebe Grüße
 <br>
