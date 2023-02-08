@@ -2,7 +2,8 @@
 ## <a id="de"></a>Go live Dokumentation:
 
 ####  <a id="1de"></a>1. Prüfen ob alle Issues gemäß Milestones enthalten sind.
-
+<br>
+<br>
 ####  <a id="2de"></a>2. Alle Änderungen in branch collector transportieren und testen.
 
 ####  <a id="3de"></a>3. changelog.md für neue Version erzeugen.
@@ -49,8 +50,8 @@ https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.
 ####  <a id="6de"></a>6. Aktuelle Version in der Datei Version setzen.
 
 ####  <a id="7de"></a>7. Von branch collector auf branch master transportieren.
-Anschließend wieder von branch master auf branch collector transportieren.
-Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.
+Anschließend wieder von branch master auf branch collector transportieren.<br>
+Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.<br>
 
 ####  <a id="8de"></a>8. Für branch master ein neues Release erzeugen
 Folgendes Vorgehen ist empfehlenswert:
