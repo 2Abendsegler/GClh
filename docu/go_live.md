@@ -30,19 +30,14 @@ Auswertung: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
 Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
 Counter: Xhttp://c.andyhoppe.com/1485234890<br>
 Auswertung: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
-<li>Zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: <br>
-Reset setzt 8 Stunden nicht zurück, deshalb Flagcounter 1 und 2 abwechselnd verwenden.<br>
-Maßnahme: Counter zurücksetzen über Auswertung.<br>
-<ul><li>Flagcounter 1:<br>
-Counter: Xhttps://s07.flagcounter.com/countxl/mHeY ...<br>
-Auswertung: http://info.flagcounter.com/mHeY (99737)<br>
-<li>Flagcounter 2:<br>
-Counter: Xhttps://s09.flagcounter.com/count2/Mf9D ...<br>
-Auswertung: http://info.flagcounter.com/Mf9D (99473)</li></ul>
-<li>Zählt alle Installationen:<br>
-Kein Reset möglich, also immer neuen Counter erzeugen.<br>
-Counter: Xwww.worldflagcounter.com/dCV<br>
-Auswertung: https://www.worldflagcounter.com/details/dCV</li></ul>
+<li>Flagcounter zählt Installation je Adresse nur einmal innerhalb von 24 Stunden: <br>
+Neuen Flagcounter unter https://flagcounter.com generieren und eintragen.<br>
+Counter: Xhttps://s11.flagcounter.com/count2/...<br>
+Auswertung: Xhttp://s11.flagcounter.com/countries/...<br>
+<li>Worldlagcounter zählt alle Installationen:<br>
+Neuen Worldflagcounter unter https://www.worldflagcounter.com generieren und eintragen.<br>
+Counter: Xwww.worldflagcounter.com/...<br>
+Auswertung: Xhttps://www.worldflagcounter.com/details/...</li></ul>
 <li>$$004<br>
 Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfiguration aufgenommen werden müssen. Sie dient bei einem Reset für eine korrekte Konfiguration, ohne die Arbeitsdaten zu entfernen. Entfernte Config Parameter sollten auch in der Standardkonfiguration entfernt werden.<br>
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt</li>
