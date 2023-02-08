@@ -72,9 +72,9 @@ Folgendes Vorgehen ist empfehlenswert:
 
 ####  <a id="9de"></a>9. Forumsbeitrag für neue Version.
 Bisher in folgenden Foren:
-<ul><li>Geoclub: https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/</li>
-<li>Groundspeak Forum: https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/</li>
-<li>Swissgeocacheforum: http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/</li></ul>
+<ul><li>Geoclub: https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650</li>
+<li>Groundspeak Forum: https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii</li>
+<li>Swissgeocacheforum: http://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii</li></ul>
 
 Vorschlag Posting:<br>
 <br>
