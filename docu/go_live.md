@@ -5,10 +5,13 @@
 <br>
 
 ####  <a id="2de"></a>2. Alle Änderungen in branch collector transportieren und testen.
+<br>
 
 ####  <a id="3de"></a>3. changelog.md für neue Version erzeugen.
+<br>
 
 ####  <a id="4de"></a>4. Temporäres Coding entfernen.
+<br>
 
 ####  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern.
 <ul><li>$$000<br>
@@ -46,12 +49,15 @@ https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.
 <li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li>
 <li>$$006 Hier werden die Contributers und Bugreporter eingetragen. Sollte jemand neues einen Bug gemeldet/gefixt haben, dann ihn hier noch hinzufügen.</li>
 <li>$$007 Wenn weitere Einstellungen außerhalb von CONFIG bei Reset zurückgesetzt werden müssen, dann sind sie hier einzutragen.</li></ul>
+<br>
 
 ####  <a id="6de"></a>6. Aktuelle Version in der Datei Version setzen.
+<br>
 
 ####  <a id="7de"></a>7. Von branch collector auf branch master transportieren.
 Anschließend wieder von branch master auf branch collector transportieren.<br>
 Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.<br>
+<br>
 
 ####  <a id="8de"></a>8. Für branch master ein neues Release erzeugen
 Folgendes Vorgehen ist empfehlenswert:
@@ -62,6 +68,7 @@ Folgendes Vorgehen ist empfehlenswert:
 	<li>Release Title: Aktuelle Version, zum Beispiel v0.9.13</li>
 	<li>Description: "GoLive " und aktuelle Version eintragen</li>
 </ul>
+<br>
 
 ####  <a id="9de"></a>9. Forumsbeitrag für neue Version.
 Bisher in folgenden Foren:
@@ -76,6 +83,7 @@ Die neue Version 0.14.2 zum GC little helper II steht [url=https://github.com/2A
 Details zu den Anpassungen gibt es im [url=https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme]Changelog[/url].
 
 Liebe Grüße
+<br>
 
 ####  <a id="10de"></a>10. Weitere Informationen.
 Weitere informationen gibt es im ursprünglichen Issue: https://github.com/2Abendsegler/GClh/issues/564
