@@ -84,6 +84,7 @@ Details zu den Anpassungen gibt es im [url=https://github.com/2Abendsegler/GClh/
 
 Liebe Grüße
 <br>
+<br>
 
 ####  <a id="10de"></a>10. Weitere Informationen.
 Weitere informationen gibt es im ursprünglichen Issue: https://github.com/2Abendsegler/GClh/issues/564
