@@ -35,9 +35,9 @@ Neuen Flagcounter unter https://flagcounter.com generieren und eintragen.<br>
 Counter: Xhttps://s11.flagcounter.com/count2/...<br>
 Auswertung: Xhttp://s11.flagcounter.com/countries/...<br>
 <li>Worldlagcounter zählt alle Installationen:<br>
-Neuen Worldflagcounter unter https://www.worldflagcounter.com generieren und eintragen.<br>
+Neuen Worldflagcounter unter https://worldflagcounter.com generieren und eintragen.<br>
 Counter: Xwww.worldflagcounter.com/...<br>
-Auswertung: Xhttps://www.worldflagcounter.com/details/...</li></ul>
+Auswertung: Xhttps://worldflagcounter.com/details/...</li></ul>
 <li>$$004<br>
 Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfiguration aufgenommen werden müssen. Sie dient bei einem Reset für eine korrekte Konfiguration, ohne die Arbeitsdaten zu entfernen. Entfernte Config Parameter sollten auch in der Standardkonfiguration entfernt werden.<br>
 https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt</li>
