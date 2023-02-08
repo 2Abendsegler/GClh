@@ -157,6 +157,7 @@ var constInit = function(c) {
     c.defaultSyncLink = "/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "/my/default.aspx#GClhShowFindPlayer";
     c.urlScript = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
+    c.urlScriptVersion = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/Version";
     c.urlConfigSt = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt";
     c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
     c.urlFaq = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#readme";
@@ -12767,49 +12768,49 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve trackable search page",e);}
     }
 
-// Check for upgrade.
+// Check for update.
     try {
-        function checkForUpgrade(manual) {
+        function checkForUpdate(manual) {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
 
             if (next_check < time || manual == true) {
-                time += 8 * 60 * 60 * 1000;  // 8 Stunden warten, bis zum nächsten Check.
+                time += 1 * 60 * 60 * 1000;  // 1 Stunde warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
                 if (GM_xmlhttpRequest) {
                     GM_xmlhttpRequest({
                         method: "GET",
-                        url: urlScript,
+                        url: urlScriptVersion,
                         onload: function(result) {
                             try {
-                                var version = result.responseText.match(/\/\/\s\@version(.*)/);
-                                if (version) {
-                                    var new_version = version[1].replace(/\s/g, "");
-                                    if (new_version != scriptVersion) {
-                                        var currVersion = "version " + scriptVersion;
-                                        var text = "Version " + new_version + " of script GC little helper II is available.\n" +
-                                                   "You are currently using " + currVersion + ".\n\n" +
-                                                   "Click OK to upgrade.\n\n" +
-                                                   "(After upgrade, please refresh your page.)";
-                                        if (window.confirm(text)) {
-                                            btnClose();
-                                            document.location.href = urlScript;
-                                        }
-                                    } else if (manual == true) {
-                                        var text = "Version " + scriptVersion + " of script GC little helper II \n" +
-                                                   "is the latest and actual version.\n";
-                                        alert(text);
+                                var new_version = result.responseText.replace(/\s/g, "");
+                                if (result.status == 200 && new_version && new_version != scriptVersion) {
+                                    var currVersion = "version " + scriptVersion;
+                                    var text = "Version " + new_version + " of script GC little helper II is available.\n" +
+                                               "You are currently using " + currVersion + ".\n\n" +
+                                               "Click OK to update.\n\n" +
+                                               "(After update, please refresh your page.)";
+                                    if (window.confirm(text)) {
+                                        btnClose();
+                                        document.location.href = urlScript;
+                                    } else {
+                                        time += 7 * 60 * 60 * 1000;  // 1+7 Stunden warten, bis zum nächsten Check.
+                                        setValue('update_next_check', time.toString());
                                     }
+                                } else if (manual == true) {
+                                    var text = "Version " + scriptVersion + " of script GC little helper II \n" +
+                                               "is the latest and actual version.\n";
+                                    alert(text);
                                 }
-                            } catch(e) {gclh_error("Check for upgrade, onload",e);}
+                            } catch(e) {gclh_error("Check for update, onload",e);}
                         }
                     });
                 }
             }
         }
-        checkForUpgrade(false);
-    } catch(e) {gclh_error("Check for upgrade",e);}
+        checkForUpdate(false);
+    } catch(e) {gclh_error("Check for update",e);}
 
 // Special days.
     if (is_page("cache_listing")) {
@@ -14533,7 +14534,7 @@ var mainGC = function() {
             html += "<a href='"+urlFaq+"' title='Frequently asked questions (GitHub)' target='_blank'>FAQ</a> | ";
             html += "<a href='"+urlFaqReport+"' title='Bug report and feature request (GitHub)' target='_blank'>Bug & New Feature</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features (GitHub)' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Upgrade</a> | ";
+            html += "<a id='check_for_update' href='#' style='cursor: pointer' title='Check for new version'>Update</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
             html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master#readme' title='About (GitHub)' target='_blank'>About</a></font>";
@@ -15926,7 +15927,7 @@ var mainGC = function() {
             }
 
             $('#create_homezone, #cff_create, #btn_close2, #btn_saveAndUpload, #btn_save, #thanks_close_button, #rc_close_button, #rc_reset_button').click(function() {if ($(this)[0]) animateClick(this);});
-            $('#check_for_upgrade')[0].addEventListener("click", function() {checkForUpgrade(true);}, false);
+            $('#check_for_update')[0].addEventListener("click", function() {checkForUpdate(true);}, false);
             $('#rc_link')[0].addEventListener("click", rcPrepare, false);
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
             $('#rc_close_button')[0].addEventListener("click", rcClose, false);
