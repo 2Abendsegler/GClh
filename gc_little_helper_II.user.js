@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.1
+// @version      0.14.2
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -157,6 +157,7 @@ var constInit = function(c) {
     c.defaultSyncLink = "/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "/my/default.aspx#GClhShowFindPlayer";
     c.urlScript = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
+    c.urlScriptVersion = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/Version";
     c.urlConfigSt = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt";
     c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
     c.urlFaq = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#readme";
@@ -6871,7 +6872,6 @@ var mainGC = function() {
                 var all_users = new Array();
                 var log_infos = new Object();
                 var log_infos_long = new Array();
-                if (settings_show_who_gave_favorite_but) var fav_guids = new Array();
                 var index = 0;
                 var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
@@ -10549,7 +10549,8 @@ var mainGC = function() {
                 css += '.geocache-item-stats svg {margin-top: -2px;}';
                 // Change cursor from not allowed to default.
                 css += '.gc-button.gc-button-disabled {cursor: default;}';
-                // BML
+                // BML.
+                css += '.existing-list .gc-button:focus {box-shadow: none;}';
                 css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
                 css += '.mode-toggle-container {padding: 5px 14px 5px 12px !important;} .mode-toggle {padding: 6px !important;}';
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
@@ -12768,49 +12769,49 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve trackable search page",e);}
     }
 
-// Check for upgrade.
+// Check for update.
     try {
-        function checkForUpgrade(manual) {
+        function checkForUpdate(manual) {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
 
             if (next_check < time || manual == true) {
-                time += 8 * 60 * 60 * 1000;  // 8 Stunden warten, bis zum nächsten Check.
+                time += 1 * 60 * 60 * 1000;  // 1 Stunde warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
                 if (GM_xmlhttpRequest) {
                     GM_xmlhttpRequest({
                         method: "GET",
-                        url: urlScript,
+                        url: urlScriptVersion,
                         onload: function(result) {
                             try {
-                                var version = result.responseText.match(/\/\/\s\@version(.*)/);
-                                if (version) {
-                                    var new_version = version[1].replace(/\s/g, "");
-                                    if (new_version != scriptVersion) {
-                                        var currVersion = "version " + scriptVersion;
-                                        var text = "Version " + new_version + " of script GC little helper II is available.\n" +
-                                                   "You are currently using " + currVersion + ".\n\n" +
-                                                   "Click OK to upgrade.\n\n" +
-                                                   "(After upgrade, please refresh your page.)";
-                                        if (window.confirm(text)) {
-                                            btnClose();
-                                            document.location.href = urlScript;
-                                        }
-                                    } else if (manual == true) {
-                                        var text = "Version " + scriptVersion + " of script GC little helper II \n" +
-                                                   "is the latest and actual version.\n";
-                                        alert(text);
+                                var new_version = result.responseText.replace(/\s/g, "");
+                                if (result.status == 200 && new_version && new_version != scriptVersion) {
+                                    var currVersion = "version " + scriptVersion;
+                                    var text = "Version " + new_version + " of script GC little helper II is available.\n" +
+                                               "You are currently using " + currVersion + ".\n\n" +
+                                               "Click OK to update.\n\n" +
+                                               "(After update, please refresh your page.)";
+                                    if (window.confirm(text)) {
+                                        btnClose();
+                                        document.location.href = urlScript;
+                                    } else {
+                                        time += 7 * 60 * 60 * 1000;  // 1+7 Stunden warten, bis zum nächsten Check.
+                                        setValue('update_next_check', time.toString());
                                     }
+                                } else if (manual == true) {
+                                    var text = "Version " + scriptVersion + " of script GC little helper II \n" +
+                                               "is the latest and actual version.\n";
+                                    alert(text);
                                 }
-                            } catch(e) {gclh_error("Check for upgrade, onload",e);}
+                            } catch(e) {gclh_error("Check for update, onload",e);}
                         }
                     });
                 }
             }
         }
-        checkForUpgrade(false);
-    } catch(e) {gclh_error("Check for upgrade",e);}
+        checkForUpdate(false);
+    } catch(e) {gclh_error("Check for update",e);}
 
 // Special days.
     if (is_page("cache_listing")) {
@@ -13229,8 +13230,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/NSwK/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/isg"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/0ewF/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/isz"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -13507,6 +13508,7 @@ var mainGC = function() {
     }
 
 // Show who gave the cache a favorite.
+    if (is_page("cache_listing") && settings_show_who_gave_favorite_but) var fav_guids = [];
     function addShowWhoGaveFavoriteButton() {
         addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "", "Show in logs who gave a favorite");
         // disable button for caches with >500 favorites and add an explanation to the title
@@ -14533,7 +14535,7 @@ var mainGC = function() {
             html += "<a href='"+urlFaq+"' title='Frequently asked questions (GitHub)' target='_blank'>FAQ</a> | ";
             html += "<a href='"+urlFaqReport+"' title='Bug report and feature request (GitHub)' target='_blank'>Bug & New Feature</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features (GitHub)' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Upgrade</a> | ";
+            html += "<a id='check_for_update' href='#' style='cursor: pointer' title='Check for new version'>Update</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
             html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master#readme' title='About (GitHub)' target='_blank'>About</a></font>";
@@ -14619,7 +14621,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "26.01.2023";
+            var thanksLastUpdate = "08.02.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -15926,7 +15928,7 @@ var mainGC = function() {
             }
 
             $('#create_homezone, #cff_create, #btn_close2, #btn_saveAndUpload, #btn_save, #thanks_close_button, #rc_close_button, #rc_reset_button').click(function() {if ($(this)[0]) animateClick(this);});
-            $('#check_for_upgrade')[0].addEventListener("click", function() {checkForUpgrade(true);}, false);
+            $('#check_for_update')[0].addEventListener("click", function() {checkForUpdate(true);}, false);
             $('#rc_link')[0].addEventListener("click", rcPrepare, false);
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
             $('#rc_close_button')[0].addEventListener("click", rcClose, false);
