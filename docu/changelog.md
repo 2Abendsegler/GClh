@@ -1,3 +1,4 @@
+<a href="#v0142" title="GClh II version 0.14.2 (08.02.2023)">v0.14.2</a> &nbsp;
 <a href="#v0141" title="GClh II version 0.14.1 (27.01.2023)">v0.14.1</a> &nbsp;
 <a href="#v014" title="GClh II version 0.14 (17.01.2023)">v0.14</a> &nbsp;
 <a href="#v013" title="GClh II version 0.13">v0.13</a> &nbsp;
@@ -27,6 +28,22 @@
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.14.2:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Who Gave Favorite" aborts when VIPs are disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/2293" title="Issue 2293">2293</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map / Search Map] The OpenStreetMap layer "OpenStreetMap Black and White" and "OpenStreetMap Hike and Bike" are no longer built. [<a href="https://github.com/2Abendsegler/GClh/issues/2296" title="Issue 2296">2296</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(08.02.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.14.1:
