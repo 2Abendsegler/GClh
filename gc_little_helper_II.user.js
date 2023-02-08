@@ -10549,7 +10549,8 @@ var mainGC = function() {
                 css += '.geocache-item-stats svg {margin-top: -2px;}';
                 // Change cursor from not allowed to default.
                 css += '.gc-button.gc-button-disabled {cursor: default;}';
-                // BML
+                // BML.
+                css += '.existing-list .gc-button:focus {box-shadow: none;}';
                 css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
                 css += '.mode-toggle-container {padding: 5px 14px 5px 12px !important;} .mode-toggle {padding: 6px !important;}';
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
