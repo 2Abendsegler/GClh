@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         GC little helper II
-// @description  Some little things to make life easy (on www.geocaching.com) .
+// @description  Some little things to make life easy (on www.geocaching.com)    .
 //--> $$000
 // @version      0.14.1
 //<-- $$000
@@ -45,7 +45,7 @@
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
-//////////////////////////////////////
+//////////////////////////////////////   xxxx
 // 1. Declaration, Init, Start ($$cap)
 //////////////////////////////////////
 var start = function(c) {
