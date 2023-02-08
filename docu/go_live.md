@@ -77,8 +77,7 @@ Die neue Version 0.14.2 zum GC little helper II steht hier (https://github.com/2
 
 Details zu den Anpassungen gibt es im Changelog (https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme).
 
-Liebe Grüße
-<br>
+Liebe Grüße<br>
 <br>
 
 ####  <a id="10de"></a>10. Weitere Informationen.
