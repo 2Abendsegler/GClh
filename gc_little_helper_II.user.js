@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         GC little helper II
-// @description  Some little things to make life easy (on www.geocaching.com) (12_1)
+// @description  Some little things to make life easy (on www.geocaching.com)(m2)
 //--> $$000
 // @version      0.14.1
 //<-- $$000
@@ -11127,6 +11127,7 @@ var mainGC = function() {
         if (replacements != null) {
             for (var i=0; i<replacements.length; i++) {
                 var replacement = replacements[i];
+
                 var name = replacement.substring(1,replacement.length-1);
                 if (name in coords) str = str.replace(replacement, coords[name]);
             }
