@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         GC little helper II
-// @description  Some little things to make life easy (on www.geocaching.com)(m2)
+// @description  Some little things to make life easy (on www.geocaching.com)(m)
 //--> $$000
 // @version      0.14.1
 //<-- $$000
