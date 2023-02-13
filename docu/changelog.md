@@ -1,4 +1,4 @@
-<a href="#v0142" title="GClh II version 0.14.2 (15.02.2023)">v0.14.2</a> &nbsp;
+<a href="#v0142" title="GClh II version 0.14.2 (14.02.2023)">v0.14.2</a> &nbsp;
 <a href="#v0141" title="GClh II version 0.14.1 (27.01.2023)">v0.14.1</a> &nbsp;
 <a href="#v014" title="GClh II version 0.14 (17.01.2023)">v0.14</a> &nbsp;
 <a href="#v013" title="GClh II version 0.13">v0.13</a> &nbsp;
@@ -57,7 +57,7 @@
 	</li>
 </ul>
 <br>
-(15.02.2023)<br>
+(14.02.2023)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
