@@ -18,7 +18,6 @@ The tool is developed in Javascript and can be used with the script managers Tam
 
 ## How to install
 If you need any help with the installation, you can have a look at our [installation tips](/docu/tips_installation.md#en).<br>
-<br>
 
 ## Help
 If you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English):<br>
@@ -51,7 +50,6 @@ Das Tool ist in Javascript entwickelt und läuft mit den Script Managern Tamperm
 
 ## Installationshinweise
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](/docu/tips_installation.md#de) fündig.<br>
-<br>
 
 ## Hilfe
 Wer Fehler melden, Fragen stellen oder neue Features beantragen möchte, der kann das auf folgenden Plattformen tun (Deutsch und Englisch):<br> 
