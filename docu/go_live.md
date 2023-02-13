@@ -39,7 +39,7 @@ Counter: Xwww.worldflagcounter.com/...<br>
 Auswertung: Xhttps://worldflagcounter.com/details/...</li></ul>
 <li>$$004<br>
 Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfiguration aufgenommen werden müssen. Sie dient bei einem Reset für eine korrekte Konfiguration, ohne die Arbeitsdaten zu entfernen. Entfernte Config Parameter sollten auch in der Standardkonfiguration entfernt werden.<br>
-<a href="../docu/config_standard.txt" title="Link to 'config_standard.txt'">config_standard.txt</a></li>
+<a href="../data/config_standard.txt" title="Link to 'config_standard.txt'">config_standard.txt</a></li>
 <li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li>
 <li>$$006 Hier werden die Contributers und Bugreporter eingetragen. Sollte jemand neues einen Bug gemeldet/gefixt haben, dann ihn hier noch hinzufügen.</li>
 <li>$$007 Wenn weitere Einstellungen außerhalb von CONFIG bei Reset zurückgesetzt werden müssen, dann sind sie hier einzutragen.</li></ul>
