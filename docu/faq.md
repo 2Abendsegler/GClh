@@ -1,4 +1,4 @@
-# FAQ
+# FAQ &nbsp;  &nbsp;  &nbsp; <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/faq.md&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visitors&edge_flat=false"/></a>
 
 <a href="#en" title=""><img src="../images/flag_en.png"></a> | <a href="#de" title=""><img src="../images/flag_de.png"></a>
 --- | --- 
@@ -178,10 +178,10 @@ Or you can create a note in one of the forums or on our discussions page. See <a
 Der *GC little helper II* funktioniert nur korrekt, wenn er nur einmal im Browser ausgeführt wird. Deshalb prüft das Script selbst, ob das der Fall ist. Wenn die Meldung angezeigt wird, dass der GClh mehr als einmal läuft, dann ist das auch der Fall. In diesen Fällen sollte folgendes überprüft werden:<br>
 <ol>
 	<li>
-		Bitte prüfe, ob mehr als ein Scriptmanager installiert ist (zum Beispiel neben Tampermonkey auch noch Violentmonkey). Womöglich ist der GClh in mehr als einem Scriptmanager installiert. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
+		Bitte prüfe, ob mehr als ein Script Manager installiert ist (zum Beispiel neben Tampermonkey auch noch Violentmonkey). Womöglich ist der GClh in mehr als einem Script Manager installiert. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 	<li>
-		Eventuell ist der GClh mehr als einmal in einem einzigen Scriptmanager installiert. Das kann in der Scriptübersicht geprüft werden. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
+		Eventuell ist der GClh mehr als einmal in einem einzigen Script Manager installiert. Das kann in der Scriptübersicht geprüft werden. Wenn das der Fall ist, dann deinstalliere alle Versionen bis auf eine und das Problem sollte behoben sein.<br>
 	</li>
 </ol>
 Sollte die Warnung dann immer noch auftauchen, dann erstelle bitte <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">hier</a> ein neues Issue und wir werden versuchen dir zu helfen.<br>
@@ -194,7 +194,7 @@ Wenn du Probleme mit dem Drag & Drop beim Hinzufügen neuer Links zur Linkliste 
 
 <a id="3-de"></a>
 ## 3. Der GClh startet nicht.
-Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Scriptmanager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
+Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
 
 *Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
 <ul>
@@ -205,7 +205,7 @@ Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme z
 		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
 	</li>
 	<li>
-		Scriptmanager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
+		Script Manager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
 	</li>
 </ul>
 
@@ -295,7 +295,7 @@ Abhilfe:<br>
 		Oder du kannst den entsprechenden Link in deinem <a href="https://www.geocaching.com/account/dashboard">Dashboard</a> unterhalb deines Benutzernamens verwenden.
 	</li>
 	<li>
-		Oder du kannst in deinem Browser im Menü deines Scriptmanagers den entsprechenden Link auswählen.<br>
+		Oder du kannst in deinem Browser im Menü deines Script Managers den entsprechenden Link auswählen.<br>
 		Das sieht dann etwa wie folgt aus:<br>
 		<img src="../images/scriptmanager_menue_with_config.jpg" alt="scriptmanager_menue_with_config.jpg"><br>
 	</li>

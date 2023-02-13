@@ -362,5 +362,7 @@
   "settings_drafts_download_show_button": true,
   "settings_drafts_download_change_logdate": false,
   "settings_dashboard_show_logs_in_markdown": true,
-  "settings_public_profile_smaller_privacy_btn": false
+  "settings_public_profile_smaller_privacy_btn": false,
+  "settings_searchmap_improve_add_to_list_height": 130,
+  "settings_searchmap_improve_add_to_list": true
 }

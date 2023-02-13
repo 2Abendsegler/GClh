@@ -1,3 +1,8 @@
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt&label=version&color=informational&query=/" title="current version"></a>
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
+<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=visitors&edge_flat=false"/></a><br>
+<br>
+<a href="#v0142" title="GClh II version 0.14.2 (14.02.2023)">v0.14.2</a> &nbsp;
 <a href="#v0141" title="GClh II version 0.14.1 (27.01.2023)">v0.14.1</a> &nbsp;
 <a href="#v014" title="GClh II version 0.14 (17.01.2023)">v0.14</a> &nbsp;
 <a href="#v013" title="GClh II version 0.13">v0.13</a> &nbsp;
@@ -27,6 +32,38 @@
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.14.2:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Search Map] Improve layout in "Add to list" pop up. [<a href="https://github.com/2Abendsegler/GClh/issues/2316" title="Issue 2316">2316</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Add to list pop up without the enhancement:<br>
+		<img src="../images/0.14.2/Screen02.jpg" alt="Screen02.jpg"><br>
+		Add to list pop up with the enhancement:<br>
+		<img src="../images/0.14.2/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_improve_add_to_list" title="Link to your GClh II Config">Settings -> Map:<br>
+		<img src="../images/0.14.2/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		With the last option you can choose the maximum height of the "Add to list" pop up to bookmark a cache from 130 up to 520 pixel. The default is 130 pixel, similar to the standard. If you want to use a bigger "Add to list" pop up, you have to maintain the parameter.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Who Gave Favorite" aborts when VIPs are disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/2293" title="Issue 2293">2293</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map / Search Map] The OpenStreetMap layer "OpenStreetMap Black and White" and "OpenStreetMap Hike and Bike" are no longer built. [<a href="https://github.com/2Abendsegler/GClh/issues/2296" title="Issue 2296">2296</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Certitude] Copy to clipboard feature not longer available and stay anonymous does not work if signed in by certitudes. [<a href="https://github.com/2Abendsegler/GClh/issues/2315" title="Issue 2315">2315</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [GitHub] raw.githubusercontent.com does not update. [<a href="https://github.com/2Abendsegler/GClh/issues/2314" title="Issue 2314">2314</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(14.02.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.14.1:

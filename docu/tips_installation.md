@@ -1,3 +1,7 @@
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt&label=version&color=informational&query=/" title="current version"></a>
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
+<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/tips_installation.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=visitors&edge_flat=false"/></a><br>
+<br>
 <a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
 
 ---
@@ -43,29 +47,29 @@ Process the following instructions on your Android device:<br><br>
 # Tipps für die Installation des *GC little helper II* <a id="de"></a>
 
 ### <a href="//" id="firefox_de"><img src="../images/mozilla_firefox_logo_small.png" title="Mozilla Firefox" alt="Mozilla Firefox"></a> Mozilla Firefox:
-* Installiere den Scriptmanager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) oder [Violentmonkey](https://addons.mozilla.org/firefox/addon/violentmonkey/) als Add-On in Firefox.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
+* Installiere den Script Manager [Tampermonkey](https://addons.mozilla.org/de/firefox/addon/tampermonkey/) oder [Violentmonkey](https://addons.mozilla.org/firefox/addon/violentmonkey/) als Add-On in Firefox.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br>
 
 ### <a href="//" id="chrome_de"><img src="../images/google_chrome_logo_small.png" title="Google Chrome" alt="Google Chrome"></a> Google Chrome:
-* Installiere den Scriptmanager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) oder [Violentmonkey](https://chrome.google.com/webstore/detail/violent-monkey/jinjaccalgkegednnccohejagnlnfdag) als Add-On in Chrome.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
+* Installiere den Script Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) oder [Violentmonkey](https://chrome.google.com/webstore/detail/violent-monkey/jinjaccalgkegednnccohejagnlnfdag) als Add-On in Chrome.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br>
 
 ### <a href="//" id="safari_de"><img src="../images/safari_logo_small.png" title="Safari" alt="Safari"></a> Safari:
-* Bis Safari 11: Installiere den Scriptmanager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Safari.<br>
-* Ab Safari 12: Installiere den Scriptmanager [Tampermonkey](https://apps.apple.com/app/apple-store/id1482490089?pt=117945903&ct=tm.net&mt=8) als Add-On in Safari.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
+* Bis Safari 11: Installiere den Script Manager [Tampermonkey](https://safari.tampermonkey.net/tampermonkey.safariextz) als Add-On in Safari.<br>
+* Ab Safari 12: Installiere den Script Manager [Tampermonkey](https://apps.apple.com/app/apple-store/id1482490089?pt=117945903&ct=tm.net&mt=8) als Add-On in Safari.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br>
 
 ### <a href="//" id="opera_de"><img src="../images/opera_logo_small.png" title="Opera" alt="Opera"></a> Opera:
-* Installiere den Scriptmanager [Tampermonkey](https://addons.opera.com/de/extensions/details/tampermonkey-beta) oder [Violentmonkey](https://chrome.google.com/webstore/detail/violent-monkey/jinjaccalgkegednnccohejagnlnfdag) (vom Chrome Web Store) als Add-On in Opera.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
+* Installiere den Script Manager [Tampermonkey](https://addons.opera.com/de/extensions/details/tampermonkey-beta) oder [Violentmonkey](https://chrome.google.com/webstore/detail/violent-monkey/jinjaccalgkegednnccohejagnlnfdag) (vom Chrome Web Store) als Add-On in Opera.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br>
 
 ### <a href="//" id="edge_de"><img src="../images/microsoft_edge_logo_small.png" title="Microsoft Edge" alt="Microsoft Edge"></a> Microsoft Edge:
-* Installiere den Scriptmanager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) oder [Violentmonkey](https://microsoftedge.microsoft.com/addons/detail/eeagobfjdenkkddmbclomhiblgggliao) als Add-On in Edge.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br>
+* Installiere den Script Manager [Tampermonkey](https://www.microsoft.com/en-us/store/p/tampermonkey/9nblggh5162s) oder [Violentmonkey](https://microsoftedge.microsoft.com/addons/detail/eeagobfjdenkkddmbclomhiblgggliao) als Add-On in Edge.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br>
 
 ### <a href="//" id="vivaldi_de"><img src="../images/vivaldi_logo_small.png" title="Vivaldi" alt="Vivaldi"></a> Vivaldi:
-* Installiere den Scriptmanager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (vom Chrome Web Store) als Add-On in Vivaldi.<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager.<br><br>
+* Installiere den Script Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (vom Chrome Web Store) als Add-On in Vivaldi.<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br><br>
 * Doppeltbelegung der Tasten F4 und F2 durch GClh und Vivaldi:<br>
 Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
@@ -74,7 +78,7 @@ Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können
 * Wir unterstützen zur Zeit keine Android Geräte. Dennoch ist das Script mit nur wenigen Einschränkungen auch unter Android funktionsfähig. <a href="../docu/faq.md#4-de" title="Link to 'FAQ 4. Hinweise für die Nutzung auf Android Geräten.'">Hier</a> gibt es einige Hinweise für die Nutzung des GClh auf Android Geräten.<br><br>
 Führe die folgenden Anweisungen auf deinem Android Gerät aus:<br><br>
 * Installiere einen Browser auf deinem Android Gerät.<br>
-* Installiere den Scriptmanager Tampermonkey als Add-on in deinem Browser. (Installiere Tampermonkey nicht auf dem Desktop deines Android Gerätes.)<br>
-* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Scriptmanager. Wenn du diesen Link auf deinem Android Gerät in deinem Browser anklickst, sollte dein Scriptmanager das bemerken.<br>
+* Installiere den Script Manager Tampermonkey als Add-on in deinem Browser. (Installiere Tampermonkey nicht auf dem Desktop deines Android Gerätes.)<br>
+* Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager. Wenn du diesen Link auf deinem Android Gerät in deinem Browser anklickst, sollte dein Script Manager das bemerken.<br>
 <br>
 

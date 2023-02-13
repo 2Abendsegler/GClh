@@ -1,3 +1,7 @@
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt&label=version&color=informational&query=/" title="current version"></a>
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
+<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog_before.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=visitors&edge_flat=false"/></a><br>
+<br>
 <a href="changelog.md" title="Go to later changelog">Later changelog</a> &nbsp;
 <a href="#v01020" title="GClh II version 0.10.20 (01.05.2021)">v0.10.20</a> &nbsp;
 <a href="#v01019" title="GClh II version 0.10.19 (24.04.2021)">v0.10.19</a> &nbsp;
