@@ -82,13 +82,13 @@ Anschließend wieder von branch master auf branch collector transportieren.<br>
 Es dauert in der Regel 5 Minuten, bis die neue Version auf dem RAW Link angekommen ist.<br>
 <br>
 
-####  <a id="8de"></a>8. Für branch master ein neues Release erzeugen
+####  <a id="8de"></a>8. Für branch master ein neues <a href="https://github.com/2Abendsegler/GClh/releases" title="Link to 'Releases'">Releases</a> erzeugen
 Folgendes Vorgehen ist empfehlenswert:
 <ul>
-	<li>Code => release => Draft a new release</li>
-	<li>Tag Version: Aktuelle Version, zum Beispiel v0.9.13</li>
-	<li>Target: Master</li>
-	<li>Release Title: Aktuelle Version, zum Beispiel v0.9.13</li>
+	<li>Button "Draft a new release"</li>
+	<li>Choose a tag: Aktuelle Version, zum Beispiel v0.14.2</li>
+	<li>Target: collector</li>
+	<li>Release Title: Aktuelle Version, zum Beispiel v0.14.2</li>
 	<li>Description: "GoLive " und aktuelle Version eintragen</li>
 </ul>
 <br>
