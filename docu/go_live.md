@@ -6,7 +6,7 @@
 ####  <a id="2de"></a>2. Alle Änderungen in branch collector transportieren und testen.
 <br>
 
-####  <a id="3de"></a>3. Changelog für neue Version in changelog.md erzeugen.
+####  <a id="3de"></a>3. Changelog für neue Version in <a href="../docu/changelog.md" title="Link to 'changelog.md'">changelog.md</a> erzeugen.
 <br>
 
 ####  <a id="4de"></a>4. Temporäres Coding entfernen.
