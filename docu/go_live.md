@@ -74,7 +74,7 @@
 </ul>
 <br>
 
-####  <a id="6de"></a>6. Aktuelle Version in der Datei last_version.txt setzen.
+####  <a id="6de"></a>6. Aktuelle Version in der Datei <a href="../last_version.txt" title="Link to 'last_version.txt'">last_version.txt</a> setzen.
 <br>
 
 ####  <a id="7de"></a>7. Von branch collector auf branch master transportieren.
