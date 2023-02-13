@@ -10,12 +10,12 @@
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
-// @include      https://www.geocaching.com/*
+// @match        https://www.geocaching.com/*
+// @match        https://project-gc.com/Tools/PQSplit*
+// @match        https://www.openstreetmap.org/*
+// @match        https://www.certitudes.org/*
 // @include      https://maps.google.tld/*
 // @include      https://www.google.tld/maps*
-// @include      https://project-gc.com/Tools/PQSplit*
-// @include      https://www.openstreetmap.org*
-// @include      /^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -58,17 +58,17 @@ var start = function(c) {
         .then(function() {return variablesInit(c);})
         .done(function() {
             function checkBodyContent(waitCount) {
-                if ($('body').children().length > 1) {
+                if ($('body').children().length > 1 || ($('body').children().length == 1 && document.location.href.match(/^https:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/))) {
                     tlc('BodyContent found');
-                    if (document.location.href.match(/^https?:\/\/maps\.google\./) || document.location.href.match(/^https?:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
+                    if (document.location.href.match(/^https:\/\/maps\.google\./) || document.location.href.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                         mainGMaps();
-                    } else if (document.location.href.match(/^https?:\/\/www\.openstreetmap\.org/)) {
+                    } else if (document.location.href.match(/^https:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
-                    } else if (document.location.href.match(/^https?:\/\/www\.geocaching\.com/)) {
+                    } else if (document.location.href.match(/^https:\/\/www\.geocaching\.com/)) {
                         mainGCWait();
-                    } else if (document.location.href.match(/^https?:\/\/project-gc\.com\/Tools\/PQSplit/)) {
+                    } else if (document.location.href.match(/^https:\/\/project-gc\.com\/Tools\/PQSplit/)) {
                         mainPGC();
-                    } else if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/)) {
+                    } else if (document.location.href.match(/^https:\/\/www\.certitudes\.org\/(certify|certitude\?wp=[A-Z0-9]{1,15})/)) {
                         mainCertitudes();
                     }
                 } else {waitCount++; if (waitCount <= 5000) setTimeout(function(){checkBodyContent(waitCount);}, 10);}
@@ -157,6 +157,8 @@ var constInit = function(c) {
     c.defaultSyncLink = "/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "/my/default.aspx#GClhShowFindPlayer";
     c.urlScript = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
+//xxxx
+    c.urlLastVersion = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt";
     c.urlConfigSt = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt";
     c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
     c.urlFaq = "https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#readme";
@@ -711,6 +713,8 @@ var variablesInit = function(c) {
     c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
     c.settings_dashboard_show_logs_in_markdown = getValue("settings_dashboard_show_logs_in_markdown", true);
     c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
+    c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
+    c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
 
     tlc('START userToken');
     try {
@@ -794,12 +798,12 @@ var mainGMaps = function() {
                     var side = document.getElementById("gbwa");
                     side.parentNode.insertBefore(div, side);
                     var css = '';
-                    css += '#gclh_map_links {margin-right: -11px;}';
                     css += '#gclh_map_links a {margin-left: 8px;}';
                     css += '#gclh_map_links svg {width: 25px; height: 25px; vertical-align: middle; color: black; opacity: 0.55;}';
                     css += '#gclh_map_links svg:hover {opacity: 0.85;}';
                     css += '.search_map_icon {height: 20px !important;}';
                     css += '.gb_nd {padding-left: 4px;}';
+                    css += '.UV9Ngc {padding-right: 33px !important;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGcButton(waitCount);}, 200);}
             }
@@ -870,8 +874,8 @@ var mainPGC = function() {
             html += '<span>The secondary email will only work if you have two or more email addresses in your profile.</span></p>';
             html += '<p><input id="include_pq_name_' + table_index + '" class="include_pq_name" type="checkbox" ' + (settings_pq_splitter_include_pq_name ? "checked=''" : "") + '"><label for="include_pq_name_' + table_index + '">Include pocket query name in download file name</label></p>';
             html += '<h5>Instruction:</h5>';
-            html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop-ups as PQs should be created. The number of simultaneously loaded pop-ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop-ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop-ups are loaded. </p>';
-            html += '<p>Please make sure you do not have a pop-up blocker enabled. Otherwise this feature will not work as expected. How to change popup blocker settings in browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting" target="_blank">Mozilla Firefox</a>, <a href="https://support.google.com/chrome/answer/95472" target="_blank">Google Chrome</a>.</p>';
+            html += '<p>If you click the "Create PQ(s)" button, the GC little helper II will open as many pop ups as PQs should be created. The number of simultaneously loaded pop ups is limited to 5. All PQs will get the name that you entered in the field above and an ongoing digit prefix. The pop ups close by themselves after the associated PQ has been created. We will display a message if all PQs are created. Please wait until all pop ups are loaded. </p>';
+            html += '<p>Please make sure you do not have a pop up blocker enabled. Otherwise this feature will not work as expected. How to change pop up blocker settings in browser <a href="https://support.mozilla.org/kb/pop-blocker-settings-exceptions-troubleshooting" target="_blank">Mozilla Firefox</a>, <a href="https://support.google.com/chrome/answer/95472" target="_blank">Google Chrome</a>.</p>';
             html += '<p>This is a feature of GC little helper II.</p>';
             html += '</td></tr></tfoot>';
             $(side).append(html);
@@ -1026,17 +1030,17 @@ var mainPGC = function() {
             global_open_popup_count = 0;
             $('.gclh_running .gclh_counter_total').innerHTML = urls_for_pqs_to_create.length;
         }
-        // Handle pop-ups.
+        // Handle pop ups.
         var already_done_count = 0;
         for (var i = 0; i < urls_for_pqs_to_create.length; i++) {
             if (urls_for_pqs_to_create[i] != '') {
                 if (global_open_popup_count < 5) {
                     global_open_popups[i] = window.open(urls_for_pqs_to_create[i], 'PQ_' + i, 'scrollbars=1, menubar=0, resizable=1, width=400, height=250, top=0, left=10000');
                     $('.gclh_running .gclh_counter_started').innerHTML = $('.gclh_running .gclh_counter_started').innerHTML + 1;
-                    // A pop-up could not be opened in browser, probably because of a pop-up blocker, so we'll stop here and inform the user.
+                    // A pop up could not be opened in browser, probably because of a pop up blocker, so we'll stop here and inform the user.
                     if (global_open_popups[i] == null) {
                         setRunSettings(false);
-                        alert("A pop-up blocker was detected. Please allow pop-ups for this site, reload the page and try again. Please be aware, that the first two PQs should already be created. So please go to geocaching.com and delete them.");
+                        alert("A pop up blocker was detected. Please allow pop ups for this site, reload the page and try again. Please be aware, that the first two PQs should already be created. So please go to geocaching.com and delete them.");
                         return false;
                     }
                     global_open_popup_count++;
@@ -1145,54 +1149,21 @@ var mainPGC = function() {
 ///////////////////////
 // 4. Certitude ($$cap)
 ///////////////////////
-// If you want to test the function, you can use:
-// URL: https://www.certitudes.org/certitude?wp=GC8J1H9
+// URLs for testing:
+// https://www.certitudes.org/certitude?wp=GC8J1H9
+// https://www.certitudes.org/certitude?wp=GC71TFG (with fileurl and filename)
 // Certitude: GCLH
 var mainCertitudes = function() {
     // Certitude stay anonymous.
-    if (document.getElementsByName('anonymous')[0] && settings_anonymous_on_certitude) {
+    if (document.location.href.match(/^https:\/\/www\.certitudes\.org\/certitude\?wp=[A-Z0-9]{1,15}/) && settings_anonymous_on_certitude && document.getElementsByName('anonymous')[0]) {
         try {
             document.getElementsByName('anonymous')[0].checked = true;
         } catch(e) {gclh_error("Certitude stay anonymous.",e);}
     }
 
     // Certitude compact information and copy to clipboard button.
-    if (document.location.href.match(/^https?:\/\/www\.certitudes\.org\/certify/) && document.getElementById('solution') && settings_show_compact_certitude_information) {
+    if (document.location.href.match(/^https:\/\/www\.certitudes\.org\/certify/) && settings_show_compact_certitude_information && $('.user-input .embossed.success')[0] && $('.user-input .embossed.success')[0].innerHTML) {
         try {
-            function addCompactCertitude() {
-                var solution = document.getElementById('solution').textContent;
-                var output = '<div id="inputArea">';
-                output += '<input type="button" class="gclh_copy_btn" value="Copy to clipboard"></input>';
-                output += '<div id="gclh_solution" style="word-break: break-word;">';
-                output += 'Certitude: ' + solution;
-                if (document.getElementsByTagName('h1')[2] && document.getElementsByTagName('h1')[2].children[0]) {
-                    var coord = document.getElementsByTagName('h1')[2].children[0].textContent;
-                    output += '<br><br>Final: ' + coord;
-                }
-                if (document.getElementsByTagName('h3')[1] && document.getElementsByTagName('h3')[1].children[0]) {
-                    var information = document.getElementsByTagName('h3')[1].children[0].textContent;
-                    output += '<br>Info: ' + information;
-                }
-                if (document.getElementsByTagName('a')[5]) {
-                    if (document.getElementsByTagName('a')[5].children[0] && document.getElementsByTagName('a')[5].children[0].tagName == 'IMG') {
-                        var spoiler = document.getElementsByTagName('a')[5].children[0].src;
-                        output += '<br>Spoiler: ' + spoiler;
-                    }
-                    if (document.getElementsByTagName('a')[5].href && document.getElementsByTagName('a')[5].download) {
-                        var fileurl = document.getElementsByTagName('a')[5].href;
-                        var filename = document.getElementsByTagName('a')[5].download;
-                        output += '<br>' + filename + ': ' + fileurl;
-                    }
-                }
-                output += '</div></div><br>';
-                if (document.getElementById('inputArea')) {
-                    document.getElementById('inputArea').nextElementSibling.outerHTML += output;
-                    var copyBtn = document.querySelector('.gclh_copy_btn');
-                    copyBtn.addEventListener('click', function(event) {
-                        copyElementByIdToClipboard('gclh_solution');
-                    })
-                }
-            }
             function copyElementByIdToClipboard(element) {
                 try {
                     var range = document.createRange();
@@ -1203,7 +1174,37 @@ var mainCertitudes = function() {
                     window.getSelection().removeAllRanges();
                 } catch(e) {gclh_error("Certitude copy to clipboard",e);}
             }
+            function addCompactCertitude() {
+                var output = '<form class="card">';
+                output += '<input type="button" class="gclh_copy_btn spaced centered on-card" value="Copy to clipboard"></input>';
+                output += '<div id="gclh_solution" class="smaller" style="word-break: break-word;">';
+                output += '<span class="card-header">Certitude: </span>' + $('.user-input .embossed.success')[0].innerHTML;
+                if ($('.user-input .embossed.success')[1] && $('.user-input .embossed.success')[1].innerHTML) {
+                    output += '<br><br><span class="card-header">Final: </span>' + $('.user-input .embossed.success')[1].innerHTML;
+                }
+                if ($('.user-input .embossed .hint')[0] && $('.user-input .embossed .hint')[0].innerHTML) {
+                    output += '<br><span class="card-header">Info: </span>' + $('.user-input .embossed .hint')[0].innerHTML;
+                }
+                if ($('.user-input a.logo img.thumbnail')[0] && $('.user-input a.logo img.thumbnail')[0].src) {
+                    output += '<br><span class="card-header">Spoiler: </span>' + $('.user-input a.logo img.thumbnail')[0].src;
+                }
+                if ($('.user-input .embossed .bonus a')[0] && $('.user-input .embossed .bonus a')[0].href && $('.user-input .embossed .bonus a')[0].download) {
+                    output += '<br><span class="card-header">' + $('.user-input .embossed .bonus a')[0].download + ': </span>' + $('.user-input .embossed .bonus a')[0].href;
+                }
+                output += '</div></form><br>';
+                if ($('form.card')[0]) {
+                    $('form.card:first').after(output);
+                    var copyBtn = document.querySelector('.gclh_copy_btn');
+                    copyBtn.addEventListener('click', function(event) {
+                        copyElementByIdToClipboard('gclh_solution');
+                    })
+                }
+            }
             addCompactCertitude();
+            var css = '';
+            css += '.certifys-container {grid-template-columns: 300px auto 200px;}';
+            css += '.header {grid-template-columns: 300px auto;}';
+            appendCssStyle(css);
         } catch(e) {gclh_error("mainCertitudes",e);}
     }
 };  // End of mainCertitudes.
@@ -2417,7 +2418,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
-// Prevent popup when clicking on "Watch" or "Stop Watching".
+// Prevent pop up when clicking on "Watch" or "Stop Watching".
     if (is_page("cache_listing") && settings_prevent_watchclick_popup) {
         appendCssStyle('.qtip.qtip-light.qtip-pos-rc:not(.qtip-shadow):not(.pop-modal) {display: none !important;}');
     }
@@ -2512,9 +2513,9 @@ var mainGC = function() {
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
                     + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
-            // Ugly display in Add to List Popup (GS bug since weeks).
+            // Ugly display in Add to List pop up (GS bug since weeks).
             css += "#newListName {height: 42px;} .add-list-submit {display: inline-block;}";
-            // Improve clickability on list names of add to list popup.
+            // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;}';
             appendCssStyle(css);
             $('.add-to-list').addClass('working');
@@ -6367,7 +6368,7 @@ var mainGC = function() {
                 'Owner maintenance:': 46,
                 'Announcement:': 74,
             };
-            // Loading popup.
+            // Loading pop up.
             let loadingPopup = `
                 <div class="gclh_popup">
                     <div class="gclh_popup_content">
@@ -6717,7 +6718,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
              document.location.href.match(/\.com\/my/)                           ||      // Profil
-             document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Popup Informations)
+             document.location.href.match(/\.com\/map/)                          ||      // Map (For enhanced Pop-up Informations)
              document.location.href.match(/\.com\/my\/default\.aspx/)            ||      // Profil (Quicklist)
              document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
@@ -6871,7 +6872,6 @@ var mainGC = function() {
                 var all_users = new Array();
                 var log_infos = new Object();
                 var log_infos_long = new Array();
-                if (settings_show_who_gave_favorite_but) var fav_guids = new Array();
                 var index = 0;
                 var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
@@ -10330,15 +10330,34 @@ var mainGC = function() {
                 }
             }
 
-            // Improve add to list popup.
+            // Improve add to list pop up.
             function improveAddtolistPopup() {
-                function checkAddtolistPopup(waitCount) {
-                    if ($('.Popover')[0]) {
-                        setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
-                    }
-                    waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount);}, 100);
+                function checkAddtolistPopup(waitCount, popoverFound) {
+                    if ($('.Popover')[0]) popoverFound = true;
+                    if (popoverFound) {
+                        if (!$('.Popover')[0]) return;
+                        else {
+                            setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
+                            if ($('.Popover .create-new-list-form')[0] && !$('.Popover .create-new-list-form').hasClass('gclh_set_style')) {
+                                $('.Popover .create-new-list-form')[0].setAttribute('style', 'height: 40.8px !important;');
+                                $('.Popover .create-new-list-form').addClass('gclh_set_style')
+                            }
+                            if ($('.Popover .create-new-list-submit')[0] && !$('.Popover .create-new-list-submit').hasClass('gclh_set_style')) {
+                                $('.Popover .create-new-list-submit')[0].setAttribute('style', 'min-width: 40px !important;');
+                                $('.Popover .create-new-list-submit').addClass('gclh_set_style')
+                            }
+                            if ($('.Popover .add-to-list-view')[0] && $('.Popover .existing-lists')[0] && (!$('.Popover .add-to-list-view').hasClass('gclh_set_style') || !$('.Popover .existing-lists').hasClass('gclh_set_style'))) {
+                                $('.Popover .add-to-list-view')[0].setAttribute('style', 'height: unset !important;');
+                                $('.Popover .add-to-list-view').addClass('gclh_set_style')
+                                var height = ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height));
+                                $('.Popover .existing-lists')[0].setAttribute('style', 'max-height: ' + height + 'px !important;');
+                                $('.Popover .existing-lists').addClass('gclh_set_style')
+                            }
+                            setTimeout(function(){checkAddtolistPopup(waitCount, popoverFound);}, 100);
+                        }
+                    } else {waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount, popoverFound);}, 100);};
                 }
-                checkAddtolistPopup(0);
+                if (settings_searchmap_improve_add_to_list) checkAddtolistPopup(0, false);
             }
 
             // Create Save as PQ Button.
@@ -10549,7 +10568,7 @@ var mainGC = function() {
                 css += '.geocache-item-stats svg {margin-top: -2px;}';
                 // Change cursor from not allowed to default.
                 css += '.gc-button.gc-button-disabled {cursor: default;}';
-                // BML
+                // BML.
                 css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
                 css += '.mode-toggle-container {padding: 5px 14px 5px 12px !important;} .mode-toggle {padding: 6px !important;}';
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
@@ -10674,6 +10693,11 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
+            // Add to List pop up.
+            if (settings_searchmap_improve_add_to_list) {
+                css += '.existing-list .gc-button:focus {box-shadow: none;}';
+                css += '.existing-list .gc-button {height: 22px;}';
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
@@ -10715,11 +10739,11 @@ var mainGC = function() {
                     }
                     // Save as PQ and set defaults for Browse Map.
                     saveAsPQOnBrowseMap();
-                    // Display more informations on Browse Map popup for a cache.
+                    // Display more informations on Browse Map pop up for a cache.
                     if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
                         cachePopupOnBrowseMap();
                     }
-                    // Improve clickability on list names of add to list popup.
+                    // Improve clickability on list names of add to list pop up.
                     css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
@@ -11127,7 +11151,6 @@ var mainGC = function() {
         if (replacements != null) {
             for (var i=0; i<replacements.length; i++) {
                 var replacement = replacements[i];
-
                 var name = replacement.substring(1,replacement.length-1);
                 if (name in coords) str = str.replace(replacement, coords[name]);
             }
@@ -11283,7 +11306,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Save as PQ and set defaults for Browse Map",e);}
     }
 
-// Display more informations on Browse Map popup for a cache.
+// Display more informations on Browse Map pop up for a cache.
     function cachePopupOnBrowseMap() {
         try {
             var template = $("#cacheDetailsTemplate").html().trim();
@@ -11330,11 +11353,11 @@ var mainGC = function() {
                 mutations.forEach(function(mutation) {
                     gccode = $('#gmCacheInfo .code').html();
                     if (gccode == null) return;
-                    // Listing coordinates of all caches in additional popup.
+                    // Listing coordinates of all caches in additional pop up.
                     var locations = [];
-                    // Count of caches (map-items) in additional popup.
+                    // Count of caches (map-items) in additional pop up.
                     var countMapItems = $('.map-item').length;
-                    // New Popup. This can contain more than one cache (if 2 or more are close together)
+                    // New pop up. This can contain more than one cache (if 2 or more are close together)
                     // so we have to load informations for all caches.
                     $('#gmCacheInfo .map-item').each(function () {
                         gccode = $(this).find('.code').html();
@@ -11567,7 +11590,7 @@ var mainGC = function() {
             var config = { attributes: true, childList: true, characterData: true };
             // Pass in the target node, as well as the observer options.
             observer.observe(target, config);
-        } catch(e) {gclh_error("enhance cache popup",e);}
+        } catch(e) {gclh_error("enhance cache pop up",e);}
     }
 
 // Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
@@ -12769,49 +12792,77 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve trackable search page",e);}
     }
 
-// Check for upgrade.
+//xxxx Änderungen im Vergleich zu Version 0.14
+// - Noch ausführlich testen.
+// - Wenn Datei vorhanden auch noch weiter im manual mode testen. Vielleicht mal versuchen zu debuggen.
+// Check for update.
     try {
-        function checkForUpgrade(manual) {
+        function checkForUpdate(manual) {
+            function manualNegativInfo(newVersionFound) {
+                if (manual == true && newVersionFound == false) {
+                    alert("Version " + scriptVersion + " of script GC little helper II \nis the latest and actual version.\n");
+                }
+            }
+            var newVersionFound = false;
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
-
+next_check = 0;
             if (next_check < time || manual == true) {
-                time += 8 * 60 * 60 * 1000;  // 8 Stunden warten, bis zum nächsten Check.
+                time += 1 * 60 * 60 * 1000;  // 1 Stunde warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
-                if (GM_xmlhttpRequest) {
+                if (typeof GM_xmlhttpRequest === 'function') {
+                    // Prüfen der Version in Datei "last_version.txt" im master.
                     GM_xmlhttpRequest({
                         method: "GET",
-                        url: urlScript,
+                        url: urlLastVersion,
                         onload: function(result) {
                             try {
-                                var version = result.responseText.match(/\/\/\s\@version(.*)/);
-                                if (version) {
-                                    var new_version = version[1].replace(/\s/g, "");
-                                    if (new_version != scriptVersion) {
-                                        var currVersion = "version " + scriptVersion;
-                                        var text = "Version " + new_version + " of script GC little helper II is available.\n" +
-                                                   "You are currently using " + currVersion + ".\n\n" +
-                                                   "Click OK to upgrade.\n\n" +
-                                                   "(After upgrade, please refresh your page.)";
-                                        if (window.confirm(text)) {
-                                            btnClose();
-                                            document.location.href = urlScript;
+console.log(result.status);
+                                var newLastVersion = result.responseText.replace(/\s/g, "");
+                                if (result.status == 200 && newLastVersion && newLastVersion != scriptVersion) {
+                                    // Prüfen der Version im Script im master.
+                                    // (Zusätzlich notwendig, weil die raw.githubusercontent.com Inhalte zeitverzögert auf GitHub bereitgestellt werden.)
+                                    GM_xmlhttpRequest({
+                                        method: "GET",
+                                        url: urlScript,
+                                        onload: function(result) {
+                                            try {
+                                                var newScriptVersion = result.responseText.match(/\/\/\s\@version(.*)/);
+                                                if (result.status == 200 && newScriptVersion && newScriptVersion[1]) {
+                                                    newScriptVersion = newScriptVersion[1].replace(/\s/g, "");
+                                                    // Nur weitermachen, wenn die Versionen aus Datei "last_version.txt" und Script vom master identisch sind,
+                                                    // es sich also nicht um den Fall von zeitverzögerten raw.githubusercontent.com Inhalten handelt.
+                                                    if (newLastVersion == newScriptVersion) {
+                                                        if (newScriptVersion != scriptVersion) {
+                                                            newVersionFound = true;
+                                                            var text = "Version " + newScriptVersion + " of script GC little helper II is available.\n" +
+                                                                       "You are currently using version " + scriptVersion + ".\n\n" +
+                                                                       "Click OK to update.\n\n" +
+                                                                       "(After update, please refresh your page.)";
+                                                            if (window.confirm(text)) {
+                                                                btnClose();
+                                                                document.location.href = urlScript;
+                                                            } else {
+                                                                time += 7 * 60 * 60 * 1000;  // 1+7 Stunden warten, bis zum nächsten Check.
+                                                                setValue('update_next_check', time.toString());
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                manualNegativInfo(newVersionFound);
+                                            } catch(e) {gclh_error("Check for update, onload ScriptVersion",e);}
                                         }
-                                    } else if (manual == true) {
-                                        var text = "Version " + scriptVersion + " of script GC little helper II \n" +
-                                                   "is the latest and actual version.\n";
-                                        alert(text);
-                                    }
-                                }
-                            } catch(e) {gclh_error("Check for upgrade, onload",e);}
+                                    });
+                                } else manualNegativInfo(newVersionFound);
+                            } catch(e) {gclh_error("Check for update, onload LastVersion",e);}
                         }
                     });
-                }
+                } else manualNegativInfo(newVersionFound);
             }
         }
-        checkForUpgrade(false);
-    } catch(e) {gclh_error("Check for upgrade",e);}
+        checkForUpdate(false);
+    } catch(e) {gclh_error("Check for update",e);}
 
 // Special days.
     if (is_page("cache_listing")) {
@@ -13227,6 +13278,7 @@ var mainGC = function() {
         div.setAttribute("style", "margin-top: -50px;");
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://c.andyhoppe.com/1676270686"' + prop; // Besucher
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
@@ -13508,6 +13560,7 @@ var mainGC = function() {
     }
 
 // Show who gave the cache a favorite.
+    if (is_page("cache_listing") && settings_show_who_gave_favorite_but) var fav_guids = [];
     function addShowWhoGaveFavoriteButton() {
         addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "", "Show in logs who gave a favorite");
         // disable button for caches with >500 favorites and add an explanation to the title
@@ -14534,7 +14587,7 @@ var mainGC = function() {
             html += "<a href='"+urlFaq+"' title='Frequently asked questions (GitHub)' target='_blank'>FAQ</a> | ";
             html += "<a href='"+urlFaqReport+"' title='Bug report and feature request (GitHub)' target='_blank'>Bug & New Feature</a> | ";
             html += "<a href='"+urlChangelog+"' title='Documentation of changes and new features (GitHub)' target='_blank'>Changelog</a> | ";
-            html += "<a id='check_for_upgrade' href='#' style='cursor: pointer' title='Check for new version'>Upgrade</a> | ";
+            html += "<a id='check_for_update' href='#' style='cursor: pointer' title='Check for new version'>Update</a> | ";
             html += "<a id='rc_link' href='#' style='cursor: pointer' title='Reset some configuration data'>Reset</a> | ";
             html += "<a id='thanks_link' href='#' style='cursor: pointer' title='Note of thanks'>Thanks</a> | ";
             html += "<a href='https://github.com/2Abendsegler/GClh/tree/master#readme' title='About (GitHub)' target='_blank'>About</a></font>";
@@ -14886,6 +14939,12 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_show_found_caches_at_corrected_coords_but', 'Show button to display found caches at corrected coordinates') + show_help("With this option you can show a button to display found caches at corrected coordinates. The button toggles the state between corrected and original coordinates. The last state is always preserved.") + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + onlySearchMap + prem + "<br>";
+            html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
+            for (var i = 130; i < 521; i++) {
+                html += "  <option value='" + i + "' " + (settings_searchmap_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 130 up to 520 pixel. The default is 130 pixel, similar to the standard.") + "<br>";
             html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone Circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
@@ -15002,12 +15061,12 @@ var mainGC = function() {
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
-            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the popup on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
+            html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a popup.") + "<br>";
+            html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a pop up.") + "<br>";
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the place') + show_help("With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -15154,14 +15213,14 @@ var mainGC = function() {
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
             html += newParameterOn2;
-            html += checkboxy('settings_prevent_watchclick_popup', 'Prevent popup when clicking on "Watch" or "Stop Watching"') + "<br>";
+            html += checkboxy('settings_prevent_watchclick_popup', 'Prevent pop up when clicking on "Watch" or "Stop Watching"') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
-            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" popup to bookmark a cache') + prem + "<br>";
-            html += " &nbsp; &nbsp;" + "Height of popup <select class='gclh_form' id='settings_improve_add_to_list_height' >";
+            html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + prem + "<br>";
+            html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_improve_add_to_list_height' >";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the height of the \"Add to list\" popup to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + "<br>";
@@ -15927,7 +15986,7 @@ var mainGC = function() {
             }
 
             $('#create_homezone, #cff_create, #btn_close2, #btn_saveAndUpload, #btn_save, #thanks_close_button, #rc_close_button, #rc_reset_button').click(function() {if ($(this)[0]) animateClick(this);});
-            $('#check_for_upgrade')[0].addEventListener("click", function() {checkForUpgrade(true);}, false);
+            $('#check_for_update')[0].addEventListener("click", function() {checkForUpdate(true);}, false);
             $('#rc_link')[0].addEventListener("click", rcPrepare, false);
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
             $('#rc_close_button')[0].addEventListener("click", rcClose, false);
@@ -16202,6 +16261,7 @@ var mainGC = function() {
             setEvForDepPara("settings_modify_new_drafts_page", "settings_drafts_log_icons");
             setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
             setEvForDepPara("settings_drafts_download_show_button", "settings_drafts_download_change_logdate");
+            setEvForDepPara("settings_searchmap_improve_add_to_list","settings_searchmap_improve_add_to_list_height");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -16376,6 +16436,7 @@ var mainGC = function() {
             setValue("settings_color_bh", document.getElementById('settings_color_bh').value.replace("#",""));
             setValue("settings_color_bo", document.getElementById('settings_color_bo').value.replace("#",""));
             setValue("settings_color_nv", document.getElementById('settings_color_nv').value.replace("#",""));
+            setValue("settings_searchmap_improve_add_to_list_height", document.getElementById('settings_searchmap_improve_add_to_list_height').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -16695,6 +16756,7 @@ var mainGC = function() {
                 'settings_drafts_download_change_logdate',
                 'settings_dashboard_show_logs_in_markdown',
                 'settings_public_profile_smaller_privacy_btn',
+                'settings_searchmap_improve_add_to_list',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
