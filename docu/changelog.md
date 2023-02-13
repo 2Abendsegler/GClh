@@ -39,8 +39,8 @@
 		<img src="../images/0.14.2/Screen02.jpg" alt="Screen02.jpg"><br>
 		Add to list pop up with the enhancement:<br>
 		<img src="../images/0.14.2/Screen01.jpg" alt="Screen01.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_improve_add_to_list" title="Link to your GClh II Config">Settings -> Search Map:</a><br>
-		<img src="../images/0.14.2/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_improve_add_to_list" title="Link to your GClh II Config">Settings -> Map:<br>
+		<img src="../images/0.14.2/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		With the last option you can choose the maximum height of the "Add to list" pop up to bookmark a cache from 130 up to 520 pixel. The default is 130 pixel, similar to the standard. If you want to use a bigger "Add to list" pop up, you have to maintain the parameter.<br><br>
 	</li>
 	<li>
