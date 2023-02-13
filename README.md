@@ -14,9 +14,11 @@ It is free of charge, without any advertising and is already used by thousands o
 The tool is developed in Javascript and can be used with the script managers Tampermonkey, Violentmonkey and others under the browsers Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge and Vivaldi.<br>
 
 [Here](/docu/overview_screenshots.md#readme) are some screenshots of the geocaching pages with *GC little helper II* activated.<br>
+<br>
 
 ## How to install
 If you need any help with the installation, you can have a look at our [installation tips](/docu/tips_installation.md#en).<br>
+<br>
 
 ## Help
 If you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English):<br>
@@ -25,11 +27,13 @@ If you want to ask questions, report bugs or request new features, you can do so
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Forum](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
+<br>
 
 ## How can you help?
 If you'd like to implement features, bug fixes, or improvements yourself, read [here](/docu/how_to_contribute.md#en) how you can contribute.<br>
 
 All Geocacher and others are encouraged to help with the development or the support of this tool.<br>
+<br>
 
 ---
 # GC little helper II <a id="user-content-de"></a>
@@ -44,9 +48,11 @@ Es ist kostenlos, ohne Werbung und wird bereits von tausenden von Usern genutzt.
 Das Tool ist in Javascript entwickelt und läuft mit den Script Managern Tampermonkey, Violentmonkey und anderen unter den Browsern Mozilla Firefox, Google Chrome, Safari, Opera, Microsoft Edge und Vivaldi.<br>
 
 [Hier](/docu/overview_screenshots.md#readme) sind einige Screenshots von den Geocaching Seiten mit aktiviertem *GC little helper II*.<br>
+<br>
 
 ## Installationshinweise
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](/docu/tips_installation.md#de) fündig.<br>
+<br>
 
 ## Hilfe
 Wer Fehler melden, Fragen stellen oder neue Features beantragen möchte, der kann das auf folgenden Plattformen tun (Deutsch und Englisch):<br> 
@@ -55,6 +61,7 @@ Wer Fehler melden, Fragen stellen oder neue Features beantragen möchte, der kan
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Forum](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
+<br>
 
 ## Wie kannst du helfen?
 Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du [hier](/docu/how_to_contribute.md#de) nachlesen wie das geht.<br>
