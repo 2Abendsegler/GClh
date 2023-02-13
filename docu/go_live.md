@@ -1,6 +1,6 @@
 ## <a id="de"></a>Go live Dokumentation:
 
-####  <a id="1de"></a>1. Prüfen ob alle Issues gemäß <a href="https://github.com/2Abendsegler/GClh/milestones" title="Link to 'Milestones'">Milestones</a> enthalten sind.
+####  <a id="1de"></a>1. Prüfen ob alle Issues gemäß <a href="https://github.com/2Abendsegler/GClh/milestones" title="Link to 'Milestones'">Milestones</a> enthalten sind. 
 <br>
 
 ####  <a id="2de"></a>2. Alle Änderungen in branch collector transportieren und testen.
