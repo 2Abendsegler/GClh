@@ -7,7 +7,7 @@
 *Powerful, configurable tool to improve and expand the geocaching pages.*<br>
 <br>
 
-*GC little helper II* is a powerful tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All features can be configured in a configuration menu. The tool uses english as language.<br>
+The *GC little helper II* is a powerful tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All features can be configured in a configuration menu. The tool uses english as language.<br>
 
 It is free of charge, without any advertising and is already used by thousands of users.<br>
 
