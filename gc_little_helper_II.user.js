@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.1
+// @version      0.14.2
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -157,7 +157,6 @@ var constInit = function(c) {
     c.defaultSyncLink = "/my/default.aspx#GClhShowSync";
     c.defaultFindPlayerLink = "/my/default.aspx#GClhShowFindPlayer";
     c.urlScript = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/gc_little_helper_II.user.js";
-//xxxx
     c.urlLastVersion = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt";
     c.urlConfigSt = "https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/config_standard.txt";
     c.urlChangelog = "https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#readme";
@@ -12792,9 +12791,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve trackable search page",e);}
     }
 
-//xxxx Änderungen im Vergleich zu Version 0.14
-// - Noch ausführlich testen.
-// - Wenn Datei vorhanden auch noch weiter im manual mode testen. Vielleicht mal versuchen zu debuggen.
 // Check for update.
     try {
         function checkForUpdate(manual) {
@@ -12807,7 +12803,7 @@ var mainGC = function() {
             var next_check = parseInt(getValue("update_next_check"), 10);
             if (!next_check) next_check = 0;
             var time = new Date().getTime();
-next_check = 0;
+
             if (next_check < time || manual == true) {
                 time += 1 * 60 * 60 * 1000;  // 1 Stunde warten, bis zum nächsten Check.
                 setValue('update_next_check', time.toString());
@@ -12818,7 +12814,6 @@ next_check = 0;
                         url: urlLastVersion,
                         onload: function(result) {
                             try {
-console.log(result.status);
                                 var newLastVersion = result.responseText.replace(/\s/g, "");
                                 if (result.status == 200 && newLastVersion && newLastVersion != scriptVersion) {
                                     // Prüfen der Version im Script im master.
@@ -12834,19 +12829,17 @@ console.log(result.status);
                                                     // Nur weitermachen, wenn die Versionen aus Datei "last_version.txt" und Script vom master identisch sind,
                                                     // es sich also nicht um den Fall von zeitverzögerten raw.githubusercontent.com Inhalten handelt.
                                                     if (newLastVersion == newScriptVersion) {
-                                                        if (newScriptVersion != scriptVersion) {
-                                                            newVersionFound = true;
-                                                            var text = "Version " + newScriptVersion + " of script GC little helper II is available.\n" +
-                                                                       "You are currently using version " + scriptVersion + ".\n\n" +
-                                                                       "Click OK to update.\n\n" +
-                                                                       "(After update, please refresh your page.)";
-                                                            if (window.confirm(text)) {
-                                                                btnClose();
-                                                                document.location.href = urlScript;
-                                                            } else {
-                                                                time += 7 * 60 * 60 * 1000;  // 1+7 Stunden warten, bis zum nächsten Check.
-                                                                setValue('update_next_check', time.toString());
-                                                            }
+                                                        newVersionFound = true;
+                                                        var text = "Version " + newScriptVersion + " of script GC little helper II is available.\n" +
+                                                                   "You are currently using version " + scriptVersion + ".\n\n" +
+                                                                   "Click OK to update.\n\n" +
+                                                                   "(After update, please refresh your page.)";
+                                                        if (window.confirm(text)) {
+                                                            btnClose();
+                                                            document.location.href = urlScript;
+                                                        } else {
+                                                            time += 7 * 60 * 60 * 1000;  // 1+7 Stunden warten, bis zum nächsten Check.
+                                                            setValue('update_next_check', time.toString());
                                                         }
                                                     }
                                                 }
@@ -13282,8 +13275,8 @@ console.log(result.status);
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/NSwK/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/isg"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/BilC/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/isI"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14673,7 +14666,7 @@ console.log(result.status);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "26.01.2023";
+            var thanksLastUpdate = "13.02.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
