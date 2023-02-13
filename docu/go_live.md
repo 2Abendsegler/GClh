@@ -13,36 +13,65 @@
 <br>
 
 ####  <a id="5de"></a>5. $$ im Coding prüfen und gegebenenfalls ändern.
-<ul><li>$$000<br>
-Version setzen.</li>
-<li>$$001<br>
-Bei neuer Hauptversion Opacity überall um eine Zeile weiter nach unten reichen und letzte nach oben.<br>
-Das jeweils für ...On1 bis 3 und ...LL1 bis 3.</li>
-<li>$$002<br>
-Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
-X vor dem Counter Link verhindert das Auswählen.<br>
-<ul><li>Zählt alle Installationen:<br>
-Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
-Counter: Xhttp://c.andyhoppe.com/1485103563<br>
-Auswertung: http://c.andyhoppe.com/1485103563?output=static#InstallAlle<br>
-<li>Zählt Installation je Adresse nur einmal:<br>
-Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
-Counter: Xhttp://c.andyhoppe.com/1485234890<br>
-Auswertung: http://c.andyhoppe.com/1485234890?output=static#InstallEinmal<br>
-<li>Flagcounter zählt Installation je Adresse nur einmal innerhalb von 24 Stunden: <br>
-Neuen Flagcounter unter https://flagcounter.com generieren und eintragen.<br>
-Counter: Xhttps://s11.flagcounter.com/count2/...<br>
-Auswertung: Xhttp://s11.flagcounter.com/countries/...<br>
-<li>Worldlagcounter zählt alle Installationen:<br>
-Neuen Worldflagcounter unter https://worldflagcounter.com generieren und eintragen.<br>
-Counter: Xwww.worldflagcounter.com/...<br>
-Auswertung: Xhttps://worldflagcounter.com/details/...</li></ul>
-<li>$$004<br>
-Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfiguration aufgenommen werden müssen. Sie dient bei einem Reset für eine korrekte Konfiguration, ohne die Arbeitsdaten zu entfernen. Entfernte Config Parameter sollten auch in der Standardkonfiguration entfernt werden.<br>
-<a href="../data/config_standard.txt" title="Link to 'config_standard.txt'">config_standard.txt</a></li>
-<li>$$005 Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.</li>
-<li>$$006 Hier werden die Contributers und Bugreporter eingetragen. Sollte jemand neues einen Bug gemeldet/gefixt haben, dann ihn hier noch hinzufügen.</li>
-<li>$$007 Wenn weitere Einstellungen außerhalb von CONFIG bei Reset zurückgesetzt werden müssen, dann sind sie hier einzutragen.</li></ul>
+<ul>
+	<li>
+		$$000<br>
+		Version setzen.
+	</li>
+	<li>
+		$$001<br>
+		Bei neuer Hauptversion Opacity überall um eine Zeile weiter nach unten reichen und letzte nach oben.<br>
+		Das jeweils für ...On1 bis 3 und ...LL1 bis 3.
+	</li>
+	<li>
+		$$002<br>
+		Wenn für neue Version neue Counter Auswertung erfolgen soll, müssen die Counter bearbeitet werden.<br>
+		X vor dem Counter Link verhindert das Auswählen.<br>
+		<ul>
+			<li>
+				Zählt Installation je Adresse nur einmal:<br>
+				Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
+				Counter: Xhttp://c.andyhoppe.com/1643060379<br>
+				Auswertung: http://c.andyhoppe.com/1643060379?output=static<br>
+			</li>
+			<li>
+				Zählt alle Installationen:<br>
+				Maßnahme: <a href="http://www.andyhoppe.com/counter/counter-konfiguration.htm">Counter zurücksetzen</a> (eifra)<br>
+				Counter: Xhttp://c.andyhoppe.com/1643060408<br>
+				Auswertung: http://c.andyhoppe.com/1643060408?output=static<br>
+			</li>
+			<li>
+				Flagcounter zählt Installation je Adresse nur einmal innerhalb von 8 Stunden: <br>
+				Neuen Flagcounter unter https://flagcounter.com generieren und eintragen.<br>
+				Counter: Xhttps://s11.flagcounter.com/count2/...<br>
+				Auswertung: Xhttp://s11.flagcounter.com/countries/...<br>
+			</li>
+			<li>
+				Worldlagcounter zählt alle Installationen:<br>
+				Neuen Worldflagcounter unter https://worldflagcounter.com generieren und eintragen.<br>
+				Counter: Xwww.worldflagcounter.com/...<br>
+				Auswertung: Xhttps://worldflagcounter.com/details/...<br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		$$004<br>
+		Beachten, dass neue Config Parameter sehr wahrscheinlich in der Standardkonfiguration aufgenommen werden müssen. Sie dient bei einem Reset für eine korrekte Konfiguration, ohne die Arbeitsdaten zu entfernen. Entfernte Config Parameter sollten auch in der Standardkonfiguration entfernt werden.<br>
+<a href="../data/config_standard.txt" title="Link to 'config_standard.txt'">config_standard.txt</a>
+	</li>
+	<li>
+		$$005<br>
+		Beachten, dass neue Config Parameter vielleicht eine neue Ausnahmeregeln hervorrufen, die in function rcConfigDataNotInUseDel aufgenommen werden muß.<br>
+	</li>
+	<li>
+		$$006<br>
+		Hier werden die Contributers und Bugreporter eingetragen. Sollte jemand neues einen Bug gemeldet/gefixt haben, dann ihn hier noch hinzufügen.<br>
+	</li>
+	<li>
+		$$007<br>
+		Wenn weitere Einstellungen außerhalb von CONFIG bei Reset zurückgesetzt werden müssen, dann sind sie hier einzutragen.<br>
+	</li>
+</ul>
 <br>
 
 ####  <a id="6de"></a>6. Aktuelle Version in der Datei last_version.txt setzen.
