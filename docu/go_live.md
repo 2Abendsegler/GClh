@@ -79,7 +79,7 @@
 
 ####  <a id="7de"></a>7. Von branch collector auf branch master transportieren.
 Anschließend wieder von branch master auf branch collector transportieren.<br>
-Es kann einige Minuten dauern, bis die neue Version auf dem RAW Link angekommen ist.<br>
+Es dauert in der Regel 5 Minuten, bis die neue Version auf dem RAW Link angekommen ist.<br>
 <br>
 
 ####  <a id="8de"></a>8. Für branch master ein neues Release erzeugen
