@@ -5,6 +5,7 @@
 # GC little helper II <a id="user-content-en"></a>
 *Some little things to make life easy (on www.geocaching.com).*<br>
 *Powerful, configurable tool to improve and expand the geocaching pages.*<br>
+<br>
 
 *GC little helper II* is a powerful tool to enhance and extend the functionality on the geocaching pages of www.geocaching.com. All features can be configured in a configuration menu. The tool uses english as language.<br>
 
@@ -34,6 +35,7 @@ All Geocacher and others are encouraged to help with the development or the supp
 # GC little helper II <a id="user-content-de"></a>
 *Ein paar Kleinigkeiten um das Leben einfach zu machen (auf www.geocaching.com).*<br>
 *Mächtiges, konfigurierbares Tool zur Verbesserung und Erweiterung der Geocaching Seiten.*<br>
+<br>
 
 Der *GC little helper II* ist ein mächtiges Tool zur Verbesserung und Erweiterung der Geocaching Seiten auf www.geocaching.com. Alle Features können flexibel über ein Konfigurationsmenü eingestellt werden. Das Tool ist in englisch.<br>
 
