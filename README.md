@@ -27,7 +27,6 @@ If you want to ask questions, report bugs or request new features, you can do so
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Forum](https://github.com/2Abendsegler/GClh/discussions) on our development platform at Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) on our development platform at Github
-<br>
 
 ## How can you help?
 If you'd like to implement features, bug fixes, or improvements yourself, read [here](/docu/how_to_contribute.md#en) how you can contribute.<br>
@@ -61,7 +60,6 @@ Wer Fehler melden, Fragen stellen oder neue Features beantragen möchte, der kan
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
 - [Forum](https://github.com/2Abendsegler/GClh/discussions) auf unserer Entwicklungsplattform bei Github
 - [Ticket System](https://github.com/2Abendsegler/GClh/issues) auf unserer Entwicklungsplattform bei Github
-<br>
 
 ## Wie kannst du helfen?
 Wenn du selbst neue Features, Bugfixes oder Verbesserungen beitragen möchtest, kannst du [hier](/docu/how_to_contribute.md#de) nachlesen wie das geht.<br>
