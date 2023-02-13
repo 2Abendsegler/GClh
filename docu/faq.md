@@ -1,3 +1,6 @@
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt&label=version&color=informational&query=/" title="current version"></a>
+<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/faq.md&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+<br>
 # FAQ
 
 <a href="#en" title=""><img src="../images/flag_en.png"></a> | <a href="#de" title=""><img src="../images/flag_de.png"></a>
