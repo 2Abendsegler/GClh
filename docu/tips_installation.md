@@ -1,4 +1,4 @@
-<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/collector/last_version.txt&label=version&query=/" title="current version"></a><a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&query=/" title="installations and updates"></a><br>
+<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt&label=version&query=/" title="current version"></a><a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&query=/" title="installations and updates"></a><br>
 <br>
 <a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a>
 
