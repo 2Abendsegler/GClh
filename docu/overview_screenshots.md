@@ -1,5 +1,5 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
-<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/overview_screenshots.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=visitors&edge_flat=false"/></a>
+<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/overview_screenshots.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a>
  &nbsp; <a href="//"><img src="https://img.shields.io/github/stars/2Abendsegler/gclh?style=social"></a>
 <br>
 ## Screenshots of the Geocaching pages when using the *GC little helper II*
