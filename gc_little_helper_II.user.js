@@ -557,8 +557,7 @@ var variablesInit = function(c) {
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
-    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", false);
-    c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
+    c.settings_remove_banner_text_ids = JSON.parse(getValue("settings_remove_banner_text_ids", "[]"));
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", true);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", true);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", true);
@@ -3298,17 +3297,32 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("Show mail and message icon",e);}
 
-// Banner zu neuen Themen entfernen.
+// Remove banners on new topics.
     if (settings_remove_banner) {
         try {
-            if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
-            if (settings_remove_banner_blue) {
-                if ($('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1 && !$('div.banner #uxViewNewLogLink')[0]) {
-                    var styles = window.getComputedStyle($('div.banner')[0]);
-                    if (styles && (styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)")) $('div.banner').remove();
+
+            // To activate the (x) button for a new banner, just change the following jq selector (use a comma and a new banner selector)
+            $('div.blue-banner-content,div.banner,div.page-info').each(function( index ) {
+                const bannerEl = $(this);
+                const bannerTextSum = bannerEl.text().checksum();
+
+                if (settings_remove_banner_text_ids.find(link => link === bannerTextSum)) {
+                    bannerEl.remove();
+                } else {
+
+                    const closeElId = 'closeBanner' + index; // hack for bind event
+                    bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" '
+                                        + ' title="Close this banner permanently">&#x2716;</span>');
+                    bannerEl.find('#' + closeElId).bind({
+                        click: function() {
+                            settings_remove_banner_text_ids.push(bannerTextSum);
+                            setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
+                            bannerEl.remove();
+                        }
+                    });
                 }
-                $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
-            }
+            });
+
         } catch(e) {gclh_error("Remove banner",e);}
     }
 
@@ -14717,9 +14731,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += checkboxy('settings_remove_banner', 'Hide banner') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to hide all blue banner to new designed pages') + "<br>";
+            html += checkboxy('settings_remove_banner', 'Hide a "blue" banner (added close button to each of them)') + show_help("Banners are often where a new page layout is forced upon you. If you don't want it, you don't have the option to hide the annoying bar. This option adds a button that lets you decide which banners you see. If you change the option, the list of hidden banners will be forgotten.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List Layout</b>" + "</div>";
             html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
@@ -16177,8 +16189,6 @@ var mainGC = function() {
             setEvForDepPara("settings_log_statistic", "settings_log_statistic_reload");
             setEvForDepPara("settings_log_statistic", "settings_log_statistic_percentage");
             setEvForDepPara("settings_friendlist_summary", "settings_friendlist_summary_viponly");
-            setEvForDepPara("settings_remove_banner", "settings_remove_banner_for_garminexpress");
-            setEvForDepPara("settings_remove_banner", "settings_remove_banner_blue");
             setEvForDepPara("settings_driving_direction_link", "settings_driving_direction_parking_area");
             setEvForDepPara("settings_improve_add_to_list", "settings_improve_add_to_list_height");
             setEvForDepPara("settings_set_default_langu", "settings_default_langu");
@@ -16619,8 +16629,6 @@ var mainGC = function() {
                 'settings_show_elevation_of_waypoints',
                 'settings_img_warning',
                 'settings_remove_banner',
-                'settings_remove_banner_for_garminexpress',
-                'settings_remove_banner_blue',
                 'settings_compact_layout_bm_lists',
                 'settings_compact_layout_pqs',
                 'settings_compact_layout_list_of_pqs',
@@ -16753,6 +16761,11 @@ var mainGC = function() {
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
+            }
+
+            if (!settings_remove_banner) { // empty cache of removed banners
+                settings_remove_banner_text_ids = [];
+                setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
             }
 
             // Save Log-Templates.
@@ -18738,6 +18751,15 @@ String.prototype.gcCodeToID = function () {
         id += abc.indexOf(letter) * Math.pow(base, i);
     });
     return id;
+}
+
+// Simple a quick schnaader's checksum function
+String.prototype.checksum = function () {
+    let seed = 0x12345678;
+    for (let i = 0; i < this.length; i++) {
+        seed += (this.charCodeAt(i) * (i + 1));
+    }
+    return (seed & 0xffffffff).toString(16);
 }
 
 Date.prototype.getWeekday = function(short = false) {
