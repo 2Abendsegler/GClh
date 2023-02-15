@@ -3297,22 +3297,18 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("Show mail and message icon",e);}
 
-// Remove banners on new topics.
+// Remove banners (blue banners).
     if (settings_remove_banner) {
         try {
-
             // To activate the (x) button for a new banner, just change the following jq selector (use a comma and a new banner selector)
-            $('div.blue-banner-content,div.banner,div.page-info').each(function( index ) {
+            $('div.blue-banner-content,div.banner').each(function( index ) {
                 const bannerEl = $(this);
                 const bannerTextSum = bannerEl.text().checksum();
-
                 if (settings_remove_banner_text_ids.find(link => link === bannerTextSum)) {
                     bannerEl.remove();
                 } else {
-
                     const closeElId = 'closeBanner' + index; // hack for bind event
-                    bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" '
-                                        + ' title="Close this banner permanently">&#x2716;</span>');
+                    bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" title="Close this banner permanently">&#x2716;</span>');
                     bannerEl.find('#' + closeElId).bind({
                         click: function() {
                             settings_remove_banner_text_ids.push(bannerTextSum);
@@ -3322,7 +3318,6 @@ var mainGC = function() {
                     });
                 }
             });
-
         } catch(e) {gclh_error("Remove banner",e);}
     }
 
@@ -14603,7 +14598,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home coordinates; homezone circle and multi homezone circles; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"Close\" and go to GClh II Config to skim over the set of data.") + "<br>";
-            html += "<input type='radio' name='rc' checked='checked' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"Close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' checked='checked' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides, the DropBox token and the hidden banners are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"Close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home coordinates</label>" + show_help("This option could help you with problems around your home coordinates, like for example with your main homezone, with nearest lists or with your home coordinates itself. Your home coordinates are not deleted at GC, but only in GClh II Config. <br><br>After reset, you have to go to the account settings page of GC to the area \"Home Location\", so that GC little helper II can save your home coordinates again automatically. You have only to go to this page, you have nothing to do at this page, GC little helper II save your home coordinates automatically. <br>Or you enter your home coordinates manually in GClh II Config. <br><br>At last, choose button \"Close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at GC, but only in GClh II Config. <br><br>After reset, you have to go to your dashboard, so that GC little helper II can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GC little helper II save the uid automatically. <br><br>At last, choose button \"Close\".");
@@ -14731,7 +14726,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += checkboxy('settings_remove_banner', 'Hide a "blue" banner (added close button to each of them)') + show_help("Banners are often where a new page layout is forced upon you. If you don't want it, you don't have the option to hide the annoying bar. This option adds a button that lets you decide which banners you see. If you change the option, the list of hidden banners will be forgotten.") + "<br>";
+            html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("Banners are often where a new page layout is forced upon you. If you don't want it, you don't have the option to hide the annoying bar. This option adds a button that lets you decide which banners you see. If you change the option, the list of hidden banners will be forgotten.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List Layout</b>" + "</div>";
             html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
@@ -16763,7 +16758,8 @@ var mainGC = function() {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
             }
 
-            if (!settings_remove_banner) { // empty cache of removed banners
+            // Remove hidden banners.
+            if (!settings_remove_banner) {
                 settings_remove_banner_text_ids = [];
                 setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
             }
@@ -17664,7 +17660,7 @@ var mainGC = function() {
 //<-- $$005
             } else if (kkey.match(/autovisit_(\d+)/) ||
                        kkey.match(/^(friends_founds_|friends_hides_)/) ||
-                       kkey.match(/^(settings_DB_auth_token|new_version|class|token)$/)) {
+                       kkey.match(/^(settings_DB_auth_token|settings_remove_banner_text_ids|new_version|class|token)$/)) {
                 changed = true;
                 changedData += "delete: " + key + ": " + CONFIG[key] + "\n";
 
@@ -18753,7 +18749,7 @@ String.prototype.gcCodeToID = function () {
     return id;
 }
 
-// Simple a quick schnaader's checksum function
+// Simple a quick schnaader's checksum function.
 String.prototype.checksum = function () {
     let seed = 0x12345678;
     for (let i = 0; i < this.length; i++) {

@@ -205,8 +205,6 @@
   "settings_secondary_elevation_service": 2,
   "settings_img_warning": false,
   "settings_remove_banner": false,
-  "settings_remove_banner_for_garminexpress": false,
-  "settings_remove_banner_blue": false,
   "settings_compact_layout_bm_lists": true,
   "settings_compact_layout_pqs": true,
   "settings_compact_layout_list_of_pqs": true,
