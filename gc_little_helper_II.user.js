@@ -3302,7 +3302,7 @@ var mainGC = function() {
         try {
 
             // To activate the (x) button for a new banner, just change the following jq selector (use a comma and a new banner selector)
-            $('div.blue-banner-content,div.banner').each(function( index ) {
+            $('div.blue-banner-content,div.banner,div.page-info').each(function( index ) {
                 const bannerEl = $(this);
                 const bannerTextSum = bannerEl.text().checksum();
 
@@ -3310,9 +3310,9 @@ var mainGC = function() {
                     bannerEl.remove();
                 } else {
 
-                    const spacer = '<span style="position: relative; float: right; width: 1em; display: inline-block;">&nbsp;</span>'; // "right float" and size of element interact with GC btn class, this is way for "spacing" element without change his size
                     const closeElId = 'closeBanner' + index; // hack for bind event
-                    bannerEl.prepend(spacer + '<span class="btn" id="' + closeElId + '" style="font-family: monospace; font-size: 12pt; position: relative; float: right; display: inline-block;">&#x2716;</span>');
+                    bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" '
+                                        + ' title="Close this banner permanently">&#x2716;</span>');
                     bannerEl.find('#' + closeElId).bind({
                         click: function() {
                             settings_remove_banner_text_ids.push(bannerTextSum);
@@ -14731,7 +14731,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("Banners are often where a new page layout is forced upon you. If you don't want it, you don't have the option to hide the annoying bar. This option adds a button that lets you decide which banners you see. If you change the option, the list of hidden banners will be forgotten.") + "<br>";
+            html += checkboxy('settings_remove_banner', 'Hide a "blue" banner (added close button to each of them)') + show_help("Banners are often where a new page layout is forced upon you. If you don't want it, you don't have the option to hide the annoying bar. This option adds a button that lets you decide which banners you see. If you change the option, the list of hidden banners will be forgotten.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List Layout</b>" + "</div>";
             html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
