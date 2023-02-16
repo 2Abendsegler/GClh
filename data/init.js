@@ -73,8 +73,7 @@ function iconsInit(c) {
         '      <path fill="currentColor" d="M16.7 19.1l-7.4-7.4L8 13l7.4 7.4 1.3-1.3zm-1.3 1.3c.9.9 2.2-.4 1.3-1.3l-7.4-7.4c-.9-.9-2.2.4-1.3 1.3l7.4 7.4zm1.3 0L24 13l-1.3-1.3-7.3 7.4 1.3 1.3zm-1.3-1.3c-.9.9.5 2.2 1.3 1.3L24 13c.9-.9-.5-2.2-1.3-1.3l-7.3 7.4zm.6 11C8.2 30.1 1.9 23.8 1.9 16S8.2 1.9 16 1.9 30.1 8.2 30.1 16 23.8 30.1 16 30.1zm0 1.9c8.8 0 16-7.2 16-16S24.8 0 16 0 0 7.2 0 16s7.2 16 16 16z"></path>' +
         '    </symbol>' +
         '  </use>' +
-        '</svg>';
-}
+        '</svg>';}
 
 function collectionInit(c) {
     c.langus =      new Array("Български", "Català", "Čeština", "Dansk", "Deutsch", "English", "Ελληνικά", "Eesti", "Español", "Français", "Italiano", "日本語", "한국어", "Latviešu", "Lëtzebuergesch", "Magyar", "Nederlands", "Norsk, Bokmål", "Polski", "Português", "Русский", "Română", "Slovenčina", "Slovenščina", "Suomi", "Svenska");
