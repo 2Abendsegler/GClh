@@ -3117,7 +3117,7 @@ var mainGC = function() {
                 if (settings_map_overview_search_map_icon) {
                     html += "<span class='mapIcons mapIcon " + (bothIcons ? 'mapIconLeft':'') + "'><a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a></span>";
                 }
-                html += "</span>'>";
+                html += "</span>";
             }
             html += "</div>";
             html += "</div>";
