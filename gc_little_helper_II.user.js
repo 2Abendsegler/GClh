@@ -8742,12 +8742,21 @@ var mainGC = function() {
                 $('#gclh_logs ul').append('<li id="gclh_logId_' + logIdLocal + '">' + logText + '</li>');
                 $(log).attr('logId', logIdLocal);
             }
+            // Copy to clipboard button for log text in Latest Activity list.
+            function buildCopyLogtextToClipboard(log) {
+                if (!$(log).find('.gclh_copyLogToClipboard')[0]) {
+                    $(log).find('.meta-data').after('<span class="gclh_copyLogToClipboard" style="margin-top: 12px;margin-left: auto;padding-right: 12px;"><span class="gclh_copyToClipboard"></span></span>');
+                    var logText = decode_innerHTML($(log).find('.note-text')[0]).replace(/<br>/g,'\n');
+                    addCopyToClipboardLink(logText, $(log).find('.gclh_copyToClipboard')[0], "Log");
+                }
+            }
 
             // Common functions for features in Latest Activity list.
             function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
                 buildCacheTypeIconAF(log);
                 buildLogtextMarkdownAF(log);
+                buildCopyLogtextToClipboard(log);
                 waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
             }
             function buildEventMoreAF(log) {
