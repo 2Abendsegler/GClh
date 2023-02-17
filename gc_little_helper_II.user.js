@@ -450,6 +450,7 @@ var variablesInit = function(c) {
     c.settings_make_config_main_areas_hideable = getValue("settings_make_config_main_areas_hideable", true);
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
     c.settings_show_eventday = getValue("settings_show_eventday", true);
+    c.settings_show_eventtime_with_24_hours = getValue("settings_show_eventtime_with_24_hours", false);
     c.settings_show_google_maps = getValue("settings_show_google_maps", true);
     c.settings_show_log_it = getValue("settings_show_log_it", true);
     c.settings_show_nearestuser_profil_link = getValue("settings_show_nearestuser_profil_link", true);
@@ -2147,23 +2148,41 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve calendar link",e);}
     }
 
-// Show eventday beside date.
-    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
-        try {
-            var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-            if (match == null) {
-                match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-            }
-            if (match != null) {
-                var date = new Date(match[3], match[1]-1, match[2]);
-                if (date != "Invalid Date") {
-                    var name = " (" + date.getWeekday() + ") ";
-                    var elem = document.createTextNode(name);
-                    var side = $('#ctl00_ContentBody_mcd2')[0];
-                    side.insertBefore(elem, side.childNodes[1]);
+// Improve event date and event time in cache listing.
+    if (is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
+        // Show eventday beside date.
+        if (settings_show_eventday) {
+            try {
+                var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+                if (match == null) {
+                    match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
                 }
-            }
-        } catch(e) {gclh_error("Show eventday beside date",e);}
+                if (match != null) {
+                    var date = new Date(match[3], match[1]-1, match[2]);
+                    if (date != "Invalid Date") {
+                        var name = " (" + date.getWeekday() + ") ";
+                        var elem = document.createTextNode(name);
+                        var side = $('#ctl00_ContentBody_mcd2')[0];
+                        side.insertBefore(elem, side.childNodes[1]);
+                    }
+                }
+            } catch(e) {gclh_error("Show eventday beside date",e);}
+        }
+        // Show eventtime in 24 hours format.
+        if (settings_show_eventtime_with_24_hours) {
+            try {
+                if ($('#mcd3')[0] && $('#mcd4')[0]) {
+                    let s = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:)(\d{2})(\s+(AM|PM))$/i);
+                    let e = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:)(\d{2})(\s+(AM|PM))$/i)
+                    if (s && s.length == 6 && e && e.length == 6) {
+                        if (s[5] == 'PM') $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(s[2], parseInt(s[2]) + 12 + ':');
+                        if (e[5] == 'PM') $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(e[2], parseInt(e[2]) + 12 + ':');
+                        $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(s[5], '');
+                        $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(e[5], '');
+                    }
+                }
+            } catch(e) {gclh_error("Show eventtime in 24 hours format",e);}
+        }
     }
 
 // Show real owner.
@@ -15173,6 +15192,9 @@ var mainGC = function() {
             html += checkboxy('settings_strike_archived', 'Strike through title of archived and disabled caches') + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If this option is enabled, the alias that an owner used to publish the cache is replaced with the real owner name.") + "<br>";
             html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter.") + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
             for (var i = 1; i < 11; i++) {
@@ -16483,6 +16505,7 @@ var mainGC = function() {
                 'settings_visitCount_geocheckerCom',
                 'settings_show_bbcode',
                 'settings_show_eventday',
+                'settings_show_eventtime_with_24_hours',
                 'settings_show_mail',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
