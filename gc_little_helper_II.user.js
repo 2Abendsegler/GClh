@@ -18166,7 +18166,8 @@ var mainGC = function() {
 // Random number between max and min.
     function random(max, min) {return Math.floor(Math.random() * (max - min + 1)) + min;}
 
-// Convert a 12 hour tme string to a 24 hour time string. Examples: 12:00 AM->00:00 / 12:30 AM->00:30 / 01:30 AM->01:30 / 00:00 PM->12:00 / 01:30 PM->13:30
+// Convert a 12 hour time string to a 24 hour time string.
+// Examples: 12:00 AM->00:00 / 12:30 AM->00:30 / 01:30 AM->01:30 / 00:00 PM->12:00 / 01:30 PM->13:30
     function convert12To24Hour(str) {
         let dString = '01 Jan 2000 ' + str;
         let dParse = Date.parse(dString);
