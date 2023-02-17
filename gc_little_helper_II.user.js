@@ -2171,14 +2171,14 @@ var mainGC = function() {
         // Show eventtime in 24 hours format.
         if (settings_show_eventtime_with_24_hours) {
             try {
-                if ($('#mcd3')[0] && $('#mcd4')[0]) {
-                    let s = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:)(\d{2})(\s+(AM|PM))$/i);
-                    let e = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:)(\d{2})(\s+(AM|PM))$/i)
-                    if (s && s.length == 6 && e && e.length == 6) {
-                        if (s[5] == 'PM') $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(s[2], parseInt(s[2]) + 12 + ':');
-                        if (e[5] == 'PM') $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(e[2], parseInt(e[2]) + 12 + ':');
-                        $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(s[5], '');
-                        $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(e[5], '');
+                if ($('#ctl00_ContentBody_mcd2') && $('#mcd3')[0] && $('#mcd4')[0]) {
+                    let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                    let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                    if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
+                        var t = convert12To24Hour(sStr[2]);
+                        $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], t);
+                        var t = convert12To24Hour(eStr[2]);
+                        $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], t);
                     }
                 }
             } catch(e) {gclh_error("Show eventtime in 24 hours format",e);}
@@ -18165,6 +18165,15 @@ var mainGC = function() {
 
 // Random number between max and min.
     function random(max, min) {return Math.floor(Math.random() * (max - min + 1)) + min;}
+
+// Convert a 12 hour tme string to a 24 hour time string. Examples: 12:00 AM->00:00 / 12:30 AM->00:30 / 01:30 AM->01:30 / 00:00 PM->12:00 / 01:30 PM->13:30
+    function convert12To24Hour(str) {
+        let dString = '01 Jan 2000 ' + str;
+        let dParse = Date.parse(dString);
+        let date = new Date(dParse);
+        let tString = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+        return tString;
+    }
 
 // Determine current date and deliver year, month and day.
     function determineCurrentDate() {
