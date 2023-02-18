@@ -94,6 +94,7 @@ function collectionInit(c) {
         {name: 'Strawberry Ice', bg: 'E8A0A6', ht: 'EDD3DC', if: 'E6BABE', bh: 'E2C0CC', bu: 'EDD3DC', bo: 'A66471', nv: 'EDD3DC'},
         {name: 'Summer Forest', bg: 'A5C79B', ht: 'B3A382', if: 'C3DBBC', bh: 'A0D191', bu: '92BF84', bo: '15520F', nv: '86C27F'}
     ];
+    c.cache_sizes = {'1' : 'unknown', '2' : 'micro', '3' : 'regular', '4' : 'large', '5' : 'virtual', '6' : 'others', '8' : 'small'};
 }
 
 function layersInit(c) {
