@@ -8845,7 +8845,6 @@ var mainGC = function() {
                     }
                     // Build the list of unpublished caches.
                     function buildCachesList(caches) {
-                        cache_sizes = {'1' : 'unknown', '2' : 'micro', '3' : 'regular', '4' : 'large', '5' : 'virtual', '6' : 'others', '8' : 'small'};
                         buildListArea();
                         if (settings_set_showUnpublishedHides_sort) {
                             if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
