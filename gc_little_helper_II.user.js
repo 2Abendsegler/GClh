@@ -1,9 +1,7 @@
 // ==UserScript==
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
-//--> $$000
 // @version      0.14.2
-//<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
@@ -13303,12 +13301,10 @@ var mainGC = function() {
         var prop = ' style="border: none; visibility: hidden; width: 2px; height: 2px;" alt="">';
         var code = '<img src="https://s11.flagcounter.com/count2/906f/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
         code += '<img src="https://c.andyhoppe.com/1676270686"' + prop; // Besucher
-//--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
         code += '<img src="https://s11.flagcounter.com/count2/BilC/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
         code += '<img src="https://www.worldflagcounter.com/isI"' + prop;
-//<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
         setValue("declared_version", scriptVersion);
@@ -14640,7 +14636,7 @@ var mainGC = function() {
             html += "        <tr><th></th><th><span>Project Management</span></th><th><span>Development Lead</span></th><th><span>Development</span></th><th><span>Bug Reporting</span>" + show_help("Bugs reported to the issue system on GitHub.") + "</th></tr>";
             html += "    </thead>";
             html += "    <tbody>";
-//--> $$006
+
             // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
             html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  true,  true,  false);
             html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  false);
@@ -14697,8 +14693,8 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "13.02.2023";
-//<-- $$006
+            const thanksLastUpdate = "13.02.2023";
+
             html += "    </tbody>";
             html += "</table>";
             html += "<span style='float: right; font-size: 10px;'>Last update: " + thanksLastUpdate + " </span>";
@@ -16850,14 +16846,14 @@ var mainGC = function() {
 // Highlight new parameters in GClh Config and set version info.
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span class='gclh_new_para#' style='float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
-//--> $$001
+
     newParameterOn1 = d.replace("#", "10");
     newParameterOn2 = d.replace("#", "03");
     newParameterOn3 = d.replace("#", "06");
     newParameterLL1 = s.replace("#", "10");
     newParameterLL2 = s.replace("#", "03");
     newParameterLL3 = s.replace("#", "06");
-//<-- $$001
+
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
         if (version != "") newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>";
@@ -17606,9 +17602,7 @@ var mainGC = function() {
                 rcConfigDataDel(keysDel);
             }
             if (document.getElementById("rc_standard").checked) {
-//--> $$004
                 rcGetData(urlConfigSt, "st");
-//<-- $$004
             }
             if (document.getElementById("rc_temp").checked) {
                 rcGetData(urlScript, "js");
@@ -17679,11 +17673,10 @@ var mainGC = function() {
         for (key in CONFIG) {
             var kkey = key.split("[");
             var kkey = kkey[0];
-//--> $$005
+
             if (kkey.match(/^(show_box|set_switch)/) ||
                 kkey.match(/^gclh_(.*)(_logs_get_last|_logs_count)$/)) {
                 config_tmp[key] = CONFIG[key];
-//<-- $$005
             } else if (kkey.match(/autovisit_(\d+)/) ||
                        kkey.match(/^(friends_founds_|friends_hides_)/) ||
                        kkey.match(/^(settings_DB_auth_token|settings_remove_banner_text_ids|new_version|class|token)$/)) {
@@ -17697,10 +17690,10 @@ var mainGC = function() {
                 changedData += "delete: " + key + ": " + CONFIG[key] + "\n";
             }
         }
-//--> $$007
+        
         // Reset data outside of CONFIG.
         [changed, changedData] = rcNoConfigDataDel('clipboard', false, changed, changedData);
-//<-- $$007
+        
         document.getElementById('rc_configData').innerText = changedData;
         CONFIG = config_tmp;
         rcConfigUpdate(changed);
