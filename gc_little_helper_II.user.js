@@ -18,16 +18,16 @@
 // @include      https://www.google.tld/maps*
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
-// @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
-// @require      https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/2.5.2/Dropbox-sdk.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.3/jquery.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/10.34.0/Dropbox-sdk.min.js
 // @require      https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require      https://www.geocaching.com/scripts/SmileyConverter.js
 // @resource maincss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/main.css
 // @resource headerhtml https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/header.html
-// @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
-// @resource leafletjs https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
-// @resource leafletcss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
+// @resource jscolor https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.min.js
+// @resource leafletjs https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.js
+// @resource leafletcss https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.min.css
 // @connect      maps.googleapis.com
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
