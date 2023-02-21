@@ -1,4 +1,4 @@
-<a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a> &nbsp;  &nbsp;  &nbsp; <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/development-tampermonkey.md&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" title="hits day / total"></a>
+<a href="#en" title=""><img src="../images/flag_en.png"></a> &nbsp;<a href="#de" title=""><img src="../images/flag_de.png"></a> &nbsp;  &nbsp;  &nbsp; <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/development-tampermonkey.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a>
 
 ---
 # <a id="en"></a>GC little helper II — Development with Tampermonkey
