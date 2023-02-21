@@ -18,8 +18,8 @@
 // @include      https://www.google.tld/maps*
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.3/jquery.min.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/10.34.0/Dropbox-sdk.min.js
 // @require      https://www.geocaching.com/scripts/MarkdownDeepLib.min.js
 // @require      https://www.geocaching.com/scripts/SmileyConverter.js
@@ -1841,7 +1841,7 @@ var mainGC = function() {
 // Remove GC Menüs.
     function removeGCMenues() {
         try {
-            var m = $('ul.(Menu|menu) li a.dropdown');
+            const m = $('ul.menu li a.dropdown');
             for (var i = 0; i < m.length; i++) {
                 if ((m[i].href.match(/\/play\/search/) && getValue('remove_navi_play')) ||
                     (m[i].href.match(/\/forums\/$/) && getValue('remove_navi_community')) ||
@@ -3328,7 +3328,7 @@ var mainGC = function() {
                 } else {
                     const closeElId = 'closeBanner' + index; // hack for bind event
                     bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" title="Close this banner permanently">&#x2716;</span>');
-                    bannerEl.find('#' + closeElId).bind({
+                    bannerEl.find('#' + closeElId).on({
                         click: function() {
                             settings_remove_banner_text_ids.push(bannerTextSum);
                             setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
@@ -4386,7 +4386,7 @@ var mainGC = function() {
                         // Set Autovisit.
                         buildAutos();
                         // Change autovisit if the logtype changed
-                        $('select.log-types').bind('change', buildAutos);
+                        $('select.log-types').on('change', buildAutos);
                         waitCount++; if (waitCount <= 100) setTimeout(function(){waitForContent(waitCount);}, 100);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForContent(waitCount);}, 100);}
@@ -4659,7 +4659,7 @@ var mainGC = function() {
             addMessageButtonListener(0);
             function addMessageButtonListener(waitCount) {
                 if ($("#cpConvoPanelFeed ol li" ).length > 0) {
-                    $('#cpConvoPanelFeed ol').bind('DOMSubtreeModified', function(event) {
+                    $('#cpConvoPanelFeed ol').one('DOMSubtreeModified', function(event) {
                         addEventlistenerForMessageCenterNames();
                     });
                     // Add for initial Names.
@@ -4758,7 +4758,7 @@ var mainGC = function() {
                         if (run) buildSchedule(cb, img);
                     });
                     this.oncontextmenu = function(){return false;};
-                    $(this).bind('contextmenu.new', function(e) {
+                    $(this).on('contextmenu.new', function(e) {
                         if (this.closest('tr').rowIndex) var rowIndex = this.closest('tr').rowIndex;
                         if (this.name.match('&d=(\.*)&opt')) var d = this.name.match('&d=(\.*)&opt')[1];
                         if (!rowIndex || !d) return;
@@ -4836,7 +4836,7 @@ var mainGC = function() {
             $('table.PocketQueryListTable tbody input[type*="checkbox"]').each(function() {
                 this.oncontextmenu = function(){return false;};
                 this.title = 'click to mark\n(right click to mark 10)';
-                $(this).bind('contextmenu.new', function(e) {
+                $(this).on('contextmenu.new', function(e) {
                     var rowIndex = this.closest('tr').rowIndex;
                     var checked = $(this).prop('checked') ? false : true;
                     $(this).closest('table').find('tbody input[type*="checkbox"]').each(function() {
@@ -6361,17 +6361,20 @@ var mainGC = function() {
                 }
             }
             function waitForInvitationButton(waitCount) {
-                if (document.getElementById('invitation-button-root').firstChild) {
-                    var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
-                    buttonClasses = buttonClasses.replace('send-invitation-btn','');
-                    buttonClasses = buttonClasses.replace('gc-button-disabled','');
-                    buttonClasses = buttonClasses + ' gclh_resetBtn';
-                    var button = document.createElement("a");
-                    button.setAttribute("class", buttonClasses);
-                    button.setAttribute("href", "javascript:void(0);");
-                    button.addEventListener("click", gclh_reset_counter, false);
-                    button.innerHTML = "Reset Counter";
-                    document.getElementById("invitation-button-root").lastChild.after(button);
+
+                const invitationButtonRootEls = $('#invitation-button-root');
+                const sendInvitationButtonEl = $('.send-invitation-btn');
+                if (invitationButtonRootEls.length > 0 && sendInvitationButtonEl.length === 1) {
+                                        
+                    sendInvitationButtonEl.removeClass('send-invitation-btn');
+                    sendInvitationButtonEl.addClass('gclh_resetBtn');
+
+                    const linkResetButtonEl = $('<a href="javascript:void(0);">Reset Counter</a>');
+                    linkResetButtonEl.addClass(sendInvitationButtonEl.attr('class'));
+                    linkResetButtonEl.removeClass('gc-button-disabled'); // class for unfill friend input
+                    linkResetButtonEl.on('click', gclh_reset_counter);
+                    invitationButtonRootEls.first().append(linkResetButtonEl);
+
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForInvitationButton(waitCount);}, 100);}
             }
             waitForInvitationButton(0);
@@ -6413,7 +6416,7 @@ var mainGC = function() {
                 if ($('#gclh_stats_btn')[0]) return;
                 let html = '<button id="gclh_stats_btn" style="margin-left:2em;">Count cache and log types</button>';
                 $('.sort-action').after(html);
-                $('#gclh_stats_btn').bind('click', showStats);
+                $('#gclh_stats_btn').on('click', showStats);
             }
             function showStats() {
                 // Remember scroll position.
@@ -8343,7 +8346,7 @@ var mainGC = function() {
 
             function updateUpvoteEvents(all_logs){
                 $('.great-story-btn').each(function(){
-                    $(this).unbind('click');
+                    $(this).off('click');
                     $(this).click(function(){
                         // there is a bug (or a feature) in jQuery(?):
                         // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
@@ -8373,7 +8376,7 @@ var mainGC = function() {
                     });
                 });
                 $('.helpful-btn').each(function(){
-                    $(this).unbind('click');
+                    $(this).off('click');
                     $(this).click(function(){
                         // there is a bug (or a feature) in jQuery(?):
                         // if you have a data attribute (like data-upvoted="false") and you also have set objekt.data(upvoted,"true")
@@ -8843,7 +8846,7 @@ var mainGC = function() {
                     $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
                     $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
                 }
-                $('#gclh_unpublishedCaches .panel-header').bind('click', function() {
+                $('#gclh_unpublishedCaches .panel-header').on('click', function() {
                     if (getValue('unpublishedCaches_visible', true)) {
                         $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
                         $('#gclh_unpublishedCaches .panel-body').fadeOut(300);
@@ -9147,8 +9150,8 @@ var mainGC = function() {
                     else $('.section-controls').append('<div class="control-group">'+html+'</div>');
                     $('#gclh_loadFavPerc')[0].addEventListener('click', showFavPerc);
                     // Add Event Listener for Changes (Oberserver does not work).
-                    $('.section-controls #gcsel-4JnpBxk').bind('change', loadMore);
-                    $('.gc-button').bind('click', loadMore);
+                    $('.section-controls #gcsel-4JnpBxk').on('change', loadMore);
+                    $('.gc-button').on('click', loadMore);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){favPercent(waitCount);}, 100);}
             }
 
@@ -9239,7 +9242,7 @@ var mainGC = function() {
                     collision: "flipfit flipfit"
                 });
                 if (!stop) {
-                    $('a.gclh_thumb:hover span img').load(function() {
+                    $('a.gclh_thumb:hover span img').on("load", function() {
                         placeToolTip(element, true);
                     });
                 }
@@ -9553,7 +9556,7 @@ var mainGC = function() {
                         $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
                     }
                     // Toggle button for corrected coordinates.
-                    $("#gclh_corrected_coords").bind("click", () => {
+                    $("#gclh_corrected_coords").on("click", () => {
                         if (!isActive) {
                             isActive = true;
                             setValue('showCorrectedCoords', isActive);
@@ -9585,14 +9588,14 @@ var mainGC = function() {
                 waitForElementThenRun('button.layer-control', () => {
                     const addClickEventToLayerControl = () => {
                         // On click to layer control start observing as long as layer control is open.
-                        $('button.layer-control').bind('click', function clickFunc() {
+                        $('button.layer-control').on('click', function clickFunc() {
                             const cb = (_, observer) => {
                                 // As soon as layer control is closed add the button and stop observing.
                                 if (!$('button.layer-control.is-open')[0]) {
                                     addCorrectedCoordsButton();
                                     observer.disconnect();
                                     // Remove click event from (possibly deleted) layer control.
-                                    $('button.layer-control').unbind('click', clickFunc);
+                                    $('button.layer-control').off('click', clickFunc);
                                     // Re-add click event to (possibly new) layer control.
                                     setTimeout(() => {
                                         addClickEventToLayerControl();
@@ -10399,7 +10402,7 @@ var mainGC = function() {
                     if ($('#geocache-list')[0] && !$('.gclh_PQHead')[0]) {
                         let html = '<div class="gclh_PQHead"><a id="gclh_saveAsPQ" href="javascript:void(0)" title="Save as Pocket Query"><img src="/images/icons/16/pocket_query.png" height="12px">Save as PQ</a><div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span><div class="gclh_toggle-handle"></div></div></div>';
                         $('#gclh_action_bar').append(html);
-                        $('#gclh_saveAsPQ').bind('click', function() {
+                        $('#gclh_saveAsPQ').on('click', function() {
                             let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
                             let url = 'https://www.geocaching.com/pocket/gcquery.aspx';
                             url += document.location.search.replace(/&asc=(true|false)&sort=\w+/, '');
@@ -12941,9 +12944,6 @@ var mainGC = function() {
                     injectPageScript(newJS, "body", 'gclh_leafletjs');
                 }
             }
-            if ( L.version != "0.7.2" ) {
-                console.error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
-            }
         } catch(e) {gclh_error("function leafletInit",e);}
     }
 
@@ -13356,22 +13356,38 @@ var mainGC = function() {
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
     function getGCTBInfo(newLogPage) {
-        var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
+        let GCTBName = "";
+        let GCTBLink = "";
+        let GCTBNameLink = "";
+        let LogDate = "";
+
         if (newLogPage) {
-            if ($('#LogDate'[0])) var LogDate = $('#LogDate')[0].value;
-            var GCTBName = $('a.log-subheading')[0].innerHTML;
+
+            const logDateEl = $('#LogDate');
+            if (logDateEl.length > 0 ) {
+                LogDate = logDateEl.val();
+            }
+            GCTBName = $('a.log-subheading').first().html();
             GCTBName = GCTBName.replace(/'/g,"");
-            var GCTBLink = $('a.log-subheading')[0].href;
-            var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+            GCTBLink = $('a.log-subheading').first().attr('href');
+            GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+
         } else {
-            if ($('#uxDateVisited')[0]) var LogDate = $('#uxDateVisited')[0].value;
-            if ($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling) {
-                var GCTBName = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling.nextSibling.innerHTML;
+
+            const uxDateVisitedEl = $('#uxDateVisited');
+            if (uxDateVisitedEl.length > 0) {
+                LogDate = uxDateVisitedEl.val();
+            }
+
+            const waypointLinkEl = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink');
+            if (waypointLinkEl.length > 0 && waypointLinkEl[0].nextSibling.nextSibling) {
+                GCTBName = waypointLinkEl[0].nextSibling.nextSibling.nextSibling.innerHTML;
                 GCTBName = GCTBName.replace(/'/g,"");
-                var GCTBLink = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].href;
-                var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+                GCTBLink = waypointLinkEl.first().attr('href');
+                GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
             }
         }
+
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
     }
 
@@ -15725,7 +15741,7 @@ var mainGC = function() {
             $('label[for="settings_use_gclh_layercontrol"], label[for="settings_show_homezone"]').addClass('gclh_ref');
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
-            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon,").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
+            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
             // Config Content: Hauptbereiche hideable machen.
             // ---------------
@@ -15737,7 +15753,7 @@ var mainGC = function() {
                     $(lnk)[0].addEventListener("click", function() {showHideConfig($('#'+this.id).closest('h4').hasClass('gclh_hide'), configArea);});
                     // Show, hide all areas in config with one click with the right mouse.
                     document.getElementById("lnk_gclh_config_" + configArea).oncontextmenu = function(){return false;};
-                    $(lnk).bind('contextmenu.new', function() {showHideConfigAll($('#'+this.id).closest('h4').hasClass('gclh_hide'), this.id);});
+                    $(lnk).on('contextmenu.new', function() {showHideConfigAll($('#'+this.id).closest('h4').hasClass('gclh_hide'), this.id);});
                 }
             }
             // Anfangsbestand, Events setzen.
