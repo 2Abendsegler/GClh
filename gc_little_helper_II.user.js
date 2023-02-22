@@ -285,7 +285,7 @@ var constInit = function(c) {
             c.bookmarks[i]['title'] = getValue("settings_bookmarks_title[" + i + "]");
         }
     }
-    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "update_next_check": true};
+    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "update_next_check": true, "settings_DB_auth_token": true};
     tlc('START iconsInit');
     iconsInit(c);
     tlc('START layersInit');
