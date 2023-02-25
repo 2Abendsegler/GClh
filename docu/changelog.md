@@ -48,6 +48,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [New Dashboard] Copy to clipboard for log text in Latest Activity list. [<a href="https://github.com/2Abendsegler/GClh/issues/2353" title="Issue 2353">2353</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		With the new button the log text is copied to the clipboard.<br>
 		<img src="../images/0.14.3/Screen06.jpg" alt="Screen06.jpg"><br><br>
 	</li>
 	<li>
