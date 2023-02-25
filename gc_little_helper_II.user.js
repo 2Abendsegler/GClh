@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.2
+// @version      0.14.3
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -13306,8 +13306,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/BilC/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/isI"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/CWMI/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/itg"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14697,7 +14697,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "13.02.2023";
+            var thanksLastUpdate = "24.02.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14748,7 +14748,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("Banners are often where a new page layout is forced upon you. If you don't want it, you don't have the option to hide the annoying bar. This option adds a button that lets you decide which banners you see. If you change the option, the list of hidden banners will be forgotten.") + "<br>";
+            html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("With blue banners below the page header, new page layouts or new features are pointed out. If you don't want that, you don't have the option to hide the annoying banner. This parameter adds a button to decide which banners to hide. If the parameter is deactivated, the hidden banners are deleted again.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List Layout</b>" + "</div>";
             html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
@@ -15725,7 +15725,7 @@ var mainGC = function() {
             $('label[for="settings_use_gclh_layercontrol"], label[for="settings_show_homezone"]').addClass('gclh_ref');
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
-            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon,").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
+            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
             // Config Content: Hauptbereiche hideable machen.
             // ---------------

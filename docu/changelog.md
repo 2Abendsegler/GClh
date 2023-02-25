@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0143" title="GClh II version 0.14.3 (25.02.2023)">v0.14.3</a> &nbsp;
 <a href="#v0142" title="GClh II version 0.14.2 (14.02.2023)">v0.14.2</a> &nbsp;
 <a href="#v0141" title="GClh II version 0.14.1 (27.01.2023)">v0.14.1</a> &nbsp;
 <a href="#v014" title="GClh II version 0.14 (17.01.2023)">v0.14</a> &nbsp;
@@ -32,6 +33,52 @@
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.14.3:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Global] Rewrite the function for remove a blue banner - activate [X] button for user interaction. [<a href="https://github.com/2Abendsegler/GClh/issues/2351" title="Issue 2351">2351</a> / <a href="https://www.geocaching.com/profile/?u=Dratenik" title="Thanks to Dratenik">Dratenik</a>]<br>
+		With blue banners below the page header, new page layouts or new features are pointed out. If you don't want that, you don't have the option to hide the annoying banner. This parameter adds a button to decide which banners to hide. If the parameter is deactivated, the hidden banners are deleted again.<br>
+		<img src="../images/0.14.3/Screen05.jpg" alt="Screen05.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_remove_banner" title="Link to your GClh II Config">Settings -> Global:<br>
+		<img src="../images/0.14.3/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Copy to clipboard for log text in Latest Activity list. [<a href="https://github.com/2Abendsegler/GClh/issues/2353" title="Issue 2353">2353</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		With the new button the log text is copied to the clipboard.<br>
+		<img src="../images/0.14.3/Screen06.jpg" alt="Screen06.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Event Listing] Show event time in 24 hours format. [<a href="https://github.com/2Abendsegler/GClh/issues/2358" title="Issue 2358">2358</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter.<br>
+		Event time in 12 hours format:<br>
+		<img src="../images/0.14.3/Screen01.jpg" alt="Screen01.jpg"><br>
+		Event time in 24 hours format:<br>
+		<img src="../images/0.14.3/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventtime_with_24_hours" title="Link to your GClh II Config">Settings -> Listing - Listing Header:<br>
+		<img src="../images/0.14.3/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] If there are more than ten unpublished hides, the display no longer works correctly. [<a href="https://github.com/2Abendsegler/GClh/issues/2354" title="Issue 2354">2354</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] The possible layers on Flopp's Map have changed. [<a href="https://github.com/2Abendsegler/GClh/issues/2364" title="Issue 2364">2364</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Overview map shows only the signs '>. [<a href="https://github.com/2Abendsegler/GClh/issues/2355" title="Issue 2355">2355</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Sync] Dropbox authentication keeps getting lost. [<a href="https://github.com/2Abendsegler/GClh/issues/2360" title="Issue 2360">2360</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(25.02.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.14.2:
