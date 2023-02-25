@@ -58,7 +58,7 @@
 		<img src="../images/0.14.3/Screen01.jpg" alt="Screen01.jpg"><br>
 		Event time in 24 hours format:<br>
 		<img src="../images/0.14.3/Screen02.jpg" alt="Screen02.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_remove_banner" title="Link to your GClh II Config">Settings -> Listing - Listing Header:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventtime_with_24_hours" title="Link to your GClh II Config">Settings -> Listing - Listing Header:<br>
 		<img src="../images/0.14.3/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
