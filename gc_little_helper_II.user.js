@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.2
+// @version      0.14.3
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -285,7 +285,7 @@ var constInit = function(c) {
             c.bookmarks[i]['title'] = getValue("settings_bookmarks_title[" + i + "]");
         }
     }
-    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "update_next_check": true};
+    c.gclhConfigKeysIgnoreForBackup = {"declared_version": true, "update_next_check": true, "settings_DB_auth_token": true};
     tlc('START iconsInit');
     iconsInit(c);
     tlc('START layersInit');
@@ -450,6 +450,7 @@ var variablesInit = function(c) {
     c.settings_make_config_main_areas_hideable = getValue("settings_make_config_main_areas_hideable", true);
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
     c.settings_show_eventday = getValue("settings_show_eventday", true);
+    c.settings_show_eventtime_with_24_hours = getValue("settings_show_eventtime_with_24_hours", false);
     c.settings_show_google_maps = getValue("settings_show_google_maps", true);
     c.settings_show_log_it = getValue("settings_show_log_it", true);
     c.settings_show_nearestuser_profil_link = getValue("settings_show_nearestuser_profil_link", true);
@@ -557,8 +558,7 @@ var variablesInit = function(c) {
     c.settings_distance_units = getValue("settings_distance_units", "");
     c.settings_img_warning = getValue("settings_img_warning", false);
     c.settings_remove_banner = getValue("settings_remove_banner", false);
-    c.settings_remove_banner_for_garminexpress = getValue("settings_remove_banner_for_garminexpress", false);
-    c.settings_remove_banner_blue = getValue("settings_remove_banner_blue", false);
+    c.settings_remove_banner_text_ids = JSON.parse(getValue("settings_remove_banner_text_ids", "[]"));
     c.settings_compact_layout_bm_lists = getValue("settings_compact_layout_bm_lists", true);
     c.settings_compact_layout_pqs = getValue("settings_compact_layout_pqs", true);
     c.settings_compact_layout_list_of_pqs = getValue("settings_compact_layout_list_of_pqs", true);
@@ -2148,23 +2148,41 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve calendar link",e);}
     }
 
-// Show eventday beside date.
-    if (settings_show_eventday && is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
-        try {
-            var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-            if (match == null) {
-                match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-            }
-            if (match != null) {
-                var date = new Date(match[3], match[1]-1, match[2]);
-                if (date != "Invalid Date") {
-                    var name = " (" + date.getWeekday() + ") ";
-                    var elem = document.createTextNode(name);
-                    var side = $('#ctl00_ContentBody_mcd2')[0];
-                    side.insertBefore(elem, side.childNodes[1]);
+// Improve event date and event time in cache listing.
+    if (is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
+        // Show eventday beside date.
+        if (settings_show_eventday) {
+            try {
+                var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+                if (match == null) {
+                    match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
                 }
-            }
-        } catch(e) {gclh_error("Show eventday beside date",e);}
+                if (match != null) {
+                    var date = new Date(match[3], match[1]-1, match[2]);
+                    if (date != "Invalid Date") {
+                        var name = " (" + date.getWeekday() + ") ";
+                        var elem = document.createTextNode(name);
+                        var side = $('#ctl00_ContentBody_mcd2')[0];
+                        side.insertBefore(elem, side.childNodes[1]);
+                    }
+                }
+            } catch(e) {gclh_error("Show eventday beside date",e);}
+        }
+        // Show eventtime in 24 hours format.
+        if (settings_show_eventtime_with_24_hours) {
+            try {
+                if ($('#ctl00_ContentBody_mcd2') && $('#mcd3')[0] && $('#mcd4')[0]) {
+                    let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                    let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                    if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
+                        var t = convert12To24Hour(sStr[2]);
+                        $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], t);
+                        var t = convert12To24Hour(eStr[2]);
+                        $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], t);
+                    }
+                }
+            } catch(e) {gclh_error("Show eventtime in 24 hours format",e);}
+        }
     }
 
 // Show real owner.
@@ -2992,7 +3010,7 @@ var mainGC = function() {
                 mapservice_link( {
                     uniqueServiceId: "flopps",
                     urlTemplate: 'https://flopp.net/?c={center_latitude}:{center_longitude}&z={zoom}&t={map}&d=O:L&m={waypoints}',
-                    layers: {'OSM': { maxZoom: 18, displayName: 'Openstreetmap' }, 'OSM/DE': { maxZoom: 18, displayName: 'OSM German Style' }, 'TOPO': { maxZoom: 15, displayName: 'OpenTopMap' }, 'roadmap':{ maxZoom: 20, displayName: 'Google Maps' }, 'hybrid': { maxZoom: 20, displayName: 'Google Maps Hybrid' }, 'terrain':{ maxZoom: 20, displayName: 'Google Maps Terrain' }, 'satellite':{ maxZoom: 20, displayName: 'Google Maps Satellite' }},
+                    layers: {'OSM': { maxZoom: 18, displayName: 'Openstreetmap' }, 'OSM/DE': { maxZoom: 18, displayName: 'OSM German Style' }, 'TOPO': { maxZoom: 15, displayName: 'OpenTopMap' }, 'STAMEN_TERRAIN': { maxZoom: 20, displayName: 'Stamen Terrain' }, 'HUMANITARIAN': { maxZoom: 20, displayName: 'Humanitarian' }, 'ARCGIS_WORLDIMAGERY': { maxZoom: 20, displayName: 'World Imagery' }, 'ARCGIS_WORLDIMAGERY_OVERLAY': { maxZoom: 20, displayName: 'World Imagery + Overlay' }},
                     waypointSeparator : '*',
                     waypointFunction : floppsMapWaypoint,
                     mapOffset : { width: -280, height: -50 },
@@ -3118,7 +3136,7 @@ var mainGC = function() {
                 if (settings_map_overview_search_map_icon) {
                     html += "<span class='mapIcons mapIcon " + (bothIcons ? 'mapIconLeft':'') + "'><a href='" + new_map_url + "?lat=" + lat + "&lng=" + lng + "' title='Search Map' " + (settings_map_overview_search_map_icon_new_tab ? "target='_blank'":"") + ">" + search_map_icon + "</a></span>";
                 }
-                html += "</span>'>";
+                html += "</span>";
             }
             html += "</div>";
             html += "</div>";
@@ -3298,17 +3316,27 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("Show mail and message icon",e);}
 
-// Banner zu neuen Themen entfernen.
+// Remove banners (blue banners).
     if (settings_remove_banner) {
         try {
-            if (settings_remove_banner_for_garminexpress) $('#Content').find('div.banner').find('#uxSendToGarminBannerLink').closest('div.banner').remove();
-            if (settings_remove_banner_blue) {
-                if ($('div.banner').length == 1 && $('div.banner').find('div.wrapper a.btn').length == 1 && !$('div.banner #uxViewNewLogLink')[0]) {
-                    var styles = window.getComputedStyle($('div.banner')[0]);
-                    if (styles && (styles.backgroundColor == "rgb(70, 135, 223)" || styles.backgroundColor == "rgb(61, 118, 197)")) $('div.banner').remove();
+            // To activate the (x) button for a new banner, just change the following jq selector (use a comma and a new banner selector)
+            $('div.blue-banner-content,div.banner').each(function( index ) {
+                const bannerEl = $(this);
+                const bannerTextSum = bannerEl.text().checksum();
+                if (settings_remove_banner_text_ids.find(link => link === bannerTextSum)) {
+                    bannerEl.remove();
+                } else {
+                    const closeElId = 'closeBanner' + index; // hack for bind event
+                    bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" title="Close this banner permanently">&#x2716;</span>');
+                    bannerEl.find('#' + closeElId).bind({
+                        click: function() {
+                            settings_remove_banner_text_ids.push(bannerTextSum);
+                            setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
+                            bannerEl.remove();
+                        }
+                    });
                 }
-                $('#activationAlert').find('div.container').find('a[href*="/my/lists.aspx"]').closest('#activationAlert').remove();
-            }
+            });
         } catch(e) {gclh_error("Remove banner",e);}
     }
 
@@ -8733,12 +8761,21 @@ var mainGC = function() {
                 $('#gclh_logs ul').append('<li id="gclh_logId_' + logIdLocal + '">' + logText + '</li>');
                 $(log).attr('logId', logIdLocal);
             }
+            // Copy to clipboard button for log text in Latest Activity list.
+            function buildCopyLogtextToClipboard(log) {
+                if (!$(log).find('.gclh_copyLogToClipboard')[0]) {
+                    $(log).find('.meta-data').after('<span class="gclh_copyLogToClipboard" style="margin-top: 12px;margin-left: auto;padding-right: 12px;"><span class="gclh_copyToClipboard"></span></span>');
+                    var logText = decode_innerHTML($(log).find('.note-text')[0]).replace(/<br>/g,'\n');
+                    addCopyToClipboardLink(logText, $(log).find('.gclh_copyToClipboard')[0], "Log");
+                }
+            }
 
             // Common functions for features in Latest Activity list.
             function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
                 buildCacheTypeIconAF(log);
                 buildLogtextMarkdownAF(log);
+                buildCopyLogtextToClipboard(log);
                 waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
             }
             function buildEventMoreAF(log) {
@@ -8789,178 +8826,171 @@ var mainGC = function() {
 
             // Show unpublished hides.
             if (settings_showUnpublishedHides) {
-                var unpublishedCachesPanel = '<div id="GClh_unpublishedCaches" class="panel collapsible">';
-                unpublishedCachesPanel += '    <div class="panel-header isActive">';
-                unpublishedCachesPanel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
-                unpublishedCachesPanel += '         <svg height="22" width="22" class="opener">';
-                unpublishedCachesPanel += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>';
-                unpublishedCachesPanel += '         </svg>';
-                unpublishedCachesPanel += '    </div>';
-                unpublishedCachesPanel += '    <div id="GClh_unpublishedCaches_body" class="panel-body activity-feed" style="min-height: unset;">';
-                unpublishedCachesPanel += '        <div class="loading">';
-                unpublishedCachesPanel += '        </div>';
-                unpublishedCachesPanel += '    </div>';
-                unpublishedCachesPanel += '</div>';
-                $('.sidebar-right').append(unpublishedCachesPanel);
+                var panel = '<div id="gclh_unpublishedCaches" class="panel collapsible">';
+                panel += '    <div class="panel-header isActive">';
+                panel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
+                panel += '         <svg height="22" width="22" class="opener">';
+                panel += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>';
+                panel += '         </svg>';
+                panel += '    </div>';
+                panel += '    <div id="gclh_unpublishedCaches_body" class="panel-body activity-feed">';
+                panel += '        <div class="loading">';
+                panel += '        </div>';
+                panel += '    </div>';
+                panel += '</div>';
+                $('.sidebar-right').append(panel);
                 if (!getValue('unpublishedCaches_visible', false)) {
-                    $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
-                    $('#GClh_unpublishedCaches .panel-body').fadeOut(0);
+                    $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
+                    $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
                 }
-                $('#GClh_unpublishedCaches .panel-header').bind('click', function() {
+                $('#gclh_unpublishedCaches .panel-header').bind('click', function() {
                     if (getValue('unpublishedCaches_visible', true)) {
-                        $('#GClh_unpublishedCaches .panel-header').removeClass('isActive');
-                        $('#GClh_unpublishedCaches .panel-body').fadeOut(300);
+                        $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
+                        $('#gclh_unpublishedCaches .panel-body').fadeOut(300);
                         setValue('unpublishedCaches_visible', false);
                     }else {
-                        $('#GClh_unpublishedCaches .panel-header').addClass('isActive');
-                        $('#GClh_unpublishedCaches .panel-body').fadeIn(300);
+                        $('#gclh_unpublishedCaches .panel-header').addClass('isActive');
+                        $('#gclh_unpublishedCaches .panel-body').fadeIn(300);
                         setValue('unpublishedCaches_visible', true);
                     }
                 });
-                // Get the Cache information.
-                var caches = {};
-                var events = {};
+                // If the link to unpublished hides is shown in dashboard, there are some.
                 if ($('a.bold[href="/account/dashboard/unpublishedcaches"]')[0]) {
-                    getAsynData('https://www.geocaching.com/play/owner/unpublished', '.geocache-details', function(response) {
-                        if ($(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#event' ||
-                            $(response).find('.meta-data-display .geocache-icon svg use').attr('xlink:href') == '#celebration') {
-                            // No unpublished caches found.
-                            events = $(response).find('.meta-data-display');
-                            buildList();
-                        } else {
-                            // Unpublished caches found.
-                            caches = $(response).find('.meta-data-display');
-                            if (caches.length == $('a.bold[href="/account/dashboard/unpublishedcaches"]')[0].innerHTML.match(/\d{1,}/)[0]) {
-                                // No unpublished events found.
-                                buildList();
-                            } else {
-                                loadEvents();
-                            }
-                        }
-                    }, loadEvents, 'caches');
-                    // Get the Events information.
-                    function loadEvents() {
-                        getAsynData('https://www.geocaching.com/play/owner/unpublished/events', '.geocache-details', function(response) {
-                            events = $(response).find('.meta-data-display');
-                            buildList();
-                        }, buildList, 'events');
+                    // Build the area to list the unpublished caches and events.
+                    function buildListArea() {
+                        if ($('#gclh_unpublishedCaches_list')[0]) return;
+                        var list = '<div id="gclh_unpublishedCaches_list"><ul id="gclh_unpublishedCaches_cachesList"></ul><ul id="gclh_unpublishedCaches_eventsList"></ul></div>';
+                        $('#gclh_unpublishedCaches_body').html(list);
                     }
-                    // Build list with unpublished caches.
-                    function buildList() {
-                        // Message und return if no caches are found.
-                        if (!caches.length && !events.length) {
-                            var dnfHtml = '<div class="activity-message error">'
-                            dnfHtml += '    <p>We couldn\'t load your unpublished hides. <br> Refresh the page to try again.</p>'
-                            dnfHtml += '</div>';
-                            $('#GClh_unpublishedCaches_body').html(dnfHtml);
-                        } else {
-                            // Sort Caches.
-                            if (settings_set_showUnpublishedHides_sort && caches.length > 0) {
-                                if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
-                                else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
-                                else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
-                                else gclh_error("Show unpublished hides in dashboard", 'Cannot sort caches');
-                            }
-                            // Build List.
-                            var list = '<ul class="list" style="padding:0;margin:0;">';
-                            var typelist = {
-                                '#traditional' : 2,
-                                '#multi'       : 3,
-                                '#mystery'     : 8,
-                                '#earth'       : 137,
-                                '#letterbox'   : 5,
-                                '#wherigo'     : 1858,
-                                '#virtual'     : 4,
-                                '#cito'        : 13,
-                                '#event'       : 6,
-                                '#celebration' : 3653
-                            }
-                            for (let i=0; i<caches.length; i++) {
-                                let name = $(caches[i]).find('.geocache-name div a').html().trim();
-                                let type = typelist[$(caches[i]).find('.geocache-icon svg use').attr('xlink:href')];
-                                let details = $(caches[i]).find('.geocache-details').html().trim().split(' ');
-                                let gccode = details[0].match(/GC[A-Z0-9]{1,10}/)[0];
-                                let d = details[1].split('</svg>')[1];
-                                let t = details[2].split('|')[1];
-                                let size = details[5].split('>')[1];
-                                list += '<li class="activity-item activity-item-head">';
-                                list += '    <div class="activity-type-icon">';
-                                list += '            <svg class="status-icon" role="img" height="22" width="22">';
-                                list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                                list += '            </svg>';
-                                list += '        <svg class="icon" height="40" width="40" role="img">';
-                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                                list += '        </svg>';
-                                list += '    </div>';
-                                list += '    <div class="activity-data">';
-                                list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                                list += '            <dl class="activity-meta">';
-                                list += '                <dt title="Difficulty">';
-                                list += '                    <svg height="16" width="16" role="img">';
-                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
-                                list += '                    </svg>';
-                                list += '                </dt>';
-                                list += '                <dd title="Difficulty">' + d + '</dd>';
-                                list += '                <dt title="Terrain">';
-                                list += '                    <svg height="16" width="16" role="img">';
-                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
-                                list += '                    </svg>';
-                                list += '                </dt>';
-                                list += '                <dd title="Terrain">' + t + '</dd>';
-                                list += '                <dt title="Size">';
-                                list += '                    <svg height="16" width="16" role="img">';
-                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
-                                list += '                    </svg>';
-                                list += '                </dt>';
-                                list += '                <dd title="Size">' + size + '</dd>';
-                                list += '                <dt class="left-separator">';
-                                list += '                    <span class="visuallyhidden">Geocache Code</span>';
-                                list += '                </dt>';
-                                list += '                <dd>' + gccode + '</dd>';
-                                list += '            </dl>';
-                                list += '        </div>';
-                                list += '    </div>';
-                                list += '</li>';
-                            }
-                            for (let i=0; i<events.length; i++) {
-                                let name = $(events[i]).find('.geocache-name div a').html().trim();
-                                let type = typelist[$(events[i]).find('.geocache-icon svg use').attr('xlink:href')];
-                                let details = $(events[i]).find('.geocache-details').html().trim();
-                                let gccode = details.split('|')[0].trim();
-                                list += '<li class="activity-item activity-item-head">';
-                                list += '    <div class="activity-type-icon">';
-                                list += '            <svg class="status-icon" role="img" height="22" width="22">';
-                                list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                                list += '            </svg>';
-                                list += '        <svg class="icon" height="40" width="40" role="img">';
-                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                                list += '        </svg>';
-                                list += '    </div>';
-                                list += '    <div class="activity-data">';
-                                list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                                list += '            <dl class="activity-meta">';
-                                list += '                ' + details;
-                                list += '            </dl>';
-                                list += '        </div>';
-                                list += '    </div>';
-                                list += '</li>';
-                            }
-                            list += '</ul>';
-                            list += '</div>';
-                            // Append List
-                            $('#GClh_unpublishedCaches_body').html(list);
+                    // Build the list of unpublished caches.
+                    function buildCachesList(caches) {
+                        buildListArea();
+                        if (settings_set_showUnpublishedHides_sort) {
+                            if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
+                            else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
+                            else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
+                        }
+                        var list = '';
+                        for (let i=0; i<caches.length; i++) {
+                            let name = caches[i].name.trim();
+                            let type = caches[i].geocacheTypeId;
+                            let gccode = caches[i].referenceCode;
+                            let d = caches[i].difficulty;
+                            let t = caches[i].terrain;
+                            let size = cache_sizes[caches[i].containerTypeId];
+                            list += '<li class="activity-item activity-item-head">';
+                            list += '    <div class="activity-type-icon">';
+                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
+                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                            list += '            </svg>';
+                            list += '        <svg class="icon" height="40" width="40" role="img">';
+                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                            list += '        </svg>';
+                            list += '    </div>';
+                            list += '    <div class="activity-data">';
+                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                            list += '            <dl class="activity-meta">';
+                            list += '                <dt title="Difficulty">';
+                            list += '                    <svg height="16" width="16" role="img">';
+                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
+                            list += '                    </svg>';
+                            list += '                </dt>';
+                            list += '                <dd title="Difficulty">' + d + '</dd>';
+                            list += '                <dt title="Terrain">';
+                            list += '                    <svg height="16" width="16" role="img">';
+                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
+                            list += '                    </svg>';
+                            list += '                </dt>';
+                            list += '                <dd title="Terrain">' + t + '</dd>';
+                            list += '                <dt title="Size">';
+                            list += '                    <svg height="16" width="16" role="img">';
+                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
+                            list += '                    </svg>';
+                            list += '                </dt>';
+                            list += '                <dd title="Size">' + size + '</dd>';
+                            list += '                <dt class="left-separator"></dt>';
+                            list += '                <dd>' + gccode + '</dd>';
+                            list += '            </dl>';
+                            list += '        </div>';
+                            list += '    </div>';
+                            list += '</li>';
+                        }
+                        $('#gclh_unpublishedCaches_cachesList').html(list);
+                        if ($('#gclh_unpublishedCaches_eventsList li')[0]) {
+                            $('#gclh_unpublishedCaches_cachesList li:last')[0].setAttribute('style', 'border-bottom: 1px solid #e4e4e4 !important;');
                         }
                     }
+                    // Build the list of unpublished events.
+                    function buildEventsList(events) {
+                        buildListArea();
+                        var list = '';
+                        for (let i=0; i<events.length; i++) {
+                            let name = events[i].name.trim();
+                            let type = events[i].geocacheTypeId;
+                            let gccode = events[i].referenceCode;
+                            let eventStartTime = events[i].eventStartTime;
+                            // Date and time format: window.navigator.language: There is the preferred language in the browser for displaying pages.
+                            let date = new Date(eventStartTime);
+                            let startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})
+                            let startTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+                            list += '<li class="activity-item activity-item-head">';
+                            list += '    <div class="activity-type-icon">';
+                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
+                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                            list += '            </svg>';
+                            list += '        <svg class="icon" height="40" width="40" role="img">';
+                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                            list += '        </svg>';
+                            list += '    </div>';
+                            list += '    <div class="activity-data">';
+                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                            list += '            <dl class="activity-meta">';
+                            list += '                <dd>' + gccode + '</dd>';
+                            list += '                <dt class="left-separator"></dt>';
+                            list += '                <dd title="Start date">' + startDate + '</dd>';
+                            list += '                <dd title="Start time">' + startTime + '</dd>';
+                            list += '            </dl>';
+                            list += '        </div>';
+                            list += '    </div>';
+                            list += '</li>';
+                        }
+                        $('#gclh_unpublishedCaches_eventsList').html(list);
+                        if ($('#gclh_unpublishedCaches_cachesList li')[0]) {
+                            $('#gclh_unpublishedCaches_eventsList li:last')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4 !important;');
+                        }
+                    }
+                    // Get a list of unpublished caches via api.
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: '/api/proxy/web/v1/cacheowner/geocaches/unpublished?skip=0&take=100',
+                        success: function(response) {
+                            if (response.data.length > 0) buildCachesList(response.data);
+                        }
+                    });
+                    // Get a list of unpublished events via api.
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        url: '/api/proxy/web/v1/cacheowner/events/unpublished?skip=0&take=100',
+                        success: function(response) {
+                            if (response.data.length > 0) buildEventsList(response.data);
+                        }
+                    });
                 } else {
                     var dnfHtml = '<div class="activity-message">';
                     dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
                     dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished hides.</h3>';
                     dnfHtml += '</div>';
-                    $('#GClh_unpublishedCaches_body').html(dnfHtml);
+                    $('#gclh_unpublishedCaches_body').html(dnfHtml);
                 }
-                // Prevent lower scroll bar.
-                css += '#GClh_unpublishedCaches_body .activity-item .activity-meta dd {margin-right: 10px;}';
-                css += '#GClh_unpublishedCaches_body .activity-item .activity-meta .left-separator {padding-left: 7px;}';
+                css += '#gclh_unpublishedCaches_body {min-height: unset;}';
+                css += '#gclh_unpublishedCaches_body dt {margin: 0 3px 0 0; padding: 0;}';
+                css += '#gclh_unpublishedCaches_body .left-separator {margin: 0 4px 0 -4px; padding: 0;}';
+                css += '#gclh_unpublishedCaches_eventsList .left-separator {margin: 0 8px 0 0px; padding: 0;}';
+                css += '#gclh_unpublishedCaches_body dl dd {margin: 0 8px 0 0; padding: 0;}';
+                css += '#gclh_unpublishedCaches_body dl dd:last-child {margin-right: 0;}';
+                css += '#gclh_unpublishedCaches_cachesList, #gclh_unpublishedCaches_eventsList {padding: 0; margin: 0;}';
              }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
@@ -13275,8 +13305,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/BilC/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/isI"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/CWMI/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/itg"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14589,7 +14619,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
             html += "<input type='radio' name='rc' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home coordinates; homezone circle and multi homezone circles; date format; log templates; cache log, TB log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"Close\" and go to GClh II Config to skim over the set of data.") + "<br>";
-            html += "<input type='radio' name='rc' checked='checked' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides and the DropBox token are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"Close\".") + "<br><br>";
+            html += "<input type='radio' name='rc' checked='checked' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every TB, the seen friends data of founds and hides, the DropBox token and the hidden banners are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"Close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home coordinates</label>" + show_help("This option could help you with problems around your home coordinates, like for example with your main homezone, with nearest lists or with your home coordinates itself. Your home coordinates are not deleted at GC, but only in GClh II Config. <br><br>After reset, you have to go to the account settings page of GC to the area \"Home Location\", so that GC little helper II can save your home coordinates again automatically. You have only to go to this page, you have nothing to do at this page, GC little helper II save your home coordinates automatically. <br>Or you enter your home coordinates manually in GClh II Config. <br><br>At last, choose button \"Close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br>";
             html += "<input type='radio' name='rc' id='rc_uid' class='gclh_rc'><label for='rc_uid'>Reset your own id for your trackables</label>" + show_help("This option could help you with problems with your own trackables lists, which based on an special id, the uid. The uid are not deleted at GC, but only in GClh II Config. <br><br>After reset, you have to go to your dashboard, so that GC little helper II can save your uid again automatically. You have only to go to this page, you have nothing to do at this page, GC little helper II save the uid automatically. <br><br>At last, choose button \"Close\".");
@@ -14666,7 +14696,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "13.02.2023";
+            var thanksLastUpdate = "24.02.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -14717,9 +14747,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
-            html += checkboxy('settings_remove_banner', 'Hide banner') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_for_garminexpress', 'for \"Garmin Express\"') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_remove_banner_blue', 'Try to hide all blue banner to new designed pages') + "<br>";
+            html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("With blue banners below the page header, new page layouts or new features are pointed out. If you don't want that, you don't have the option to hide the annoying banner. This parameter adds a button to decide which banners to hide. If the parameter is deactivated, the hidden banners are deleted again.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>List Layout</b>" + "</div>";
             html += "<table class='gclh_list_layout' style='width: 550px; text-align: left;'>";
@@ -15157,6 +15185,9 @@ var mainGC = function() {
             html += checkboxy('settings_strike_archived', 'Strike through title of archived and disabled caches') + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If this option is enabled, the alias that an owner used to publish the cache is replaced with the real owner name.") + "<br>";
             html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter.") + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
             for (var i = 1; i < 11; i++) {
@@ -15693,7 +15724,7 @@ var mainGC = function() {
             $('label[for="settings_use_gclh_layercontrol"], label[for="settings_show_homezone"]').addClass('gclh_ref');
             $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
-            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon,").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
+            $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
             // Config Content: Hauptbereiche hideable machen.
             // ---------------
@@ -16177,8 +16208,6 @@ var mainGC = function() {
             setEvForDepPara("settings_log_statistic", "settings_log_statistic_reload");
             setEvForDepPara("settings_log_statistic", "settings_log_statistic_percentage");
             setEvForDepPara("settings_friendlist_summary", "settings_friendlist_summary_viponly");
-            setEvForDepPara("settings_remove_banner", "settings_remove_banner_for_garminexpress");
-            setEvForDepPara("settings_remove_banner", "settings_remove_banner_blue");
             setEvForDepPara("settings_driving_direction_link", "settings_driving_direction_parking_area");
             setEvForDepPara("settings_improve_add_to_list", "settings_improve_add_to_list_height");
             setEvForDepPara("settings_set_default_langu", "settings_default_langu");
@@ -16469,6 +16498,7 @@ var mainGC = function() {
                 'settings_visitCount_geocheckerCom',
                 'settings_show_bbcode',
                 'settings_show_eventday',
+                'settings_show_eventtime_with_24_hours',
                 'settings_show_mail',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
@@ -16619,8 +16649,6 @@ var mainGC = function() {
                 'settings_show_elevation_of_waypoints',
                 'settings_img_warning',
                 'settings_remove_banner',
-                'settings_remove_banner_for_garminexpress',
-                'settings_remove_banner_blue',
                 'settings_compact_layout_bm_lists',
                 'settings_compact_layout_pqs',
                 'settings_compact_layout_list_of_pqs',
@@ -16753,6 +16781,12 @@ var mainGC = function() {
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
+            }
+
+            // Remove hidden banners.
+            if (!settings_remove_banner) {
+                settings_remove_banner_text_ids = [];
+                setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
             }
 
             // Save Log-Templates.
@@ -17651,7 +17685,7 @@ var mainGC = function() {
 //<-- $$005
             } else if (kkey.match(/autovisit_(\d+)/) ||
                        kkey.match(/^(friends_founds_|friends_hides_)/) ||
-                       kkey.match(/^(settings_DB_auth_token|new_version|class|token)$/)) {
+                       kkey.match(/^(settings_DB_auth_token|settings_remove_banner_text_ids|new_version|class|token)$/)) {
                 changed = true;
                 changedData += "delete: " + key + ": " + CONFIG[key] + "\n";
 
@@ -18035,17 +18069,18 @@ var mainGC = function() {
         if (a < b) ret = -1;
         return ret;
     }
+
 // Sort functions for unpublished in Dashboard.
     function abc(a, b) {
-        var sort = ($(a).find('.geocache-name div a').html().trim() < $(b).find('.geocache-name div a').html().trim()) ? -1 : ($(b).find('.geocache-name div a').html().trim() < $(a).find('.geocache-name div a').html().trim()) ? 1 : 0;
+        var sort = $(a)[0].name < $(b)[0].name ? -1 : $(b)[0].name < $(a)[0].name ? 1 : 0;
         return sort;
     }
     function gcOld(a, b) {
-        var sort = ($(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] < $(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? -1 : ($(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] < $(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? 1 : 0;
+        var sort = $(b)[0].referenceCode < $(a)[0].referenceCode ? -1 : $(a)[0].referenceCode < $(b)[0].referenceCode ? 1 : 0;
         return sort;
     }
     function gcNew(a, b) {
-        var sort = ($(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] > $(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? -1 : ($(b).find('.geocache-details').html().trim().split(' ')[0].split('<')[0] > $(a).find('.geocache-details').html().trim().split(' ')[0].split('<')[0]) ? 1 : 0;
+        var sort = $(a)[0].referenceCode < $(b)[0].referenceCode ? -1 : $(b)[0].referenceCode < $(a)[0].referenceCode ? 1 : 0;
         return sort;
     }
 
@@ -18124,6 +18159,16 @@ var mainGC = function() {
 
 // Random number between max and min.
     function random(max, min) {return Math.floor(Math.random() * (max - min + 1)) + min;}
+
+// Convert a 12 hour time string to a 24 hour time string.
+// Examples: 12:00 AM->00:00 / 12:30 AM->00:30 / 01:30 AM->01:30 / 00:00 PM->12:00 / 01:30 PM->13:30
+    function convert12To24Hour(str) {
+        let dString = '01 Jan 2000 ' + str;
+        let dParse = Date.parse(dString);
+        let date = new Date(dParse);
+        let tString = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+        return tString;
+    }
 
 // Determine current date and deliver year, month and day.
     function determineCurrentDate() {
@@ -18738,6 +18783,15 @@ String.prototype.gcCodeToID = function () {
         id += abc.indexOf(letter) * Math.pow(base, i);
     });
     return id;
+}
+
+// Simple a quick schnaader's checksum function.
+String.prototype.checksum = function () {
+    let seed = 0x12345678;
+    for (let i = 0; i < this.length; i++) {
+        seed += (this.charCodeAt(i) * (i + 1));
+    }
+    return (seed & 0xffffffff).toString(16);
 }
 
 Date.prototype.getWeekday = function(short = false) {
