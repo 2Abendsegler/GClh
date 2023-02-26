@@ -9,6 +9,7 @@
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
+// @charset      UTF-8
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
