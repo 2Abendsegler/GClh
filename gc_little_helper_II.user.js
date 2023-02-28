@@ -2,13 +2,14 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.3
+// @version      0.14.4
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
+// @charset      UTF-8
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
@@ -13305,8 +13306,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/CWMI/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/itg"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/BvcF/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/itw"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14696,7 +14697,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "24.02.2023";
+            var thanksLastUpdate = "28.02.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -18787,11 +18788,16 @@ String.prototype.gcCodeToID = function () {
 
 // Simple a quick schnaader's checksum function.
 String.prototype.checksum = function () {
-    let seed = 0x12345678;
-    for (let i = 0; i < this.length; i++) {
-        seed += (this.charCodeAt(i) * (i + 1));
-    }
-    return (seed & 0xffffffff).toString(16);
+    try {
+        // We use the TextEncoder to use UFT-8, so the seed will never get out of range.
+        let encoder = new TextEncoder();
+        let data = encoder.encode(this);
+        let seed = 0x12345678;
+        for (let i = 0; i < data.length; i++) {
+            seed += (data[i] * (i + 1));
+        }
+        return (seed & 0xffffffff).toString(16);
+    } catch (e) {gclh_error("Error bulding checksum", e);}
 }
 
 Date.prototype.getWeekday = function(short = false) {
