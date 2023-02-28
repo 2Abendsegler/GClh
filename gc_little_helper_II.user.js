@@ -2,13 +2,14 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.3
+// @version      0.14.3.1
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
+// @charset      UTF-8
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
@@ -18787,11 +18788,16 @@ String.prototype.gcCodeToID = function () {
 
 // Simple a quick schnaader's checksum function.
 String.prototype.checksum = function () {
-    let seed = 0x12345678;
-    for (let i = 0; i < this.length; i++) {
-        seed += (this.charCodeAt(i) * (i + 1));
-    }
-    return (seed & 0xffffffff).toString(16);
+    try {
+        // We use the TextEncoder to use UFT-8, so the seed will never get out of range
+        let encoder = new TextEncoder();
+        let data = encoder.encode(this);
+        let seed = 0x12345678;
+        for (let i = 0; i < data.length; i++) {
+            seed += (data[i] * (i + 1));
+        }
+        return (seed & 0xffffffff).toString(16);
+    } catch (e) {gclh_error("Error bulding checksum", e);}
 }
 
 Date.prototype.getWeekday = function(short = false) {
