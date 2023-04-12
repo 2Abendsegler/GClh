@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.4.1
+// @version      0.14.5
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -6362,8 +6362,6 @@ var mainGC = function() {
                 }
             }
             function waitForInvitationButton(waitCount) {
-//xxxx
-//                if (document.getElementById('invitation-button-root').firstChild) {
                 if (document.getElementById('invitation-button-root').firstChild && document.getElementsByClassName('send-invitation-btn') && document.getElementsByClassName('send-invitation-btn').item(0)) {
                     var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
                     buttonClasses = buttonClasses.replace('send-invitation-btn','');
