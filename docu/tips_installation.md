@@ -32,7 +32,7 @@
 * Install the script manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (from Chrome Web Store) as Add-on in Vivaldi.<br>
 * Install the script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) under the script manager.<br><br>
 * Double occupancy of the keys F4 and F2 by GClh and Vivaldi:<br>
-The key F4 for calling the GClh Config and the key F2 for saving from GClh Config respectively for saving of a log, a Bookmark, a Pocket Query ... , are enabled by default. They can be changed in GClh Config in the GClh Config / Sync area or in the Logging area.<br>
+The key F4 for calling the GClh Config and the key F2 for saving from GClh Config respectively for saving of a log, a Bookmark, a Pocket Query ... , are enabled by default. They can be changed after installation in GClh Config in the Global area [here](https://www.geocaching.com/my/#GClhShowConfig#a#settings_submit_log_button) respectively in the GClh II Config area [here](https://www.geocaching.com/my/#GClhShowConfig#a#settings_f4_call_gclh_config) and [here](https://www.geocaching.com/my/#GClhShowConfig#a#settings_f2_save_gclh_config).<br>
 In Vivaldi browser, these keys are also enabled by default. They can be changed in Vivaldi via settings / keyboard.<br>
 
 ### <a href="//" id="android_en"></a><a href="//" id="android_firefox_en"><img src="../images/android_logo_small.png" title="Android" alt="Android"></a> Android under different browsers:
@@ -71,7 +71,7 @@ Process the following instructions on your Android device:<br><br>
 * Installiere den Script Manager [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (vom Chrome Web Store) als Add-On in Vivaldi.<br>
 * Installiere das Script [GC little helper II](https://github.com/2Abendsegler/GClh/raw/master/gc_little_helper_II.user.js) unter dem Script Manager.<br><br>
 * Doppeltbelegung der Tasten F4 und F2 durch GClh und Vivaldi:<br>
-Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können im GClh Config im Bereich GClh Config / Sync bzw. im Bereich Logging geändert werden. <br>
+Die Taste F4 zum Aufrufen des GClh Config und die Taste F2 zum Speichern im GClh Config bzw. zum Speichern eines Logs, einer Bookmark, einer Pocket Query ... , sind standardmäßig aktiviert. Sie können nach der Installation im GClh Config im Bereich Global [hier](https://www.geocaching.com/my/#GClhShowConfig#a#settings_submit_log_button) bzw. im Bereich GClh II Config [hier](https://www.geocaching.com/my/#GClhShowConfig#a#settings_f4_call_gclh_config) und [hier](https://www.geocaching.com/my/#GClhShowConfig#a#settings_f2_save_gclh_config) geändert werden.<br>
 Im Browser Vivaldi sind diese Tasten auch standardmäßig aktiviert. Sie können in Vivaldi über Einstellungen / Tastatur geändert werden.<br>
 
 ### <a href="//" id="android_de"></a><a href="//" id="android_firefox_de"><img src="../images/android_logo_small.png" title="Android" alt="Android"></a> Android unter verschiedenen Browsern:

@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.4
+// @version      0.14.5
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -6362,7 +6362,7 @@ var mainGC = function() {
                 }
             }
             function waitForInvitationButton(waitCount) {
-                if (document.getElementById('invitation-button-root').firstChild) {
+                if (document.getElementById('invitation-button-root').firstChild && document.getElementsByClassName('send-invitation-btn') && document.getElementsByClassName('send-invitation-btn').item(0)) {
                     var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
                     buttonClasses = buttonClasses.replace('send-invitation-btn','');
                     buttonClasses = buttonClasses.replace('gc-button-disabled','');
@@ -13306,8 +13306,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/BvcF/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/itw"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/q4p7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iuf"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14697,7 +14697,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "28.02.2023";
+            var thanksLastUpdate = "12.04.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
