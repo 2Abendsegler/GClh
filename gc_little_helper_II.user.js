@@ -3908,6 +3908,13 @@ var mainGC = function() {
                 aci += '<span class="watch-number" title="Number of watcher"> ' + watchNumber + '</span>';
                 aci += '</span>';
             }
+            // Add Info - Type and D/T
+            var Type = $(text).find('.cacheDetailsTitle a')[0].getAttribute("title");
+            var Diff = $(text).find('#ctl00_ContentBody_uxLegendScale img')[0].getAttribute("alt").split(" ")[0];
+            var Terr = $(text).find('#ctl00_ContentBody_Localize12 img')[0].getAttribute("alt").split(" ")[0];
+            aci += separator(aci) + '<span class="Info" title="' + Type + separator(aci) + 'D' + Diff + ' / ' + 'T' + Terr + '">';
+            aci += '<svg height="16.5" width="16.5" class="icon icon-svg-fill charcoal active-sea"><use xlink:href="/play/app/ui-icons/sprites/global.svg#icon-attention-svg-fill"></use></svg>';
+            aci += '</span>';
             // Output and further load.
             if (aci != '') {
                 $('#aci')[0].innerHTML = aci;
