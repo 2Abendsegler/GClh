@@ -3909,10 +3909,10 @@ var mainGC = function() {
                 aci += '</span>';
             }
             // Add Info - Type and D/T
-            var Type = $(text).find('.cacheDetailsTitle a')[0].getAttribute("title");
-            var Diff = $(text).find('#ctl00_ContentBody_uxLegendScale img')[0].getAttribute("alt").split(" ")[0];
-            var Terr = $(text).find('#ctl00_ContentBody_Localize12 img')[0].getAttribute("alt").split(" ")[0];
-            aci += separator(aci) + '<span class="Info" title="' + Type + separator(aci) + 'D' + Diff + ' / ' + 'T' + Terr + '">';
+            var cacheType = $(text).find('.cacheDetailsTitle a')[0].getAttribute("title");
+            var cacheDifficulty = $(text).find('#ctl00_ContentBody_uxLegendScale img')[0].getAttribute("alt").split(" ")[0];
+            var cacheTerrain = $(text).find('#ctl00_ContentBody_Localize12 img')[0].getAttribute("alt").split(" ")[0];
+            aci += separator(aci) + '<span class="Info" title="' + cacheType + separator(aci) + 'D' + cacheDifficulty + ' / ' + 'T' + cacheTerrain + '">';
             aci += '<svg height="16.5" width="16.5" class="icon icon-svg-fill charcoal active-sea"><use xlink:href="/play/app/ui-icons/sprites/global.svg#icon-attention-svg-fill"></use></svg>';
             aci += '</span>';
             // Output and further load.
