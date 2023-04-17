@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.5
+// @version      0.14.5.1
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -5153,7 +5153,13 @@ var mainGC = function() {
                     newHeadcell(tr0, 7, "Size");
                     tr0.children[7].setAttribute("class", "AlignCenter");
                 }
-                for (var i = 0; i <= 4; i += 2) {tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");}
+//xxxx
+//                for (var i = 0; i <= 4; i += 2) {tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");}
+                for (var i = 0; i <= 4; i += 2) {
+                    if (tr0.children[6].childNodes[i] && tr0.children[6].childNodes[i].data) {
+                        tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");
+                    }
+                }
                 tr0.children[6].setAttribute("class", "AlignCenter");
             }
             function newContentcell(trDataNew, chil, content, clas, obj) {
