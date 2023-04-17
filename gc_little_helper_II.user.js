@@ -3282,6 +3282,14 @@ var mainGC = function() {
                 }
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                function checkBuildSendIcons(waitCount, username, guid) {
+                    if (!$('.gclh_email')[0]) {
+                        var side = $('.hidden-by a')[0];
+                        buildSendIcons(side, username, "per guid", guid);
+                    }
+                    waitCount++;
+                    if (waitCount <= 50) setTimeout(function(){checkBuildSendIcons(waitCount, username, guid);}, 200);
+                }
                 var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
@@ -3292,8 +3300,7 @@ var mainGC = function() {
                             if (response.responseText) {
                                 var [username, guid] = getUserGuidFromProfile(response.responseText);
                                 if (username && guid) {
-                                    var side = $('.hidden-by a')[0];
-                                    buildSendIcons(side, username, "per guid", guid);
+                                    checkBuildSendIcons(0, username, guid);
                                 }
                             }
                         }
@@ -4501,7 +4508,7 @@ var mainGC = function() {
         var finds = global_findCount;
         var me = global_me;
         if (newLogPage) {
-            if ($('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)[1];
+            if ($('.hidden-by a')[0].innerHTML.match(/(.*?)<a href=/)) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*?)<a href=/)[1];
             else var owner = $('.hidden-by a')[0].innerHTML;
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
@@ -7319,6 +7326,19 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.hidden-by a')[0]) {
                 var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
+                    function checkBuildVipIcons(waitCount, username, guid) {
+                        if (!$('.gclh_vip')[0]) {
+                            var side = $('.hidden-by a')[0];
+                            link = gclh_build_vipvup(user, global_vips, "vip");
+                            side.appendChild(link);
+                            if (settings_process_vup && user != global_activ_username) {
+                                link = gclh_build_vipvup(user, global_vups, "vup");
+                                side.appendChild(link);
+                            }
+                        }
+                        waitCount++;
+                        if (waitCount <= 50) setTimeout(function(){checkBuildVipIcons(waitCount, username, guid);}, 200);
+                    }
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
                         method: "GET",
@@ -7328,13 +7348,7 @@ var mainGC = function() {
                                 [user, guid] = getUserGuidFromProfile(response.responseText);
                                 if (user) {
                                     appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
-                                    var side = $('.hidden-by a')[0];
-                                    link = gclh_build_vipvup(user, global_vips, "vip");
-                                    side.appendChild(link);
-                                    if (settings_process_vup && user != global_activ_username) {
-                                        link = gclh_build_vipvup(user, global_vups, "vup");
-                                        side.appendChild(link);
-                                    }
+                                    checkBuildVipIcons(0, username, guid);
                                 }
                             }
                         }
@@ -13087,6 +13101,7 @@ var mainGC = function() {
         if (settings_show_mail) {
             var mail_link = document.createElement("a");
             var mail_img = document.createElement("img");
+            mail_img.setAttribute("class", "gclh_email");
             mail_img.setAttribute("style", "margin-left: 0px; margin-right: 0px");
             mail_img.setAttribute("title", "Send a mail to " + username_send);
             mail_img.setAttribute("src", global_mail_icon);
