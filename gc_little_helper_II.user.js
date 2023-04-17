@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.5.1
+// @version      0.14.5.2
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -5190,8 +5190,12 @@ var mainGC = function() {
                         trData[i].children[8].children[0].setAttribute("style", "vertical-align: bottom;");
                     }
                     // Description.
-                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
-                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
+//xxxx
+//                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
+//                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
+                    var c = settings_show_log_it ? 3:2;
+                    trData[i].children[5].children[c].setAttribute("class", "small gclh_hideit");
+                    trData[i].children[5].children[c].title = trData[i].children[5].children[c].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
             // Footer.
