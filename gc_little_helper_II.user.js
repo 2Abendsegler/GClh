@@ -3283,7 +3283,7 @@ var mainGC = function() {
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
                 function checkBuildSendIcons(waitCount, username, guid) {
-                    if (!$('.gclh_email')[0]) {
+                    if (!$('.gclh_send')[0]) {
                         var side = $('.hidden-by a')[0];
                         buildSendIcons(side, username, "per guid", guid);
                     }
@@ -13085,6 +13085,7 @@ var mainGC = function() {
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
             var mess_img = document.createElement("img");
+            mess_img.setAttribute("class", "gclh_send");
             mess_img.setAttribute("style", "margin-left: 0px; margin-right: 0px");
             mess_img.setAttribute("title", "Send a message to " + username_send);
             mess_img.setAttribute("src", global_message_icon);
@@ -13101,7 +13102,7 @@ var mainGC = function() {
         if (settings_show_mail) {
             var mail_link = document.createElement("a");
             var mail_img = document.createElement("img");
-            mail_img.setAttribute("class", "gclh_email");
+            mail_img.setAttribute("class", "gclh_send");
             mail_img.setAttribute("style", "margin-left: 0px; margin-right: 0px");
             mail_img.setAttribute("title", "Send a mail to " + username_send);
             mail_img.setAttribute("src", global_mail_icon);
