@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.5.2
+// @version      0.14.5.3
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -3282,6 +3282,14 @@ var mainGC = function() {
                 }
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                function checkBuildSendIcons(waitCount, username, guid) {
+                    if (!$('.gclh_email')[0]) {
+                        var side = $('.hidden-by a')[0];
+                        buildSendIcons(side, username, "per guid", guid);
+                    }
+                    waitCount++;
+                    if (waitCount <= 50) setTimeout(function(){checkBuildSendIcons(waitCount, username, guid);}, 200);
+                }
                 var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
@@ -3292,8 +3300,7 @@ var mainGC = function() {
                             if (response.responseText) {
                                 var [username, guid] = getUserGuidFromProfile(response.responseText);
                                 if (username && guid) {
-                                    var side = $('.hidden-by a')[0];
-                                    buildSendIcons(side, username, "per guid", guid);
+                                    checkBuildSendIcons(0, username, guid);
                                 }
                             }
                         }
@@ -4501,7 +4508,7 @@ var mainGC = function() {
         var finds = global_findCount;
         var me = global_me;
         if (newLogPage) {
-            if ($('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)[1];
+            if ($('.hidden-by a')[0].innerHTML.match(/(.*?)<a href=/)) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*?)<a href=/)[1];
             else var owner = $('.hidden-by a')[0].innerHTML;
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
@@ -5136,6 +5143,11 @@ var mainGC = function() {
             if (document.location.href.match(/recentlyviewed/)) {
                 css += "table.Table tr:nth-child(1) {line-height: 19px;} .Success {background-color: #fff; color: #54b948 !important;}";
             }
+            // Add additional colums.
+            function col(c) {
+                c += $('table.SearchResultsTable tbody tr:first img[src*="send2cgeo"]').length;
+                return c;
+            }
             function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
@@ -5144,23 +5156,17 @@ var mainGC = function() {
             }
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
-                newHeadcell(tr0, 9, "Y. Found");
-                tr0.children[9].title = "Your Found";
-                tr0.children[9].setAttribute("class", "gclh_empty");
-                tr0.children[8].children[0].title = tr0.children[8].children[0].innerHTML;
-                tr0.children[8].children[0].innerHTML = "Found";
+                newHeadcell(tr0, col(9), "Y. Found");
+                tr0.children[col(9)].title = "Your Found";
+                tr0.children[col(9)].setAttribute("class", "gclh_empty");
+                tr0.children[col(8)].children[0].title = tr0.children[col(8)].children[0].innerHTML;
+                tr0.children[col(8)].children[0].innerHTML = "Found";
                 if (!document.location.href.match(/recentlyviewed/)) {
-                    newHeadcell(tr0, 7, "Size");
-                    tr0.children[7].setAttribute("class", "AlignCenter");
+                    newHeadcell(tr0, col(7), "Size");
+                    tr0.children[col(7)].setAttribute("class", "AlignCenter");
                 }
-//xxxx
-//                for (var i = 0; i <= 4; i += 2) {tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");}
-                for (var i = 0; i <= 4; i += 2) {
-                    if (tr0.children[6].childNodes[i] && tr0.children[6].childNodes[i].data) {
-                        tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");
-                    }
-                }
-                tr0.children[6].setAttribute("class", "AlignCenter");
+                for (var i = 0; i <= 4; i += 2) {tr0.children[col(6)].childNodes[i].data = tr0.children[col(6)].childNodes[i].data.replace(/(\(|\))/g, "");}
+                tr0.children[col(6)].setAttribute("class", "AlignCenter");
             }
             function newContentcell(trDataNew, chil, content, clas, obj) {
                 var td = document.createElement("td");
@@ -5177,25 +5183,21 @@ var mainGC = function() {
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
                     // Last Found and new column Your Found.
-                    if (trData[i].children[9].children[0].children[0] && trData[i].children[9].children[0].children[0].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
-                    } else if (trData[i].children[9].children[0].children[1] && trData[i].children[9].children[0].children[1].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[1], "small", true);
-                    } else newContentcell(trData[i], 10, "", "small", false);
+                    if (trData[i].children[col(9)].children[0].children[0] && trData[i].children[col(9)].children[0].children[0].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10), trData[i].children[col(9)].children[0].children[0], "small", true);
+                    } else if (trData[i].children[col(9)].children[0].children[1] && trData[i].children[col(9)].children[0].children[1].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10), trData[i].children[col(9)].children[0].children[1], "small", true);
+                    } else newContentcell(trData[i], col(10), "", "small", false);
                     // D/T and new column Size.
                     if (!document.location.href.match(/recentlyviewed/)) {
-                        trData[i].children[7].childNodes[4].remove();
-                        trData[i].children[7].childNodes[2].remove();
-                        newContentcell(trData[i], 8, trData[i].children[7].children[1], "", true);
-                        trData[i].children[8].children[0].setAttribute("style", "vertical-align: bottom;");
+                        trData[i].children[col(7)].childNodes[4].remove();
+                        trData[i].children[col(7)].childNodes[2].remove();
+                        newContentcell(trData[i], col(8), trData[i].children[col(7)].children[1], "", true);
+                        trData[i].children[col(8)].children[0].setAttribute("style", "vertical-align: bottom;");
                     }
                     // Description.
-//xxxx
-//                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
-//                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
-                    var c = settings_show_log_it ? 3:2;
-                    trData[i].children[5].children[c].setAttribute("class", "small gclh_hideit");
-                    trData[i].children[5].children[c].title = trData[i].children[5].children[c].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
+                    trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
+                    trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].title = trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
             // Footer.
@@ -7329,6 +7331,19 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.hidden-by a')[0]) {
                 var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
+                    function checkBuildVipIcons(waitCount, username, guid) {
+                        if (!$('.gclh_vip')[0]) {
+                            var side = $('.hidden-by a')[0];
+                            link = gclh_build_vipvup(user, global_vips, "vip");
+                            side.appendChild(link);
+                            if (settings_process_vup && user != global_activ_username) {
+                                link = gclh_build_vipvup(user, global_vups, "vup");
+                                side.appendChild(link);
+                            }
+                        }
+                        waitCount++;
+                        if (waitCount <= 50) setTimeout(function(){checkBuildVipIcons(waitCount, username, guid);}, 200);
+                    }
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
                         method: "GET",
@@ -7338,13 +7353,7 @@ var mainGC = function() {
                                 [user, guid] = getUserGuidFromProfile(response.responseText);
                                 if (user) {
                                     appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
-                                    var side = $('.hidden-by a')[0];
-                                    link = gclh_build_vipvup(user, global_vips, "vip");
-                                    side.appendChild(link);
-                                    if (settings_process_vup && user != global_activ_username) {
-                                        link = gclh_build_vipvup(user, global_vups, "vup");
-                                        side.appendChild(link);
-                                    }
+                                    checkBuildVipIcons(0, username, guid);
                                 }
                             }
                         }
@@ -13097,6 +13106,7 @@ var mainGC = function() {
         if (settings_show_mail) {
             var mail_link = document.createElement("a");
             var mail_img = document.createElement("img");
+            mail_img.setAttribute("class", "gclh_email");
             mail_img.setAttribute("style", "margin-left: 0px; margin-right: 0px");
             mail_img.setAttribute("title", "Send a mail to " + username_send);
             mail_img.setAttribute("src", global_mail_icon);
