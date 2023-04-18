@@ -4508,8 +4508,7 @@ var mainGC = function() {
         var finds = global_findCount;
         var me = global_me;
         if (newLogPage) {
-            if ($('.hidden-by a')[0].innerHTML.match(/(.*?)<a href=/)) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*?)<a href=/)[1];
-            else var owner = $('.hidden-by a')[0].innerHTML;
+            var owner = $('.hidden-by a')[0].innerText;
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         }
