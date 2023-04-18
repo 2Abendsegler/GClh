@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.5
+// @version      0.14.5.3
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -5143,6 +5143,11 @@ var mainGC = function() {
             if (document.location.href.match(/recentlyviewed/)) {
                 css += "table.Table tr:nth-child(1) {line-height: 19px;} .Success {background-color: #fff; color: #54b948 !important;}";
             }
+            // Add additional colums.
+            function col(c) {
+                c += $('table.SearchResultsTable tbody tr:first img[src*="send2cgeo"]').length;
+                return c;
+            }
             function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
@@ -5151,17 +5156,17 @@ var mainGC = function() {
             }
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
-                newHeadcell(tr0, 9, "Y. Found");
-                tr0.children[9].title = "Your Found";
-                tr0.children[9].setAttribute("class", "gclh_empty");
-                tr0.children[8].children[0].title = tr0.children[8].children[0].innerHTML;
-                tr0.children[8].children[0].innerHTML = "Found";
+                newHeadcell(tr0, col(9), "Y. Found");
+                tr0.children[col(9)].title = "Your Found";
+                tr0.children[col(9)].setAttribute("class", "gclh_empty");
+                tr0.children[col(8)].children[0].title = tr0.children[col(8)].children[0].innerHTML;
+                tr0.children[col(8)].children[0].innerHTML = "Found";
                 if (!document.location.href.match(/recentlyviewed/)) {
-                    newHeadcell(tr0, 7, "Size");
-                    tr0.children[7].setAttribute("class", "AlignCenter");
+                    newHeadcell(tr0, col(7), "Size");
+                    tr0.children[col(7)].setAttribute("class", "AlignCenter");
                 }
-                for (var i = 0; i <= 4; i += 2) {tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");}
-                tr0.children[6].setAttribute("class", "AlignCenter");
+                for (var i = 0; i <= 4; i += 2) {tr0.children[col(6)].childNodes[i].data = tr0.children[col(6)].childNodes[i].data.replace(/(\(|\))/g, "");}
+                tr0.children[col(6)].setAttribute("class", "AlignCenter");
             }
             function newContentcell(trDataNew, chil, content, clas, obj) {
                 var td = document.createElement("td");
@@ -5178,21 +5183,21 @@ var mainGC = function() {
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
                     // Last Found and new column Your Found.
-                    if (trData[i].children[9].children[0].children[0] && trData[i].children[9].children[0].children[0].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
-                    } else if (trData[i].children[9].children[0].children[1] && trData[i].children[9].children[0].children[1].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[1], "small", true);
-                    } else newContentcell(trData[i], 10, "", "small", false);
+                    if (trData[i].children[col(9)].children[0].children[0] && trData[i].children[col(9)].children[0].children[0].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10), trData[i].children[col(9)].children[0].children[0], "small", true);
+                    } else if (trData[i].children[col(9)].children[0].children[1] && trData[i].children[col(9)].children[0].children[1].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10), trData[i].children[col(9)].children[0].children[1], "small", true);
+                    } else newContentcell(trData[i], col(10), "", "small", false);
                     // D/T and new column Size.
                     if (!document.location.href.match(/recentlyviewed/)) {
-                        trData[i].children[7].childNodes[4].remove();
-                        trData[i].children[7].childNodes[2].remove();
-                        newContentcell(trData[i], 8, trData[i].children[7].children[1], "", true);
-                        trData[i].children[8].children[0].setAttribute("style", "vertical-align: bottom;");
+                        trData[i].children[col(7)].childNodes[4].remove();
+                        trData[i].children[col(7)].childNodes[2].remove();
+                        newContentcell(trData[i], col(8), trData[i].children[col(7)].children[1], "", true);
+                        trData[i].children[col(8)].children[0].setAttribute("style", "vertical-align: bottom;");
                     }
                     // Description.
-                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
-                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
+                    trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
+                    trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].title = trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
             // Footer.
