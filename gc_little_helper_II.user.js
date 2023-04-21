@@ -3332,7 +3332,7 @@ var mainGC = function() {
                 const bannerEl = $(this);
                 const bannerTextSum = bannerEl.text().checksum();
                 if (settings_remove_banner_text_ids.find(link => link === bannerTextSum)) {
-                    bannerEl.remove();
+                    $(bannerEl)[0].style.display = 'none';
                 } else {
                     const closeElId = 'closeBanner' + index; // hack for bind event
                     bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" title="Close this banner permanently">&#x2716;</span>');
@@ -3340,7 +3340,7 @@ var mainGC = function() {
                         click: function() {
                             settings_remove_banner_text_ids.push(bannerTextSum);
                             setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
-                            bannerEl.remove();
+                            $(bannerEl)[0].style.display = 'none';
                         }
                     });
                 }
@@ -3919,11 +3919,15 @@ var mainGC = function() {
             if (aci != '') {
                 $('#aci')[0].innerHTML = aci;
                 let gccode;
-                // old logging page
-                if ($('#uxNewLoggingBannerLink')[0]) gccode = $('#uxNewLoggingBannerLink').attr('href').split('/').at(-2);
-                // new logging page
-                else gccode = window.location.href.split('/').at(-2);
-                if (favoritePoints) getFavoriteScore(gccode, function(score) {
+                // Old logging page.
+                // Beim Ändern eines Logs steht der GC Code nicht zur Verfügung, deshalb gibt es dort auch keinen Prozentsatz für die Favoriten.
+                if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) && $('#uxNewLoggingBannerLink')[0]) {
+                    gccode = $('#uxNewLoggingBannerLink').attr('href').split('/').at(-2);
+                // New logging page.
+                } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                    gccode = window.location.href.split('/').at(-2);
+                }
+                if (favoritePoints && !gccode == '') getFavoriteScore(gccode, function(score) {
                     $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
                 });
             }
