@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0146" title="GClh II version 0.14.6 (22.04.2023)">v0.14.6</a> &nbsp;
 <a href="#v0145" title="GClh II version 0.14.5 (12.04.2023)">v0.14.5</a> &nbsp;
 <a href="#v0144" title="GClh II version 0.14.4 (28.02.2023)">v0.14.4</a> &nbsp;
 <a href="#v0143" title="GClh II version 0.14.3 (25.02.2023)">v0.14.3</a> &nbsp;
@@ -35,6 +36,31 @@
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.14.6:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [BML] Output sometimes incorrect when cache is deleted from a list. [<a href="https://github.com/2Abendsegler/GClh/issues/2402" title="Issue 2402">2402</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log Form] Additional cache info favorite percentage not shown if blue banner deactivated. [<a href="https://github.com/2Abendsegler/GClh/issues/2400" title="Issue 2400">2400</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] VIP, mail, message icons are not stable. [<a href="https://github.com/2Abendsegler/GClh/issues/2393" title="Issue 2393">2393</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Replacement owner in log template doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2391" title="Issue 2391">2391</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Recently Viewed Caches] Improve PQs runs into error if script send2cgeo is active. [<a href="https://github.com/2Abendsegler/GClh/issues/2390" title="Issue 2390">2390</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(22.04.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.14.5:
