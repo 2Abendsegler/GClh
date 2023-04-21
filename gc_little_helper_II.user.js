@@ -5143,8 +5143,8 @@ var mainGC = function() {
                 css += "table.Table tr:nth-child(1) {line-height: 19px;} .Success {background-color: #fff; color: #54b948 !important;}";
             }
             // Add additional colums.
-            function col(c) {
-                c += $('table.SearchResultsTable tbody tr:first img[src*="send2cgeo"]').length;
+            function col(c, l) {
+                c += $(l).find('img[src*="send2cgeo"]').length;
                 return c;
             }
             function newHeadcell(tr0, ch, desc) {
@@ -5155,17 +5155,17 @@ var mainGC = function() {
             }
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
-                newHeadcell(tr0, col(9), "Y. Found");
-                tr0.children[col(9)].title = "Your Found";
-                tr0.children[col(9)].setAttribute("class", "gclh_empty");
-                tr0.children[col(8)].children[0].title = tr0.children[col(8)].children[0].innerHTML;
-                tr0.children[col(8)].children[0].innerHTML = "Found";
+                newHeadcell(tr0, col(9, tr0), "Y. Found");
+                tr0.children[col(9, tr0)].title = "Your Found";
+                tr0.children[col(9, tr0)].setAttribute("class", "gclh_empty");
+                tr0.children[col(8, tr0)].children[0].title = tr0.children[col(8, tr0)].children[0].innerHTML;
+                tr0.children[col(8, tr0)].children[0].innerHTML = "Found";
                 if (!document.location.href.match(/recentlyviewed/)) {
-                    newHeadcell(tr0, col(7), "Size");
-                    tr0.children[col(7)].setAttribute("class", "AlignCenter");
+                    newHeadcell(tr0, col(7, tr0), "Size");
+                    tr0.children[col(7, tr0)].setAttribute("class", "AlignCenter");
                 }
-                for (var i = 0; i <= 4; i += 2) {tr0.children[col(6)].childNodes[i].data = tr0.children[col(6)].childNodes[i].data.replace(/(\(|\))/g, "");}
-                tr0.children[col(6)].setAttribute("class", "AlignCenter");
+                for (var i = 0; i <= 4; i += 2) {tr0.children[col(6, tr0)].childNodes[i].data = tr0.children[col(6, tr0)].childNodes[i].data.replace(/(\(|\))/g, "");}
+                tr0.children[col(6, tr0)].setAttribute("class", "AlignCenter");
             }
             function newContentcell(trDataNew, chil, content, clas, obj) {
                 var td = document.createElement("td");
@@ -5182,21 +5182,21 @@ var mainGC = function() {
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
                     // Last Found and new column Your Found.
-                    if (trData[i].children[col(9)].children[0].children[0] && trData[i].children[col(9)].children[0].children[0].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], col(10), trData[i].children[col(9)].children[0].children[0], "small", true);
-                    } else if (trData[i].children[col(9)].children[0].children[1] && trData[i].children[col(9)].children[0].children[1].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], col(10), trData[i].children[col(9)].children[0].children[1], "small", true);
-                    } else newContentcell(trData[i], col(10), "", "small", false);
+                    if (trData[i].children[col(9, trData[i])].children[0].children[0] && trData[i].children[col(9, trData[i])].children[0].children[0].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10, trData[i]), trData[i].children[col(9, trData[i])].children[0].children[0], "small", true);
+                    } else if (trData[i].children[col(9, trData[i])].children[0].children[1] && trData[i].children[col(9, trData[i])].children[0].children[1].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10, trData[i]), trData[i].children[col(9, trData[i])].children[0].children[1], "small", true);
+                    } else newContentcell(trData[i], col(10, trData[i]), "", "small", false);
                     // D/T and new column Size.
                     if (!document.location.href.match(/recentlyviewed/)) {
-                        trData[i].children[col(7)].childNodes[4].remove();
-                        trData[i].children[col(7)].childNodes[2].remove();
-                        newContentcell(trData[i], col(8), trData[i].children[col(7)].children[1], "", true);
-                        trData[i].children[col(8)].children[0].setAttribute("style", "vertical-align: bottom;");
+                        trData[i].children[col(7, trData[i])].childNodes[4].remove();
+                        trData[i].children[col(7, trData[i])].childNodes[2].remove();
+                        newContentcell(trData[i], col(8, trData[i]), trData[i].children[col(7, trData[i])].children[1], "", true);
+                        trData[i].children[col(8, trData[i])].children[0].setAttribute("style", "vertical-align: bottom;");
                     }
                     // Description.
-                    trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
-                    trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].title = trData[i].children[col(5)].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
+                    trData[i].children[col(5, trData[i])].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
+                    trData[i].children[col(5, trData[i])].children[(settings_show_log_it ? 3:2)].title = trData[i].children[col(5, trData[i])].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
             // Footer.
