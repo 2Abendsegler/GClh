@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.5
+// @version      0.14.6
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -3282,6 +3282,14 @@ var mainGC = function() {
                 }
             // Post Cache new log page:
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                function checkBuildSendIcons(waitCount, username, guid) {
+                    if (!$('.gclh_send')[0]) {
+                        var side = $('.hidden-by a')[0];
+                        buildSendIcons(side, username, "per guid", guid);
+                    }
+                    waitCount++;
+                    if (waitCount <= 50) setTimeout(function(){checkBuildSendIcons(waitCount, username, guid);}, 200);
+                }
                 var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
@@ -3292,8 +3300,7 @@ var mainGC = function() {
                             if (response.responseText) {
                                 var [username, guid] = getUserGuidFromProfile(response.responseText);
                                 if (username && guid) {
-                                    var side = $('.hidden-by a')[0];
-                                    buildSendIcons(side, username, "per guid", guid);
+                                    checkBuildSendIcons(0, username, guid);
                                 }
                             }
                         }
@@ -3325,7 +3332,7 @@ var mainGC = function() {
                 const bannerEl = $(this);
                 const bannerTextSum = bannerEl.text().checksum();
                 if (settings_remove_banner_text_ids.find(link => link === bannerTextSum)) {
-                    bannerEl.remove();
+                    $(bannerEl)[0].style.display = 'none';
                 } else {
                     const closeElId = 'closeBanner' + index; // hack for bind event
                     bannerEl.prepend('<span class="btn" id="' + closeElId + '" style="font-family: monospace; position: relative; float: right; display: inline-block; margin-left: 10px; margin-bottom: 6px;" title="Close this banner permanently">&#x2716;</span>');
@@ -3333,7 +3340,7 @@ var mainGC = function() {
                         click: function() {
                             settings_remove_banner_text_ids.push(bannerTextSum);
                             setValue("settings_remove_banner_text_ids", JSON.stringify(settings_remove_banner_text_ids));
-                            bannerEl.remove();
+                            $(bannerEl)[0].style.display = 'none';
                         }
                     });
                 }
@@ -3875,7 +3882,11 @@ var mainGC = function() {
     }
     function buildCssACI(css) {
         if (!css) var css = '';
-        css += '#aci {margin-left: 20px; margin-right: 2px; cursor: default; float: right;} ';
+        // Old logging page.
+        if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/)) var mt = '1px'
+        // New logging page.
+        else var mt = '4px'
+        css += '#aci {margin-left: 4px; margin-right: 2px; margin-top: ' + mt + '; cursor: default; float: right;} ';
         css += '#aci svg {vertical-align: text-bottom;} ';
         css += '#aci img {vertical-align: sub;} ';
         appendCssStyle(css);
@@ -3887,8 +3898,24 @@ var mainGC = function() {
     }
     function buildContentACI(url) {
         $.get(url, null, function(text){
-            var aci = '';
+            // Add cache type icon and limit cachetitle
+            var type = $(text).find('.cacheDetailsTitle a')[0].getAttribute("title");
+            var typeIcon = $(text).find('.activity-type-icon svg')[0];
+            var linkHeader = document.getElementsByClassName('subheader')[0];
+            if (type && typeIcon && linkHeader) {
+                var cacheName = $('.subheader')[0].innerHTML;
+                typeIcon.setAttribute("style", "vertical-align: sub; height: 19px; width: 19px;");
+                var typeIconSpan = document.createElement("span");
+                typeIconSpan.setAttribute("class", "gclh_TypeIcon");
+                typeIconSpan.setAttribute("style", "margin-right: 4px; margin-top: 3px; float: left;");
+                typeIconSpan.setAttribute("title", type);
+                linkHeader.setAttribute("style", "white-space: nowrap; overflow: hidden; text-overflow: ellipsis;");
+                linkHeader.setAttribute("title", cacheName);
+                linkHeader.parentNode.insertBefore(typeIconSpan, linkHeader);
+                document.getElementsByClassName('gclh_TypeIcon')[0].appendChild(typeIcon);
+            }
             // Favorite points and favorite percent.
+            var aci = '';
             var favoritePoints = $(text).find('.favorite-value').html();
             if (favoritePoints) {
                 favoritePoints = favoritePoints.replace('.','').replace(',','');
@@ -3904,21 +3931,51 @@ var mainGC = function() {
             if (watchNumber[0]) {
                 watchNumber = watchNumber[0].getAttribute("data-watchcount");
                 aci += separator(aci) + '<span class="watcher" title="Watcher">';
-                aci += '<img src="/images/icons/16/watch.png">';
+                aci += '<img src="/images/icons/16/watch.png" height="16px" width="16px">';
                 aci += '<span class="watch-number" title="Number of watcher"> ' + watchNumber + '</span>';
+                aci += '</span>';
+            }
+            // Difficulty and Terrain
+            var difficulty = $(text).find('#ctl00_ContentBody_uxLegendScale img');
+            var terrain = $(text).find('#ctl00_ContentBody_Localize12 img')
+            if ((difficulty[0]) && (terrain[0])) {
+                difficulty = difficulty[0].getAttribute("alt").split(" ")[0];
+                terrain = terrain[0].getAttribute("alt").split(" ")[0];
+                aci += separator(aci);
+                aci += '<span class="difficulty" title="Difficulty">';
+                aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use></svg>';
+                aci += '<span class="difficulty-number"> ' + difficulty + ' </span>';
+                aci += '</span>';
+                aci += '<span class="terrain" title="Terrain">';
+                aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use></svg>';
+                aci += '<span class="terrain-number"> ' + terrain + '</span>';
                 aci += '</span>';
             }
             // Output and further load.
             if (aci != '') {
                 $('#aci')[0].innerHTML = aci;
                 let gccode;
-                // old logging page
-                if ($('#uxNewLoggingBannerLink')[0]) gccode = $('#uxNewLoggingBannerLink').attr('href').split('/').at(-2);
-                // new logging page
-                else gccode = window.location.href.split('/').at(-2);
-                if (favoritePoints) getFavoriteScore(gccode, function(score) {
+                // Old logging page.
+                // Beim Ändern eines Logs steht der GC Code nicht zur Verfügung, deshalb gibt es dort auch keinen Prozentsatz für die Favoriten.
+                if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) && $('#uxNewLoggingBannerLink')[0]) {
+                    gccode = $('#uxNewLoggingBannerLink').attr('href').split('/').at(-2);
+                // New logging page.
+                } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                    gccode = window.location.href.split('/').at(-2);
+                }
+                if (favoritePoints && !gccode == '') getFavoriteScore(gccode, function(score) {
                     $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
                 });
+                // Variable length of cache name on new logging page.
+                if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                    function setMaxwidthOfCacheName(waitCount) {
+                        var width = 621 - parseInt(window.getComputedStyle($('#aci')[0]).width);
+                        $('.subheader')[0].style.maxWidth = width+"px";
+                        waitCount++;
+                        if (waitCount <= 100) setTimeout(function(){setMaxwidthOfCacheName(waitCount);}, 100);
+                    }
+                    setMaxwidthOfCacheName(0);
+                }
             }
         });
     }
@@ -4501,8 +4558,7 @@ var mainGC = function() {
         var finds = global_findCount;
         var me = global_me;
         if (newLogPage) {
-            if ($('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)) var owner = $('.hidden-by a')[0].innerHTML.match(/(.*)<a href=/)[1];
-            else var owner = $('.hidden-by a')[0].innerHTML;
+            var owner = $('.hidden-by a')[0].innerText;
         } else {
             var owner = document.getElementById('ctl00_ContentBody_LogBookPanel1_WaypointLink').nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerHTML;
         }
@@ -5136,6 +5192,11 @@ var mainGC = function() {
             if (document.location.href.match(/recentlyviewed/)) {
                 css += "table.Table tr:nth-child(1) {line-height: 19px;} .Success {background-color: #fff; color: #54b948 !important;}";
             }
+            // Add additional colums.
+            function col(c, l) {
+                c += $(l).find('img[src*="send2cgeo"]').length;
+                return c;
+            }
             function newHeadcell(tr0, ch, desc) {
                 var th = document.createElement("th");
                 th.appendChild(document.createTextNode(desc));
@@ -5144,17 +5205,17 @@ var mainGC = function() {
             }
             if ($('table.SearchResultsTable tbody tr')[0] && $('table.SearchResultsTable tbody tr')[0].children.length > 8) {
                 var tr0 = $('table.SearchResultsTable tbody tr')[0];
-                newHeadcell(tr0, 9, "Y. Found");
-                tr0.children[9].title = "Your Found";
-                tr0.children[9].setAttribute("class", "gclh_empty");
-                tr0.children[8].children[0].title = tr0.children[8].children[0].innerHTML;
-                tr0.children[8].children[0].innerHTML = "Found";
+                newHeadcell(tr0, col(9, tr0), "Y. Found");
+                tr0.children[col(9, tr0)].title = "Your Found";
+                tr0.children[col(9, tr0)].setAttribute("class", "gclh_empty");
+                tr0.children[col(8, tr0)].children[0].title = tr0.children[col(8, tr0)].children[0].innerHTML;
+                tr0.children[col(8, tr0)].children[0].innerHTML = "Found";
                 if (!document.location.href.match(/recentlyviewed/)) {
-                    newHeadcell(tr0, 7, "Size");
-                    tr0.children[7].setAttribute("class", "AlignCenter");
+                    newHeadcell(tr0, col(7, tr0), "Size");
+                    tr0.children[col(7, tr0)].setAttribute("class", "AlignCenter");
                 }
-                for (var i = 0; i <= 4; i += 2) {tr0.children[6].childNodes[i].data = tr0.children[6].childNodes[i].data.replace(/(\(|\))/g, "");}
-                tr0.children[6].setAttribute("class", "AlignCenter");
+                for (var i = 0; i <= 4; i += 2) {tr0.children[col(6, tr0)].childNodes[i].data = tr0.children[col(6, tr0)].childNodes[i].data.replace(/(\(|\))/g, "");}
+                tr0.children[col(6, tr0)].setAttribute("class", "AlignCenter");
             }
             function newContentcell(trDataNew, chil, content, clas, obj) {
                 var td = document.createElement("td");
@@ -5171,21 +5232,21 @@ var mainGC = function() {
                 var trData = $('table.SearchResultsTable tbody tr.Data');
                 for (var i = 0; i < trData.length; i++) {
                     // Last Found and new column Your Found.
-                    if (trData[i].children[9].children[0].children[0] && trData[i].children[9].children[0].children[0].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[0], "small", true);
-                    } else if (trData[i].children[9].children[0].children[1] && trData[i].children[9].children[0].children[1].id.match("_uxUserLogDate")) {
-                        newContentcell(trData[i], 10, trData[i].children[9].children[0].children[1], "small", true);
-                    } else newContentcell(trData[i], 10, "", "small", false);
+                    if (trData[i].children[col(9, trData[i])].children[0].children[0] && trData[i].children[col(9, trData[i])].children[0].children[0].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10, trData[i]), trData[i].children[col(9, trData[i])].children[0].children[0], "small", true);
+                    } else if (trData[i].children[col(9, trData[i])].children[0].children[1] && trData[i].children[col(9, trData[i])].children[0].children[1].id.match("_uxUserLogDate")) {
+                        newContentcell(trData[i], col(10, trData[i]), trData[i].children[col(9, trData[i])].children[0].children[1], "small", true);
+                    } else newContentcell(trData[i], col(10, trData[i]), "", "small", false);
                     // D/T and new column Size.
                     if (!document.location.href.match(/recentlyviewed/)) {
-                        trData[i].children[7].childNodes[4].remove();
-                        trData[i].children[7].childNodes[2].remove();
-                        newContentcell(trData[i], 8, trData[i].children[7].children[1], "", true);
-                        trData[i].children[8].children[0].setAttribute("style", "vertical-align: bottom;");
+                        trData[i].children[col(7, trData[i])].childNodes[4].remove();
+                        trData[i].children[col(7, trData[i])].childNodes[2].remove();
+                        newContentcell(trData[i], col(8, trData[i]), trData[i].children[col(7, trData[i])].children[1], "", true);
+                        trData[i].children[col(8, trData[i])].children[0].setAttribute("style", "vertical-align: bottom;");
                     }
                     // Description.
-                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
-                    trData[i].children[5].children[(settings_show_log_it ? 3:2)].title = trData[i].children[5].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
+                    trData[i].children[col(5, trData[i])].children[(settings_show_log_it ? 3:2)].setAttribute("class", "small gclh_hideit");
+                    trData[i].children[col(5, trData[i])].children[(settings_show_log_it ? 3:2)].title = trData[i].children[col(5, trData[i])].children[(settings_show_log_it ? 3:2)].innerHTML.replace(/(\s{2,})/g, " ").replace(/^\s/, "");
                 }
             }
             // Footer.
@@ -5783,7 +5844,7 @@ var mainGC = function() {
                     if ($('.rt-table')[0]) $('.rt-table').addClass('gclh_improveLayoutHead');
                 }
             }
-            function improveLayoutBody() {
+            function improveLayoutBody(waitCount) {
                 if ($('.rt-table .rt-tbody .rt-tr')[0] || $('.geocache-table tbody tr')[0]) {
                     var css = '';
                     // Compact layout.
@@ -5945,11 +6006,16 @@ var mainGC = function() {
                     if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
                     if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
                 }
+                // Solution for:
+                // - If a delete of a cache is done not on the first page, the columns are not positioned correctly.
+                // - If a delete of a cache is done, the line color is not correct.
+                waitCount++;
+                if (waitCount <= 200) setTimeout(function(){improveLayoutBody(waitCount);}, 50);
             }
             // Processing all steps.
             function processAll() {
                 improveLayoutHead();
-                improveLayoutBody();
+                improveLayoutBody(0);
                 setLinesInColorAndCorrectColspan();
                 buildDDLists();
             }
@@ -7319,6 +7385,19 @@ var mainGC = function() {
             } else if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) && $('.hidden-by a')[0]) {
                 var id = $('.hidden-by a')[0].href.match(/\/profile\/\?id=(\d+)/);
                 if (id && id[1]) {
+                    function checkBuildVipIcons(waitCount, username, guid) {
+                        if (!$('.gclh_vip')[0]) {
+                            var side = $('.hidden-by a')[0];
+                            link = gclh_build_vipvup(user, global_vips, "vip");
+                            side.appendChild(link);
+                            if (settings_process_vup && user != global_activ_username) {
+                                link = gclh_build_vipvup(user, global_vups, "vup");
+                                side.appendChild(link);
+                            }
+                        }
+                        waitCount++;
+                        if (waitCount <= 50) setTimeout(function(){checkBuildVipIcons(waitCount, username, guid);}, 200);
+                    }
                     var idLink = "/p/default.aspx?id=" + id[1] + "&tab=geocaches";
                     GM_xmlhttpRequest({
                         method: "GET",
@@ -7328,13 +7407,7 @@ var mainGC = function() {
                                 [user, guid] = getUserGuidFromProfile(response.responseText);
                                 if (user) {
                                     appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
-                                    var side = $('.hidden-by a')[0];
-                                    link = gclh_build_vipvup(user, global_vips, "vip");
-                                    side.appendChild(link);
-                                    if (settings_process_vup && user != global_activ_username) {
-                                        link = gclh_build_vipvup(user, global_vups, "vup");
-                                        side.appendChild(link);
-                                    }
+                                    checkBuildVipIcons(0, username, guid);
                                 }
                             }
                         }
@@ -13071,6 +13144,7 @@ var mainGC = function() {
         if (settings_show_message && b_art == "per guid") {
             var mess_link = document.createElement("a");
             var mess_img = document.createElement("img");
+            mess_img.setAttribute("class", "gclh_send");
             mess_img.setAttribute("style", "margin-left: 0px; margin-right: 0px");
             mess_img.setAttribute("title", "Send a message to " + username_send);
             mess_img.setAttribute("src", global_message_icon);
@@ -13087,6 +13161,7 @@ var mainGC = function() {
         if (settings_show_mail) {
             var mail_link = document.createElement("a");
             var mail_img = document.createElement("img");
+            mail_img.setAttribute("class", "gclh_send");
             mail_img.setAttribute("style", "margin-left: 0px; margin-right: 0px");
             mail_img.setAttribute("title", "Send a mail to " + username_send);
             mail_img.setAttribute("src", global_mail_icon);
@@ -13306,8 +13381,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/q4p7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iuf"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/KHqL/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iuo"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -14650,10 +14725,10 @@ var mainGC = function() {
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
+            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("radlerandi",           "",                         false, false, true,  false, false);
             html += thanksLineBuild("Nicole1338",           "",                         false, false, true,  false, false);
-            html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
             html += thanksLineBuild("CastParo",             "LittleJohn-DD",            false, false, true,  true,  false);
             html += thanksLineBuild("ramirez_",             "ramirezhr",                false, false, true,  false, false);
             html += thanksLineBuild("king-ton",             "",                         false, false, true,  false, false);
@@ -14697,7 +14772,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "12.04.2023";
+            var thanksLastUpdate = "21.04.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
