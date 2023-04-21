@@ -3894,6 +3894,20 @@ var mainGC = function() {
     }
     function buildContentACI(url) {
         $.get(url, null, function(text){
+            // Add cache type icon and limit cachetitle
+            var type = $(text).find('.cacheDetailsTitle a')[0].getAttribute("title");
+            var typeIcon = $(text).find('.activity-type-icon svg')[0];
+            var linkHeader = document.getElementsByClassName("subheader")[0];
+            if ((type) && (typeIcon) && (linkHeader)) {
+                typeIcon.setAttribute("style", "vertical-align: sub; height: 19px; width: 19px;");
+                var typeIconSpan = document.createElement("span");
+                typeIconSpan.setAttribute("class", "gclh_TypeIcon");
+                typeIconSpan.setAttribute("style", "margin-right: 2px;");
+                typeIconSpan.setAttribute("title", type);
+                linkHeader.setAttribute("style","white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 390px;");
+                linkHeader.insertBefore(typeIconSpan, linkHeader.firstChild);
+                document.getElementsByClassName('gclh_TypeIcon')[0].appendChild(typeIcon);
+            }
             var aci = '';
             // Favorite points and favorite percent.
             var favoritePoints = $(text).find('.favorite-value').html();
@@ -3913,6 +3927,23 @@ var mainGC = function() {
                 aci += separator(aci) + '<span class="watcher" title="Watcher">';
                 aci += '<img src="/images/icons/16/watch.png">';
                 aci += '<span class="watch-number" title="Number of watcher"> ' + watchNumber + '</span>';
+                aci += '</span>';
+            }
+            // Difficulty and Terrain
+            var difficulty = $(text).find('#ctl00_ContentBody_uxLegendScale img');
+            var terrain = $(text).find('#ctl00_ContentBody_Localize12 img')
+            if ((difficulty[0]) && (terrain[0])) {
+                difficulty = difficulty[0].getAttribute("alt").split(" ")[0];
+                terrain = terrain[0].getAttribute("alt").split(" ")[0];
+                aci += separator(aci);
+                aci += '<span class="difficulty">';
+                aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use></svg>';
+                aci += '<span class="difficulty-number"> ' + difficulty + ' </span>';
+                aci += '</span>';
+                aci += '&nbsp;';
+                aci += '<span class="terrain">';
+                aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use></svg>';
+                aci += '<span class="terrain-number"> ' + terrain + ' </span>';
                 aci += '</span>';
             }
             // Output and further load.
