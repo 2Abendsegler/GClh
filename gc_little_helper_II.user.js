@@ -3882,7 +3882,11 @@ var mainGC = function() {
     }
     function buildCssACI(css) {
         if (!css) var css = '';
-        css += '#aci {margin-left: 20px; margin-right: 2px; cursor: default; float: right;} ';
+        // Old logging page.
+        if (document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/)) var mt = '1px'
+        // New logging page.
+        else var mt = '4px'
+        css += '#aci {margin-left: 4px; margin-right: 2px; margin-top: ' + mt + '; cursor: default; float: right;} ';
         css += '#aci svg {vertical-align: text-bottom;} ';
         css += '#aci img {vertical-align: sub;} ';
         appendCssStyle(css);
@@ -3897,19 +3901,21 @@ var mainGC = function() {
             // Add cache type icon and limit cachetitle
             var type = $(text).find('.cacheDetailsTitle a')[0].getAttribute("title");
             var typeIcon = $(text).find('.activity-type-icon svg')[0];
-            var linkHeader = document.getElementsByClassName("subheader")[0];
-            if ((type) && (typeIcon) && (linkHeader)) {
+            var linkHeader = document.getElementsByClassName('subheader')[0];
+            if (type && typeIcon && linkHeader) {
+                var cacheName = $('.subheader')[0].innerHTML;
                 typeIcon.setAttribute("style", "vertical-align: sub; height: 19px; width: 19px;");
                 var typeIconSpan = document.createElement("span");
                 typeIconSpan.setAttribute("class", "gclh_TypeIcon");
-                typeIconSpan.setAttribute("style", "margin-right: 2px;");
+                typeIconSpan.setAttribute("style", "margin-right: 4px; margin-top: 3px; float: left;");
                 typeIconSpan.setAttribute("title", type);
-                linkHeader.setAttribute("style","white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 390px;");
-                linkHeader.insertBefore(typeIconSpan, linkHeader.firstChild);
+                linkHeader.setAttribute("style", "white-space: nowrap; overflow: hidden; text-overflow: ellipsis;");
+                linkHeader.setAttribute("title", cacheName);
+                linkHeader.parentNode.insertBefore(typeIconSpan, linkHeader);
                 document.getElementsByClassName('gclh_TypeIcon')[0].appendChild(typeIcon);
             }
-            var aci = '';
             // Favorite points and favorite percent.
+            var aci = '';
             var favoritePoints = $(text).find('.favorite-value').html();
             if (favoritePoints) {
                 favoritePoints = favoritePoints.replace('.','').replace(',','');
@@ -3925,7 +3931,7 @@ var mainGC = function() {
             if (watchNumber[0]) {
                 watchNumber = watchNumber[0].getAttribute("data-watchcount");
                 aci += separator(aci) + '<span class="watcher" title="Watcher">';
-                aci += '<img src="/images/icons/16/watch.png">';
+                aci += '<img src="/images/icons/16/watch.png" height="16px" width="16px">';
                 aci += '<span class="watch-number" title="Number of watcher"> ' + watchNumber + '</span>';
                 aci += '</span>';
             }
@@ -3936,14 +3942,13 @@ var mainGC = function() {
                 difficulty = difficulty[0].getAttribute("alt").split(" ")[0];
                 terrain = terrain[0].getAttribute("alt").split(" ")[0];
                 aci += separator(aci);
-                aci += '<span class="difficulty">';
+                aci += '<span class="difficulty" title="Difficulty">';
                 aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use></svg>';
                 aci += '<span class="difficulty-number"> ' + difficulty + ' </span>';
                 aci += '</span>';
-                aci += '&nbsp;';
-                aci += '<span class="terrain">';
+                aci += '<span class="terrain" title="Terrain">';
                 aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use></svg>';
-                aci += '<span class="terrain-number"> ' + terrain + ' </span>';
+                aci += '<span class="terrain-number"> ' + terrain + '</span>';
                 aci += '</span>';
             }
             // Output and further load.
@@ -3961,6 +3966,16 @@ var mainGC = function() {
                 if (favoritePoints && !gccode == '') getFavoriteScore(gccode, function(score) {
                     $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
                 });
+                // Variable length of cache name on new logging page.
+                if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)) {
+                    function setMaxwidthOfCacheName(waitCount) {
+                        var width = 621 - parseInt(window.getComputedStyle($('#aci')[0]).width);
+                        $('.subheader')[0].style.maxWidth = width+"px";
+                        waitCount++;
+                        if (waitCount <= 100) setTimeout(function(){setMaxwidthOfCacheName(waitCount);}, 100);
+                    }
+                    setMaxwidthOfCacheName(0);
+                }
             }
         });
     }
