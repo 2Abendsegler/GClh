@@ -42,19 +42,19 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Fix:</strong> [BML] Output sometimes incorrect when cache is deleted from a list. [<a href="https://github.com/2Abendsegler/GClh/issues/2402" title="Issue 2402">2402</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Old Log Form] Additional cache info favorite percentage not shown if blue banner deactivated. [<a href="https://github.com/2Abendsegler/GClh/issues/2400" title="Issue 2400">2400</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
 		<strong>Fix:</strong> [New Log Form] VIP, mail, message icons are not stable. [<a href="https://github.com/2Abendsegler/GClh/issues/2393" title="Issue 2393">2393</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Log Form] Replacement owner in log template doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2391" title="Issue 2391">2391</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
+		<strong>Fix:</strong> [Old Log Form] Additional cache info favorite percentage not shown if blue banner deactivated. [<a href="https://github.com/2Abendsegler/GClh/issues/2400" title="Issue 2400">2400</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Recently Viewed Caches] Improve PQs runs into error if script send2cgeo is active. [<a href="https://github.com/2Abendsegler/GClh/issues/2390" title="Issue 2390">2390</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [BML] Output sometimes incorrect when cache is deleted from a list. [<a href="https://github.com/2Abendsegler/GClh/issues/2402" title="Issue 2402">2402</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
