@@ -5798,7 +5798,7 @@ var mainGC = function() {
                     if ($('.rt-table')[0]) $('.rt-table').addClass('gclh_improveLayoutHead');
                 }
             }
-            function improveLayoutBody() {
+            function improveLayoutBody(waitCount) {
                 if ($('.rt-table .rt-tbody .rt-tr')[0] || $('.geocache-table tbody tr')[0]) {
                     var css = '';
                     // Compact layout.
@@ -5960,11 +5960,16 @@ var mainGC = function() {
                     if ($('table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('table').addClass('gclh_improveLayoutBody');
                     if ($('.rt-table')[0] && !$('table').hasClass('gclh_improveLayoutBody')) $('.rt-table').addClass('gclh_improveLayoutBody');
                 }
+                // Solution for:
+                // - If a delete of a cache is done not on the first page, the columns are not positioned correctly.
+                // - If a delete of a cache is done, the line color is not correct.
+                waitCount++;
+                if (waitCount <= 200) setTimeout(function(){improveLayoutBody(waitCount);}, 50);
             }
             // Processing all steps.
             function processAll() {
                 improveLayoutHead();
-                improveLayoutBody();
+                improveLayoutBody(0);
                 setLinesInColorAndCorrectColspan();
                 buildDDLists();
             }
