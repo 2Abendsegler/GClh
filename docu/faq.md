@@ -156,7 +156,7 @@ We are happy about improvement suggestions, bugfixes or new features. This is re
 
 <a id="8-en"></a>
 ## 8. Where can I get help with the GClh?
-If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... :<br>
+If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... (German and English):<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
@@ -315,7 +315,7 @@ Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies
 
 <a id="8-de"></a>
 ## 8. Wo bekomme ich Hilfe zum GClh?
-Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden:<br>
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden (Deutsch und Englisch):<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
