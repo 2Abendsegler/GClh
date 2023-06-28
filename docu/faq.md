@@ -156,7 +156,7 @@ We are happy about improvement suggestions, bugfixes or new features. This is re
 
 <a id="8-en"></a>
 ## 8. Where can I get help with the GClh?
-If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... :<br>
+If you need help with the GClh, or if you have questions about the GClh, you can create a note in the following forums ... (German and English):<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
@@ -166,8 +166,9 @@ If you need help with the GClh, or if you have questions about the GClh, you can
 
 <a id="9-en"></a>
 ## 9. How can I report a bug or a feature request?
-For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at GitHub.<br>
+For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at GitHub.<br><br>
 Or you can create a note in one of the forums or on our discussions page. See <a href="#8-en">FAQ 8</a>.<br>
+<br>
 <br>
 
 ---
@@ -314,7 +315,7 @@ Wir freuen uns über Verbesserungsvorschläge, Bugfixes oder neue Features. Dies
 
 <a id="8-de"></a>
 ## 8. Wo bekomme ich Hilfe zum GClh?
-Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden:<br>
+Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kannst du dich in folgenden Foren ... melden (Deutsch und Englisch):<br>
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
@@ -324,6 +325,6 @@ Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kanns
 
 <a id="9-de"></a>
 ## 9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?
-Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei GitHub eröffnen.<br>
+Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei GitHub eröffnen.<br><br>
 Oder du kannst dich in einem der Foren oder auf unserer Diskussions Seite melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
 <br>
