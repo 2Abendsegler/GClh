@@ -58,7 +58,7 @@ Das Tool ist in Javascript entwickelt und läuft mit den Script Managern Tamperm
 Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](/docu/tips_installation.md#de) fündig.<br>
 
 ## Hilfe
-Wer Fehler melden, Fragen stellen oder neue Features beantragen möchte, der kann das auf folgenden Plattformen tun (Deutsch und Englisch):<br> 
+Wer Fragen stellen, Fehler melden oder neue Features beantragen möchte, der kann das auf folgenden Plattformen tun (Deutsch und Englisch):<br> 
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
