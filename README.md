@@ -27,7 +27,7 @@ If you need any help with the installation, you can have a look at our [installa
 
 ## Help
 If you need any help, or if you want to ask questions, report bugs or request new features, you can do so on the following platforms (German and English):<br>
-- [FAQ](/docu/faq.md#readme)
+- [FAQ](/docu/faq.md)
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
@@ -60,7 +60,7 @@ Wer Hilfe bei der Installation benötigt, wird in den [Tipps zur Installation](/
 
 ## Hilfe
 Wer Hilfe benötigt, oder wer Fragen stellen, Fehler melden oder neue Features beantragen möchte, der kann das auf folgenden Plattformen tun (Deutsch und Englisch):<br> 
-- [FAQ](/docu/faq.md#readme)
+- [FAQ](/docu/faq.md)
 - [Geocaching Forum](https://forums.geocaching.com/GC/index.php?/topic/343005-gc-little-helper-ii/)
 - [Geoclub Geocaching Forum](https://www.geoclub.de/forum/t/gc-little-helper-ii-ab-v0-11.81650/)
 - [Swiss Geocache Forum](https://www.swissgeocacheforum.ch/forum/topic/12872-gc-little-helper-ii/)
