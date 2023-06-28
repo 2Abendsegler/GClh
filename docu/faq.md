@@ -169,6 +169,7 @@ If you need help with the GClh, or if you have questions about the GClh, you can
 For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at GitHub.<br><br>
 Or you can create a note in one of the forums or on our discussions page. See <a href="#8-en">FAQ 8</a>.<br>
 <br>
+<br>
 
 ---
 <a id="de" href="#de"><img src="../images/flag_de.png"></a>
