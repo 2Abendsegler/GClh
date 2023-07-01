@@ -7095,7 +7095,7 @@ var mainGC = function() {
                             var user = log_infos_long[i]["user"];
                             if (in_array(user, global_vips) || (settings_show_owner_vip_list && user == owner_name) || (settings_show_reviewer_as_vip && log_infos_long[i]["membership_level"] == "Reviewer") || (settings_show_lackey_as_vip && log_infos_long[i]["membership_level"] == "Lackey")) {
                                 if (!log_infos_long[i]["date"]) continue;
-                                if (log_infos_long[i]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
+                                if (log_infos_long[i]["icon"].match(/\/(2|10|11)\.png$/)) users_found.push(user);  // Für not found liste.
                                 var span = document.createElement("span");
                                 var profile = document.createElement("a");
                                 profile.setAttribute("href", "/profile/?u=" + urlencode(user));
@@ -7163,7 +7163,7 @@ var mainGC = function() {
                             // Log-Links.
                             for (var x = 0; x < log_infos[user].length; x++) {
                                 if (log_infos[user][x] && log_infos[user][x]["icon"] && log_infos[user][x]["id"]) {
-                                    if (log_infos[user][x]["icon"].match(/\/(2|10)\.png$/)) users_found.push(user);  // Für not found liste.
+                                    if (log_infos[user][x]["icon"].match(/\/(2|10|11)\.png$/)) users_found.push(user);  // Für not found liste.
                                     var image = document.createElement("img");
                                     var log_text = document.createElement("span");
                                     log_text.innerHTML = "<img src='" + log_infos[user][x]["icon"] + "'> <b>" + user + " - " + log_infos[user][x]["date"] + "</b><br>" + log_infos[user][x]["log"];
