@@ -715,6 +715,7 @@ var variablesInit = function(c) {
     c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
+    c.settings_listing_add_county = getValue("settings_listing_add_county", true);
 
     tlc('START userToken');
     try {
@@ -2423,6 +2424,16 @@ var mainGC = function() {
             otherFormats(box, coords, " - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
+    }
+
+// Add county (Landkreis) to cache information
+    if (settings_listing_add_county && is_page('cache_listing') && $('#uxLatLon')[0]) {
+        let [lat, lon] = toDec($('#uxLatLon')[0].innerHTML);
+        insertCountyInformation(lat, lon, (data) => {
+            let address = data['address'];
+            if (address['county'] || address['city']) $('#ctl00_ContentBody_Location').html(`${address['county'] || address['city']}, ${address['state']}, ${address['country']}`)
+            $('#ctl00_ContentBody_Location').attr('title', data['display_name']);
+        });
     }
 
 // Map this Location.
@@ -15290,6 +15301,9 @@ var mainGC = function() {
             }
             html += "</select><br>";
             html += checkboxy('settings_show_link_to_browse_map', 'Show link to Browse Map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_listing_add_county', 'Add county to location in cache information') + show_help("With this option, the county is added to the location and information from osm is used") + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Disclaimer</b>" + "</div>";
             html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
@@ -16854,6 +16868,7 @@ var mainGC = function() {
                 'settings_dashboard_show_logs_in_markdown',
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
+                'settings_listing_add_county',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -18605,6 +18620,28 @@ function otherFormats(box, coords, trenn) {
     box.innerHTML += trenn+"Dec: "+lat+" "+lng;
     var dms = DegtoDMS(coords);
     box.innerHTML += trenn+"DMS: "+dms;
+}
+
+/**
+ * Can be used to get and insert county (and other location) informations.
+ * The informations are requested from nominatim.openstreetmap.org 
+ * @param {float} lat The latitude of the Cache
+ * @param {float} lon The longitude of the cache
+ * @param {function} func A function with one argument, the data of the request. The function can be used to
+ *                        Insert the data to the page
+ */
+const insertCountyInformation = (lat, lon, func) => {
+    let url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=${global_locale}&format=json`;
+    try {
+        fetch(url).then(res => {
+            if (res.ok) return res.json();
+            else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org fails\nHTTP-Status-Code: ${res.status}`);
+        }).then(data => {
+            func(data);
+        });
+    } catch (e) {
+        gclh_error('insertCountyInformation', e)
+    }
 }
 
 // Decode URI component for non-standard unicode encoding (issue-818).
