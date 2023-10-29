@@ -4128,33 +4128,33 @@ var mainGC = function() {
         var o = "<p style='margin: 5px;'>";
         if (newLogPage) liste += "<div id='gclh_smilies'>";
         else liste += "<br>" + o;
-        bs("[:)]", "");
-        bs("[:D]", "_big");
-        bs("[8D]", "_cool");
-        bs("[:I]", "_blush");
-        bs("[:P]", "_tongue");
+        bs("[:)]", "🙂");
+        bs("[:D]", "😁");
+        bs("[8D]", "😎");
+        bs("[:I]", "🤭");
+        bs("[:P]", "😛");
         if (!newLogPage) liste += "</p>" + o;
-        bs("[}:)]", "_evil");
-        bs("[;)]", "_wink");
-        bs("[:o)]", "_clown");
-        bs("[B)]", "_blackeye");
-        bs("[8]", "_8ball");
+        bs("[}:)]", "😈");
+        bs("[;)]", "😉");
+        bs("[:o)]", "🤡");
+        bs("[B)]", "🤕");
+        bs("[8]", "🎱");
         if (newLogPage) liste += "<br>";
         else liste += "</p>" + o;
-        bs("[:(]", "_sad");
-        bs("[8)]", "_shy");
-        bs("[:O]", "_shock");
-        bs("[:(!]", "_angry");
-        bs("[xx(]", "_dead");
+        bs("[:(]", "😟");
+        bs("[8)]", "😌");
+        bs("[:O]", "😮");
+        bs("[:(!]", "😡");
+        bs("[xx(]", "💀");
         if (!newLogPage) liste += "</p>" + o;
-        bs("[|)]", "_sleepy");
-        bs("[:X]", "_kisses");
-        bs("[^]", "_approve");
-        bs("[V]", "_dissapprove");
-        bs("[?]", "_question");
+        bs("[|)]", "😴");
+        bs("[:X]", "😚");
+        bs("[^]", "👍");
+        bs("[V]", "👎");
+        bs("[?]", "❔");
         if (newLogPage) liste += "</div>";
         else liste += "</p>";
-        function bs(s, n) {liste += "<a href='#' onClick='gclh_insert_smilie(\"" + s + "\",\"\"); return false;'" + (newLogPage ? "style='margin: -2px;'" : "") + "><img src='/images/icons/icon_smile" + n + ".gif' title='" + s + " " + n.replace("_", "") + "' border='0'></a>&nbsp;&nbsp;";}
+        function bs(s, n) {liste += "<a href='#' onClick='gclh_insert_smilie(\"" + s + "\",\"\"); return false;' title='" + s + "'" + (newLogPage ? "style='margin: -2px;'" : "") + "><span>" + n + "</span></a>&nbsp;&nbsp;";}
     }
     // Log Templates aufbauen.
     function build_tpls(newLogPage) {
