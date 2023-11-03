@@ -4154,8 +4154,7 @@ var mainGC = function() {
         bs("[?]", "❔");
         if (newLogPage) liste += "</div>";
         else liste += "</p>";
-        function bs(s, n) {liste += "<a href='#' onClick='gclh_insert_smilie(\"" + s + "\",\"\"); return false;' title='" + s + "'" + (newLogPage ? "style='margin: -2px;'" : "") + "><span>" + n + "</span></a>&nbsp;&nbsp;";}
-    }
+        function bs(s, n) {liste += "<a href='#' onClick='gclh_insert_smilie(\"" + s + "\",\"\"); return false;' title='" + s + "' style='display: inline-block; width: 18.5px; text-align: center; text-decoration: none !important;" + (newLogPage ? "margin: -2px;" : "") + "'><span>" + n + "</span></a>&nbsp;";}    }
     // Log Templates aufbauen.
     function build_tpls(newLogPage) {
         var texts = ""; var logicOld = ""; var logicNew = "";
