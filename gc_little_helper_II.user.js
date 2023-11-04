@@ -18399,7 +18399,6 @@ var mainGC = function() {
     //                  blank, it will just "Copy to clipboard" be displayed.
     // style:           You can add styles to the surrounding span by passing
     //                  it in this variable.
-//xxxx
     function addCopyToClipboardLink(element_to_copy, anker_element= null, title="", style= "") {
         try {
             var ctoc = false;
