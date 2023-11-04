@@ -8072,7 +8072,7 @@ var mainGC = function() {
                     if ($('#search_logs_input.working')[0]) return;
                     deactivateLoadAndSearch();
 
-                    var regexp = new RegExp("(" + search_text + ")", "i");
+                    var regexp = new RegExp("(" + search_text + ")", (getValue('set_switch_search_logs_case_sensitive', false) ? "" : "i"));
                     var regexpSplitComplete = new RegExp("(<.*?>|" + search_text + ")", "i");
                     var regexpSplitNotUse = new RegExp("(<.*?>)", "i");
                     $(logsTab).find('tbody').children().remove();
@@ -8136,8 +8136,19 @@ var mainGC = function() {
                 if (!$('#ctl00_ContentBody_lblFindCounts ul')[0]) return false;
                 $('#ctl00_ContentBody_lblFindCounts ul').append('<li><span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span></li>');
                 if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
-                $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 4px;" id="search_logs_input"></form>');
+                $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 0px;" id="search_logs_input"></form>');
                 $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
+                function setCaseSensitive() {
+                    $('#search_logs_case_sensitive')[0].title = (getValue('set_switch_search_logs_case_sensitive', false) ? 'search is case sensitive' : 'search is not case sensitive');
+                    $('#search_logs_case_sensitive')[0].checked = getValue('set_switch_search_logs_case_sensitive', false);
+                }
+                function clickCaseSensitive() {
+                    setValue('set_switch_search_logs_case_sensitive', $('#search_logs_case_sensitive')[0].checked);
+                    setCaseSensitive();
+                }
+                $('#search_logs').append('<span class="gc-checkbox-v2" style="margin-right: 2px;"><input id="search_logs_case_sensitive" readonly="" type="checkbox"></span>');
+                setCaseSensitive();
+                $('#search_logs_case_sensitive')[0].addEventListener("click", clickCaseSensitive, false);
                 addButtonOverLogs(gclh_search_logs, "search_logs_go", false, "Go", "", "", $('#search_logs'));
                 addButtonOverLogs(function(){searchLogsReset(logs);}, "search_logs_reset", false, "Reset", "", "", $('#search_logs'));
                 $('#search_logs').append('<span id="search_logs_number_of_hits" style="padding: 0px 5px; cursor: default;" title="Number of hits / Number of logs with hits"></span>');
