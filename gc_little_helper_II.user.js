@@ -8073,8 +8073,8 @@ var mainGC = function() {
                     deactivateLoadAndSearch();
 
                     var regexp = new RegExp("(" + search_text + ")", (getValue('set_switch_search_logs_case_sensitive', false) ? "" : "i"));
-                    var regexpSplitComplete = new RegExp("(<.*?>|" + search_text + ")", "i");
-                    var regexpSplitNotUse = new RegExp("(<.*?>)", "i");
+                    var regexpSplitComplete = new RegExp("(<.*?>|" + search_text + ")", (getValue('set_switch_search_logs_case_sensitive', false) ? "" : "i"));
+                    var regexpSplitNotUse = new RegExp("(<.*?>)", (getValue('set_switch_search_logs_case_sensitive', false) ? "" : "i"));
                     $(logsTab).find('tbody').children().remove();
                     for (var i = 0; i < logs.length; i++) {
                         if (logs[i] && logs[i].UserName.match(regexp)) {
