@@ -3,6 +3,7 @@
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
 // @version      0.14.6
+//<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
 // @license      GNU General Public License v2.0
