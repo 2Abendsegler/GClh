@@ -12245,6 +12245,11 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show Coin Series",e);}
     }
 
+// Copy TB Code in TB Listing to clipboard.
+    if (document.location.href.match(/\.com\/track\/details\.aspx/) && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "TB Code");
+    }
+
 // Improve favorites and profile lists page.
     if (document.location.href.match(/\.com\/my\/favorites\.aspx/) && $('table.Table tbody tr')[0]) {
         try {
