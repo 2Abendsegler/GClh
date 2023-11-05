@@ -171,6 +171,7 @@ var constInit = function(c) {
     c.urlOSM = "https://www.openstreetmap.org/?#map={zoom}/{lat}/{lon}";
     c.urlFlopps = "https://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=";
     c.urlGeoHack = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params={latDeg}_{latMin}_{latSec}_{latOrient}_{lonDeg}_{lonMin}_{lonSec}_{lonOrient}";
+    c.urlKomoot = "https://www.komoot.com/plan/@{lat},{lon},{zoomMinus1}z";
     c.idCopyName = "idName";
     c.idCopyCode = "idCode";
     c.idCopyUrl = "idUrl";
@@ -441,6 +442,8 @@ var variablesInit = function(c) {
     c.settings_switch_to_flopps_in_same_tab = getValue("settings_switch_to_flopps_in_same_tab", false);
     c.settings_add_link_geohack_on_gc_map = getValue("settings_add_link_geohack_on_gc_map", true);
     c.settings_switch_to_geohack_in_same_tab = getValue("settings_switch_to_geohack_in_same_tab", false);
+    c.settings_add_link_komoot_on_gc_map = getValue("settings_add_link_komoot_on_gc_map", true);
+    c.settings_switch_to_komoot_in_same_tab = getValue("settings_switch_to_komoot_in_same_tab", false);
     c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
     c.settings_make_vip_lists_hideable = getValue("settings_make_vip_lists_hideable", true);
     c.settings_show_latest_logs_symbols = getValue("settings_show_latest_logs_symbols", true);
@@ -10039,8 +10042,8 @@ var mainGC = function() {
                     $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_browse_map" class="map-control" title="Browse geocaches"><svg><use xlink:href="#globe"></use></svg></button></li>');
                     $('#gclh_browse_map')[0].addEventListener("click", function() { $('#browse-map-cta')[0].click(); }, false);
                 }
-                // Add links to Google, OSM, Flopp's and GeoHack Map.
-                if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map)) {
+                // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map.
+                if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
                     initGeoServiceControl();
                 }
             }
@@ -10841,8 +10844,8 @@ var mainGC = function() {
                     hideHeaderOnBrowseMap();
                     // Change map parameter and add homezone to map.
                     changeParameterAddHomezoneOnBrowseMap();
-                    // Add links to Google, OSM, Flopp's and GeoHack Map on Browse Map.
-                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map) {
+                    // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map on Browse Map.
+                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map) {
                         addLinksOnBrowseMap();
                     }
                     // Relocate button search geocaches on Browse Map.
@@ -11198,16 +11201,18 @@ var mainGC = function() {
         if (settings_add_link_osm_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_osm">Openstreetmap</a>');
         if (settings_add_link_flopps_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps">Flopp\'s Map</a>');
         if (settings_add_link_geohack_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack">GeoHack</a>');
+        if (settings_add_link_komoot_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_komoot">Komoot</a>');
         $("#gclh_geoservice_googlemaps").click(function() {callGeoService(urlGoogleMaps, settings_switch_to_google_maps_in_same_tab);});
         $("#gclh_geoservice_osm").click(function() {callGeoService(urlOSM, settings_switch_to_osm_in_same_tab);});
         $("#gclh_geoservice_flopps").click(function() {callGeoService(urlFlopps, settings_switch_to_flopps_in_same_tab);});
         $("#gclh_geoservice_geohack").click(function() {callGeoService(urlGeoHack, settings_switch_to_geohack_in_same_tab);});
+        $("#gclh_geoservice_komoot").click(function() {callGeoService(urlKomoot, settings_switch_to_komoot_in_same_tab);});
         var css = '';
         css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: unset; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
         css += '.gclh-leaflet-control {z-index: 1019; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; color: #00b265; display: flex; height: 40px; justify-content: center; outline: none; overflow: hidden; padding: 4px; width: 40px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 18px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
         css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 68px; top: 16px;}';
-        css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 0px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
+        css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
         css += '.gclh-leaflet-control:hover .gclh-leaflet-list {display: block;}';
@@ -11240,6 +11245,7 @@ var mainGC = function() {
         if (matches != null && matchesMarker != null) {
             coords = new Object();
             coords.zoom = matches[3];
+            coords.zoomMinus1 = matches[3]-1;
             coords.lat = matches[1];
             coords.lon = matches[2];
             coords.markerLat = matchesMarker[1];
@@ -11262,7 +11268,7 @@ var mainGC = function() {
         return coords;
     }
     function replaceData(str, coords) {
-        re = new RegExp("\{[a-zA-Z]+\}", "g");
+        re = new RegExp("\{[a-zA-Z0-9]+\}", "g");
         var replacements = str.match(re);
         if (replacements != null) {
             for (var i=0; i<replacements.length; i++) {
@@ -15175,6 +15181,11 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack Page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += newParameterOn1;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Komoot Page</b></div>";
+            html += checkboxy('settings_add_link_komoot_on_gc_map', 'Add link to Komoot on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Komoot.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_komoot_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
@@ -16297,6 +16308,7 @@ var mainGC = function() {
             setEvForDepPara("settings_add_link_osm_on_gc_map", "settings_switch_to_osm_in_same_tab");
             setEvForDepPara("settings_add_link_flopps_on_gc_map", "settings_switch_to_flopps_in_same_tab");
             setEvForDepPara("settings_add_link_geohack_on_gc_map", "settings_switch_to_geohack_in_same_tab");
+            setEvForDepPara("settings_add_link_komoot_on_gc_map", "settings_switch_to_komoot_in_same_tab");
             setEvForDepPara("settings_show_latest_logs_symbols", "settings_show_latest_logs_symbols_count");
             setEvForDepPara("settings_load_logs_with_gclh", "settings_show_latest_logs_symbols");
             setEvForDepPara("settings_log_statistic", "settings_log_statistic_reload");
@@ -16653,6 +16665,8 @@ var mainGC = function() {
                 'settings_switch_to_flopps_in_same_tab',
                 'settings_add_link_geohack_on_gc_map',
                 'settings_switch_to_geohack_in_same_tab',
+                'settings_add_link_komoot_on_gc_map',
+                'settings_switch_to_komoot_in_same_tab',
                 'settings_sort_default_bookmarks',
                 'settings_make_vip_lists_hideable',
                 'settings_show_latest_logs_symbols',
