@@ -4472,6 +4472,17 @@ var mainGC = function() {
                         if (childs[i].value == select_val) select.selectedIndex = i;
                     }
                 }
+                // Bei Events wird nach dem Event Datum von GS automatisch der Logtype "Attended" gesetzt, sofern ein "Attended" noch nicht vorhanden ist.
+                // Das Log Datum steht dann auf dem aktuellen Datum und nicht auf dem Event Datum, was richtig wäre. Das Log Datum ist nicht eingabebereit.
+                // Unsere Default Einstellung settings_default_logtype_event zieht für diesen Fall nie. Der Fehler tritt auch ohne den GClh auf. Es handelt
+                // sich hier also um einen Bug auf der Webseite, der aber wohl kaum noch berichtigt wird.
+                if (select.value == "10") {
+                    var logdate = $("#uxDateVisited");
+                    var logdate_format = logdate.attr("userdateformat");
+                    var logdate_date = new Date($("#ctl00_ContentBody_LogBookPanel1_EventDate").val());
+                    var logdate_text = $.datepicker.formatDate(logdate_format, logdate_date);
+                    logdate.attr("value", logdate_text);
+                }
             }
             // Signature.
             var logtext = document.getElementById('ctl00_ContentBody_LogBookPanel1_uxLogInfo').value;
