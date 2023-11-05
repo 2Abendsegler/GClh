@@ -4658,6 +4658,14 @@ var mainGC = function() {
 
         // Show length of logtext
         if (settings_improve_character_counter) {
+            // Count characters
+            css += '.character-limit {display: inline !important}'
+            // Count words
+            $('.character-limit').append('<span class="gclh_word_count"></span>')
+            $('#gc-md-editor_md')[0].addEventListener('input', (e) => {
+                let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
+                $('.gclh_word_count').html(`&nbsp;(${words})`);
+            })
         }
         
         // Show message in case of unsaved log
