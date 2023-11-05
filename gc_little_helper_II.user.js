@@ -10613,6 +10613,8 @@ var mainGC = function() {
                 css += '.search-bar-inner {margin-right: 10px !important;}';
                 css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
                 css += '.sidebar-control .checkbox {margin-right: 2px;}';
+                css += '#sidebar div:nth-child(1).sidebar-control.sidebar-search-container > div {padding: 5px 13px 6px 12px; gap: 4px;}';
+                css += '#sidebar .sidebar-control.sidebar-search-container > div {padding: 0px 13px 3px 12px; gap: 4px;}';
                 // Cache list and cache details.
                 css += '.header-top {display: none !important;}';
                 css += '.search-bar-back-cta {height: 24px; width: 24px; padding: 6px 0px; margin-left: -2px;}';
@@ -10685,8 +10687,7 @@ var mainGC = function() {
                 css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
                 css += '.mode-toggle-container {padding: 5px 14px 5px 12px !important;} .mode-toggle {padding: 6px !important;}';
                 css += '.dismiss-list-cache-button {margin: 2px !important;}';
-                css += '.dismiss-active-list-button {padding: 0px 0px 5px 0px;}';
-                css += '.dismiss-active-list-button-label {height: 34px !important; margin-right: 12px;}';
+                css += '.dismiss-active-list-button-label {height: 34px !important; margin-right: 5px;}';
                 css += '.dismiss-active-list-button-icon svg {height: 24px !important; width: 24px !important; margin-left: 6px; display: flex;}';
                 css += '.dismiss-list-cache-button svg {height: 24px !important; width: 24px !important; margin-left: 4px; display: flex; color: #4a4a4a !important;}';
                 css += '.list-hub {padding-bottom: 0px !important; overflow: auto !important; margin-bottom: 22px;}';
@@ -10699,6 +10700,8 @@ var mainGC = function() {
                 css += '.geocache-list-container.lom-ld-flag-padding {padding-bottom: 0px !important;}';
                 css += '.geocache-list-container .pagination-label {padding: 0 0 5px 0 !important;}';
                 css += '.cache-detail-preview.list-cache {height: calc(100% + 24px) !important;}';
+                css += '.cache-detail-preview.list-cache > div {padding: 0px !important}';
+                css += '.cache-detail-preview.list-cache .dismiss-active-list-button {padding: 5px 8px 5px 0px !important}';
                 css += '#map-chip {display: none !important;}';
                 // Filter
                 css += 'body.default_settings_running .gc-filter-modal {z-index: -1 !important;}';
