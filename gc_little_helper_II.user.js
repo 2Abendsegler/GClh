@@ -4648,6 +4648,39 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide advertisement link",e);}
     }
 
+// Impove log form
+    if (is_page('logform')) {
+        const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+\/log/i)[1] === 'trackable';
+        let css = '';
+        // Signature
+
+        // Log Template
+
+        // Show length of logtext
+        if (settings_improve_character_counter) {
+        }
+        
+        // Show message in case of unsaved log
+        if (settings_unsaved_log_message) {
+
+        }
+
+        // Show additional cache info
+        if (settings_show_add_cache_info_in_log_page) {
+            
+        }
+
+        // Default Logtypes
+
+        // Auto visit for TBs
+        if (!isTB && settings_autovisit) {
+
+        }
+
+        // Append the sytle
+        appendCssStyle(css);
+    }
+
 // Improve Mail.
     if (settings_show_mail && document.location.href.match(/\.com\/email\//) && $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0]) {
         try {
@@ -18859,6 +18892,8 @@ function is_page(name) {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
     } else if (name == "logbook") { // View all logs.
         if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
+    } else if (name == 'logform') {
+        if (url.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+\/log/i)) status = true;
     } else {
         gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }
