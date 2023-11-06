@@ -2369,7 +2369,14 @@ var mainGC = function() {
 
 // Copy GC Code to clipboard.
     if (is_page('cache_listing') && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
-        addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");
+        // Project-gc makes the ctoc for the gccode disappear again.
+        function build_ctoc_gccode(waitCount) {
+            if (!$('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').closest('div').find('.ctoc_link')[0]) {
+                addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "GC Code");
+            }
+            waitCount++; if (waitCount <= 100) setTimeout(function(){build_ctoc_gccode(waitCount);}, 100);
+        }
+        build_ctoc_gccode(0);
     }
 
 // Show favorite percentage.
