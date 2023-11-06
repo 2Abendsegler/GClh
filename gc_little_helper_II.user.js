@@ -4659,9 +4659,9 @@ var mainGC = function() {
         // Show length of logtext
         if (settings_improve_character_counter) {
             // Count characters
-            css += '.character-limit {display: inline !important}'
+            css += '.character-limit {display: inline !important}';
             // Count words
-            $('.character-limit').append('<span class="gclh_word_count"></span>')
+            $('.character-limit').append('<span class="gclh_word_count"></span>');
             $('#gc-md-editor_md').bind('input', (e) => {
                 let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
                 $('.gclh_word_count').html(`&nbsp;(${words})`);
@@ -4670,10 +4670,10 @@ var mainGC = function() {
         
         // Show message in case of unsaved log
         if (settings_unsaved_log_message) {
-            let isSubmit = false
-            $('.post-button-container').bind('click', () => isSubmit = true)
+            let isSubmit = false;
+            $('.post-button-container').bind('click', () => isSubmit = true);
             window.onbeforeunload = function(e) {
-                if (!isSubmit && $('#gc-md-editor_md').val().trim() != '' && settings_unsaved_log_message) {
+                if (!isSubmit && $('#gc-md-editor_md').val().trim() != '') {
                     var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
                     e.returnValue = mess;
                     return mess;
