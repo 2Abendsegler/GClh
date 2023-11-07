@@ -4650,7 +4650,8 @@ var mainGC = function() {
 
 // Impove log form
     if (is_page('logform')) {
-        const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+\/log/i)[1] === 'trackable';
+        const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
+        const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
         let css = '';
         // Signature
 
@@ -18909,7 +18910,7 @@ function is_page(name) {
     } else if (name == "logbook") { // View all logs.
         if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
     } else if (name == 'logform') {
-        if (url.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+\/log/i)) status = true;
+        if (url.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)) status = true;
     } else {
         gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }
