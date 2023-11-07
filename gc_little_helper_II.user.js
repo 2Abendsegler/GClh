@@ -4655,54 +4655,56 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide advertisement link",e);}
     }
 
-// Impove log form
+// Improve log form.
     if (is_page('logform')) {
-        const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
-        const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
-        let css = '';
-        // Signature
+        try {
+            const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
+            const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
+            let css = '';
+            // Signature.
 
-        // Log Template
+            // Log Templates.
 
-        // Show length of logtext
-        if (settings_improve_character_counter) {
-            // Count characters
-            css += '.character-limit {display: inline !important}';
-            // Count words
-            $('.character-limit').append('<span class="gclh_word_count"></span>');
-            $('#gc-md-editor_md').bind('input', (e) => {
-                let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
-                $('.gclh_word_count').html(`&nbsp;(${words})`);
-            })
-        }
-        
-        // Show message in case of unsaved log
-        if (settings_unsaved_log_message) {
-            let isSubmit = false;
-            $('.post-button-container').bind('click', () => isSubmit = true);
-            window.onbeforeunload = function(e) {
-                if (!isSubmit && $('#gc-md-editor_md').val().trim() != '') {
-                    var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
-                    e.returnValue = mess;
-                    return mess;
-                }
-            };
-        }
+            // Show length of logtext and word count.
+            if (settings_improve_character_counter) {
+                // Count characters.
+                css += '.character-limit {display: inline !important}';
+                // Count words.
+                $('.character-limit').append('<span class="gclh_word_count"></span>');
+                $('#gc-md-editor_md').bind('input', (e) => {
+                    let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
+                    $('.gclh_word_count').html(`&nbsp;(${words})`);
+                })
+            }
 
-        // Show additional cache info
-        if (settings_show_add_cache_info_in_log_page) {
-            
-        }
+            // Show message in case of unsaved log.
+            if (settings_unsaved_log_message) {
+                let isSubmit = false;
+                $('.post-button-container').bind('click', () => isSubmit = true);
+                window.onbeforeunload = function(e) {
+                    if (!isSubmit && $('#gc-md-editor_md').val().trim() != '') {
+                        var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
+                        e.returnValue = mess;
+                        return mess;
+                    }
+                };
+            }
 
-        // Default Logtypes
+            // Show additional cache info.
+            if (settings_show_add_cache_info_in_log_page) {
 
-        // Auto visit for TBs
-        if (!isTB && settings_autovisit) {
+            }
 
-        }
+            // Default logtypes.
 
-        // Append the sytle
-        appendCssStyle(css);
+            // Auto visit for TBs.
+            if (!isTB && settings_autovisit) {
+
+            }
+
+            // Append the style.
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve log form",e);}
     }
 
 // Improve Mail.
