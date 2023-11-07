@@ -4655,6 +4655,56 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide advertisement link",e);}
     }
 
+// Impove log form
+    if (is_page('logform')) {
+        const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
+        const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
+        let css = '';
+        // Signature
+
+        // Log Template
+
+        // Show length of logtext
+        if (settings_improve_character_counter) {
+            // Count characters
+            css += '.character-limit {display: inline !important}';
+            // Count words
+            $('.character-limit').append('<span class="gclh_word_count"></span>');
+            $('#gc-md-editor_md').bind('input', (e) => {
+                let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
+                $('.gclh_word_count').html(`&nbsp;(${words})`);
+            })
+        }
+        
+        // Show message in case of unsaved log
+        if (settings_unsaved_log_message) {
+            let isSubmit = false;
+            $('.post-button-container').bind('click', () => isSubmit = true);
+            window.onbeforeunload = function(e) {
+                if (!isSubmit && $('#gc-md-editor_md').val().trim() != '') {
+                    var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
+                    e.returnValue = mess;
+                    return mess;
+                }
+            };
+        }
+
+        // Show additional cache info
+        if (settings_show_add_cache_info_in_log_page) {
+            
+        }
+
+        // Default Logtypes
+
+        // Auto visit for TBs
+        if (!isTB && settings_autovisit) {
+
+        }
+
+        // Append the sytle
+        appendCssStyle(css);
+    }
+
 // Improve Mail.
     if (settings_show_mail && document.location.href.match(/\.com\/email\//) && $('#ctl00_ContentBody_SendMessagePanel1_tbMessage')[0]) {
         try {
@@ -18866,6 +18916,8 @@ function is_page(name) {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
     } else if (name == "logbook") { // View all logs.
         if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
+    } else if (name == 'logform') {
+        if (url.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)) status = true;
     } else {
         gclh_error("is_page", "is_page("+name+", ... ): unknown name");
     }
