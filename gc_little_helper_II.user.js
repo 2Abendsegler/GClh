@@ -4661,8 +4661,43 @@ var mainGC = function() {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
             let css = '';
+            // Helper funktions
+            function getGCTBInfo() {
+                var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
+                var GCTBName = $('.loggable-header a.geocache-link')[0].innerHTML;
+                GCTBName = GCTBName.replace(/'/g,"");
+                var GCTBLink = $('.loggable-header a.geocache-link')[0].href;
+                var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+                if ($('#log-date')[0]) var LogDate = $('#log-date')[0].value;
+                return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
+            }
+            function replacePlaceholder(text) {
+                var finds = global_findCount;
+                var me = global_me;
+                var owner = $('.hidden-by a')[0].innerText;
+                text = text.replace(/#found_no-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
+                finds++;
+                text = text.replace(/#owner#/ig, owner).replace(/#me#/ig, me);
+                text = text.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
+                var [aDate, aTime, aDateTime] = getDateTime();
+                text = text.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
+                var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo();
+                text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
+                return text;
+            }
             // Signature.
-
+            if (!isDraft || settings_log_signature_on_fieldnotes) { // only add signature to drafts if the user want it.
+                waitForElementThenRun('#log-date', () => {
+                    let logfield = $('#gc-md-editor_md')[0];
+                    var logtext = logfield.value;
+                    var signature = getValue("settings_log_signature", "");
+                    if (!logtext.includes(signature.replace(/^\s*/, ''))) {
+                        let text = logfield.value + replacePlaceholder(signature);
+                        logfield.value = text;
+                    }
+                    logfield.dispatchEvent(new Event('input'));
+                }, 100);
+            }
             // Log Templates.
 
             // Show length of logtext and word count.
@@ -4674,7 +4709,7 @@ var mainGC = function() {
                 $('#gc-md-editor_md').bind('input', (e) => {
                     let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
                     $('.gclh_word_count').html(`&nbsp;(${words})`);
-                })
+                });
             }
 
             // Show message in case of unsaved log.
