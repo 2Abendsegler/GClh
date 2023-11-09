@@ -4690,7 +4690,7 @@ var mainGC = function() {
                 };
             }
 
-            // Show additional cache info.
+            // Show additional cache info. //xxxx
             if (settings_show_add_cache_info_in_log_page) {
 
             }
