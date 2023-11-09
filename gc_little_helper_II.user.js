@@ -3316,6 +3316,32 @@ var mainGC = function() {
                         }
                     });
                 }
+            // Post Cache redesigned new log page:
+            } else if (document.location.href.match(/\.com\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)) {
+                function checkBuildSendIcons(waitCount, username, guid) {
+                    if (!$('.gclh_send')[0]) {
+                        var side = $('.hidden-by a')[0];
+                        buildSendIcons(side, username, "per guid", guid);
+                    }
+                    waitCount++;
+                    if (waitCount <= 50) setTimeout(function(){checkBuildSendIcons(waitCount, username, guid);}, 200);
+                }
+                var idCode = $('.hidden-by a')[0].href.match(/\.com\/p\?(id=|code=)(\w+)/);
+                if (idCode && idCode[2]) {
+                    var idCodeLink = "/p/default.aspx?" + idCode[1] + idCode[2] + "&tab=geocaches";
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: idCodeLink,
+                        onload: function(response) {
+                            if (response.responseText) {
+                                var [username, guid] = getUserGuidFromProfile(response.responseText);
+                                if (username && guid) {
+                                    checkBuildSendIcons(0, username, guid);
+                                }
+                            }
+                        }
+                    });
+                }
             // Rest:
             } else {
                 if (is_page("cache_listing")) var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
@@ -4655,6 +4681,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide advertisement link",e);}
     }
 
+//xxxx
 // Improve log form.
     if (is_page('logform')) {
         try {
@@ -6881,6 +6908,7 @@ var mainGC = function() {
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
              document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/)   ||      // Post Cache Logs neue Seite
+             document.location.href.match(/\.com\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i) ||  // Post cache and TB log in redesigned new page
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
              document.location.href.match(/\.com\/my/)                           ||      // Profil
@@ -7474,6 +7502,41 @@ var mainGC = function() {
                     GM_xmlhttpRequest({
                         method: "GET",
                         url: idLink,
+                        onload: function(response) {
+                            if (response.responseText) {
+                                [user, guid] = getUserGuidFromProfile(response.responseText);
+                                if (user) {
+                                    appendCssStyle(".gclh_vip {margin-left: 8px; margin-right: 4px;}");
+                                    checkBuildVipIcons(0, username, guid);
+                                }
+                            }
+                        }
+                    });
+                }
+
+            // Post cache and TB log in redesigned new page:
+            // ----------
+            } else if (document.location.href.match(/\.com\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i) && $('.hidden-by a')[0]) {
+                var idCode = $('.hidden-by a')[0].href.match(/\.com\/p\?(id=|code=)(\w+)/);
+                if (idCode && idCode[2]) {
+                    function checkBuildVipIcons(waitCount, username, guid) {
+                        // Sometimes the icons disappear again when the user reloads the page.
+                        if (!$('.gclh_vip')[0]) {
+                            var side = $('.hidden-by a')[0];
+                            link = gclh_build_vipvup(user, global_vips, "vip");
+                            side.appendChild(link);
+                            if (settings_process_vup && user != global_activ_username) {
+                                link = gclh_build_vipvup(user, global_vups, "vup");
+                                side.appendChild(link);
+                            }
+                        }
+                        waitCount++;
+                        if (waitCount <= 50) setTimeout(function(){checkBuildVipIcons(waitCount, username, guid);}, 200);
+                    }
+                    var idCodeLink = "/p/default.aspx?" + idCode[1] + idCode[2] + "&tab=geocaches";
+                    GM_xmlhttpRequest({
+                        method: "GET",
+                        url: idCodeLink,
                         onload: function(response) {
                             if (response.responseText) {
                                 [user, guid] = getUserGuidFromProfile(response.responseText);
@@ -18918,6 +18981,7 @@ function is_page(name) {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
     } else if (name == "logbook") { // View all logs.
         if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
+//xxxx
     } else if (name == 'logform') {
         if (url.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)) status = true;
     } else {
