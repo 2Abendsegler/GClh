@@ -4691,8 +4691,83 @@ var mainGC = function() {
             }
 
             // Show additional cache info.
-            if (settings_show_add_cache_info_in_log_page) {
-
+            if (!isTB && !$('#aci')[0] && $('.loggable-header .geocache-link')[0] && settings_show_add_cache_info_in_log_page) {
+                css += '.loggable-header .badge {margin-left: 0px;}';
+                css += '#aci {font-size: 14px; font-weight: normal; margin-left: 8px; white-space: nowrap; cursor: default;}';
+                css += '#aci svg {vertical-align: text-bottom;}';
+                css += '#aci img {vertical-align: sub;}';
+                url = $('.loggable-header .geocache-link')[0].href;
+                $.get(url, null, function(text){
+                    var aci = '';
+                    // Favorite points and favorite percent.
+                    var favoritePoints = $(text).find('.favorite-value').html();
+                    if (favoritePoints) {
+                        favoritePoints = favoritePoints.replace('(.|,)','');
+                        favoritePoints = parseInt(favoritePoints);
+                        aci += separator(aci);
+                        aci += '<span class="favorites" title="Favorites">';
+                        aci += '<svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16"></image></svg>';
+                        aci += '<span class="favorite_points" title="Favorite points"> ' + favoritePoints + '</span>';
+                        aci += '<span class="favorite_percent" title="Favorites in percent"></span>';
+                        aci += '</span>';
+                    }
+                    // Watcher.
+                    var watchNumber = $(text).find('#watchlistLinkMount');
+                    if (watchNumber[0]) {
+                        watchNumber = watchNumber[0].getAttribute("data-watchcount");
+                        aci += separator(aci);
+                        aci += '<span class="watcher" title="Watcher">';
+                        aci += '<img src="/images/icons/16/watch.png" height="16px" width="16px">';
+                        aci += '<span class="watch-number" title="Number of watcher"> ' + watchNumber + '</span>';
+                        aci += '</span>';
+                    }
+                    // Difficulty and Terrain
+                    var difficulty = $(text).find('#ctl00_ContentBody_uxLegendScale img');
+                    var terrain = $(text).find('#ctl00_ContentBody_Localize12 img')
+                    if ((difficulty[0]) && (terrain[0])) {
+                        difficulty = difficulty[0].getAttribute("alt").split(" ")[0];
+                        terrain = terrain[0].getAttribute("alt").split(" ")[0];
+                        aci += separator(aci);
+                        aci += '<span class="difficulty" title="Difficulty">';
+                        aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use></svg>';
+                        aci += '<span class="difficulty-number"> ' + difficulty + ' </span>';
+                        aci += '</span>';
+                        aci += '<span class="terrain" title="Terrain">';
+                        aci += '<svg aria-hidden="true" height="16" width="16" role="img"><use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use></svg>';
+                        aci += '<span class="terrain-number"> ' + terrain + '</span>';
+                        aci += '</span>';
+                    }
+                    if (!aci == '') {
+                        // Set variable length of cache name.
+                        $('.loggable-header .geocache-link')[0].setAttribute('style', 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;');
+                        $('.loggable-header .geocache-link')[0].title = $('.loggable-header .geocache-link')[0].innerHTML;
+                        function setMaxwidthOfCacheName(waitCount) {
+                            if ($('.loggable-header')[0] && $('.loggable-header .gc-geocache-icon')[0] && $('#aci')[0]) {
+                                var newMaxWidth = parseInt(window.getComputedStyle($('.loggable-header')[0]).width) - 38
+                                                - parseInt(window.getComputedStyle($('.loggable-header .gc-geocache-icon')[0]).width)
+                                                - ($('.loggable-header .badge')[0] ? parseInt(window.getComputedStyle($('.loggable-header .badge')[0]).width) : 0)
+                                                - parseInt(window.getComputedStyle($('#aci')[0]).width);
+                                var oldMaxWidth = (parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) ? parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) : 0);
+                                var difMaxWidth = oldMaxWidth - newMaxWidth;
+                                if (difMaxWidth > 1 || difMaxWidth < -1) {
+                                    $('.loggable-header .geocache-link')[0].style.maxWidth = newMaxWidth + "px";
+                                }
+                            }
+                            waitCount++;
+                            if (waitCount <= 50) setTimeout(function(){setMaxwidthOfCacheName(waitCount);}, 200);
+                        }
+                        setMaxwidthOfCacheName(0);
+                        // Output additional cache info.
+                        $('.loggable-header').append('<span id="aci">' + aci + '</span>');
+                        // Get favorite score and output.
+                        var gccode = $('.loggable-header .geocache-link')[0].href.match(/\.com\/geocache\/(.*)/);
+                        if (gccode && gccode[1] && favoritePoints) {
+                            getFavoriteScore(gccode[1], function(score) {
+                                $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
+                            });
+                        }
+                    }
+                });
             }
 
             // Default logtypes.
