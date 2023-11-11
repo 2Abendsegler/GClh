@@ -4703,6 +4703,24 @@ var mainGC = function() {
             }
 
             // Replicate TB-Header to bottom.
+            if (!isTB && !$('.tb-inventory-header.gclh_tb_header')[0]) {
+                css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
+                function buildTBHeaderToBottom(waitCount) {
+                    if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0]) {
+                        $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
+                        $('.gclh_tb_clear_all')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
+                        });
+                        $('.gclh_tb_visit_all')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
+                        });
+                        $('.gclh_tb_drop_all')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
+                        });
+                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 100);}
+                }
+                buildTBHeaderToBottom(0);
+            }
 
             // Append the style.
             appendCssStyle(css);
