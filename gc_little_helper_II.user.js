@@ -4702,6 +4702,8 @@ var mainGC = function() {
 
             }
 
+            // Replicate TB-Header to bottom.
+
             // Append the style.
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve log form",e);}
