@@ -4681,7 +4681,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide advertisement link",e);}
     }
 
-//xxxx
 // Improve log form.
     if (is_page('logform')) {
         try {
@@ -4717,7 +4716,7 @@ var mainGC = function() {
                 };
             }
 
-            // Show additional cache info. //xxxx
+            // Show additional cache info.
             if (settings_show_add_cache_info_in_log_page) {
 
             }
@@ -7520,7 +7519,6 @@ var mainGC = function() {
                 var idCode = $('.hidden-by a')[0].href.match(/\.com\/p\?(id=|code=)(\w+)/);
                 if (idCode && idCode[2]) {
                     function checkBuildVipIcons(waitCount, username, guid) {
-                        // Sometimes the icons disappear again when the user reloads the page.
                         if (!$('.gclh_vip')[0]) {
                             var side = $('.hidden-by a')[0];
                             link = gclh_build_vipvup(user, global_vips, "vip");
@@ -14061,11 +14059,12 @@ var mainGC = function() {
     function getUserGuidFromProfile(respText) {
         var user = respText.match(/id="ctl00_(ProfileHead_ProfileHeader|ContentBody_ProfilePanel1)_lblMemberName">(.*?)<\/span>/);
         var guid = respText.match(/href="\/account\/messagecenter\?recipientId=([a-zA-Z0-9-]*)"/);
-        if (user && user[1] && user[2] && guid && guid[1]) {
+        if (user && user[1] && user[2]) {
             var span = document.createElement('span');
             span.innerHTML = user[2];
             var username = decode_innerHTML(span);
-            return [username, guid[1]];
+            if (guid && guid[1]) return [username, guid[1]];
+            else return [username, false];
         }
         return [false, false];
     }
@@ -18981,7 +18980,6 @@ function is_page(name) {
         if (url.match(/^\/my\/souvenirs\.aspx/)) status = true;
     } else if (name == "logbook") { // View all logs.
         if (url.match(/^\/seek\/geocache_logs\.aspx/)) status = true;
-//xxxx
     } else if (name == 'logform') {
         if (url.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)) status = true;
     } else {
