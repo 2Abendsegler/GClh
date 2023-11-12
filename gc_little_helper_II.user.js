@@ -4763,7 +4763,7 @@ var mainGC = function() {
                         var gccode = $('.loggable-header .geocache-link')[0].href.match(/\.com\/geocache\/(.*)/);
                         if (gccode && gccode[1] && favoritePoints) {
                             getFavoriteScore(gccode[1], function(score) {
-                                $('.favorite_percent')[0].innerHTML = ' ' + score + '%';
+                                $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
                             });
                         }
                     }
