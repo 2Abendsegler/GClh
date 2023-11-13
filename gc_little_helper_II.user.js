@@ -4798,7 +4798,7 @@ var mainGC = function() {
 
             // Default logtypes.
 
-            // Auto visit for TBs.
+            // Auto visit for TBs. xxxx
             if (!isTB && settings_autovisit) {
 
             }
