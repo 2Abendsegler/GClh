@@ -4689,7 +4689,7 @@ var mainGC = function() {
             let css = '';
             // Signature.
 
-            // Log Templates.
+            // Log Templates. xxxx
 
             // Show length of logtext and word count.
             if (settings_improve_character_counter) {
