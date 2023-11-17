@@ -4689,7 +4689,104 @@ var mainGC = function() {
             let css = '';
             // Signature.
 
-            // Log Templates. xxxx
+            // Log Templates.
+            function buildLogTemplates(waitCount) {
+                if ($('#log-date')[0] && $('.hidden-by a')[0] && $('div.log-meta-controls')[0] && $('#gc-md-editor_md')[0]) {
+                    // Script for insert log template by click.
+                    function insertLogTemplatesFunction() {
+                        if ($('#gclh_LogTemplatesScript')[0]) return;
+                        finds = global_findCount;
+                        var [aDate, aTime, aDateTime] = getDateTime();
+                        var me = global_me;
+                        aOwner = aOwner.replace(/'/g,"\\'");
+                        var code = "function gclh_insert_tpl(id){";
+                        code += "  document.getElementById('gclh_log_tpls').value = -1;";
+                        code += "  var aLogDate = document.getElementById('log-date').value;";
+                        code += "  var input = document.getElementById('gc-md-editor_md');";
+                        code += "  var finds = '" + finds + "';";
+                        code += "  var aDate = '" + aDate + "';";
+                        code += "  var aTime = '" + aTime + "';";
+                        code += "  var aDateTime = '" + aDateTime + "';";
+                        code += "  var me = '" + me + "';";
+                        code += "  var aGCTBName = '" + aGCTBName + "';";
+                        code += "  var aGCTBLink = '" + aGCTBLink + "';";
+                        code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
+                        code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
+                        code += "  var owner = '" + aOwner + "';";
+                        code += "  var inhalt = document.getElementById(id).innerHTML;";
+                        code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
+                        code += "  if (finds) {";
+                        code += "    inhalt = inhalt.replace(/#found_no-?(\\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);";
+                        code += "    finds++;";
+                        code += "    inhalt = inhalt.replace(/#found-?(\\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);";
+                        code += "  }";
+                        code += "  if (aDate) inhalt = inhalt.replace(/#Date#/ig, aDate);";
+                        code += "  if (aTime) inhalt = inhalt.replace(/#Time#/ig, aTime);";
+                        code += "  if (aDateTime) inhalt = inhalt.replace(/#DateTime#/ig, aDateTime);";
+                        code += "  if (me) inhalt = inhalt.replace(/#me#/ig, me);";
+                        code += "  if (aGCTBName) inhalt = inhalt.replace(/#GCTBName#/ig, aGCTBName);";
+                        code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
+                        code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
+                        code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
+                        code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
+                        code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
+                        code += "    input.value = inhalt;";
+                        code += "  } else {";
+                        code += "    if (typeof input.selectionStart != 'undefined' && inhalt) {";
+                        code += "      var start = input.selectionStart;";
+                        code += "      var end = input.selectionEnd;";
+                        code += "      var insText = input.value.substring(start, end);";
+                        code += "      input.value = input.value.substr(0, start) + inhalt + input.value.substr(end);";
+                        code += "      var pos = start + inhalt.length;";
+                        code += "      input.selectionStart = input.selectionEnd = pos;";
+                        code += "    }";
+                        code += "  }";
+                        code += "  input.focus();";
+                        code += "}";
+                        if (!$('#gclh_LogTemplatesScript')[0]) {
+                            injectPageScript(code, 'body', 'gclh_LogTemplatesScript');
+                        }
+                    }
+                    function prepareLogTemplates() {
+                        var texts = ""; var logicNew = "";
+                        for (var i = 0; i < anzTemplates; i++) {
+                            if (getValue("settings_log_template_name["+i+"]", "") != "") {
+                                texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_log_template["+i+"]", "") + "</div>";
+                                logicNew += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</option>";
+                            }
+                        }
+                        if (getValue("last_logtext", "") != "") {
+                            texts += "<div id='gclh_template[last_logtext]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
+                            logicNew += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
+                        }
+                        liste += texts;
+                        liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value);'>";
+                        liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>Select option</option>";
+                        liste += logicNew;
+                        liste += "</select>";
+                    }
+                    var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogForm();
+                    var aOwner = decode_innerText($('.hidden-by a')[0]);
+                    insertLogTemplatesFunction();
+                    var liste = "";
+                    prepareLogTemplates();
+                    if (!$('#gclh_log_tpls')[0]) {
+                        $('div.log-meta-controls').append('<label class="gclh_LogTemplatesDropdown"><span>Log templates</span><div>'+liste+'</div></label>');
+                    }
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildLogTemplates(waitCount);}, 200);
+            }
+            try {
+                css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; min-width: 200px; max-width: 250px; letter-spacing: 0.7px;}';
+                css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
+                buildLogTemplates(0);
+            } catch(e) {gclh_error("Log Templates",e);}
+
+            // Save last log text.
+            try {
+                function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
+                if ($('.submit-button')[0]) $('.submit-button')[0].addEventListener('click', saveLastLog, true);
+            } catch(e) {gclh_error("Save last log text",e);}
 
             // Show length of logtext and word count.
             if (settings_improve_character_counter) {
@@ -13680,6 +13777,15 @@ var mainGC = function() {
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
+    function getGCTBInfoLogForm() {
+        var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
+        if ($('#log-date'[0])) var LogDate = $('#log-date')[0].value;
+        var GCTBName = $('a.geocache-link')[0].innerText;
+        GCTBName = GCTBName.replace(/'/g,"");
+        var GCTBLink = $('a.geocache-link')[0].href;
+        var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+        return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
+    }
     function getGCTBInfo(newLogPage) {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
         if (newLogPage) {
@@ -18909,6 +19015,13 @@ function urldecode(s, convertSpace=false) {
 function decode_innerHTML(v_mit_innerHTML) {
     var elem = document.createElement('textarea');
     elem.innerHTML = v_mit_innerHTML.innerHTML;
+    v_decode = elem.value;
+    v_new = v_decode.trim();
+    return v_new;
+}
+function decode_innerText(v_mit_innerHTML) {
+    var elem = document.createElement('textarea');
+    elem.innerHTML = v_mit_innerHTML.innerText;
     v_decode = elem.value;
     v_new = v_decode.trim();
     return v_new;
