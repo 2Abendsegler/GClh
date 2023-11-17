@@ -4785,7 +4785,14 @@ var mainGC = function() {
             // Save last log text.
             try {
                 function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
-                if ($('.submit-button')[0]) $('.submit-button')[0].addEventListener('click', saveLastLog, true);
+                function buildClickForSaveLastLog(waitCount) {
+                    if ($('button.submit-button')[0] && !$('button.submit-button.gclh_build_click')[0]) {
+                        $('button.submit-button')[0].addEventListener('click', saveLastLog, true);
+                        $('button.submit-button').addClass('gclh_build_click');
+                    }
+                    waitCount++; if (waitCount <= 50) setTimeout(function(){buildClickForSaveLastLog(waitCount);}, 200);
+                }
+                buildClickForSaveLastLog(0);
             } catch(e) {gclh_error("Save last log text",e);}
 
             // Show length of logtext and word count.
