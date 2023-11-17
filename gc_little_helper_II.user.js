@@ -1374,7 +1374,7 @@ var mainGCWait = function() {
 var mainGC = function() {
     tlc('START maingc');
 
-    // Part of core css of GS, Config and others.
+// Part of core css of GS, Config and others.
     var css = main_css;
     // Css for config, sync ... coloring.
     css += create_coloring_css();
@@ -1521,7 +1521,7 @@ var mainGC = function() {
     tlc('START buildUpHeader');
     try {
         function buildUpHeader(waitCount) {
-            if ($('#gc-header, #GCHeader')[0]) {
+            if ($('#gc-header, #GCHeader')[0] && !$('#ctl00_gcNavigation')[0]) {
                 tlc('Header found');
                 // Integrate old header.
                 ($('#gc-header') || $('#GCHeader')).after(header_old);
@@ -1560,11 +1560,10 @@ var mainGC = function() {
                     }
                 });
                 tlc('START OK');
-            } else {
-                waitCount++;
-                if (waitCount <= 1000) {setTimeout(function(){buildUpHeader(waitCount);}, 10);}
-                else {tlc('STOP No header found');}
             }
+            waitCount++;
+            if (waitCount <= 1000) {setTimeout(function(){buildUpHeader(waitCount);}, 10);}
+            else if (!$('#ctl00_gcNavigation')[0]) {tlc('STOP No header found');}
         }
         buildUpHeader(0);
     } catch(e) {gclh_error("Wait for header and build up header",e);}
