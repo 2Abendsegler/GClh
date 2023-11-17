@@ -13234,8 +13234,7 @@ var mainGC = function() {
                             }
                         }, false);
                         // Build copy link behind the edit link.
-                        // Nicht fertig bzw. im Rahmen von 'save as new' in dieser Form nicht mehr in Ordnung.
-                        // $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy notification"><img src="' + global_copy_icon2 + '"></a>');
+                        $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy notification"><img src="' + global_copy_icon2 + '"></a>');
                     }
                 });
             }
