@@ -4686,7 +4686,82 @@ var mainGC = function() {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
             let css = '';
+
             // Signature.
+            function replacePlaceholderInSignature() {
+                var id = 'gc-md-editor_md';
+                window.addEventListener("load", gclh_setFocus, false);
+                var finds = global_findCount;
+                var me = global_me;
+//xxxx Function vor GoLive umbenennen. Die Function ist im PR https://github.com/2Abendsegler/GClh/pull/2451.
+                var owner = decode_innerTextXXXX($('.hidden-by a')[0]);
+                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
+                finds++;
+                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#owner#/ig, owner);
+                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds).replace(/#me#/ig, me);
+                var [aDate, aTime, aDateTime] = getDateTime();
+                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
+//xxxx Function vor GoLive umbenennen. Die Function ist im PR https://github.com/2Abendsegler/GClh/pull/2451.
+                var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogFormXXXX();
+                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
+                // Set Cursor to Pos1.
+                function gclh_setFocus() {
+                    var input = document.getElementById(id);
+                    if (input) {
+                        try {
+                            input.selectionStart = 0;
+                            input.selectionEnd = 0;
+                            input.focus();
+                        } catch(e) {}
+                    }
+                }
+            }
+            function buildSignature(waitCount) {
+                // Kein Draft oder Draft mit Signatur.
+                if ($('#gc-md-editor_md')[0] && !$('#gc-md-editor_md.gclh_signature')[0]) {
+                    if ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)) {
+                        var initial_cursor_position = document.getElementById('gc-md-editor_md').selectionEnd;
+                        var logtext = document.getElementById('gc-md-editor_md').value;
+                        var signature = (isTB ? getValue('settings_tb_signature', '') : getValue('settings_log_signature', ''));
+                        if (!logtext.includes(signature.replace(/^\s*/, ''))) {
+                            document.getElementById('gc-md-editor_md').innerHTML += signature;
+                        }
+                        replacePlaceholderInSignature(true);
+                        if (isDraft) {  // Draft
+                            // 2 Zeilen sinngemäß von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
+                            var textarea = document.createElement('textarea');
+                            var value = $('<textarea>').html(document.getElementById('gc-md-editor_md').innerHTML).val();
+                            document.getElementById('gc-md-editor_md').value = value;
+                        }
+                        if (!$('#gc-md-editor_md.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
+                        document.getElementById('gc-md-editor_md').focus();
+                        document.getElementById('gc-md-editor_md').selectionEnd = initial_cursor_position;
+                        // Auch im Log Preview zur Anzeige bringen.
+                        document.getElementById('gc-md-editor_md').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
+                    }
+                }
+                waitCount++; if (waitCount <= 1000) setTimeout(function(){buildSignature(waitCount);}, 10);
+            }
+            try {
+                buildSignature(0);
+            } catch(e) {gclh_error("Signature",e);}
+//xxxx Beide folgenden Functions vor GoLive entfernen. Die Functions sind im PR https://github.com/2Abendsegler/GClh/pull/2451.
+function decode_innerTextXXXX(v_mit_innerHTML) {
+    var elem = document.createElement('textarea');
+    elem.innerHTML = v_mit_innerHTML.innerText;
+    v_decode = elem.value;
+    v_new = v_decode.trim();
+    return v_new;
+}
+function getGCTBInfoLogFormXXXX() {
+    var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
+    if ($('#log-date'[0])) var LogDate = $('#log-date')[0].value;
+    var GCTBName = $('a.geocache-link')[0].innerText;
+    GCTBName = GCTBName.replace(/'/g,"");
+    var GCTBLink = $('a.geocache-link')[0].href;
+    var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+    return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
+}
 
             // Log Templates.
 
