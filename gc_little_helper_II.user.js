@@ -14,7 +14,7 @@
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
 // @match        https://www.openstreetmap.org/*
-// @match        https://www.certitudes.org/*improve-notifications
+// @match        https://www.certitudes.org/*
 // @include      https://maps.google.tld/*
 // @include      https://www.google.tld/maps*
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
