@@ -14,7 +14,7 @@
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
 // @match        https://www.openstreetmap.org/*
-// @match        https://www.certitudes.org/*
+// @match        https://www.certitudes.org/*improve-notifications
 // @include      https://maps.google.tld/*
 // @include      https://www.google.tld/maps*
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
@@ -13217,6 +13217,8 @@ var mainGC = function() {
                         $(itemEdit).addClass('gclh_icon');
                         $(itemEdit).append('<svg style="height: 17px; width: 17px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-edit-currentcolor"></use></svg>');
                         $(itemEdit).closest('td')[0].setAttribute('style', 'white-space: nowrap;');
+                        // Build copy link behind the edit link.
+                        $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy as new notification"><img src="' + global_copy_icon2 + '"></a>');
                         // Build delete link behind the edit link.
                         $(itemEdit).after('<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>');
                         $(this).find('.gclh_delete')[0].addEventListener("click", function() {
@@ -13233,8 +13235,6 @@ var mainGC = function() {
                                 });
                             }
                         }, false);
-                        // Build copy link behind the edit link.
-                        $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy notification"><img src="' + global_copy_icon2 + '"></a>');
                     }
                 });
             }
@@ -13274,7 +13274,7 @@ var mainGC = function() {
                 // Build table sort.
                 $('table .gclh_col_enable')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_name')[0])});
                 $('table .gclh_col_icon')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_name')[0])});
-                $('table .gclh_col_name')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, '')});
+                $('table .gclh_col_name')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_cachetype')[0])});
                 $('table .gclh_col_cachetype')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_name')[0])});
             }
 
