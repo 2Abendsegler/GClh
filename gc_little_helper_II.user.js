@@ -4788,7 +4788,9 @@ var mainGC = function() {
                         var gccode = $('.loggable-header .geocache-link')[0].href.match(/\.com\/geocache\/(.*)/);
                         if (gccode && gccode[1] && favoritePoints) {
                             getFavoriteScore(gccode[1], function(score) {
-                                $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
+                                if ($('.favorite_percent')[0] && $('.favorite_percent')[0].innerHTML) {
+                                    $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
+                                }
                             });
                         }
                     }
@@ -4798,8 +4800,83 @@ var mainGC = function() {
             // Default logtypes.
 
             // Auto visit for TBs.
-            if (!isTB && settings_autovisit) {
-
+            if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
+                try {
+                    function getTbsAV() {return $('ul.tb-list li.tb-item');}
+                    function getLogTypeAV() {return $('input[name="logType"]').val();}
+                    function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
+                    function getTbActionTypeAV(tb) {
+                        let r = $(tb).find('div:not[.gclh_autovisit] input[type="radio"]');
+                        for (let i=0; i<3; i++) {
+                            if (r[i].checked) return r[i].value;
+                        }
+                    }
+                    function buildAutosAV() {
+                        let tbs = getTbsAV();
+                        if (tbs.length > 0) {
+                            for (let i=0; i<tbs.length; i++) {
+                                let tbC = getTbCodeAV(tbs[i]);
+                                if (getTbActionTypeAV(tbs[i]) != 14) { // Not Drop.
+                                    if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
+                                        $(tbs[i]).find('div:not[.gclh_autovisit] input[value="75"]')[0].click();
+                                    } else {
+                                        $(tbs[i]).find('div:not[.gclh_autovisit] input[value="-1"]')[0].click();
+                                    }
+                                }
+                                $(tbs[i]).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
+                                $(tbs[i]).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
+                            }
+                        }
+                    }
+                    function waitForTbsAV(waitCount) {
+                        if ($('ul.tb-list li.tb-item').length > 0) {
+                            var tbs = getTbsAV();
+                            if (tbs.length > 0) {
+                                for (let i=0; i<tbs.length; i++) {
+                                    if ($(tbs[i]).find('.gclh_autovisit')[0]) continue;
+                                    let tbC = getTbCodeAV(tbs[i]);
+                                    if (!$('#gclh_action_list_'+tbC)[0]) {
+                                        // Save TB for autovisit if it is new.
+                                        if (getValue("autovisit_"+tbC, "new") === "new") {
+                                            setValue("autovisit_"+tbC, settings_autovisit_default);
+                                        }
+                                        // Build a parent container for the buttons.
+                                        $(tbs[i]).find('.tb-info-container').after('<div id="gclh_action_list_'+tbC+'" class="gclh_action_list"></div>');
+                                        // Move existing buttons into parent container.
+                                        $(tbs[i]).find('.segmented-buttons').appendTo('#gclh_action_list_'+tbC+'');
+                                        // Copy existing buttons for auto visit feature.
+                                        var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
+                                        $(autoButtons).addClass('gclh_autovisit');
+                                        $('#gclh_action_list_'+tbC).append(autoButtons);
+                                        // Adapt copied buttons for auto visit feature.
+                                        $(tbs[i]).find('.gclh_autovisit label')[2].remove();
+                                        $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
+                                        $(tbs[i]).find('.gclh_autovisit input')[1].value = 1;
+                                        $(tbs[i]).find('.gclh_autovisit span')[1].innerHTML = 'Auto Visit';
+                                        $(tbs[i]).find('.gclh_autovisit label').each(function() {
+                                            $(this).find('input')[0].setAttribute('name', 'autovisit_'+tbC);
+                                            $(this).find('input')[0].setAttribute('data-event-category', '');
+                                            $(this).find('input')[0].setAttribute('data-event-label', '');
+                                            $(this).find('input')[0].setAttribute('data-testid', '');
+                                            $(this).find('input')[0].addEventListener('click', function(evt) {
+                                                setValue(evt.target.name, (evt.target.value==1 ? true : false));
+                                                buildAutosAV();
+                                            })
+                                        });
+                                    }
+                                }
+                                // Set Autovisits for all TBs.
+                                buildAutosAV();
+                                // Set autovisits for all TBs if a logtype was selected.
+                                $('#react-select-cache-log-type-input')[0].addEventListener('click', buildAutosAV);
+                            }
+                        }
+                        waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
+                    }
+                    waitForTbsAV(0);
+                    css += '.gclh_action_list {margin-top: 4px;}';
+                    css += '.gclh_autovisit {justify-content: normal !important; margin-top: 4px;}';
+                } catch(e) {gclh_error("Auto visit for TBs",e);}
             }
 
             // Replicate TB-Header to bottom.
