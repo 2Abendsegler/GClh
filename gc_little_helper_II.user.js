@@ -5078,6 +5078,29 @@ function getGCTBInfoLogFormXXXX() {
                 buildTBHeaderToBottom(0);
             }
 
+            // Send Log with F2
+            if (settings_submit_log_button) {
+                waitForElementThenRun('#log-date', () => {
+                    let logBtn = $('.post-button-container button.gc-button-primary')[0];
+
+                    if (logBtn) {
+                        function keydownF2(e) {
+                            if (!check_config_page()) {
+                                if (e.keyCode == 113 && noSpecialKey(e)) {
+                                    logBtn.click();
+                                }
+                                if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
+                                    e.preventDefault();
+                                    logBtn.click();
+                                }
+                            }
+                        }
+                        logBtn.innerHTML += " (F2)";
+                        window.addEventListener('keydown', keydownF2, true);
+                    }
+                }, 100);
+            }
+
             // Append the style.
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve log form",e);}
@@ -15308,7 +15331,7 @@ function getGCTBInfoLogFormXXXX() {
             }
             html += "</select>" + show_help("Here you can set the default language for the geocaching pages. In the case that apps change the language on the geocaching pages, the default language is automatically set again.") + "<br>";
             html += "&nbsp;" + "Page width <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the page width on the geocaching pages. The default value on the geocaching pages is 950 pixels.") + "<br>";
-            html += checkboxy('settings_submit_log_button', 'Activate F2 key to finish certain operations') + show_help("With this option you are able to finish certain operations by pressing the F2 key or by pressing the Ctrl and s keys together, instead of scrolling to the button and pressing the button with the mouse.<br><br>Supported operations:<br>- Logging: Post new cache log (old logging page only)<br>- Logging: Post changed cache log<br>- Logging: Post new TB log<br>- Logging: Post changed TB log<br>- Cache listing: Save Personal Cache Note<br>- Pocket Query: Save Pocket Query<br>- Search Map: Apply filters<br>- Search caches: Apply filters<br>- Hide a cache: Complete process<br>- Create a bookmark for a cache (old bookmark process)") + "<br>";
+            html += checkboxy('settings_submit_log_button', 'Activate F2 key to finish certain operations') + show_help("With this option you are able to finish certain operations by pressing the F2 key or by pressing the Ctrl and s keys together, instead of scrolling to the button and pressing the button with the mouse.<br><br>Supported operations:<br>- Logging: Post new cache log<br>- Logging: Post changed cache log<br>- Logging: Post new TB log<br>- Logging: Post changed TB log<br>- Cache listing: Save Personal Cache Note<br>- Pocket Query: Save Pocket Query<br>- Search Map: Apply filters<br>- Search caches: Apply filters<br>- Hide a cache: Complete process<br>- Create a bookmark for a cache (old bookmark process)") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Header Layout</b>" + "</div>";
             html += checkboxy('settings_change_header_layout', "Change header layout") + show_help("This allows you to redesign the header layout on the geocaching pages.") + "<br>";
