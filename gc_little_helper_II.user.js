@@ -4977,6 +4977,18 @@ function getGCTBInfoLogFormXXXX() {
             }
 
             // Default logtypes.
+            if (!document.location.href.match(/logType=/i)
+                && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
+                || isTB && settings_default_tb_logtype)) {
+                // Get the Logtype.
+                let logtype = $('.hidden-by a')[0].innerHTML == global_me ? settings_default_logtype_owner
+                    : $('.gc-geocache-icon svg use')[0]?.href.baseVal.match(/event/i) ? settings_default_logtype_event
+                    : isTB ? settings_default_tb_logtype : settings_default_logtype;
+                // Return if no Logtype is selected.
+                if (logtype == -1) return;
+                // Reload Page with correct Logtype.
+                document.location = `${document.location}?logType=${logtype}`;
+            }
 
             // Auto visit for TBs.
             if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
