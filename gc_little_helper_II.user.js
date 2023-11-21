@@ -13011,6 +13011,7 @@ var mainGC = function() {
                             successMessageNotif('Log type fields copied.');
                         }
                         enableAllFieldsNotif(true);
+                        processCoordsNotif(first = true, e = false, field = false);
                     }
                 });
             }
