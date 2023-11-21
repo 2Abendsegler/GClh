@@ -4685,13 +4685,11 @@ var mainGC = function() {
         try {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
-//xxxx
             let pageData = JSON.parse($('#__NEXT_DATA__')[0].innerText).props.pageProps;
             const isEvent = pageData.isEvent;
             let css = '';
 
             // Default logtypes.
-//xxxx
             function setDefaultLogtype(waitCount) {
                 if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText) {
                     // Get default logtype.
@@ -4715,7 +4713,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Default logtypes in improve log form",e);}
 
             // Signature.
-//xxxx
             function buildSignature(waitCount) {
                 function replacePlaceholder(text) {
                     var id = 'gc-md-editor_md';
@@ -4739,7 +4736,7 @@ var mainGC = function() {
                         var signature = getValue("settings_log_signature", "");
                         if (!logtext.includes(signature.replace(/^\s*/, ''))) {
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
-                            logfield.value = text;
+                            logfield.innerHTML = text;
                         }
                         if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
                         logfield.dispatchEvent(new Event('input'));
@@ -4755,7 +4752,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Signature in improve log form",e);}
 
             // Log Templates.
-//xxxx
             function buildLogTemplates(waitCount) {
                 if ($('#log-date')[0] && $('.hidden-by a')[0] && $('div.log-meta-controls')[0] && $('#gc-md-editor_md')[0]) {
                     // Script for insert log template by click.
@@ -4850,7 +4846,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Log Templates in improve log form",e);}
 
             // Save last log text.
-//xxxx
             function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
             function buildClickForSaveLastLog(waitCount) {
                 if ($('button.submit-button')[0] && !$('button.submit-button.gclh_build_click')[0]) {
@@ -4864,7 +4859,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Save last log text in improve log form",e);}
 
             // Show length of logtext and word count.
-//xxxx
             function buildShowLengthOfLogtext(waitCount) {
                 if ($('#gc-md-editor_md')[0] && !$('.gclh_word_count')[0]) {
                     // Count words.
@@ -4885,7 +4879,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Show length of logtext in improve log form",e);}
 
             // Show message in case of unsaved log.
-//xxxx
             function buildMessUnsavedLog(waitCount) {
                 if ($('.post-button-container')[0] && !$('.gclh_mess_unsaved_log')[0]) {
                     $('.post-button-container').bind('click', () => isSubmit = true);
@@ -4908,7 +4901,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Show message in case of unsaved log in improve log form",e);}
 
             // Show additional cache info.
-//xxxx
             // The fields difficulty, terrain, favoritePoints and premiumFavoriteScore are available in page data ("__NEXT_DATA__", props.pageProps.loggable),
             // but the fields have no values. In addition, the watchers are not included there. Therefore, we cannot replace the website reading with this data.
             function outputAddCacheInfo(aci, waitCount) {
@@ -5008,7 +5000,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Show additional cache info in improve log form",e);}
 
             // Auto visit for TBs.
-//xxxx
             function getTbsAV() {return $('ul.tb-list li.tb-item');}
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
@@ -5104,7 +5095,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
 
             // Replicate TB-Header to bottom.
-//xxxx
             function buildTBHeaderToBottom(waitCount) {
                 if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
                     $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
@@ -5128,7 +5118,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Replicate TB-Header to bottom in improve log form",e);}
 
             // Send Log with F2.
-//xxxx
             function buildSendLogWithF2(waitCount) {
                 if ($('.post-button-container button.gc-button-primary')[0] && !$('.post-button-container button.gc-button-primary')[0].innerHTML.match(/\s\(F2\)/)) {
                     let logBtn = $('.post-button-container button.gc-button-primary')[0];
@@ -14008,7 +13997,6 @@ var mainGC = function() {
     }
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
-//xxxx
     function getGCTBInfoLogForm() {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
         var GCTBName = $('.loggable-header a.geocache-link')[0].innerText;
@@ -16125,7 +16113,6 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn3;
             html += content_settings_after_sending_draft_related_log2.replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
-//xxxx
             html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
@@ -16141,7 +16128,6 @@ var mainGC = function() {
             html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs coming from drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
             html += "&nbsp;" + "TB log signature" + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
-//xxxx
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
