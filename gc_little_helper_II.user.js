@@ -12951,10 +12951,10 @@ var mainGC = function() {
                     $(this)[0].style.opacity = '0.5';
                 });
             }
-            function enableAllFieldsNotif() {
+            function enableAllFieldsNotif(all) {
                 $('input,select').each(function(){
                     $(this)[0].removeAttribute('disabled', '');
-                    $(this)[0].style.opacity = '1';
+                    if (all) $(this)[0].style.opacity = '1';
                 });
             }
             function setValueNotif(c, sel) {
@@ -12968,17 +12968,14 @@ var mainGC = function() {
                 }
             }
             function successMessageNotif(mess) {
-                var p = document.createElement('p');
-                p.setAttribute('class', 'Success');
-                p.innerHTML = mess;
-                $('#divContentMain')[0].insertBefore(p, $('#ctl00_ContentBody_divPremiumMemberText')[0]);
+                $('#ctl00_ContentBody_divPremiumMemberText').before('<p class="Success">' + mess + '</p>');
             }
-            function prepareCopyNotif(nid, first) {
+            function prepareCopyNotif(nid) {
                 disableAllFieldsNotif();
                 $.get('https://www.geocaching.com/notify/edit.aspx?NID=' + nid, null, function(c){
-                    // If it is the first call of the page.
-                    if (first) {
-                        // Set notification name to 10 blank, so we can recognize the second call of the page.
+                    // First call of the page.
+                    if (document.location.href.match(/#first/)) {
+                        // Set notification name to 10 blanks, so we can recognize the second call of the page.
                         $('#ctl00_ContentBody_LogNotify_tbName')[0].value = '          ';
                         // Select cachetype and trigger a reload of the page.
                         if ($('#ctl00_ContentBody_LogNotify_ddTypeList')[0].selectedIndex == 0) {
@@ -12986,26 +12983,34 @@ var mainGC = function() {
                             enableAllFieldsNotif();
                             $("#ctl00_ContentBody_LogNotify_ddTypeList").trigger("change");
                         }
-                    // If it is the second call of the page.
                     } else {
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_tbName');
+                        // Set the log type fields.
+                        $('#ctl00_ContentBody_LogNotify_cblLogTypeList input').each(function(){
+                            $(this)[0].removeAttribute('checked');
+                        });
                         $(c).find('#ctl00_ContentBody_LogNotify_cblLogTypeList input[checked="checked"]').each(function(){
-                            if ($(this)[0].id && $('#ctl00_ContentBody_LogNotify_cblLogTypeList #'+$(this)[0].id)[0]) {
-                                $('#ctl00_ContentBody_LogNotify_cblLogTypeList #'+$(this)[0].id)[0].checked = 'checked';
+                            if ($(this)[0].value && $('#ctl00_ContentBody_LogNotify_cblLogTypeList input[value="'+$(this)[0].value+'"]')[0]) {
+                                $('#ctl00_ContentBody_LogNotify_cblLogTypeList input[value="'+$(this)[0].value+'"]')[0].checked = 'checked';
                             }
                         });
-                        setSelectOptionNotif(c, '#ctl00_ContentBody_LogNotify_LatLong\\:_selectNorthSouth');
-                        setSelectOptionNotif(c, '#ctl00_ContentBody_LogNotify_LatLong\\:_selectEastWest');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLatDegs');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLatMins');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLatSecs');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLongDegs');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLongMins');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLongSecs');
-                        setValueNotif(c, '#ctl00_ContentBody_LogNotify_tbDistance');
-                        setSelectOptionNotif(c, '#ctl00_ContentBody_LogNotify_ddlAltEmails');
-                        enableAllFieldsNotif();
-                        successMessageNotif('Input fields copied.');
+                        // Second call of the page where all fields are copied.
+                        if ($('#ctl00_ContentBody_LogNotify_tbName')[0].value == '          ') {
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_tbName');
+                            setSelectOptionNotif(c, '#ctl00_ContentBody_LogNotify_LatLong\\:_selectNorthSouth');
+                            setSelectOptionNotif(c, '#ctl00_ContentBody_LogNotify_LatLong\\:_selectEastWest');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLatDegs');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLatMins');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLatSecs');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLongDegs');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLongMins');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_LatLong__inputLongSecs');
+                            setValueNotif(c, '#ctl00_ContentBody_LogNotify_tbDistance');
+                            setSelectOptionNotif(c, '#ctl00_ContentBody_LogNotify_ddlAltEmails');
+                            successMessageNotif('Input fields copied.');
+                        } else {
+                            successMessageNotif('Log type fields copied.');
+                        }
+                        enableAllFieldsNotif(true);
                     }
                 });
             }
@@ -13316,11 +13321,7 @@ var mainGC = function() {
             if (document.location.href.match(/\.com\/notify\/edit\.aspx\?CopyNID=(\d+)/)) {
                 var nid = document.location.href.match(/\.com\/notify\/edit\.aspx\?CopyNID=(\d+)/);
                 if (nid && nid[1]) {
-                    if (document.location.href.match(/#first/)) {
-                        prepareCopyNotif(nid[1], true);
-                    } else if ($('#ctl00_ContentBody_LogNotify_tbName')[0].value == '          ') {
-                        prepareCopyNotif(nid[1], false);
-                    }
+                    prepareCopyNotif(nid[1]);
                 }
             }
             // Delete notification via popup. We are here in the popup.
