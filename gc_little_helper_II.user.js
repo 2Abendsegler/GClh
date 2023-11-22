@@ -4685,8 +4685,10 @@ var mainGC = function() {
         try {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
-            let pageData = JSON.parse($('#__NEXT_DATA__')[0].innerText).props.pageProps;
-            const isEvent = pageData.isEvent;
+            if (typeof $('#__NEXT_DATA__')[0] != 'undefined') {
+                var pageData = JSON.parse($('#__NEXT_DATA__')[0].innerText).props.pageProps;
+                var isEvent = pageData.isEvent;
+            }
             let css = '';
 
             // Default logtypes.
@@ -4705,7 +4707,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!document.location.href.match(/logType=/i)
+                if (!document.location.href.match(/logType=/i) && typeof pageData != 'undefined'
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
