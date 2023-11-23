@@ -521,7 +521,10 @@ var variablesInit = function(c) {
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
+    c.settings_add_log_templates = getValue("settings_add_log_templates", false);
+    c.settings_add_cache_log_signature = getValue("settings_add_cache_log_signature", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
+    c.settings_add_tb_log_signature = getValue("settings_add_tb_log_signature", false);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
@@ -4750,7 +4753,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){buildSignature(waitCount);}, 10);
             }
             try {
-                buildSignature(0);
+                if ((!isTB && settings_add_cache_log_signature) || (isTB && settings_add_tb_log_signature)) buildSignature(0);
             } catch(e) {gclh_error("Signature in improve log form",e);}
 
             // Log Templates.
@@ -4842,9 +4845,11 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildLogTemplates(waitCount);}, 200);
             }
             try {
-                buildLogTemplates(0);
-                css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; min-width: 200px; max-width: 250px; letter-spacing: 0.7px;}';
-                css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
+                if (settings_add_log_templates) {
+                    buildLogTemplates(0);
+                    css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; min-width: 200px; max-width: 250px; letter-spacing: 0.7px;}';
+                    css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
+                }
             } catch(e) {gclh_error("Log Templates in improve log form",e);}
 
             // Save last log text.
@@ -16118,18 +16123,24 @@ var mainGC = function() {
             html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
-            html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_log_templates', 'Add log templates') + show_help("Log templates are predefined texts. All of your templates will be displayed on the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
-                html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + repApo(getValue('settings_log_template_name[' + i + ']', '')) + "' style='margin-top: 2px;'> ";
+                html += " &nbsp; &nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + repApo(getValue('settings_log_template_name[' + i + ']', '')) + "' style='margin-top: 2px;'> ";
                 html += "<a onClick=\"if (document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='/images/stockholm/16x16/page_white_edit.gif' border='0' style='vertical-align: text-top;'></a><br>";
-                html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
+                html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
             }
-            html += "&nbsp;" + "Cache log signature" + show_help("The signature is automatically added to your logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
-            html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs coming from drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
-            html += "&nbsp;" + "TB log signature" + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_cache_log_signature', 'Add cache log signature') + show_help("The signature is automatically added to your logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_log_signature_on_fieldnotes', 'Add cache log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs coming from drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
@@ -16685,6 +16696,9 @@ var mainGC = function() {
             $('#settings_bookmarks_top_menu_h')[0].addEventListener("click", handleRadioTopMenu, false);
             handleRadioTopMenu(true);
             $('#settings_load_logs_with_gclh')[0].addEventListener("click", alert_settings_load_logs_with_gclh, false);
+            $('#settings_add_log_templates')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
+            $('#settings_add_cache_log_signature')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
+            $('#settings_add_tb_log_signature')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
             $('#settings_drafts_go_automatic_back')[0].addEventListener("click", function() {
                 if ($('#settings_drafts_go_automatic_back').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
             }, false);
@@ -16926,7 +16940,29 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
             setEvForDepPara("settings_lists_show_dd","settings_lists_open_tabs");
             setEvForDepPara("settings_autovisit","settings_autovisit_default");
-            setEvForDepPara("settings_map_overview_browse_map_icon", "settings_map_overview_browse_map_icon_new_tab");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[0]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[0]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[1]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[1]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[2]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[2]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[3]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[3]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[4]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[4]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[5]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[5]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[6]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[6]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[7]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[7]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[8]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[8]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[9]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[9]");
+            setEvForDepPara("settings_add_cache_log_signature","settings_log_signature");
+            setEvForDepPara("settings_add_cache_log_signature","settings_log_signature_on_fieldnotes");
+            setEvForDepPara("settings_add_tb_log_signature", "settings_tb_signature");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
@@ -17277,7 +17313,10 @@ var mainGC = function() {
                 'settings_hide_archived_in_owned',
                 'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
+                'settings_add_log_templates',
+                'settings_add_cache_log_signature',
                 'settings_log_signature_on_fieldnotes',
+                'settings_add_tb_log_signature',
                 'settings_vip_show_nofound',
                 'settings_use_gclh_layercontrol',
                 'settings_use_gclh_layercontrol_on_browse_map',
@@ -17791,6 +17830,18 @@ var mainGC = function() {
                      + "and top icons, no line colors and no mouse activated big images "
                      + "at the logs. Also the VIP and VUP lists, hide avatars, log filter and "
                      + "log search and the latest logs won't work.";
+            alert(mess);
+        }
+    }
+
+// Warning that inserted text in the log text is not stable.
+    function alert_field_not_stable_in_logtext(field) {
+        if (field.checked) {
+            var mess = 'Please note that the automatic insertion of a #field in the log text is not stable. In order to receive a #field in the '
+                     + 'log text, the user must enter something manually in the log text, after the automatic insertion. The website only notices a change '
+                     + 'in the log text, when the data is entered manually. It is enough to insert any character, which can also be removed immediately.';
+            if (field.id == 'settings_add_log_templates') mess = mess.replace(/#field/g, 'log template');
+            else if (field.id.match(/settings_add_(cache|tb)_log_signature/)) mess = mess.replace(/#field/g, 'signature');
             alert(mess);
         }
     }
