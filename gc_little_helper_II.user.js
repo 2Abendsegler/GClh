@@ -523,8 +523,10 @@ var variablesInit = function(c) {
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
     c.settings_add_log_templates = getValue("settings_add_log_templates", false);
     c.settings_add_cache_log_signature = getValue("settings_add_cache_log_signature", false);
+    c.settings_add_cache_log_signature_as_log_template = getValue("settings_add_cache_log_signature_as_log_template", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
     c.settings_add_tb_log_signature = getValue("settings_add_tb_log_signature", false);
+    c.settings_add_tb_log_signature_as_log_template = getValue("settings_add_tb_log_signature_as_log_template", false);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
@@ -4738,7 +4740,7 @@ var mainGC = function() {
                     if ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)) {
                         let logfield = $('#gc-md-editor_md')[0];
                         var logtext = logfield.value;
-                        var signature = getValue("settings_log_signature", "");
+                        var signature = getValue((isTB ? "settings_tb_signature" : "settings_log_signature"), "");
                         if (!logtext.includes(signature.replace(/^\s*/, ''))) {
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
                             logfield.innerHTML = text;
@@ -4816,21 +4818,25 @@ var mainGC = function() {
                         }
                     }
                     function prepareLogTemplates() {
-                        var texts = ""; var logicNew = "";
+                        var texts = ""; var logic = "";
                         for (var i = 0; i < anzTemplates; i++) {
                             if (getValue("settings_log_template_name["+i+"]", "") != "") {
                                 texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_log_template["+i+"]", "") + "</div>";
-                                logicNew += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</option>";
+                                logic += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</option>";
                             }
+                        }
+                        if ((!isTB && settings_add_cache_log_signature_as_log_template && getValue('settings_log_signature', '') != '') || (isTB && settings_add_tb_log_signature_as_log_template && getValue('settings_tb_signature', '') != '')) {
+                            texts += "<div id='gclh_template[signature]' style='display: none;'>" + getValue((isTB ? "settings_tb_signature" : "settings_log_signature"), "") + "</div>";
+                            logic += "<option value='gclh_template[signature]' style='color: #4a4a4a;'>[Signature]</option>";
                         }
                         if (getValue("last_logtext", "") != "") {
                             texts += "<div id='gclh_template[last_logtext]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
-                            logicNew += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
+                            logic += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
                         }
                         liste += texts;
                         liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value);'>";
                         liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>Select option</option>";
-                        liste += logicNew;
+                        liste += logic;
                         liste += "</select>";
                     }
                     var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogForm();
@@ -16133,6 +16139,8 @@ var mainGC = function() {
                 html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
             }
             html += newParameterOn2;
+            html += "&nbsp;&nbsp;" + checkboxy('settings_add_cache_log_signature_as_log_template', 'Add cache log signature as a log template') + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_add_tb_log_signature_as_log_template', 'Add TB log signature as a log template') + "<br>";
             html += checkboxy('settings_add_cache_log_signature', 'Add cache log signature') + show_help("The signature is automatically added to your logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
@@ -16141,6 +16149,8 @@ var mainGC = function() {
             html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
+            html += newParameterOn2;
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
@@ -16960,9 +16970,11 @@ var mainGC = function() {
             setEvForDepPara("settings_add_log_templates","settings_log_template[8]");
             setEvForDepPara("settings_add_log_templates","settings_log_template_name[9]");
             setEvForDepPara("settings_add_log_templates","settings_log_template[9]");
+            setEvForDepPara("settings_add_log_templates","settings_add_cache_log_signature_as_log_template");
+            setEvForDepPara("settings_add_log_templates","settings_add_tb_log_signature_as_log_template");
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature");
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature_on_fieldnotes");
-            setEvForDepPara("settings_add_tb_log_signature", "settings_tb_signature");
+            setEvForDepPara("settings_add_tb_log_signature","settings_tb_signature");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
@@ -17314,6 +17326,8 @@ var mainGC = function() {
                 'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
                 'settings_add_log_templates',
+                'settings_add_cache_log_signature_as_log_template',
+                'settings_add_tb_log_signature_as_log_template',
                 'settings_add_cache_log_signature',
                 'settings_log_signature_on_fieldnotes',
                 'settings_add_tb_log_signature',
