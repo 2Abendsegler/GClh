@@ -718,7 +718,7 @@ var variablesInit = function(c) {
     c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
-    c.settings_improve_notifications_beta = getValue("settings_improve_notifications_beta", false);
+    c.settings_improve_notifications = getValue("settings_improve_notifications", true);
 
     tlc('START userToken');
     try {
@@ -12943,7 +12943,7 @@ var mainGC = function() {
     }
 
 // Improve notification list and notifications.
-    if (document.location.href.match(/\.com\/notify\/(default|edit)\.aspx/) && settings_improve_notifications_beta) {
+    if (document.location.href.match(/\.com\/notify\/(default|edit)\.aspx/) && settings_improve_notifications) {
         try {
             function disableAllFieldsNotif() {
                 $('input,select').each(function(){
@@ -13227,20 +13227,6 @@ var mainGC = function() {
                         $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy as new notification"><img src="' + global_copy_icon2 + '"></a>');
                         // Build delete link behind the edit link.
                         $(itemEdit).after('<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>');
-                        $(this).find('.gclh_delete')[0].addEventListener("click", function() {
-                            if ($(this).closest('tr').hasClass('gclh_disabled')) return;
-                            var ident = new Date().getTime();
-                            var openPopup = window.open('https://www.geocaching.com/notify/edit.aspx?NID=' + nid + '&GClhDelete', ident, 'width=240, height=100, top=0, left=10000');
-                            // A pop up could not be opened in browser, probably because of a pop up blocker, so we'll inform the user.
-                            if (openPopup == null) {
-                                alert('A pop up blocker was detected. Please allow pop ups for this site, reload the page and try again.');
-                            } else {
-                                $(this).closest('tr').addClass('gclh_disabled');
-                                $(this).closest('tr').find('a').each(function(){
-                                    $(this)[0].href = 'javascript:void(0);';
-                                });
-                            }
-                        }, false);
                     }
                 });
             }
@@ -13264,6 +13250,7 @@ var mainGC = function() {
             css += 'table.LatLongTable td {padding-left: 0px;}';
             css += '.Checkbox label {top: 0px;}';
             css += '.EditNotificationForm table {margin-bottom: 0px;}';
+            css += '.gclh_delete {visibility: hidden;}';
 
             // Improve notification list page.
             if (document.location.href.match(/\.com\/notify\/default\.aspx/) && $('table.Table tbody tr')[0]) {
@@ -13323,14 +13310,6 @@ var mainGC = function() {
                 var nid = document.location.href.match(/\.com\/notify\/edit\.aspx\?CopyNID=(\d+)/);
                 if (nid && nid[1]) {
                     prepareCopyNotif(nid[1]);
-                }
-            }
-            // Delete notification via popup. We are here in the popup.
-            if (document.location.href.match(/\.com\/notify\/edit\.aspx\?NID=(\d+)&GClhDelete/)) {
-                if ($('#ctl00_ContentBody_LogNotify_btnArchive')[0]) {
-                    $('#ctl00_ContentBody_LogNotify_btnArchive').click();
-                } else {
-                    setTimeout(function() {window.close();},10);
                 }
             }
             appendCssStyle(css);
@@ -15459,7 +15438,7 @@ var mainGC = function() {
             html += checkboxy('settings_anonymous_on_certitude', 'Do not get listed on Certitude\'s solvers rank page') + show_help("Always activate the \"Stay anonymous\" checkbox. If the solution is correct, the nickname will not be listed in the ranking.") + "<br>";
             html += newParameterVersionSetzen("0.11") + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_improve_notifications_beta', '(Beta version) Improve notification list and notifications') + "<br>";
+            html += checkboxy('settings_improve_notifications', 'Improve notification list and notifications') + "<br>";
             html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "</div>";
 
@@ -17307,7 +17286,7 @@ var mainGC = function() {
                 'settings_dashboard_show_logs_in_markdown',
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
-                'settings_improve_notifications_beta',
+                'settings_improve_notifications',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
