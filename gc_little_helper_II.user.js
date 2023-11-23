@@ -4857,6 +4857,7 @@ var mainGC = function() {
                     buildLogTemplates(0);
                     css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; min-width: 200px; max-width: 250px; letter-spacing: 0.7px;}';
                     css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
+                    css += '#gclh_log_tpls:hover {color: #4a4a4a;}';
                 }
             } catch(e) {gclh_error("Log Templates in improve log form",e);}
 
