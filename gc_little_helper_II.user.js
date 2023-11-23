@@ -16149,8 +16149,6 @@ var mainGC = function() {
             html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
-            html += newParameterOn2;
-            html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
