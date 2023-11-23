@@ -4844,8 +4844,10 @@ var mainGC = function() {
                     insertLogTemplatesFunction();
                     var liste = "";
                     prepareLogTemplates();
+                    liste = '<label class="gclh_LogTemplatesDropdown"><span>Log templates</span><div>'+liste+'</div></label>';
                     if (!$('#gclh_log_tpls')[0]) {
-                        $('div.log-meta-controls').append('<label class="gclh_LogTemplatesDropdown"><span>Log templates</span><div>'+liste+'</div></label>');
+                        if ($('.tracking-code-container')[0]) $('.tracking-code-container').before(liste);
+                        else $('div.log-meta-controls').append(liste);
                     }
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildLogTemplates(waitCount);}, 200);
