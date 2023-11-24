@@ -4743,7 +4743,7 @@ var mainGC = function() {
                         var signature = getValue((isTB ? "settings_tb_signature" : "settings_log_signature"), "");
                         if (!logtext.includes(signature.replace(/^\s*/, ''))) {
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
-                            logfield.innerHTML = text;
+                            logfield.value = text;
                         }
                         if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
                         logfield.dispatchEvent(new Event('input'));
