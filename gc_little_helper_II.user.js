@@ -13077,7 +13077,7 @@ var mainGC = function() {
                             var coords = getCoordsFromFieldsNotif(c);
                             $(item).find('td.gclh_coords')[0].innerHTML = coords;
                             $(item).find('td.gclh_dist')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_tbDistance')[0].value;
-                            $(item).find('td.gclh_mail')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_ddlAltEmails')[0].value;
+                            $(item).find('td.gclh_mail')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_ddlAltEmails')[0]?.value || $(c).find('a[href="/account/settings/emailpreferences"]').parent().prev('dd').html().trim();
                             $(item).find('td.gclh_mail').addClass('gclh_add_last');
                         });
                     }
