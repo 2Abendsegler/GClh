@@ -67,7 +67,7 @@
 				If you want to use this feature, you have to activate it.<br>
 			</li>  
 			<li>
-				Cache signature or TB signature.<br>
+				Cache log signature or TB log signature.<br>
 				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature" title="Link to your GClh II Config">Settings -> Log:<br>
 				<img src="../images/0.15/Screen14.jpg" alt="Screen14.jpg"></a><br>
 				If you want to use this feature, you have to activate it.<br>
@@ -152,13 +152,13 @@
 		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [TB Listing] Button to copy TB Code in trackable listing to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2413" title="Issue 2413">2413</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.15/Screen09.jpg" alt="Screen09.jpg"><br><br><br>
-	</li>
-	<li>
 		<strong>New:</strong> [Cache Listing] Allow "Search in logs" to be case sensitive. [<a href="https://github.com/2Abendsegler/GClh/issues/2381" title="Issue 2381">2381</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.15/Screen01.jpg" alt="Screen01.jpg"><br>
 		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [TB Listing] Button to copy TB Code in trackable listing to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2413" title="Issue 2413">2413</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15/Screen09.jpg" alt="Screen09.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] GC Code is not copyable when PGC script is running. [<a href="https://github.com/2Abendsegler/GClh/issues/2420" title="Issue 2420">2420</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
