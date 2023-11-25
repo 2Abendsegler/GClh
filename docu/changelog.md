@@ -64,7 +64,7 @@
 				If you want to use this feature, you have to activate it.<br>
 				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature_as_log_template" title="Link to your GClh II Config">Settings -> Log:<br>
 				<img src="../images/0.15/Screen13.jpg" alt="Screen13.jpg"></a><br>
-				If you want to use this feature, you have to activate it.<br>
+				If you want to use one of these features, you have to activate it.<br>
 			</li>  
 			<li>
 				Cache log signature or TB log signature.<br>
