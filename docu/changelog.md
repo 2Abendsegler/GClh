@@ -49,13 +49,33 @@
 		<ul>
 			<li>
 				Sorting the columns by clicking on the column header.<br>
+				Button in the header to create a new notification.<br>
+				Button in the header to load, show, hide the missing notification data coordinates, distance and send to.<br>
+				Button in the header to hide, show page info.<br>
+				Enable, disable a notification without reloading the page.<br>
+				Button to start a copy process to copy the data into a new notification.<br>
 			</li>
 		</ul>
 		Notification:<br>
-		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br><br>
+		<img src="../images/0.15/Screen10.gif" alt="Screen10.gif"><br>
 		<ul>
 			<li>
-				Sorting the columns by clicking on the column header.<br>
+				During the copy process the contents of all fields are set.<br>
+			</li>
+			<li>
+				After changing the cache type, the log types are also set again, as far as possible.<br>
+			</li>
+		</ul>
+		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br>
+		<ul>
+			<li>
+				The coordinates can alternatively be entered using a single field.<br>
+			</li>
+		</ul>
+		<img src="../images/0.15/Screen11.jpg" alt="Screen11.jpg"><br>
+		<ul>
+			<li>
+				Add or save with the F2 key.<br>
 			</li>
 		</ul>
 	</li>
@@ -91,16 +111,6 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Form] GClh header disappears. [<a href="https://github.com/2Abendsegler/GClh/issues/2443" title="Issue 2443">2443</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		New log form:<br>
-		<img src="../images/0.14.6/Screen01.jpg" alt="Screen01.jpg"><br><br>
-		Old log form:<br>
-		<img src="../images/0.14.6/Screen02.jpg" alt="Screen02.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_add_cache_info_in_log_page" title="Link to your GClh II Config">Settings -> Log:<br>
-		<img src="../images/0.14.6/Screen03.jpg" alt="Screen03.jpg"></a><br>
-		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br>
 	</li>
 </ul>
 <br>
