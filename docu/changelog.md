@@ -119,7 +119,7 @@
 				Button to start a copy process to copy the data into a new notification.<br><br>
 			</li>
 		</ul>
-		Notification:<br>
+		Notification: Copy process<br>
 		<img src="../images/0.15/Screen10.gif" alt="Screen10.gif"><br>
 		<ul>
 			<li>
@@ -129,6 +129,7 @@
 				After changing the cache type, the log types are also set again during the copy process, as far as possible.<br><br>
 			</li>
 		</ul>
+		Notification:<br>
 		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br>
 		<ul>
 			<li>
