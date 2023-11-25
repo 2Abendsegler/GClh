@@ -73,13 +73,13 @@
 				During the copy process the contents of all fields are set.<br>
 			</li>
 			<li>
-				After changing the cache type, the log types are also set again, as far as possible.<br><br>
+				After changing the cache type, the log types are also set again during the copy process, as far as possible.<br><br>
 			</li>
 		</ul>
 		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br>
 		<ul>
 			<li>
-				The coordinates can alternatively be entered using a single field.<br>
+				The coordinates can alternatively be entered using a single field.<br><br>
 			</li>
 		</ul>
 		<img src="../images/0.15/Screen11.jpg" alt="Screen11.jpg"><br>
