@@ -15667,11 +15667,11 @@ function getGCTBInfoLogFormXXXX() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack Page</b></div>";
             html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterOn2;
+            html += newParameterOn1;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Komoot Page</b></div>";
             html += checkboxy('settings_add_link_komoot_on_gc_map', 'Add link to Komoot on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Komoot.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_komoot_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
