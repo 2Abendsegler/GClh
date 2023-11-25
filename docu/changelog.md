@@ -49,10 +49,20 @@
 		<ul>
 			<li>
 				Sorting the columns by clicking on the column header.<br>
+			</li>
+			<li>
 				Button in the header to create a new notification.<br>
+			</li>
+			<li>
 				Button in the header to load, show, hide the missing notification data coordinates, distance and send to.<br>
+			</li>
+			<li>
 				Button in the header to hide, show page info.<br>
+			</li>
+			<li>
 				Enable, disable a notification without reloading the page.<br>
+			</li>
+			<li>
 				Button to start a copy process to copy the data into a new notification.<br>
 			</li>
 		</ul>
@@ -75,16 +85,16 @@
 		<img src="../images/0.15/Screen11.jpg" alt="Screen11.jpg"><br>
 		<ul>
 			<li>
-				Add or save with the F2 key.<br>
+				Add or save with the F2 key.<br><br>
 			</li>
 		</ul>
 	</li>
 	<li>
 		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Browse Map:<br>
-		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br>
 		Search Map:<br>
-		<img src="../images/0.15/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		<img src="../images/0.15/Screen04.jpg" alt="Screen04.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_komoot_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Komoot Page:<br>
 		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
@@ -95,7 +105,7 @@
 	<li>
 		<strong>New:</strong> [Cache Listing] Allow "Search in logs" to be case sensitive. [<a href="https://github.com/2Abendsegler/GClh/issues/2381" title="Issue 2381">2381</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.15/Screen01.jpg" alt="Screen01.jpg"><br>
-		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br>
+		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] GC Code is not copyable when PGC script is running. [<a href="https://github.com/2Abendsegler/GClh/issues/2420" title="Issue 2420">2420</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
