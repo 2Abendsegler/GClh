@@ -79,7 +79,7 @@
 				Show message in case of unsaved log.<br>
 			</li>  
 			<li>
-				Show length of logtext and word count.<br>
+				Show length of logtext and word count.<br><br>
 			</li>  
 		</ul>
 		<img src="../images/0.15/Screen08.jpg" alt="Screen08.jpg"><br>
