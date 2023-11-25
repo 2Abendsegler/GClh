@@ -4700,6 +4700,58 @@ var mainGC = function() {
                 var isEvent = pageData.isEvent;
             }
             let css = '';
+            // Have we changed the logtext?
+            let keepGClhChanges = ((!isTB && settings_add_cache_log_signature)
+                && ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)))
+                || (isTB && settings_add_tb_log_signature);
+            let _logtext = ''; // The Logtext
+
+            // When the user enter a key to the logfield, changes by GClh (Signature and Templates) are take over by GS script.
+            function buildInputLogTextListener(waitCount) {
+                if ($('#gc-md-editor_md:not(.gclh_text_listener)')[0]) {
+                    $('#gc-md-editor_md')[0].addEventListener('input', () => {
+                        keepGClhChanges = false;
+                    });
+                    $('#gc-md-editor_md').addClass('gclh_text_listener');
+                }
+                waitCount++; if (waitCount <= 1000) setTimeout(function(){buildInputLogTextListener(waitCount);}, 10);
+            }
+            buildInputLogTextListener(0);
+
+            // Sets the Logtext value, if GS deletes it.
+            const config = { childList: true, subtree: true };
+            const logpageObserver = new MutationObserver(function(_, observer) {
+                observer.disconnect();
+                console.log('keepGClhChanges: ', keepGClhChanges)
+                if ($('#gc-md-editor_md')[0] && keepGClhChanges) {
+                    console.log('keep')
+                    $('#gc-md-editor_md')[0].value = _logtext;
+                }
+                observer.observe(document.body, config);
+            });
+            logpageObserver.observe(document.body, config);
+
+            // Save State and Logtext after changes by GClh (Signature and Templates).
+            window.addEventListener('gclhLogTextChanges', () => {
+                _logtext = $('#gc-md-editor_md')[0].value;
+                keepGClhChanges = true;
+            });
+
+            // Warning if the last changes in the logtext are done with GClh (Signature and Templates).
+            function buildWarningForGClhChanges(waitCount) {
+                if ($('.post-button-container:not(.gclh_change_warning)')[0]) {
+                    $('.post-button-container').addClass('gclh_change_warning');
+                    $('.post-button-container').bind('click', (e) => {
+                        if (keepGClhChanges) {
+                            e.preventDefault();
+                            alert('Please wait. The last change you made was with the GClh. Please add any character to the log (you can delete it immediately afterwards) to apply the changes.');
+                            return false;
+                        }
+                    });
+                }
+                waitCount++; if (waitCount <= 1000) setTimeout(function(){buildWarningForGClhChanges(waitCount);}, 10);
+            }
+            buildWarningForGClhChanges(0);
 
             // Default logtypes.
             function setDefaultLogtype(waitCount) {
@@ -4749,9 +4801,11 @@ var mainGC = function() {
                         if (!logtext.includes(signature.replace(/^\s*/, ''))) {
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
                             logfield.value = text;
+                            _logtext = text;
                         }
                         if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
                         logfield.dispatchEvent(new Event('input'));
+                        window.dispatchEvent(new Event('gclhLogTextChanges'));
                         logfield.focus();
                         logfield.selectionStart = 0;
                         logfield.selectionEnd = 0;
@@ -4817,6 +4871,7 @@ var mainGC = function() {
                         code += "  }";
                         code += "  input.focus();";
                         code += "  document.getElementById('gc-md-editor_md').dispatchEvent(new Event('input'));";
+                        code += "  window.dispatchEvent(new Event('gclhLogTextChanges'));"
                         code += "}";
                         if (!$('#gclh_LogTemplatesScript')[0]) {
                             injectPageScript(code, 'body', 'gclh_LogTemplatesScript');
@@ -14397,7 +14452,7 @@ var mainGC = function() {
         GCTBName = GCTBName.replace(/'/g,"");
         var GCTBLink = $('.loggable-header a.geocache-link')[0].href;
         var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
-        if ($('#log-date'[0])) var LogDate = $('#log-date')[0].value;
+        if ($('#log-date')[0]) var LogDate = $('#log-date')[0].value;
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
     }
     function getGCTBInfo(newLogPage) {
