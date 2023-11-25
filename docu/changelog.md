@@ -43,6 +43,23 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>New:</strong> [Notification] Improve notification list and notifications. [<a href="https://github.com/2Abendsegler/GClh/issues/2454" title="Issue 2454">2454</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Notification list:<br>
+		<img src="../images/0.15/Screen05.jpg" alt="Screen05.jpg"><br>
+		<ul>
+			<li>
+				Sorting the columns by clicking on the column header.<br>
+			</li>
+		</ul>
+		Notification:<br>
+		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br><br>
+		<ul>
+			<li>
+				Sorting the columns by clicking on the column header.<br>
+			</li>
+		</ul>
+	</li>
+	<li>
 		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Browse Map:<br>
 		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br><br>
