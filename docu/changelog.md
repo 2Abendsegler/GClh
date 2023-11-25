@@ -92,9 +92,9 @@
 	<li>
 		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		Browse Map:<br>
-		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		<img src="../images/0.15/Screen03.gif" alt="Screen03.gif"><br><br>
 		Search Map:<br>
-		<img src="../images/0.15/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		<img src="../images/0.15/Screen04.gif" alt="Screen04.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_komoot_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Komoot Page:<br>
 		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br><br>
 	</li>
