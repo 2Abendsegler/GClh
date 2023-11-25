@@ -59,21 +59,21 @@
 			</li>  
 			<li>
 				Log templates.<br>
-				screen12
-			settings_add_log_templates
-				if you want to use ...
-				screen13
-			settings_add_cache_log_signature_as_log_template
-				if you want to use ...
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_log_templates" title="Link to your GClh II Config">Settings -> Log:<br>
+				<img src="../images/0.15/Screen012.jpg" alt="Screen12.jpg"></a><br>
+				If you want to use this feature, you have to activate it.<br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature_as_log_template" title="Link to your GClh II Config">Settings -> Log:<br>
+				<img src="../images/0.15/Screen013.jpg" alt="Screen13.jpg"></a><br>
+				If you want to use this feature, you have to activate it.<br>
 			</li>  
 			<li>
 				Cache signature or TB signature.<br>
-				screen14
-			settings_add_cache_log_signature
-				if you want to use ...
-				screen15
-			settings_add_tb_log_signature
-				if you want to use ...
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature" title="Link to your GClh II Config">Settings -> Log:<br>
+				<img src="../images/0.15/Screen014.jpg" alt="Screen14.jpg"></a><br>
+				If you want to use this feature, you have to activate it.<br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_tb_log_signature" title="Link to your GClh II Config">Settings -> Log:<br>
+				<img src="../images/0.15/Screen015.jpg" alt="Screen15.jpg"></a><br>
+				If you want to use this feature, you have to activate it.<br>
 			</li>  
 			<li>
 				Show message in case of unsaved log.<br>
@@ -91,7 +91,7 @@
 				Replicate TB-Header to bottom.<br>
 			</li>  
 			<li>
-				F2 for new logging. This feature is new and was previously only available for the old log form. <br> 
+				F2 for new logging. This feature is new and was previously only available for the old log form.<br> 
 			</li>
 		</ul>
 	</li>
