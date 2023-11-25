@@ -338,7 +338,6 @@ var variablesInit = function(c) {
     c.remove_navi_shop = getValue("remove_navi_shop", false);
     c.settings_submit_log_button = getValue("settings_submit_log_button", true);
     c.settings_log_inline = getValue("settings_log_inline", false);
-    c.settings_log_inline_tb = getValue("settings_log_inline_tb", false);
     c.settings_log_inline_pmo4basic = getValue("settings_log_inline_pmo4basic", true);
     c.settings_bookmarks_show = getValue("settings_bookmarks_show", true);
     c.settings_change_header_layout = getValue("settings_change_header_layout", true);
@@ -522,7 +521,12 @@ var variablesInit = function(c) {
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
+    c.settings_add_log_templates = getValue("settings_add_log_templates", false);
+    c.settings_add_cache_log_signature_as_log_template = getValue("settings_add_cache_log_signature_as_log_template", false);
+    c.settings_add_tb_log_signature_as_log_template = getValue("settings_add_tb_log_signature_as_log_template", false);
+    c.settings_add_cache_log_signature = getValue("settings_add_cache_log_signature", false);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
+    c.settings_add_tb_log_signature = getValue("settings_add_tb_log_signature", false);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
@@ -1456,6 +1460,7 @@ var mainGC = function() {
                 }
                 if (waitCount <= 20) setTimeout(function(){setButtonDescInnerHTMLF2(waitCount, id);}, 100);
             }
+            // Send Log from log form is developed in the "Improve log form" area.
             // Log abschicken (Cache und TB).
             if (document.location.href.match(/\.com\/(seek|track)\/log\.aspx\?(id|wid|guid|ID|wp|LUID|PLogGuid|code)\=/)) var id = "ctl00_ContentBody_LogBookPanel1_btnSubmitLog";
             // PQ speichern | "Bookmark Pocket Query", aus BM PQ erzeugen | PQ zu Routen.
@@ -4690,83 +4695,73 @@ var mainGC = function() {
         try {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
+            if (typeof $('#__NEXT_DATA__')[0] != 'undefined') {
+                var pageData = JSON.parse($('#__NEXT_DATA__')[0].innerText).props.pageProps;
+                var isEvent = pageData.isEvent;
+            }
             let css = '';
 
-            // Signature.
-            function replacePlaceholderInSignature() {
-                var id = 'gc-md-editor_md';
-                window.addEventListener("load", gclh_setFocus, false);
-                var finds = global_findCount;
-                var me = global_me;
-//xxxx Function vor GoLive umbenennen. Die Function ist im PR https://github.com/2Abendsegler/GClh/pull/2451.
-                var owner = decode_innerTextXXXX($('.hidden-by a')[0]);
-                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found_no-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
-                finds++;
-                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#owner#/ig, owner);
-                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds).replace(/#me#/ig, me);
-                var [aDate, aTime, aDateTime] = getDateTime();
-                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
-//xxxx Function vor GoLive umbenennen. Die Function ist im PR https://github.com/2Abendsegler/GClh/pull/2451.
-                var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogFormXXXX();
-                document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
-                // Set Cursor to Pos1.
-                function gclh_setFocus() {
-                    var input = document.getElementById(id);
-                    if (input) {
-                        try {
-                            input.selectionStart = 0;
-                            input.selectionEnd = 0;
-                            input.focus();
-                        } catch(e) {}
-                    }
+            // Default logtypes.
+            function setDefaultLogtype(waitCount) {
+                if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText) {
+                    // Get default logtype.
+                    let logtype = decode_innerText($('.hidden-by a')[0]) == global_me ? settings_default_logtype_owner
+                                  : isEvent ? settings_default_logtype_event
+                                  : isTB ? settings_default_tb_logtype : settings_default_logtype;
+                    // Return if no logtype is selected or selected logtype is not possible.
+                    if (logtype == -1 || !pageData.logTypes.some(e => e.value == logtype)) return;
+                    // Reload Page with default logtype.
+                    document.location = `${document.location}?logType=${logtype}`;
+                    return;
                 }
+                waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
+            try {
+                if (!document.location.href.match(/logType=/i) && typeof pageData != 'undefined'
+                    && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
+                        || isTB && settings_default_tb_logtype)) {
+                    setDefaultLogtype(0);
+                }
+            } catch(e) {gclh_error("Default logtypes in improve log form",e);}
+
+            // Signature.
             function buildSignature(waitCount) {
-                // Kein Draft oder Draft mit Signatur.
-                if ($('#gc-md-editor_md')[0] && !$('#gc-md-editor_md.gclh_signature')[0]) {
+                function replacePlaceholder(text) {
+                    var id = 'gc-md-editor_md';
+                    var finds = global_findCount;
+                    var me = global_me;
+                    var owner = decode_innerText($('.hidden-by a')[0]);
+                    text = text.replace(/#found_no-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
+                    finds++;
+                    text = text.replace(/#owner#/ig, owner).replace(/#me#/ig, me);
+                    text = text.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
+                    var [aDate, aTime, aDateTime] = getDateTime();
+                    text = text.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
+                    var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogForm();
+                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
+                    return text;
+                }
+                if ($('#gc-md-editor_md')[0] && !$('.gclh_signature')[0]) {
                     if ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)) {
-                        var initial_cursor_position = document.getElementById('gc-md-editor_md').selectionEnd;
-                        var logtext = document.getElementById('gc-md-editor_md').value;
-                        var signature = (isTB ? getValue('settings_tb_signature', '') : getValue('settings_log_signature', ''));
+                        let logfield = $('#gc-md-editor_md')[0];
+                        var logtext = logfield.value;
+                        var signature = getValue((isTB ? "settings_tb_signature" : "settings_log_signature"), "");
                         if (!logtext.includes(signature.replace(/^\s*/, ''))) {
-                            document.getElementById('gc-md-editor_md').innerHTML += signature;
+                            let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
+                            logfield.value = text;
                         }
-                        replacePlaceholderInSignature(true);
-                        if (isDraft) {  // Draft
-                            // 2 Zeilen sinngemäß von DieBatzen ausgeliehen, um "<" und ">" richtig darzustellen.
-                            var textarea = document.createElement('textarea');
-                            var value = $('<textarea>').html(document.getElementById('gc-md-editor_md').innerHTML).val();
-                            document.getElementById('gc-md-editor_md').value = value;
-                        }
-                        if (!$('#gc-md-editor_md.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
-                        document.getElementById('gc-md-editor_md').focus();
-                        document.getElementById('gc-md-editor_md').selectionEnd = initial_cursor_position;
-                        // Auch im Log Preview zur Anzeige bringen.
-                        document.getElementById('gc-md-editor_md').dispatchEvent(new KeyboardEvent('keyup', {'keyCode': 32}));
+                        if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
+                        logfield.dispatchEvent(new Event('input'));
+                        logfield.focus();
+                        logfield.selectionStart = 0;
+                        logfield.selectionEnd = 0;
                     }
                 }
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){buildSignature(waitCount);}, 10);
             }
             try {
-                buildSignature(0);
-            } catch(e) {gclh_error("Signature",e);}
-//xxxx Beide folgenden Functions vor GoLive entfernen. Die Functions sind im PR https://github.com/2Abendsegler/GClh/pull/2451.
-function decode_innerTextXXXX(v_mit_innerHTML) {
-    var elem = document.createElement('textarea');
-    elem.innerHTML = v_mit_innerHTML.innerText;
-    v_decode = elem.value;
-    v_new = v_decode.trim();
-    return v_new;
-}
-function getGCTBInfoLogFormXXXX() {
-    var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
-    if ($('#log-date'[0])) var LogDate = $('#log-date')[0].value;
-    var GCTBName = $('a.geocache-link')[0].innerText;
-    GCTBName = GCTBName.replace(/'/g,"");
-    var GCTBLink = $('a.geocache-link')[0].href;
-    var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
-    return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
-}
+                if ((!isTB && settings_add_cache_log_signature) || (isTB && settings_add_tb_log_signature)) buildSignature(0);
+            } catch(e) {gclh_error("Signature in improve log form",e);}
 
             // Log Templates.
             function buildLogTemplates(waitCount) {
@@ -4821,27 +4816,32 @@ function getGCTBInfoLogFormXXXX() {
                         code += "    }";
                         code += "  }";
                         code += "  input.focus();";
+                        code += "  document.getElementById('gc-md-editor_md').dispatchEvent(new Event('input'));";
                         code += "}";
                         if (!$('#gclh_LogTemplatesScript')[0]) {
                             injectPageScript(code, 'body', 'gclh_LogTemplatesScript');
                         }
                     }
                     function prepareLogTemplates() {
-                        var texts = ""; var logicNew = "";
+                        var texts = ""; var logic = "";
                         for (var i = 0; i < anzTemplates; i++) {
                             if (getValue("settings_log_template_name["+i+"]", "") != "") {
                                 texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_log_template["+i+"]", "") + "</div>";
-                                logicNew += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</option>";
+                                logic += "<option value='gclh_template["+i+"]' style='color: #4a4a4a;'>" + repApo(getValue("settings_log_template_name["+i+"]", "")) + "</option>";
                             }
+                        }
+                        if ((!isTB && settings_add_cache_log_signature_as_log_template && getValue('settings_log_signature', '') != '') || (isTB && settings_add_tb_log_signature_as_log_template && getValue('settings_tb_signature', '') != '')) {
+                            texts += "<div id='gclh_template[signature]' style='display: none;'>" + getValue((isTB ? "settings_tb_signature" : "settings_log_signature"), "") + "</div>";
+                            logic += "<option value='gclh_template[signature]' style='color: #4a4a4a;'>[Signature]</option>";
                         }
                         if (getValue("last_logtext", "") != "") {
                             texts += "<div id='gclh_template[last_logtext]' style='display: none;'>" + getValue("last_logtext", "") + "</div>";
-                            logicNew += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
+                            logic += "<option value='gclh_template[last_logtext]' style='color: #4a4a4a;'>[Last Cache-Log]</option>";
                         }
                         liste += texts;
                         liste += "<select id='gclh_log_tpls' onChange='gclh_insert_tpl(this.value);'>";
                         liste += "<option value='-1' selected='selected'" + "style='display: none; visibility: hidden;'>Select option</option>";
-                        liste += logicNew;
+                        liste += logic;
                         liste += "</select>";
                     }
                     var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogForm();
@@ -4849,62 +4849,114 @@ function getGCTBInfoLogFormXXXX() {
                     insertLogTemplatesFunction();
                     var liste = "";
                     prepareLogTemplates();
+                    liste = '<label class="gclh_LogTemplatesDropdown"><span>Log templates</span><div>'+liste+'</div></label>';
                     if (!$('#gclh_log_tpls')[0]) {
-                        $('div.log-meta-controls').append('<label class="gclh_LogTemplatesDropdown"><span>Log templates</span><div>'+liste+'</div></label>');
+                        if ($('.tracking-code-container')[0]) $('.tracking-code-container').before(liste);
+                        else $('div.log-meta-controls').append(liste);
                     }
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildLogTemplates(waitCount);}, 200);
             }
             try {
-                css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; min-width: 200px; max-width: 250px; letter-spacing: 0.7px;}';
-                css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
-                buildLogTemplates(0);
-            } catch(e) {gclh_error("Log Templates",e);}
+                if (settings_add_log_templates) {
+                    buildLogTemplates(0);
+                    css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; width: 200px; letter-spacing: 0.8px;}';
+                    css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
+                }
+            } catch(e) {gclh_error("Log Templates in improve log form",e);}
 
             // Save last log text.
-            try {
-                function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
-                function buildClickForSaveLastLog(waitCount) {
-                    if ($('button.submit-button')[0] && !$('button.submit-button.gclh_build_click')[0]) {
-                        $('button.submit-button')[0].addEventListener('click', saveLastLog, true);
-                        $('button.submit-button').addClass('gclh_build_click');
-                    }
-                    waitCount++; if (waitCount <= 50) setTimeout(function(){buildClickForSaveLastLog(waitCount);}, 200);
+            function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
+            function buildClickForSaveLastLog(waitCount) {
+                if ($('button.submit-button')[0] && !$('button.submit-button.gclh_build_click')[0]) {
+                    $('button.submit-button')[0].addEventListener('click', saveLastLog, true);
+                    $('button.submit-button').addClass('gclh_build_click');
                 }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildClickForSaveLastLog(waitCount);}, 200);
+            }
+            try {
                 buildClickForSaveLastLog(0);
-            } catch(e) {gclh_error("Save last log text",e);}
+            } catch(e) {gclh_error("Save last log text in improve log form",e);}
 
             // Show length of logtext and word count.
-            if (settings_improve_character_counter) {
-                // Count characters.
-                css += '.character-limit {display: inline !important}';
-                // Count words.
-                $('.character-limit').append('<span class="gclh_word_count"></span>');
-                $('#gc-md-editor_md').bind('input', (e) => {
-                    let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
-                    $('.gclh_word_count').html(`&nbsp;(${words})`);
-                })
+            function buildShowLengthOfLogtext(waitCount) {
+                if ($('#gc-md-editor_md')[0] && !$('.gclh_word_count')[0]) {
+                    // Count words.
+                    $('.character-limit').append('<span class="gclh_word_count"></span>');
+                    $('#gc-md-editor_md').bind('input', (e) => {
+                        let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
+                        $('.gclh_word_count').html(`&nbsp;(${words})`);
+                    });
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildShowLengthOfLogtext(waitCount);}, 200);
             }
+            try {
+                if (settings_improve_character_counter) {
+                    buildShowLengthOfLogtext(0);
+                    // Count characters.
+                    css += '.character-limit {display: inline !important}';
+                }
+            } catch(e) {gclh_error("Show length of logtext in improve log form",e);}
 
             // Show message in case of unsaved log.
-            if (settings_unsaved_log_message) {
-                let isSubmit = false;
-                $('.post-button-container').bind('click', () => isSubmit = true);
-                window.onbeforeunload = function(e) {
-                    if (!isSubmit && $('#gc-md-editor_md').val().trim() != '') {
-                        var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
-                        e.returnValue = mess;
-                        return mess;
-                    }
-                };
+            function buildMessUnsavedLog(waitCount) {
+                if ($('.post-button-container')[0] && !$('.gclh_mess_unsaved_log')[0]) {
+                    $('.post-button-container').bind('click', () => isSubmit = true);
+                    $('.post-button-container').addClass('gclh_mess_unsaved_log');
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildMessUnsavedLog(waitCount);}, 200);
             }
+            try {
+                if (settings_unsaved_log_message) {
+                    var isSubmit = false;
+                    window.onbeforeunload = function(e) {
+                        if (!isSubmit && $('#gc-md-editor_md').val().trim() != '') {
+                            var mess = "You have changed a log and haven't saved it yet. Do you want to leave this page and lose your changes?";
+                            e.returnValue = mess;
+                            return mess;
+                        }
+                    };
+                    buildMessUnsavedLog(0);
+                }
+            } catch(e) {gclh_error("Show message in case of unsaved log in improve log form",e);}
 
             // Show additional cache info.
-            if (!isTB && !$('#aci')[0] && $('.loggable-header .geocache-link')[0] && settings_show_add_cache_info_in_log_page) {
-                css += '.loggable-header .badge {margin-left: 0px;}';
-                css += '#aci {font-size: 14px; font-weight: normal; margin-left: 8px; white-space: nowrap; cursor: default;}';
-                css += '#aci svg {vertical-align: text-bottom;}';
-                css += '#aci img {vertical-align: sub;}';
+            // The fields difficulty, terrain, favoritePoints and premiumFavoriteScore are available in page data ("__NEXT_DATA__", props.pageProps.loggable),
+            // but the fields have no values. In addition, the watchers are not included there. Therefore, we cannot replace the website reading with this data.
+            function outputAddCacheInfo(aci, waitCount) {
+                if ($('.loggable-header')[0] && $('.loggable-header .gc-geocache-icon')[0] && $('.loggable-header .geocache-link')[0]) {
+                    if ($('.gclh_aci_working')[0] && !$('.gclh_aci')[0]) {
+                        $('.loggable-header').append('<span class="gclh_aci">' + aci + '</span>');
+                        $('.loggable-header').removeClass('gclh_aci_working');
+                        // Set variable length of cache name.
+                        $('.loggable-header .geocache-link')[0].title = $('.loggable-header .geocache-link')[0].innerText;
+                        function setMaxwidthOfCacheName(waitCount) {
+                            var newMaxWidth = parseInt(window.getComputedStyle($('.loggable-header')[0]).width) - 38
+                                            - parseInt(window.getComputedStyle($('.loggable-header .gc-geocache-icon')[0]).width)
+                                            - ($('.loggable-header .badge')[0] ? parseInt(window.getComputedStyle($('.loggable-header .badge')[0]).width) : 0)
+                                            - parseInt(window.getComputedStyle($('.gclh_aci')[0]).width);
+                            var oldMaxWidth = (parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) ? parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) : 0);
+                            var difMaxWidth = oldMaxWidth - newMaxWidth;
+                            if (difMaxWidth > 1 || difMaxWidth < -1) {
+                                $('.loggable-header .geocache-link')[0].style.maxWidth = newMaxWidth + "px";
+                            }
+                            waitCount++;
+                            if (waitCount <= 50) setTimeout(function(){setMaxwidthOfCacheName(waitCount);}, 200);
+                        }
+                        setMaxwidthOfCacheName(0);
+                        // Get favorite score and output.
+                        var gccode = $('.loggable-header .geocache-link')[0].href.match(/\.com\/geocache\/(.*)/);
+                        if (gccode && gccode[1]) {
+                            getFavoriteScore(gccode[1], function(score) {
+                                if ($('.favorite_percent')[0]) {
+                                    $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
+                                }
+                            });
+                        }
+                    }
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){outputAddCacheInfo(aci, waitCount);}, 200);}
+            }
+            function getAddCacheInfo() {
                 url = $('.loggable-header .geocache-link')[0].href;
                 $.get(url, null, function(text){
                     var aci = '';
@@ -4946,177 +4998,168 @@ function getGCTBInfoLogFormXXXX() {
                         aci += '<span class="terrain-number"> ' + terrain + '</span>';
                         aci += '</span>';
                     }
-                    if (!aci == '') {
-                        // Set variable length of cache name.
-                        $('.loggable-header .geocache-link')[0].setAttribute('style', 'white-space: nowrap; overflow: hidden; text-overflow: ellipsis;');
-                        $('.loggable-header .geocache-link')[0].title = $('.loggable-header .geocache-link')[0].innerHTML;
-                        function setMaxwidthOfCacheName(waitCount) {
-                            if ($('.loggable-header')[0] && $('.loggable-header .gc-geocache-icon')[0] && $('#aci')[0]) {
-                                var newMaxWidth = parseInt(window.getComputedStyle($('.loggable-header')[0]).width) - 38
-                                                - parseInt(window.getComputedStyle($('.loggable-header .gc-geocache-icon')[0]).width)
-                                                - ($('.loggable-header .badge')[0] ? parseInt(window.getComputedStyle($('.loggable-header .badge')[0]).width) : 0)
-                                                - parseInt(window.getComputedStyle($('#aci')[0]).width);
-                                var oldMaxWidth = (parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) ? parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) : 0);
-                                var difMaxWidth = oldMaxWidth - newMaxWidth;
-                                if (difMaxWidth > 1 || difMaxWidth < -1) {
-                                    $('.loggable-header .geocache-link')[0].style.maxWidth = newMaxWidth + "px";
-                                }
-                            }
-                            waitCount++;
-                            if (waitCount <= 50) setTimeout(function(){setMaxwidthOfCacheName(waitCount);}, 200);
-                        }
-                        setMaxwidthOfCacheName(0);
-                        // Output additional cache info.
-                        $('.loggable-header').append('<span id="aci">' + aci + '</span>');
-                        // Get favorite score and output.
-                        var gccode = $('.loggable-header .geocache-link')[0].href.match(/\.com\/geocache\/(.*)/);
-                        if (gccode && gccode[1] && favoritePoints) {
-                            getFavoriteScore(gccode[1], function(score) {
-                                if ($('.favorite_percent')[0] && $('.favorite_percent')[0].innerHTML) {
-                                    $('.favorite_percent')[0].innerHTML = ' (' + score + '%)';
-                                }
-                            });
-                        }
-                    }
+                    if (!aci == '') outputAddCacheInfo(aci, 0);
                 });
             }
-
-            // Default logtypes.
-            if (!document.location.href.match(/logType=/i)
-                && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
-                || isTB && settings_default_tb_logtype)) {
-                // Get the Logtype.
-                let logtype = $('.hidden-by a')[0].innerHTML == global_me ? settings_default_logtype_owner
-                    : $('.gc-geocache-icon svg use')[0]?.href.baseVal.match(/event/i) ? settings_default_logtype_event
-                    : isTB ? settings_default_tb_logtype : settings_default_logtype;
-                // Return if no Logtype is selected.
-                if (logtype == -1) return;
-                // Reload Page with correct Logtype.
-                document.location = `${document.location}?logType=${logtype}`;
+            function waitForAddCacheInfo(waitCount) {
+                if ($('.loggable-header')[0] && $('.loggable-header .gc-geocache-icon')[0] && $('.loggable-header .geocache-link')[0] && !$('.gclh_aci_working')[0] && !$('.gclh_aci')[0]) {
+                    $('.loggable-header').addClass('gclh_aci_working');
+                    getAddCacheInfo();
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){waitForAddCacheInfo(waitCount);}, 200);
             }
+            try {
+                if (!isTB && settings_show_add_cache_info_in_log_page) {
+                    waitForAddCacheInfo(0);
+                    css += '.loggable-header .badge {margin-left: 0px;}';
+                    css += '.loggable-header .geocache-link {white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}';
+                    css += '.gclh_aci {font-size: 14px; font-weight: normal; margin-left: 8px; white-space: nowrap; cursor: default;}';
+                    css += '.gclh_aci svg {vertical-align: text-bottom;}';
+                    css += '.gclh_aci img {vertical-align: sub;}';
+                }
+            } catch(e) {gclh_error("Show additional cache info in improve log form",e);}
 
             // Auto visit for TBs.
-            if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
-                try {
-                    function getTbsAV() {return $('ul.tb-list li.tb-item');}
-                    function getLogTypeAV() {return $('input[name="logType"]').val();}
-                    function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
-                    function getTbActionTypeAV(tb) {
-                        let r = $(tb).find('div:not[.gclh_autovisit] input[type="radio"]');
-                        for (let i=0; i<3; i++) {
-                            if (r[i].checked) return r[i].value;
-                        }
+            function getTbsAV() {return $('ul.tb-list li.tb-item');}
+            function getLogTypeAV() {return $('input[name="logType"]').val();}
+            function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
+            function getTbActionTypeAV(tb) {
+                let r = $(tb).find('div:not[.gclh_autovisit] input[type="radio"]');
+                for (let i=0; i<3; i++) {
+                    if (r[i].checked) return r[i].value;
+                }
+            }
+            function buildAutoAV(tb) {
+                let tbC = getTbCodeAV(tb);
+                if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
+                    if (getTbActionTypeAV(tb) == '-1') {
+                        $(tb).find('div:not[.gclh_autovisit] input[value="75"]')[0].click();
                     }
-                    function buildAutosAV() {
-                        let tbs = getTbsAV();
-                        if (tbs.length > 0) {
-                            for (let i=0; i<tbs.length; i++) {
-                                let tbC = getTbCodeAV(tbs[i]);
-                                if (getTbActionTypeAV(tbs[i]) != 14) { // Not Drop.
-                                    if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
-                                        $(tbs[i]).find('div:not[.gclh_autovisit] input[value="75"]')[0].click();
-                                    } else {
-                                        $(tbs[i]).find('div:not[.gclh_autovisit] input[value="-1"]')[0].click();
-                                    }
+                } else if (getTbActionTypeAV(tb) == '75') {
+                    $(tb).find('div:not[.gclh_autovisit] input[value="-1"]')[0].click();
+                }
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
+            }
+            function buildAutosAV() {
+                let tbs = getTbsAV();
+                if (tbs.length > 0) {
+                    for (let i=0; i<tbs.length; i++) {
+                        buildAutoAV(tbs[i])
+                    }
+                }
+            }
+            function waitForTbsAV(waitCount) {
+                if ($('ul.tb-list li.tb-item').length > 0) {
+                    var tbs = getTbsAV();
+                    if (tbs.length > 0) {
+                        for (let i=0; i<tbs.length; i++) {
+                            if ($(tbs[i]).hasClass('gclh_autovisit_build')) continue;
+                            $(tbs[i]).addClass('gclh_autovisit_build');
+                            let tbC = getTbCodeAV(tbs[i]);
+                            if (!$('#gclh_action_list_'+tbC)[0]) {
+                                // Save TB for autovisit if it is new.
+                                if (getValue("autovisit_"+tbC, "new") === "new") {
+                                    setValue("autovisit_"+tbC, settings_autovisit_default);
                                 }
-                                $(tbs[i]).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
-                                $(tbs[i]).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
+                                // Build a parent container for the buttons.
+                                $(tbs[i]).find('.tb-info-container').after('<div id="gclh_action_list_'+tbC+'" class="gclh_action_list"></div>');
+                                // Move existing buttons into parent container.
+                                $(tbs[i]).find('.segmented-buttons').appendTo('#gclh_action_list_'+tbC+'');
+                                // Copy existing buttons for auto visit feature.
+                                var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
+                                $(autoButtons).addClass('gclh_autovisit');
+                                $('#gclh_action_list_'+tbC).append(autoButtons);
+                                // Adapt copied buttons for auto visit feature.
+                                $(tbs[i]).find('.gclh_autovisit label')[2].remove();
+                                $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
+                                $(tbs[i]).find('.gclh_autovisit input')[1].value = 1;
+                                $(tbs[i]).find('.gclh_autovisit span')[1].innerHTML = 'Auto Visit';
+                                $(tbs[i]).find('.gclh_autovisit label').each(function() {
+                                    $(this).find('input')[0].setAttribute('name', 'autovisit_'+tbC);
+                                    $(this).find('input')[0].setAttribute('data-event-category', '');
+                                    $(this).find('input')[0].setAttribute('data-event-label', '');
+                                    $(this).find('input')[0].setAttribute('data-testid', '');
+                                    $(this).find('input')[0].addEventListener('click', function(evt) {
+                                        setValue(evt.target.name, (evt.target.value==1 ? true : false));
+                                        buildAutoAV(tbs[i]);
+                                    })
+                                });
                             }
+                            buildAutoAV(tbs[i]);
                         }
                     }
-                    function waitForTbsAV(waitCount) {
-                        if ($('ul.tb-list li.tb-item').length > 0) {
-                            var tbs = getTbsAV();
-                            if (tbs.length > 0) {
-                                for (let i=0; i<tbs.length; i++) {
-                                    if ($(tbs[i]).find('.gclh_autovisit')[0]) continue;
-                                    let tbC = getTbCodeAV(tbs[i]);
-                                    if (!$('#gclh_action_list_'+tbC)[0]) {
-                                        // Save TB for autovisit if it is new.
-                                        if (getValue("autovisit_"+tbC, "new") === "new") {
-                                            setValue("autovisit_"+tbC, settings_autovisit_default);
-                                        }
-                                        // Build a parent container for the buttons.
-                                        $(tbs[i]).find('.tb-info-container').after('<div id="gclh_action_list_'+tbC+'" class="gclh_action_list"></div>');
-                                        // Move existing buttons into parent container.
-                                        $(tbs[i]).find('.segmented-buttons').appendTo('#gclh_action_list_'+tbC+'');
-                                        // Copy existing buttons for auto visit feature.
-                                        var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
-                                        $(autoButtons).addClass('gclh_autovisit');
-                                        $('#gclh_action_list_'+tbC).append(autoButtons);
-                                        // Adapt copied buttons for auto visit feature.
-                                        $(tbs[i]).find('.gclh_autovisit label')[2].remove();
-                                        $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
-                                        $(tbs[i]).find('.gclh_autovisit input')[1].value = 1;
-                                        $(tbs[i]).find('.gclh_autovisit span')[1].innerHTML = 'Auto Visit';
-                                        $(tbs[i]).find('.gclh_autovisit label').each(function() {
-                                            $(this).find('input')[0].setAttribute('name', 'autovisit_'+tbC);
-                                            $(this).find('input')[0].setAttribute('data-event-category', '');
-                                            $(this).find('input')[0].setAttribute('data-event-label', '');
-                                            $(this).find('input')[0].setAttribute('data-testid', '');
-                                            $(this).find('input')[0].addEventListener('click', function(evt) {
-                                                setValue(evt.target.name, (evt.target.value==1 ? true : false));
-                                                buildAutosAV();
-                                            })
-                                        });
-                                    }
-                                }
-                                // Set Autovisits for all TBs.
+                }
+                if ($('#react-select-cache-log-type-input')[0]) {
+                    // Set autovisits for all TBs if logtype changed.
+                    if (!$('#react-select-cache-log-type-input').hasClass('gclh_logtypeClick_build')) {
+                        $('#react-select-cache-log-type-input').addClass('gclh_logtypeClick_build');
+                        var selectedLogType = '';
+                        $('#react-select-cache-log-type-input')[0].addEventListener('click', function(){
+                            if ($('.log-type-container input[name="logType"]')[0].value != selectedLogType &&
+                                $('#react-select-cache-log-type-input')[0].ariaExpanded == 'false') {
+                                selectedLogType = $('.log-type-container input[name="logType"]')[0].value;
                                 buildAutosAV();
-                                // Set autovisits for all TBs if a logtype was selected.
-                                $('#react-select-cache-log-type-input')[0].addEventListener('click', buildAutosAV);
                             }
-                        }
-                        waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
+                        });
                     }
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
+            }
+            try {
+                if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
                     waitForTbsAV(0);
                     css += '.gclh_action_list {margin-top: 4px;}';
                     css += '.gclh_autovisit {justify-content: normal !important; margin-top: 4px;}';
-                } catch(e) {gclh_error("Auto visit for TBs",e);}
-            }
+                }
+            } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
 
             // Replicate TB-Header to bottom.
-            if (!isTB && !$('.tb-inventory-header.gclh_tb_header')[0]) {
-                css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
-                function buildTBHeaderToBottom(waitCount) {
-                    if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0]) {
-                        $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
-                        $('.gclh_tb_clear_all')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
-                        });
-                        $('.gclh_tb_visit_all')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
-                        });
-                        $('.gclh_tb_drop_all')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
-                        });
-                    } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 100);}
+            function buildTBHeaderToBottom(waitCount) {
+                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
+                    $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
+                    $('.gclh_tb_clear_all')[0].addEventListener("click", function(){
+                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
+                    });
+                    $('.gclh_tb_visit_all')[0].addEventListener("click", function(){
+                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
+                    });
+                    $('.gclh_tb_drop_all')[0].addEventListener("click", function(){
+                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
+                    });
                 }
-                buildTBHeaderToBottom(0);
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
             }
+            try {
+                if (!isTB) {
+                    buildTBHeaderToBottom(0);
+                    css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
+                }
+            } catch(e) {gclh_error("Replicate TB-Header to bottom in improve log form",e);}
 
-            // Send Log with F2
-            if (settings_submit_log_button) {
-                waitForElementThenRun('#log-date', () => {
+            // Send Log with F2.
+            function buildSendLogWithF2(waitCount) {
+                if ($('.post-button-container button.gc-button-primary')[0] && !$('.post-button-container button.gc-button-primary')[0].innerHTML.match(/\s\(F2\)/)) {
                     let logBtn = $('.post-button-container button.gc-button-primary')[0];
-
-                    if (logBtn) {
-                        function keydownF2(e) {
-                            if (!check_config_page()) {
-                                if (e.keyCode == 113 && noSpecialKey(e)) {
-                                    logBtn.click();
-                                }
-                                if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
-                                    e.preventDefault();
-                                    logBtn.click();
-                                }
+                    function keydownF2(e) {
+                        if (!check_config_page()) {
+                            if (e.keyCode == 113 && noSpecialKey(e)) {
+                                logBtn.click();
+                            }
+                            if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
+                                e.preventDefault();
+                                logBtn.click();
                             }
                         }
-                        logBtn.innerHTML += " (F2)";
-                        window.addEventListener('keydown', keydownF2, true);
                     }
-                }, 100);
+                    logBtn.innerHTML += " (F2)";
+                    window.addEventListener('keydown', keydownF2, true);
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildSendLogWithF2(waitCount);}, 200);
             }
+            try {
+                if (settings_submit_log_button) buildSendLogWithF2(0);
+            } catch(e) {gclh_error("Send Log with F2 in improve log form",e);}
 
             // Append the style.
             appendCssStyle(css);
@@ -12685,7 +12728,6 @@ function getGCTBInfoLogFormXXXX() {
         if ($('.BottomSpacing')[0]) $('.BottomSpacing')[0].style.display = "none";
         if ($('.BottomSpacing')[1]) $('.BottomSpacing')[1].style.display = "none";
         if ($('#divAdvancedOptions')[0]) $('#divAdvancedOptions')[0].style.display = "none";
-        if (!settings_log_inline_tb && $('#ctl00_ContentBody_LogBookPanel1_TBPanel')[0]) $('#ctl00_ContentBody_LogBookPanel1_TBPanel')[0].style.display = "none";
         if ($('#ctl00_ContentBody_uxVistOtherListingLabel')[0]) $('#ctl00_ContentBody_uxVistOtherListingLabel')[0].style.display = "none";
         if ($('#ctl00_ContentBody_uxVistOtherListingGC')[0]) $('#ctl00_ContentBody_uxVistOtherListingGC')[0].style.display = "none";
         if ($('#ctl00_ContentBody_uxVisitOtherListingButton')[0]) $('#ctl00_ContentBody_uxVisitOtherListingButton')[0].style.display = "none";
@@ -14351,11 +14393,11 @@ function getGCTBInfoLogFormXXXX() {
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
     function getGCTBInfoLogForm() {
         var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
-        if ($('#log-date'[0])) var LogDate = $('#log-date')[0].value;
-        var GCTBName = $('a.geocache-link')[0].innerText;
+        var GCTBName = $('.loggable-header a.geocache-link')[0].innerText;
         GCTBName = GCTBName.replace(/'/g,"");
-        var GCTBLink = $('a.geocache-link')[0].href;
+        var GCTBLink = $('.loggable-header a.geocache-link')[0].href;
         var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+        if ($('#log-date'[0])) var LogDate = $('#log-date')[0].value;
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
     }
     function getGCTBInfo(newLogPage) {
@@ -16208,7 +16250,6 @@ function getGCTBInfoLogFormXXXX() {
             html += checkboxy('settings_show_fav_percentage', 'Show percentage of favorite points') + show_help("This option loads the favorite stats of a cache in the backround and display the percentage under the amount of favorites a cache got.") + "<br>";
             html += checkboxy('settings_show_log_totals', 'Show the log totals icons at the top') + "<br>";
             html += checkboxy('settings_log_inline_pmo4basic', 'Log cache from listing for PMO (for basic members)') + show_help("With this option you can select, if inline logs should appear for premium member only (PMO) caches althought you are a basic member.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_log_inline_tb', 'Show TB list') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Location</b>" + "</div>";
             html += "&nbsp;" + "Highlight user changed coordinates with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br>";
@@ -16246,7 +16287,6 @@ function getGCTBInfoLogFormXXXX() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Detail Navigation <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
-            html += "&nbsp; " + checkboxy('settings_log_inline_tbX0', 'Show TB list') + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_prevent_watchclick_popup', 'Prevent pop up when clicking on "Watch" or "Stop Watching"') + "<br>";
             html += newParameterVersionSetzen('0.11') + newParameterOff;
@@ -16455,7 +16495,6 @@ function getGCTBInfoLogFormXXXX() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","logging")+"<label for='lnk_gclh_config_logging'>Log</label></h4>";
             html += "<div id='gclh_config_logging' class='gclh_block'>";
-            html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
             html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_autovisit_default', 'Set \"AutoVisit\" for all TBs by default') + show_help("With this option all new TBs in your inventory are automatically set to \"AutoVisit\".") + "<br>"
@@ -16464,7 +16503,7 @@ function getGCTBInfoLogFormXXXX() {
             html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_unsaved_log_message', 'Show message in case of unsaved log') + "<br>";
-            html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.") + "<br>";
+            html += checkboxy('settings_show_add_cache_info_in_log_page', 'Show additional cache info') + show_help("If you enable this option, additional cache information such as the favorite points or the favorite percent are shown in the log form next to the cache name.<br><br>For basic members, no data is displayed for premium member only caches.") + "<br>";
             html += content_settings_after_sending_draft_related_log1.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0");
             html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += newParameterOn3;
@@ -16472,26 +16511,26 @@ function getGCTBInfoLogFormXXXX() {
             html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
-            html += "&nbsp;" + "Log templates" + show_help("Log templates are predefined texts. All of your templates will be displayed next to the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log. The smilies option must be activated.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_log_templates', 'Add log templates') + show_help("Log templates are predefined texts. All of your templates will be displayed on the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
             for (var i = 0; i < anzTemplates; i++) {
-                html += "&nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + repApo(getValue('settings_log_template_name[' + i + ']', '')) + "' style='margin-top: 2px;'> ";
+                html += " &nbsp; &nbsp;" + "<input class='gclh_form' type='text' size='15' id='settings_log_template_name[" + i + "]' value='" + repApo(getValue('settings_log_template_name[' + i + ']', '')) + "' style='margin-top: 2px;'> ";
                 html += "<a onClick=\"if (document.getElementById(\'settings_log_template_div[" + i + "]\').style.display == \'\') document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'none\'; else document.getElementById(\'settings_log_template_div[" + i + "]\').style.display = \'\'; return false;\" href='#'><img src='/images/stockholm/16x16/page_white_edit.gif' border='0' style='vertical-align: text-top;'></a><br>";
-                html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'>&nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
+                html += "<div id='settings_log_template_div[" + i + "]' style='display: none; margin-top: 2px; margin-bottom: -2px;'> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<textarea class='gclh_form' rows='4' cols='54' id='settings_log_template[" + i + "]'>&zwnj;" + getValue("settings_log_template[" + i + "]", "") + "</textarea></div>";
             }
-            html += "&nbsp;" + "Cache log signature" + show_help("The signature is automatically added to your logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
-            html += checkboxy('settings_log_signature_on_fieldnotes', 'Add log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs coming from drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
-            html += "&nbsp;" + "TB log signature" + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
-            html += "&nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
-
-            html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
-            html += checkboxy('settings_show_pseudo_as_owner', 'Replace placeholder owner, although there could be a pseudonym') + show_help("If you disable this option, the placeholder for the owner cannot be replaced on the newly designed log page.<br><br>If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
-
-            html += "<div class='gclh_old_new_line'>Old Log Page Only</div>";
             html += newParameterOn2;
-            html += checkboxy('settings_logs_old_fashioned', 'Use old-fashioned log form to log non drafts related logs') + show_help("If you enable this option, you always get the old log form instead of the new one to log non drafts related logs.<br><br>Please look also the parameter \"Use old-fashioned log form to log a draft\" in the \"Draft\" area.") + "<br>";
-            html += newParameterVersionSetzen('0.11') + newParameterOff;
+            html += "&nbsp;&nbsp;" + checkboxy('settings_add_cache_log_signature_as_log_template', 'Add cache log signature as a log template') + "<br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_add_tb_log_signature_as_log_template', 'Add TB log signature as a log template') + "<br>";
+            html += checkboxy('settings_add_cache_log_signature', 'Add cache log signature') + show_help("The signature is automatically added to your logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
+            html += "&nbsp;&nbsp;" + checkboxy('settings_log_signature_on_fieldnotes', 'Add cache log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs coming from drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += "<table><tbody>";
             html += "  <tr><td>Default log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
@@ -16499,30 +16538,40 @@ function getGCTBInfoLogFormXXXX() {
             html += "    <option value=\"2\" " + (settings_default_logtype == "2" ? "selected=\"selected\"" : "") + ">Found it</option>";
             html += "    <option value=\"3\" " + (settings_default_logtype == "3" ? "selected=\"selected\"" : "") + ">Didn't find it</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
-            html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Needs archived</option>";
-            html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Needs maintenance</option></select></td>";
+            html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner maintenance requested</option>";
+            html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
             html += "  <tr><td>Default event log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype_event'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
-            html += "    <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
-            html += "    <option value=\"7\" " + (settings_default_logtype_event == "7" ? "selected=\"selected\"" : "") + ">Needs archived</option>";
             html += "    <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
-            html += "    <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option></select></td>";
+            html += "    <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
+            html += "    <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
+            html += "    <option value=\"7\" " + (settings_default_logtype_event == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
             html += "  <tr><td>Default owner log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype_owner'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
+            html += "    <option value=\"46\" " + (settings_default_logtype_owner == "46" ? "selected=\"selected\"" : "") + ">Owner maintenance</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
+            html += "    <option value=\"22\" " + (settings_default_logtype_owner == "22" ? "selected=\"selected\"" : "") + ">Disable</option>";
             html += "    <option value=\"5\" " + (settings_default_logtype_owner == "5" ? "selected=\"selected\"" : "") + ">Archive</option>";
-            html += "    <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option>";
-            html += "    <option value=\"18\" " + (settings_default_logtype_owner == "18" ? "selected=\"selected\"" : "") + ">Post reviewer note</option></select></td>";
+            html += "    <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option></select></td>";
             html += "  <tr><td>Default TB log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_tb_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
-            html += "    <option value=\"13\" " + (settings_default_tb_logtype == "13" ? "selected=\"selected\"" : "") + ">Retrieve from ..</option>";
-            html += "    <option value=\"19\" " + (settings_default_tb_logtype == "19" ? "selected=\"selected\"" : "") + ">Grab it from ..</option>";
             html += "    <option value=\"4\" " + (settings_default_tb_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
-            html += "    <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option></select></td>";
+            html += "    <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
+            html += "    <option value=\"13\" " + (settings_default_tb_logtype == "13" ? "selected=\"selected\"" : "") + ">Retrieve from ..</option>";
+            html += "    <option value=\"19\" " + (settings_default_tb_logtype == "19" ? "selected=\"selected\"" : "") + ">Grab it from ..</option></select></td>";
             html += "</tbody></table>";
+
+            html += "<div class='gclh_old_new_line'>New Log Page Only</div>";
+            html += checkboxy('settings_show_pseudo_as_owner', 'Replace placeholder owner, although there could be a pseudonym') + show_help("If you disable this option, the placeholder for the owner cannot be replaced on the newly designed log page.<br><br>If you enable this option, the placeholder for the owner is replaced possibly by the pseudonym of the owner if the real owner is not known.<br><br>On the new designed log page there is shown as owner of the cache not the real owner but possibly the pseudonym of the owner for the cache as it is shown in the cache listing under \"A cache by\". The real owner is not available in this cases.") + "<br>";
+
+            html += "<div class='gclh_old_new_line'>Old Log Page Only</div>";
+            html += checkboxy('settings_show_bbcode', 'Show smilies') + show_help("This option displays smilies options beside the log form. If you click on a smilie, it is inserted into your log.") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_logs_old_fashioned', 'Use old-fashioned log form to log non drafts related logs') + show_help("If you enable this option, you always get the old log form instead of the new one to log non drafts related logs.<br><br>Please look also the parameter \"Use old-fashioned log form to log a draft\" in the \"Draft\" area.") + "<br>";
+            html += newParameterVersionSetzen('0.11') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
@@ -17037,6 +17086,9 @@ function getGCTBInfoLogFormXXXX() {
             $('#settings_bookmarks_top_menu_h')[0].addEventListener("click", handleRadioTopMenu, false);
             handleRadioTopMenu(true);
             $('#settings_load_logs_with_gclh')[0].addEventListener("click", alert_settings_load_logs_with_gclh, false);
+            $('#settings_add_log_templates')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
+            $('#settings_add_cache_log_signature')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
+            $('#settings_add_tb_log_signature')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
             $('#settings_drafts_go_automatic_back')[0].addEventListener("click", function() {
                 if ($('#settings_drafts_go_automatic_back').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
             }, false);
@@ -17080,7 +17132,6 @@ function getGCTBInfoLogFormXXXX() {
             setEvForDouPara("settings_show_save_message", "click");
             setEvForDouPara("settings_show_vip_list", "click");
             setEvForDouPara("settings_process_vup", "click");
-            setEvForDouPara("settings_log_inline_tb", "click");
             setEvForDouPara("settings_font_color_menu", "input");
             setEvForDouPara("settings_font_color_menu", "change");
             setEvForDouPara("settings_font_color_submenu", "input");
@@ -17177,8 +17228,6 @@ function getGCTBInfoLogFormXXXX() {
             setEvForDepPara("settings_process_vupX0", "settings_vup_hide_avatar");
             setEvForDepPara("settings_process_vupX0", "settings_vup_hide_log");
             setEvForDepPara("settings_vup_hide_avatar", "settings_vup_hide_log");
-            setEvForDepPara("settings_log_inline_pmo4basic", "settings_log_inline_tb", false);
-            setEvForDepPara("settings_log_inline", "settings_log_inline_tb", false);
             setEvForDepPara("settings_show_mail", "settings_show_mail_in_viplist");
             setEvForDepPara("settings_show_mail", "settings_show_mail_in_allmyvips");
             setEvForDepPara("settings_show_mail", "settings_mail_icon_new_win");
@@ -17281,7 +17330,31 @@ function getGCTBInfoLogFormXXXX() {
             setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
             setEvForDepPara("settings_lists_show_dd","settings_lists_open_tabs");
             setEvForDepPara("settings_autovisit","settings_autovisit_default");
-            setEvForDepPara("settings_map_overview_browse_map_icon", "settings_map_overview_browse_map_icon_new_tab");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[0]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[0]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[1]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[1]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[2]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[2]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[3]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[3]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[4]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[4]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[5]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[5]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[6]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[6]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[7]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[7]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[8]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[8]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template_name[9]");
+            setEvForDepPara("settings_add_log_templates","settings_log_template[9]");
+            setEvForDepPara("settings_add_log_templates","settings_add_cache_log_signature_as_log_template");
+            setEvForDepPara("settings_add_log_templates","settings_add_tb_log_signature_as_log_template");
+            setEvForDepPara("settings_add_cache_log_signature","settings_log_signature");
+            setEvForDepPara("settings_add_cache_log_signature","settings_log_signature_on_fieldnotes");
+            setEvForDepPara("settings_add_tb_log_signature","settings_tb_signature");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
@@ -17490,7 +17563,6 @@ function getGCTBInfoLogFormXXXX() {
                 'settings_submit_log_button',
                 'settings_log_inline',
                 'settings_log_inline_pmo4basic',
-                'settings_log_inline_tb',
                 'settings_bookmarks_show',
                 'settings_bookmarks_on_top',
                 'settings_change_header_layout',
@@ -17633,7 +17705,12 @@ function getGCTBInfoLogFormXXXX() {
                 'settings_hide_archived_in_owned',
                 'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
+                'settings_add_log_templates',
+                'settings_add_cache_log_signature_as_log_template',
+                'settings_add_tb_log_signature_as_log_template',
+                'settings_add_cache_log_signature',
                 'settings_log_signature_on_fieldnotes',
+                'settings_add_tb_log_signature',
                 'settings_vip_show_nofound',
                 'settings_use_gclh_layercontrol',
                 'settings_use_gclh_layercontrol_on_browse_map',
@@ -18148,6 +18225,18 @@ function getGCTBInfoLogFormXXXX() {
                      + "and top icons, no line colors and no mouse activated big images "
                      + "at the logs. Also the VIP and VUP lists, hide avatars, log filter and "
                      + "log search and the latest logs won't work.";
+            alert(mess);
+        }
+    }
+
+// Warning that inserted text in the log text is not stable.
+    function alert_field_not_stable_in_logtext(field) {
+        if (field.checked) {
+            var mess = 'Please note that the automatic insertion of a #field in the log text is not stable. In order to receive a #field in the '
+                     + 'log text, the user must enter something manually in the log text, after the automatic insertion. The website only notices a change '
+                     + 'in the log text, when the data is entered manually. It is enough to insert any character, which can also be removed immediately.';
+            if (field.id == 'settings_add_log_templates') mess = mess.replace(/#field/g, 'log template');
+            else if (field.id.match(/settings_add_(cache|tb)_log_signature/)) mess = mess.replace(/#field/g, 'signature');
             alert(mess);
         }
     }
