@@ -55,7 +55,7 @@
 				VIP, VUP, message and mail icon behind the owner.<br>
 			</li>  
 			<li>
-				Set default log types. This feature is new and was previously only available for the old log form. The log type is set depending on whether it is a cache, an event or a TB and whether you are the owner or not.<br>
+				Set default log types. This feature is new here. It was previously only available for the old log form. The log type is set depending on whether it is a cache, an event or a TB and whether you are the owner or not.<br>
 			</li>  
 			<li>
 				Log templates.<br>
@@ -91,7 +91,7 @@
 				Replicate TB-Header to bottom.<br>
 			</li>  
 			<li>
-				F2 for new logging. This feature is new and was previously only available for the old log form.<br><br><br>
+				F2 for new logging. This feature is new here. It was previously only available for the old log form.<br><br><br>
 			</li>
 		</ul>
 	</li>
