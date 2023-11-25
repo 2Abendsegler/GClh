@@ -43,6 +43,21 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>Fix:</strong> [Cache Listing] GC Code is not copyable when PGC script is running. [<a href="https://github.com/2Abendsegler/GClh/issues/2420" title="Issue 2420">2420</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] VIP-List "Not Found" does not work on Webcam Caches. [<a href="https://github.com/2Abendsegler/GClh/issues/2412" title="Issue 2412">2412</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log Form] Markdown smilies have been changed. [<a href="https://github.com/2Abendsegler/GClh/issues/2411" title="Issue 2411">2411</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log Form] Log date not changeable for passed events in old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2418" title="Issue 2418">2418</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] GClh header disappears. [<a href="https://github.com/2Abendsegler/GClh/issues/2443" title="Issue 2443">2443</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>New:</strong> [Log Forms] Show further cache info cache type, difficulty and terrain in log forms. [<a href="https://github.com/2Abendsegler/GClh/issues/2399" title="Issue 2399">2399</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
 		New log form:<br>
 		<img src="../images/0.14.6/Screen01.jpg" alt="Screen01.jpg"><br><br>
@@ -52,24 +67,9 @@
 		<img src="../images/0.14.6/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
 	</li>
-	<li>
-		<strong>Fix:</strong> [New Log Form] VIP, mail, message icons are not stable. [<a href="https://github.com/2Abendsegler/GClh/issues/2393" title="Issue 2393">2393</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [New Log Form] Replacement owner in log template doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2391" title="Issue 2391">2391</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Old Log Form] Additional cache info favorite percentage not shown if blue banner deactivated. [<a href="https://github.com/2Abendsegler/GClh/issues/2400" title="Issue 2400">2400</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Recently Viewed Caches] Improve PQs runs into error if script send2cgeo is active. [<a href="https://github.com/2Abendsegler/GClh/issues/2390" title="Issue 2390">2390</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [BML] Output sometimes incorrect when cache is deleted from a list. [<a href="https://github.com/2Abendsegler/GClh/issues/2402" title="Issue 2402">2402</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
 </ul>
 <br>
-(22.04.2023)<br>
+(25.11.2023)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
