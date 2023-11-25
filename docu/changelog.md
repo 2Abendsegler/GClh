@@ -49,30 +49,30 @@
 		<img src="../images/0.15/Screen07.jpg" alt="Screen07.jpg"><br>
 		<ul>
 			<li>
-				Additional cache info, like favorite points, favorites in percent, number of watcher, difficulty and terrain.<br>
+				Additional cache info, like favorite points, favorites in percent, number of watcher, difficulty and terrain behind the name of a cache or an event.<br>
 			</li>  
 			<li>
 				VIP, VUP, message and mail icon behind the owner.<br>
 			</li>  
 			<li>
-				Set default log types. This feature is new and was previously only available for the old log form. Der Logtype wird gesetzt in Abhängigkeit davon, ob es sich um einen cache, ein Event oder um einen TB handelt und ob man der Owner ist oder nicht.<br>
+				Set default log types. This feature is new and was previously only available for the old log form. The log type is set depending on whether it is a cache, an event or a TB and whether you are the owner or not.<br>
 			</li>  
 			<li>
 				Log templates.<br>
 				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_log_templates" title="Link to your GClh II Config">Settings -> Log:<br>
-				<img src="../images/0.15/Screen012.jpg" alt="Screen12.jpg"></a><br>
+				<img src="../images/0.15/Screen12.jpg" alt="Screen12.jpg"></a><br>
 				If you want to use this feature, you have to activate it.<br>
 				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature_as_log_template" title="Link to your GClh II Config">Settings -> Log:<br>
-				<img src="../images/0.15/Screen013.jpg" alt="Screen13.jpg"></a><br>
+				<img src="../images/0.15/Screen13.jpg" alt="Screen13.jpg"></a><br>
 				If you want to use this feature, you have to activate it.<br>
 			</li>  
 			<li>
 				Cache signature or TB signature.<br>
 				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature" title="Link to your GClh II Config">Settings -> Log:<br>
-				<img src="../images/0.15/Screen014.jpg" alt="Screen14.jpg"></a><br>
+				<img src="../images/0.15/Screen14.jpg" alt="Screen14.jpg"></a><br>
 				If you want to use this feature, you have to activate it.<br>
 				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_tb_log_signature" title="Link to your GClh II Config">Settings -> Log:<br>
-				<img src="../images/0.15/Screen015.jpg" alt="Screen15.jpg"></a><br>
+				<img src="../images/0.15/Screen15.jpg" alt="Screen15.jpg"></a><br>
 				If you want to use this feature, you have to activate it.<br>
 			</li>  
 			<li>
@@ -91,7 +91,7 @@
 				Replicate TB-Header to bottom.<br>
 			</li>  
 			<li>
-				F2 for new logging. This feature is new and was previously only available for the old log form.<br> 
+				F2 for new logging. This feature is new and was previously only available for the old log form.<br><br><br>
 			</li>
 		</ul>
 	</li>
