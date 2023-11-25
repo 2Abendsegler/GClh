@@ -43,6 +43,24 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Browse Map:<br>
+		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		Search Map:<br>
+		<img src="../images/0.15/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_komoot_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Komoot Page:<br>
+		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [TB Listing] Button to copy TB Code in trackable listing to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2413" title="Issue 2413">2413</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15/Screen09.jpg" alt="Screen09.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Allow "Search in logs" to be case sensitive. [<a href="https://github.com/2Abendsegler/GClh/issues/2381" title="Issue 2381">2381</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15/Screen01.jpg" alt="Screen01.jpg"><br>
+		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Cache Listing] GC Code is not copyable when PGC script is running. [<a href="https://github.com/2Abendsegler/GClh/issues/2420" title="Issue 2420">2420</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
@@ -58,14 +76,14 @@
 		<strong>Fix:</strong> [Log Form] GClh header disappears. [<a href="https://github.com/2Abendsegler/GClh/issues/2443" title="Issue 2443">2443</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> [Log Forms] Show further cache info cache type, difficulty and terrain in log forms. [<a href="https://github.com/2Abendsegler/GClh/issues/2399" title="Issue 2399">2399</a> / <a href="https://www.geocaching.com/profile/?u=ChristianGK" title="Thanks to ChristianGK">ChristianGK</a>]<br>
+		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		New log form:<br>
 		<img src="../images/0.14.6/Screen01.jpg" alt="Screen01.jpg"><br><br>
 		Old log form:<br>
 		<img src="../images/0.14.6/Screen02.jpg" alt="Screen02.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_add_cache_info_in_log_page" title="Link to your GClh II Config">Settings -> Log:<br>
 		<img src="../images/0.14.6/Screen03.jpg" alt="Screen03.jpg"></a><br>
-		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br>
 	</li>
 </ul>
 <br>
