@@ -91,7 +91,7 @@
 				Replicate TB-Header to bottom.<br>
 			</li>  
 			<li>
-				F2 for new logging. This feature is new here. It was previously only available for the old log form.<br><br><br>
+				F2 key for send the log. This feature is new here. It was previously only available for the old log form.<br><br><br>
 			</li>
 		</ul>
 	</li>
