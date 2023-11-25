@@ -43,7 +43,7 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Notification] Improve notification list and notifications. [<a href="https://github.com/2Abendsegler/GClh/issues/2454" title="Issue 2454">2454</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Notification] Improve notification list and notifications. [<a href="https://github.com/2Abendsegler/GClh/issues/2454" title="Issue 2454">2454</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		Notification list:<br>
 		<img src="../images/0.15/Screen05.jpg" alt="Screen05.jpg"><br>
 		<ul>
@@ -63,7 +63,7 @@
 				Enable, disable a notification without reloading the page.<br>
 			</li>
 			<li>
-				Button to start a copy process to copy the data into a new notification.<br>
+				Button to start a copy process to copy the data into a new notification.<br><br>
 			</li>
 		</ul>
 		Notification:<br>
@@ -73,7 +73,7 @@
 				During the copy process the contents of all fields are set.<br>
 			</li>
 			<li>
-				After changing the cache type, the log types are also set again, as far as possible.<br>
+				After changing the cache type, the log types are also set again, as far as possible.<br><br>
 			</li>
 		</ul>
 		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br>
@@ -85,27 +85,27 @@
 		<img src="../images/0.15/Screen11.jpg" alt="Screen11.jpg"><br>
 		<ul>
 			<li>
-				Add or save with the F2 key.<br><br>
+				Add or save with the F2 key.<br><br><br>
 			</li>
 		</ul>
 	</li>
 	<li>
-		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		Browse Map:<br>
-		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br>
+		<img src="../images/0.15/Screen03.jpg" alt="Screen03.jpg"><br><br>
 		Search Map:<br>
-		<img src="../images/0.15/Screen04.jpg" alt="Screen04.jpg"><br>
+		<img src="../images/0.15/Screen04.jpg" alt="Screen04.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_komoot_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Komoot Page:<br>
-		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [TB Listing] Button to copy TB Code in trackable listing to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2413" title="Issue 2413">2413</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.15/Screen09.jpg" alt="Screen09.jpg"><br><br>
+		<img src="../images/0.15/Screen09.jpg" alt="Screen09.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Allow "Search in logs" to be case sensitive. [<a href="https://github.com/2Abendsegler/GClh/issues/2381" title="Issue 2381">2381</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.15/Screen01.jpg" alt="Screen01.jpg"><br>
-		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br><br>
+		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] GC Code is not copyable when PGC script is running. [<a href="https://github.com/2Abendsegler/GClh/issues/2420" title="Issue 2420">2420</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
