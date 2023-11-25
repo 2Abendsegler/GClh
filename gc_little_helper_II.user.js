@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15
+// @version      0.14.6
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -4860,7 +4860,7 @@ var mainGC = function() {
             try {
                 if (settings_add_log_templates) {
                     buildLogTemplates(0);
-                    css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; width: 200px; letter-spacing: 0.8px;}';
+                    css += '#gclh_log_tpls {color: #777; padding-left: 8px; background-color: hsl(0, 0%, 100%); border-color: #ccc; border-radius: 4px; border-style: solid; border-width: 1px; box-sizing: border-box; height: 40px; width: 200px; letter-spacing: 0.8px; cursor: pointer;}';
                     css += '#gclh_log_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
                 }
             } catch(e) {gclh_error("Log Templates in improve log form",e);}
