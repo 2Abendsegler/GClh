@@ -43,6 +43,59 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>New:</strong> [Log Form] Improve Log Form. [<a href="https://github.com/2Abendsegler/GClh/issues?q=is%3Aclosed+milestone%3A%22v0.15+%5BLog+Form%5D%22+sort%3Aupdated-desc" title="Collection of issues">Collection of issues</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		Please note that the automatic insertion of a signature or a log template in the log text is not stable. In order to receive a signature or a log template in the log text, you have to enter something manually in the log text, after the automatic insertion. The website only notices a change in the log text, when the data is entered manually. It is enough to insert any character, which can also be removed immediately.<br><br>
+		There are some parameters in the <a href="https://www.geocaching.com/my/#GClhShowConfig#a#lnk_gclh_config_logging" title="Link to your GClh II Config">Log area</a> for the setting. Only the new parameters are presented below.<br><br>
+		<img src="../images/0.15/Screen07.jpg" alt="Screen07.jpg"><br>
+		<ul>
+			<li>
+				Additional cache info, like favorite points, favorites in percent, number of watcher, difficulty and terrain.<br>
+			</li>  
+			<li>
+				VIP, VUP, message and mail icon behind the owner.<br>
+			</li>  
+			<li>
+				Set default log types. This feature is new and was previously only available for the old log form. Der Logtype wird gesetzt in Abhängigkeit davon, ob es sich um einen cache, ein Event oder um einen TB handelt und ob man der Owner ist oder nicht.<br>
+			</li>  
+			<li>
+				Log templates.<br>
+				screen12
+			settings_add_log_templates
+				if you want to use ...
+				screen13
+			settings_add_cache_log_signature_as_log_template
+				if you want to use ...
+			</li>  
+			<li>
+				Cache signature or TB signature.<br>
+				screen14
+			settings_add_cache_log_signature
+				if you want to use ...
+				screen15
+			settings_add_tb_log_signature
+				if you want to use ...
+			</li>  
+			<li>
+				Show message in case of unsaved log.<br>
+			</li>  
+			<li>
+				Show length of logtext and word count.<br>
+			</li>  
+		</ul>
+		<img src="../images/0.15/Screen08.jpg" alt="Screen08.jpg"><br>
+		<ul>
+			<li>
+				TB auto visit.<br>
+			</li>  
+			<li>
+				Replicate TB-Header to bottom.<br>
+			</li>  
+			<li>
+				F2 for new logging. This feature is new and was previously only available for the old log form. <br> 
+			</li>
+		</ul>
+	</li>
+	<li>
 		<strong>New:</strong> [Notification] Improve notification list and notifications. [<a href="https://github.com/2Abendsegler/GClh/issues/2454" title="Issue 2454">2454</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		Notification list:<br>
 		<img src="../images/0.15/Screen05.jpg" alt="Screen05.jpg"><br>
