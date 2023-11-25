@@ -126,7 +126,7 @@
 				During the copy process the contents of all fields are set.<br>
 			</li>
 			<li>
-				After changing the cache type, the log types are also set again during the copy process, as far as possible.<br><br>
+				After changing the cache type, the log types are also set again as far as possible.<br><br>
 			</li>
 		</ul>
 		Notification:<br>
