@@ -106,7 +106,7 @@
 				Build a table header.<br>
 			</li>
 			<li>
-				Sorting the columns by clicking on the column header.<br>
+				Sorting the lines by clicking on the column header.<br>
 			</li>
 			<li>
 				Button in the header to create a new notification.<br>
