@@ -103,6 +103,9 @@
 		<img src="../images/0.15/Screen05.jpg" alt="Screen05.jpg"><br>
 		<ul>
 			<li>
+				Build a table header.<br>
+			</li>
+			<li>
 				Sorting the columns by clicking on the column header.<br>
 			</li>
 			<li>
