@@ -155,7 +155,8 @@
 		Search Map:<br>
 		<img src="../images/0.15/Screen04.gif" alt="Screen04.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_komoot_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Komoot Page:<br>
-		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br><br><br>
+		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		If you want to use the second feature, you have to activate it.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Allow "Search in logs" to be case sensitive. [<a href="https://github.com/2Abendsegler/GClh/issues/2381" title="Issue 2381">2381</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
