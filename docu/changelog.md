@@ -97,6 +97,8 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Notification] Improve notification list and notifications. [<a href="https://github.com/2Abendsegler/GClh/issues/2454" title="Issue 2454">2454</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_improve_notifications" title="Link to your GClh II Config">Settings -> Other:<br>
+		<img src="../images/0.15/Screen16.jpg" alt="Screen16.jpg"></a><br><br>
 		Notification list:<br>
 		<img src="../images/0.15/Screen05.jpg" alt="Screen05.jpg"><br>
 		<ul>
