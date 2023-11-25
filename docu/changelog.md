@@ -45,7 +45,7 @@
 	<li>
 		<strong>New:</strong> [Log Form] Improve Log Form. [<a href="https://github.com/2Abendsegler/GClh/issues?q=is%3Aclosed+milestone%3A%22v0.15+%5BLog+Form%5D%22+sort%3Aupdated-desc" title="Collection of issues">Collection of issues</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 		Please note that the automatic insertion of a signature or a log template in the log text is not stable. In order to receive a signature or a log template in the log text, you have to enter something manually in the log text, after the automatic insertion. The website only notices a change in the log text, when the data is entered manually. It is enough to insert any character, which can also be removed immediately.<br><br>
-		There are some parameters in the <a href="https://www.geocaching.com/my/#GClhShowConfig#a#lnk_gclh_config_logging" title="Link to your GClh II Config">Log area</a> for the setting. Only the new parameters are presented below.<br><br>
+		There are some older parameters in the <a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_logging" title="Link to your GClh II Config">Log area</a> for the setting. Only the new parameters are presented below.<br><br>
 		<img src="../images/0.15/Screen07.jpg" alt="Screen07.jpg"><br>
 		<ul>
 			<li>
