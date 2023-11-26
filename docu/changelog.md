@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="#v0146" title="GClh II version 0.14.6 (22.04.2023)">v0.14.6</a> &nbsp;
 <a href="#v0145" title="GClh II version 0.14.5 (12.04.2023)">v0.14.5</a> &nbsp;
 <a href="#v0144" title="GClh II version 0.14.4 (28.02.2023)">v0.14.4</a> &nbsp;
@@ -36,6 +37,147 @@
 <a href="#v0111" title="GClh II version 0.11.1 (16.05.2021)">v0.11.1</a> &nbsp;
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
+
+---
+## v0.15:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Log Form] Improve Log Form. [<a href="https://github.com/2Abendsegler/GClh/issues?q=is%3Aclosed+milestone%3A%22v0.15+%5BLog+Form%5D%22+sort%3Aupdated-desc" title="Collection of issues">Collection of issues</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		Please note that a log consisting only of an automatic signature and log templates cannot be saved. The website only notices a change in the log text, when the data is entered manually. It is enough to insert any character, which can also be removed immediately.<br><br>
+		There are some older parameters in the <a href="https://www.geocaching.com/my/#GClhShowConfig#a#gclh_config_logging" title="Link to your GClh II Config">Log area</a> for the setting. Only the new parameters are presented below.<br><br>
+		<img src="../images/0.15/Screen07.jpg" alt="Screen07.jpg"><br>
+		<ul>
+			<li>
+				Additional cache info, like favorite points, favorites in percent, number of watcher, difficulty and terrain behind the name of a cache or an event.<br>
+			</li>  
+			<li>
+				VIP, VUP, message and mail icon behind the owner.<br>
+			</li>  
+			<li>
+				Set default log types. This feature is new here. It was previously only available for the old log form. The log type is set depending on whether it is a cache, an event or a TB and whether you are the owner or not.<br>
+			</li>  
+			<li>
+				Log templates.<br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_cache_log_signature_as_log_template" title="Link to your GClh II Config">Settings -> Log:<br>
+				<img src="../images/0.15/Screen13.jpg" alt="Screen13.jpg"></a><br>
+				If you want to use one of these features, you have to activate it.<br>
+			</li>  
+			<li>
+				Cache log signature or TB log signature.<br>
+			</li>  
+			<li>
+				Show message in case of unsaved log.<br>
+			</li>  
+			<li>
+				Show length of logtext and word count.<br><br>
+			</li>  
+		</ul>
+		<img src="../images/0.15/Screen08.jpg" alt="Screen08.jpg"><br>
+		<ul>
+			<li>
+				TB auto visit.<br>
+			</li>  
+			<li>
+				Replicate TB-Header to bottom.<br>
+			</li>  
+			<li>
+				F2 key for send the log. This feature is new here. It was previously only available for the old log form.<br><br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> [Notification] Improve notification list and notifications. [<a href="https://github.com/2Abendsegler/GClh/issues/2454" title="Issue 2454">2454</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_improve_notifications" title="Link to your GClh II Config">Settings -> Other:<br>
+		<img src="../images/0.15/Screen16.jpg" alt="Screen16.jpg"></a><br><br>
+		Notification list:<br>
+		<img src="../images/0.15/Screen05.jpg" alt="Screen05.jpg"><br>
+		<ul>
+			<li>
+				Build a table header.<br>
+			</li>
+			<li>
+				Sorting the lines by clicking on the column header.<br>
+			</li>
+			<li>
+				Button in the header to create a new notification.<br>
+			</li>
+			<li>
+				Button in the header to load, show, hide the missing notification data coordinates, distance and send to.<br>
+			</li>
+			<li>
+				Button in the header to hide, show page info.<br>
+			</li>
+			<li>
+				Enable, disable a notification without reloading the page.<br>
+			</li>
+			<li>
+				Button to start a copy process to copy the data into a new notification.<br><br>
+			</li>
+		</ul>
+		Notification: Copy process<br>
+		<img src="../images/0.15/Screen10.gif" alt="Screen10.gif"><br>
+		<ul>
+			<li>
+				During the copy process the contents of all fields are set.<br>
+			</li>
+			<li>
+				After changing the cache type, the log types are also set again as far as possible.<br><br>
+			</li>
+		</ul>
+		Notification:<br>
+		<img src="../images/0.15/Screen06.jpg" alt="Screen06.jpg"><br>
+		<ul>
+			<li>
+				The coordinates can alternatively be entered using a single field.<br><br>
+			</li>
+		</ul>
+		<img src="../images/0.15/Screen11.jpg" alt="Screen11.jpg"><br>
+		<ul>
+			<li>
+				Add or save with the F2 key.<br><br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> [Maps] Add link to Komoot on Browse and Search Map. [<a href="https://github.com/2Abendsegler/GClh/issues/2433" title="Issue 2433">2433</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		Browse Map:<br>
+		<img src="../images/0.15/Screen03.gif" alt="Screen03.gif"><br><br>
+		Search Map:<br>
+		<img src="../images/0.15/Screen04.gif" alt="Screen04.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_komoot_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Komoot Page:<br>
+		<img src="../images/0.15/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		If you want to use the second feature, you have to activate it.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Allow "Search in logs" to be case sensitive. [<a href="https://github.com/2Abendsegler/GClh/issues/2381" title="Issue 2381">2381</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15/Screen01.jpg" alt="Screen01.jpg"><br>
+		The "Search in logs" feature is not new, only the possibility to search case sensitive.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [TB Listing] Button to copy TB Code in trackable listing to clipboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2413" title="Issue 2413">2413</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15/Screen09.jpg" alt="Screen09.jpg"><br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] GC Code is not copyable when PGC script is running. [<a href="https://github.com/2Abendsegler/GClh/issues/2420" title="Issue 2420">2420</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] VIP-List "Not Found" does not work on Webcam Caches. [<a href="https://github.com/2Abendsegler/GClh/issues/2412" title="Issue 2412">2412</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log Form] Markdown smilies have been changed. [<a href="https://github.com/2Abendsegler/GClh/issues/2411" title="Issue 2411">2411</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Old Log Form] Log date not changeable for passed events in old log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2418" title="Issue 2418">2418</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] GClh header disappears. [<a href="https://github.com/2Abendsegler/GClh/issues/2443" title="Issue 2443">2443</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(26.11.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.14.6:

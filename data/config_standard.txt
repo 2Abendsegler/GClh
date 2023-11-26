@@ -1,7 +1,6 @@
 {
   "settings_submit_log_button": true,
   "settings_log_inline": false,
-  "settings_log_inline_tb": false,
   "settings_log_inline_pmo4basic": true,
   "settings_bookmarks_show": true,
   "settings_change_header_layout": true,
@@ -94,6 +93,8 @@
   "settings_switch_to_flopps_in_same_tab": false,
   "settings_add_link_geohack_on_gc_map": true,
   "settings_switch_to_geohack_in_same_tab": false,
+  "settings_add_link_komoot_on_gc_map": true,
+  "settings_switch_to_komoot_in_same_tab": false,
   "settings_sort_default_bookmarks": true,
   "settings_make_vip_lists_hideable": true,
   "settings_show_latest_logs_symbols": true,
@@ -160,7 +161,12 @@
   "settings_hide_archived_in_owned": false,
   "settings_show_button_for_hide_archived": true,
   "settings_hide_visits_in_profile": false,
+  "settings_add_log_templates": true,
+  "settings_add_cache_log_signature_as_log_template": false,
+  "settings_add_tb_log_signature_as_log_template": false,
+  "settings_add_cache_log_signature": true,
   "settings_log_signature_on_fieldnotes": true,
+  "settings_add_tb_log_signature": true,
   "settings_map_hide_sidebar": true,
   "settings_vip_show_nofound": true,
   "settings_use_gclh_layercontrol": true,
@@ -363,5 +369,6 @@
   "settings_dashboard_show_logs_in_markdown": true,
   "settings_public_profile_smaller_privacy_btn": false,
   "settings_searchmap_improve_add_to_list_height": 130,
-  "settings_searchmap_improve_add_to_list": true
+  "settings_searchmap_improve_add_to_list": true,
+  "settings_improve_notifications": true
 }

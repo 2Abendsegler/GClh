@@ -74,6 +74,6 @@ body:
       label: Additional context
       description: |
         Add any other context about the problem here.
-        You can upload images or console logs (Console Logs: Right mouse-click => Examine => Console)
+        You can upload images or console logs (Console Logs: Right mouse-click => Inspect => Console)
     validations:
       required: false
