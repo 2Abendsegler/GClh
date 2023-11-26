@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.14.6
+// @version      0.15
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -521,12 +521,12 @@ var variablesInit = function(c) {
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
-    c.settings_add_log_templates = getValue("settings_add_log_templates", false);
+    c.settings_add_log_templates = getValue("settings_add_log_templates", true);
     c.settings_add_cache_log_signature_as_log_template = getValue("settings_add_cache_log_signature_as_log_template", false);
     c.settings_add_tb_log_signature_as_log_template = getValue("settings_add_tb_log_signature_as_log_template", false);
-    c.settings_add_cache_log_signature = getValue("settings_add_cache_log_signature", false);
+    c.settings_add_cache_log_signature = getValue("settings_add_cache_log_signature", true);
     c.settings_log_signature_on_fieldnotes = getValue("settings_log_signature_on_fieldnotes", true);
-    c.settings_add_tb_log_signature = getValue("settings_add_tb_log_signature", false);
+    c.settings_add_tb_log_signature = getValue("settings_add_tb_log_signature", true);
     c.settings_map_hide_sidebar = getValue("settings_map_hide_sidebar", true);
     c.settings_hover_image_max_size = getValue("settings_hover_image_max_size", 600);
     c.settings_vip_show_nofound = getValue("settings_vip_show_nofound", true);
@@ -4700,6 +4700,7 @@ var mainGC = function() {
                 var isEvent = pageData.isEvent;
             }
             let css = '';
+
             // Have we changed the logtext?
             let keepGClhChanges = ((!isTB && settings_add_cache_log_signature)
                 && ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)))
@@ -14395,8 +14396,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/5fcM/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iFP"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/GWJ6/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iFT"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15776,7 +15777,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "25.11.2023";
+            var thanksLastUpdate = "26.11.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17065,9 +17066,6 @@ var mainGC = function() {
             $('#settings_bookmarks_top_menu_h')[0].addEventListener("click", handleRadioTopMenu, false);
             handleRadioTopMenu(true);
             $('#settings_load_logs_with_gclh')[0].addEventListener("click", alert_settings_load_logs_with_gclh, false);
-            $('#settings_add_log_templates')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
-            $('#settings_add_cache_log_signature')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
-            $('#settings_add_tb_log_signature')[0].addEventListener("click", function() {alert_field_not_stable_in_logtext(this);}, false);
             $('#settings_drafts_go_automatic_back')[0].addEventListener("click", function() {
                 if ($('#settings_drafts_go_automatic_back').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
             }, false);
@@ -18204,18 +18202,6 @@ var mainGC = function() {
                      + "and top icons, no line colors and no mouse activated big images "
                      + "at the logs. Also the VIP and VUP lists, hide avatars, log filter and "
                      + "log search and the latest logs won't work.";
-            alert(mess);
-        }
-    }
-
-// Warning that inserted text in the log text is not stable.
-    function alert_field_not_stable_in_logtext(field) {
-        if (field.checked) {
-            var mess = 'Please note that the automatic insertion of a #field in the log text is not stable. In order to receive a #field in the '
-                     + 'log text, the user must enter something manually in the log text, after the automatic insertion. The website only notices a change '
-                     + 'in the log text, when the data is entered manually. It is enough to insert any character, which can also be removed immediately.';
-            if (field.id == 'settings_add_log_templates') mess = mess.replace(/#field/g, 'log template');
-            else if (field.id.match(/settings_add_(cache|tb)_log_signature/)) mess = mess.replace(/#field/g, 'signature');
             alert(mess);
         }
     }
