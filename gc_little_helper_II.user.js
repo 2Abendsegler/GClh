@@ -4722,9 +4722,7 @@ var mainGC = function() {
             const config = { childList: true, subtree: true };
             const logpageObserver = new MutationObserver(function(_, observer) {
                 observer.disconnect();
-                console.log('keepGClhChanges: ', keepGClhChanges)
-                if ($('#gc-md-editor_md')[0] && keepGClhChanges) {
-                    console.log('keep')
+                if ($('#gc-md-editor_md')[0] && keepGClhChanges && !_logtext == '') {
                     $('#gc-md-editor_md')[0].value = _logtext;
                 }
                 observer.observe(document.body, config);
