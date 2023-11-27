@@ -4691,7 +4691,7 @@ var mainGC = function() {
     }
 
 // Improve log form.
-    if (is_page('logform')) {
+    function runImproveLogForm() {
         try {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
@@ -5218,6 +5218,20 @@ var mainGC = function() {
             // Append the style.
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve log form",e);}
+    }
+    // Run Improve Log form.
+    if (document.location.pathname.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i)) {
+        let url = '';
+        const config = { childList: true, subtree: true };
+        const logviewObserver = new MutationObserver(function(_, observer) {
+            observer.disconnect();
+            if (url !== document.location.pathname && is_page('logform')) {
+                url = document.location.pathname;
+                runImproveLogForm();
+            } else url = document.location.pathname;
+            observer.observe(document.body, config);
+        });
+        logviewObserver.observe(document.body, config);
     }
 
 // Improve Mail.
