@@ -9468,7 +9468,7 @@ var mainGC = function() {
             }
             // Copy to clipboard button for log text in Latest Activity list.
             function buildCopyLogtextToClipboard(log) {
-                if (!$(log).find('.gclh_copyLogToClipboard')[0]) {
+                if (!$(log).find('.gclh_copyLogToClipboard')[0] && $(log).find('.note-text')[0]) {
                     $(log).find('.meta-data').after('<span class="gclh_copyLogToClipboard" style="margin-top: 12px;margin-left: auto;padding-right: 12px;"><span class="gclh_copyToClipboard"></span></span>');
                     var logText = decode_innerHTML($(log).find('.note-text')[0]).replace(/<br>/g,'\n');
                     addCopyToClipboardLink(logText, $(log).find('.gclh_copyToClipboard')[0], "Log");
