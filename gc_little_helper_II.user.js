@@ -4695,6 +4695,7 @@ var mainGC = function() {
         try {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
+            const isEdit = document.location.pathname.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+\/log\/(?:gl|tl)[a-z0-9]+\/edit/i);
             if (typeof $('#__NEXT_DATA__')[0] != 'undefined') {
                 var pageData = JSON.parse($('#__NEXT_DATA__')[0].innerText).props.pageProps;
                 var isEvent = pageData.isEvent;
@@ -4702,7 +4703,7 @@ var mainGC = function() {
             let css = '';
 
             // Have we changed the logtext?
-            let keepGClhChanges = ((!isTB && settings_add_cache_log_signature)
+            let keepGClhChanges = !isEdit && ((!isTB && settings_add_cache_log_signature)
                 && ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)))
                 || (isTB && settings_add_tb_log_signature);
             let _logtext = ''; // The Logtext
@@ -4813,7 +4814,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){buildSignature(waitCount);}, 10);
             }
             try {
-                if ((!isTB && settings_add_cache_log_signature) || (isTB && settings_add_tb_log_signature)) buildSignature(0);
+                if (!isEdit && (!isTB && settings_add_cache_log_signature) || (isTB && settings_add_tb_log_signature)) buildSignature(0);
             } catch(e) {gclh_error("Signature in improve log form",e);}
 
             // Log Templates.
