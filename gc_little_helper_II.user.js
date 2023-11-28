@@ -9419,16 +9419,17 @@ var mainGC = function() {
                     $(log).find('.edit-link').addClass('gclh_view-link');
                 }
                 if ($(log).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
-                    if (!$(log).find('.gclh_edit-link')[0] && $(log).find('.edit-link')[0].href.match(/coord.info\/GL/)) {
+                    if (!$(log).find('.gclh_edit-link')[0] && $(log).find('.edit-link')[0].href.match(/coord.info\/(?:GL|TL)/i)) {
                         var span = document.createElement('span');
                         span.setAttribute('class', 'gclh_buttons');
                         $(log).find('.edit-link')[0].before(span);
                         let gccode = $(log).find('.meta-data span span')[0].innerHTML.trim();
                         var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
                         var href = $(editLink).prop('href');
+                        let type = href.match(/GL/) ? 'geocache' : 'trackable';
                         href = href.replace(
-                          /coord.info\/(GL\w+)/,
-                          `www.geocaching.com/live/geocache/${gccode}/log/$1/edit`
+                          /coord.info\/((?:GL|TL)\w+)/i,
+                          `www.geocaching.com/live/${type}/${gccode}/log/$1/edit`
                         );
                         $(editLink).prop('href', href).prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
                         $(log).find('.gclh_buttons')[0].append(editLink);
