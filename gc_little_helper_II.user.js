@@ -8022,7 +8022,7 @@ var mainGC = function() {
                 var idCode = $('.hidden-by a')[0].href.match(/\.com\/p\?(id=|code=)(\w+)/);
                 if (idCode && idCode[2]) {
                     function checkBuildVipIcons(waitCount, username, guid) {
-                        if (!$('.gclh_vip')[0]) {
+                        if (!$('.gclh_vip')[0] && $('.hidden-by a')[0]) {
                             var side = $('.hidden-by a')[0];
                             link = gclh_build_vipvup(user, global_vips, "vip");
                             side.appendChild(link);
