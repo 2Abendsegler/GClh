@@ -12960,6 +12960,7 @@ var mainGC = function() {
         try {
             function hideFbIcon(waitCount) {
                 if ($('#_hj_feedback_container')[0]) $('#_hj_feedback_container')[0].style.display = "none";
+                if ($('._hj-widget-container')[0]) $('._hj-widget-container')[0].style.display = "none";
                 waitCount++;
                 if (waitCount <= 50) setTimeout(function(){hideFbIcon(waitCount);}, 200);
             }
@@ -15844,7 +15845,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple') + "<br>";
             html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
-            html += checkboxy('settings_hide_feedback_icon', 'Hide green feedback icon') + "<br>";
+            html += checkboxy('settings_hide_feedback_icon', 'Hide feedbacks and surveys')  + show_help('With this option you can hide for example the green feedback icon bottom right on a page or the survey about the purpose of the visit of the cache owner dashboard page.') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("With blue banners below the page header, new page layouts or new features are pointed out. If you don't want that, you don't have the option to hide the annoying banner. This parameter adds a button to decide which banners to hide. If the parameter is deactivated, the hidden banners are deleted again.") + "<br>";
 
