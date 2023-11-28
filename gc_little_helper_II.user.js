@@ -4986,6 +4986,7 @@ var mainGC = function() {
                         // Set variable length of cache name.
                         $('.loggable-header .geocache-link')[0].title = $('.loggable-header .geocache-link')[0].innerText;
                         function setMaxwidthOfCacheName(waitCount) {
+                            if (!$('.loggable-header')[0] || !$('.loggable-header .gc-geocache-icon')[0] || !$('.gclh_aci')[0]) return;
                             var newMaxWidth = parseInt(window.getComputedStyle($('.loggable-header')[0]).width) - 38
                                             - parseInt(window.getComputedStyle($('.loggable-header .gc-geocache-icon')[0]).width)
                                             - ($('.loggable-header .badge')[0] ? parseInt(window.getComputedStyle($('.loggable-header .badge')[0]).width) : 0)
