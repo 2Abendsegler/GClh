@@ -4814,7 +4814,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){buildSignature(waitCount);}, 10);
             }
             try {
-                if (!isEdit && (!isTB && settings_add_cache_log_signature) || (isTB && settings_add_tb_log_signature)) buildSignature(0);
+                if (!isEdit && ((!isTB && settings_add_cache_log_signature) || (isTB && settings_add_tb_log_signature))) buildSignature(0);
             } catch(e) {gclh_error("Signature in improve log form",e);}
 
             // Log Templates.
