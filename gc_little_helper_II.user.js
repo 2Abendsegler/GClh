@@ -9407,10 +9407,14 @@ var mainGC = function() {
                         var span = document.createElement('span');
                         span.setAttribute('class', 'gclh_buttons');
                         $(log).find('.edit-link')[0].before(span);
+                        let gccode = $(log).find('.meta-data span span')[0].innerHTML.trim();
                         var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
                         var href = $(editLink).prop('href');
-                        href = href.replace(/coord.info\/GL/, 'www.geocaching.com/seek/log.aspx?code=GL');
-                        $(editLink).prop('href', href + '&edit=true').prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
+                        href = href.replace(
+                          /coord.info\/(GL\w+)/,
+                          `www.geocaching.com/live/geocache/${gccode}/log/$1/edit`
+                        );
+                        $(editLink).prop('href', href).prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
                         $(log).find('.gclh_buttons')[0].append(editLink);
                         var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
                         $(log).find('.edit-link')[0].remove();
