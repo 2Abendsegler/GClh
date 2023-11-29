@@ -5221,16 +5221,32 @@ var mainGC = function() {
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve log form",e);}
     }
-    // Run Improve Log form.
+
+// Improve log view.
+    function runImproveLogView() {
+        // Hide social share button.
+        function hideSocialShareButton(waitCount) {
+            if ($('li.masthead-control button[data-testid="share-log"]')[0] && window.getComputedStyle($('li.masthead-control button[data-testid="share-log"]')[0].closest('li')).display != 'none') {
+                $('li.masthead-control button[data-testid="share-log"]')[0].closest('li').style.display = 'none';
+            }
+            waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
+        }
+        try {
+            if (settings_hide_socialshare) hideSocialShareButton(0);
+        } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
+    }
+
+// Run improve log form, run improve log view.
     if (document.location.pathname.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i)) {
         let url = '';
         const config = { childList: true, subtree: true };
         const logviewObserver = new MutationObserver(function(_, observer) {
             observer.disconnect();
-            if (url !== document.location.pathname && is_page('logform')) {
-                url = document.location.pathname;
-                runImproveLogForm();
-            } else url = document.location.pathname;
+            if (url !== document.location.pathname) {
+                if (is_page('logform')) runImproveLogForm();
+                else if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) runImproveLogView();
+            }
+            url = document.location.pathname;
             observer.observe(document.body, config);
         });
         logviewObserver.observe(document.body, config);
