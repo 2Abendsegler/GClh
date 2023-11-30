@@ -1338,10 +1338,12 @@ var mainGCWait = function() {
             if (typeof _gcUser.findCount !== 'undefined') global_findCount = _gcUser.findCount;
             if (typeof _gcUser.membershipLevel !== 'undefined' && _gcUser.membershipLevel == 1) global_isBasic = true;
         }
-        // Used on page: https://www.geocaching.com/live/promos/jacklinks
-        if ($('#__NEXT_DATA__')[0] && $('#__NEXT_DATA__')[0].innerHTML) {
+        // Used on page: https://www.geocaching.com/live/geocache/GC40/log
+        if (typeof $('#__NEXT_DATA__')[0] !== 'undefined' && $('#__NEXT_DATA__')[0].innerText) {
             try {
-                var userdata = JSON.parse($('#__NEXT_DATA__')[0].innerHTML);
+                try {
+                    var userdata = JSON.parse($('#__NEXT_DATA__')[0].innerText);
+                } catch(e) {}
                 if (typeof userdata !== 'undefined' && typeof userdata.props !== 'undefined' && typeof userdata.props.pageProps !== 'undefined' && typeof userdata.props.pageProps.gcUser !== 'undefined') {
                     var gcUser = userdata.props.pageProps.gcUser;
                     if (typeof gcUser !== 'undefined' && typeof gcUser.username !== 'undefined' && gcUser.username !== null) {
