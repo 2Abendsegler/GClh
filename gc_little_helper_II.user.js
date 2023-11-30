@@ -4698,9 +4698,14 @@ var mainGC = function() {
             const isTB = document.location.pathname.match(/^\/live\/(geocache|trackable)\/(?:gc|tb)[a-z0-9]+/i)[1] === 'trackable';
             const isDraft = document.location.pathname.match(/^\/live\/geocache\/gc[a-z0-9]+\/draft\/LD[a-z0-9]+\/compose/i);
             const isEdit = document.location.pathname.match(/^\/live\/(?:geocache|trackable)\/(?:gc|tb)[a-z0-9]+\/log\/(?:gl|tl)[a-z0-9]+\/edit/i);
-            if (typeof $('#__NEXT_DATA__')[0] != 'undefined') {
-                var pageData = JSON.parse($('#__NEXT_DATA__')[0].innerText).props.pageProps;
-                var isEvent = pageData.isEvent;
+            if (typeof $('#__NEXT_DATA__')[0] !== 'undefined' && $('#__NEXT_DATA__')[0].innerText) {
+                try {
+                    var nextData = JSON.parse($('#__NEXT_DATA__')[0].innerText);
+                } catch(e) {}
+                if (typeof nextData !== 'undefined' && nextData.props && nextData.props.pageProps) {
+                    var pageData = nextData.props.pageProps;
+                    if (pageData.isEvent) var isEvent = pageData.isEvent;
+                }
             }
             let css = '';
 
@@ -5220,22 +5225,53 @@ var mainGC = function() {
             } catch(e) {gclh_error("Send Log with F2 in improve log form",e);}
 
             // Append the style.
-            appendCssStyle(css);
+            if (!$('#gclh_css_improveLogForm')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogForm');
         } catch(e) {gclh_error("Improve log form",e);}
     }
 
 // Improve log view.
     function runImproveLogView() {
-        // Hide social share button.
-        function hideSocialShareButton(waitCount) {
-            if ($('li.masthead-control button[data-testid="share-log"]')[0] && window.getComputedStyle($('li.masthead-control button[data-testid="share-log"]')[0].closest('li')).display != 'none') {
-                $('li.masthead-control button[data-testid="share-log"]')[0].closest('li').style.display = 'none';
-            }
-            waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
-        }
         try {
-            if (settings_hide_socialshare) hideSocialShareButton(0);
-        } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
+            if (typeof $('#__NEXT_DATA__')[0] !== 'undefined' && $('#__NEXT_DATA__')[0].innerText) {
+                try {
+                    var nextData = JSON.parse($('#__NEXT_DATA__')[0].innerText);
+                } catch(e) {}
+                if (typeof nextData !== 'undefined' && nextData.props && nextData.props.pageProps) {
+                    var pageData = nextData.props.pageProps;
+                    if (pageData.logText) var logText = pageData.logText;
+                }
+            }
+            let css = '';
+
+            // Hide social share button.
+            function hideSocialShareButton(waitCount) {
+                if ($('li.masthead-control button[data-testid="share-log"]')[0] && window.getComputedStyle($('li.masthead-control button[data-testid="share-log"]')[0].closest('li')).display != 'none') {
+                    $('li.masthead-control button[data-testid="share-log"]')[0].closest('li').style.display = 'none';
+                }
+                waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
+            }
+            try {
+                if (settings_hide_socialshare) hideSocialShareButton(0);
+            } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
+
+            // Build copy to clipboard icon for logtext.
+            function buildCopyToClipboardForLogtext(waitCount) {
+                if (logText && logText != '' && $('li.meta-data-item:last span.meta-data-label')[0] && !$('#gclh_copyLogtextToClipboard')[0]) {
+                    $('li.meta-data-item:last span.meta-data-label').after('<span id="gclh_copyLogtextToClipboard"><span></span></span>');
+                    addCopyToClipboardLink(logText, $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
+                }
+                waitCount++; if (waitCount <= 100) setTimeout(function(){buildCopyToClipboardForLogtext(waitCount);}, 100);
+            }
+            try {
+                buildCopyToClipboardForLogtext(0);
+                css += 'li.meta-data-item:last-child {display: block;}';
+                css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
+                css += 'li.meta-data-item:last-child > svg {display: inline-block; margin-right: 8px; margin-bottom: -2px;}';
+            } catch(e) {gclh_error("Build copy to clipboard icon for logtext in improve log view",e);}
+
+            // Append the style.
+            if (!$('#gclh_css_improveLogView')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogView');
+        } catch(e) {gclh_error("Improve log view",e);}
     }
 
 // Run improve log form, run improve log view.
@@ -19418,7 +19454,7 @@ var mainGC = function() {
     // element_to_copy: innerHtml of this element will be copied. If you pass
     //                  a string, the string will be the copied text. In this
     //                  case you have to pass an anker_element!!!
-    // anker_element:   After this element the copy marker will be inserted,
+    // anker_element:   Before this element the copy marker will be inserted,
     //                  if you set this to null, the element_to_copy will be
     //                  used as an anker.
     // title:           You can enter a text that will be displayed between
