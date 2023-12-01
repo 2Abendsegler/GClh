@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15
+// @version      0.15.1
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -4735,9 +4735,8 @@ var mainGC = function() {
                 try {
                     var nextData = JSON.parse($('#__NEXT_DATA__')[0].innerText);
                 } catch(e) {}
-                if (typeof nextData !== 'undefined' && nextData.props && nextData.props.pageProps) {
+                if (typeof nextData !== 'undefined' && typeof nextData.props !== 'undefined' && typeof nextData.props.pageProps !== 'undefined') {
                     var pageData = nextData.props.pageProps;
-                    if (pageData.isEvent) var isEvent = pageData.isEvent;
                 }
             }
             let css = '';
@@ -4798,7 +4797,7 @@ var mainGC = function() {
                 if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText) {
                     // Get default logtype.
                     let logtype = decode_innerText($('.hidden-by a')[0]) == global_me ? settings_default_logtype_owner
-                                  : isEvent ? settings_default_logtype_event
+                                  : pageData.isEvent ? settings_default_logtype_event
                                   : isTB ? settings_default_tb_logtype : settings_default_logtype;
                     // Return if no logtype is selected or selected logtype is not possible.
                     if (logtype == -1 || !pageData.logTypes.some(e => e.value == logtype)) return;
@@ -4809,7 +4808,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!document.location.href.match(/logType=/i) && typeof pageData != 'undefined'
+                if (!document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined' && typeof pageData.logTypes.some !== 'undefined'
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -5273,9 +5272,8 @@ var mainGC = function() {
                 try {
                     var nextData = JSON.parse($('#__NEXT_DATA__')[0].innerText);
                 } catch(e) {}
-                if (typeof nextData !== 'undefined' && nextData.props && nextData.props.pageProps) {
+                if (typeof nextData !== 'undefined' && typeof nextData.props !== 'undefined' && typeof nextData.props.pageProps !== 'undefined') {
                     var pageData = nextData.props.pageProps;
-                    if (pageData.logText) var logText = pageData.logText;
                 }
             }
             let css = '';
@@ -5293,17 +5291,19 @@ var mainGC = function() {
 
             // Build copy to clipboard icon for logtext.
             function buildCopyToClipboardForLogtext(waitCount) {
-                if (logText && logText != '' && $('li.meta-data-item:last span.meta-data-label')[0] && !$('#gclh_copyLogtextToClipboard')[0]) {
+                if ($('li.meta-data-item:last span.meta-data-label')[0] && !$('#gclh_copyLogtextToClipboard')[0]) {
                     $('li.meta-data-item:last span.meta-data-label').after('<span id="gclh_copyLogtextToClipboard"><span></span></span>');
-                    addCopyToClipboardLink(logText, $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
+                    addCopyToClipboardLink(pageData.logText, $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
                 }
                 waitCount++; if (waitCount <= 100) setTimeout(function(){buildCopyToClipboardForLogtext(waitCount);}, 100);
             }
             try {
-                buildCopyToClipboardForLogtext(0);
-                css += 'li.meta-data-item:last-child {display: block;}';
-                css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
-                css += 'li.meta-data-item:last-child > svg {display: inline-block; margin-right: 8px; margin-bottom: -2px;}';
+                if (typeof pageData !== 'undefined' && typeof pageData.logText !== 'undefined' && pageData.logText != '') {
+                    buildCopyToClipboardForLogtext(0);
+                    css += 'li.meta-data-item:last-child {display: block;}';
+                    css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
+                    css += 'li.meta-data-item:last-child > svg {display: inline-block; margin-right: 8px; margin-bottom: -2px;}';
+                }
             } catch(e) {gclh_error("Build copy to clipboard icon for logtext in improve log view",e);}
 
             // Append the style.
@@ -14109,7 +14109,7 @@ var mainGC = function() {
             // Weihnachten 2023.
             if (month == 12 && year == 2023) {
                 var max = 0;
-                if (date >= 24 && date <= 26) max = 100;
+                if ((date >= 5 && date <= 6) || (date >= 24 && date <= 26)) max = 100;
                 if (max > 0) {
                     function checkChristmasData(waitCount) {
                         if ($('.gclh_latest_log').length > 0) {
@@ -14515,8 +14515,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/GWJ6/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iFT"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/vrdP/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iF5"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15896,7 +15896,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "26.11.2023";
+            var thanksLastUpdate = "02.12.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";

@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0151" title="GClh II version 0.15.1 (02.12.2023)">v0.15.1</a> &nbsp;
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="#v0146" title="GClh II version 0.14.6 (22.04.2023)">v0.14.6</a> &nbsp;
 <a href="#v0145" title="GClh II version 0.14.5 (12.04.2023)">v0.14.5</a> &nbsp;
@@ -38,6 +39,73 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.15.1:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Log View] Hide share button. [<a href="https://github.com/2Abendsegler/GClh/issues/2483" title="Issue 2483">2483</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Log View] VIP, VUP, mail, message icons for logged user. [<a href="https://github.com/2Abendsegler/GClh/issues/2497" title="Issue 2497">2497</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Log View] Build copy to clipboard icon for logtext. [<a href="https://github.com/2Abendsegler/GClh/issues/2489" title="Issue 2489">2489</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15.1/Screen01.jpg" alt="Screen01.jpg"><br>
+		<ul>
+			<li>
+				Hide share button.<br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_socialshare" title="Link to your GClh II Config">Settings -> Global - Hiding:<br>
+				<img src="../images/0.15.1/Screen03.jpg" alt="Screen03.jpg"></a><br>
+				This parameter is not new. If you want to use this feature, maybe you have to activate it.<br>
+			</li>  
+			<li>
+				VIP, VUP, mail, message icons for logged user.<br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_vip_list" title="Link to your GClh II Config">Settings -> Global - User Related Layout:<br>
+				<img src="../images/0.15.1/Screen05.jpg" alt="Screen05.jpg"></a><br>
+				These parameter are not new. If you want to use these features, maybe you have to activate them.<br>
+			</li>  
+			<li>
+				Copy logtext to clipboard.<br><br>
+			</li>  
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Owner Dashboard] Hide survey like it is done for the green feedback icon. [<a href="https://github.com/2Abendsegler/GClh/issues/2482" title="Issue 2482">2482</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15.1/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_feedback_icon" title="Link to your GClh II Config">Settings -> Global - Hiding:<br>
+		<img src="../images/0.15.1/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Change:</strong> [New Dashboard, Log Form] The edit links for the logs in the dashboard should be changed to the new log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2473" title="Issue 2473">2473</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Submitting an image name in a new log leads to a blank page. [<a href="https://github.com/2Abendsegler/GClh/issues/2500" title="Issue 2500">2500</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Signature is insert into edit form. [<a href="https://github.com/2Abendsegler/GClh/issues/2475" title="Issue 2475">2475</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Edit] VIP, VUP, message, mail icons not available on edit log page if calling from edit button on view log page. [<a href="https://github.com/2Abendsegler/GClh/issues/2492" title="Issue 2492">2492</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] On the edit log page, GClh is not running, but the GClh header is available on the page. [<a href="https://github.com/2Abendsegler/GClh/issues/2472" title="Issue 2472">2472</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Determine user data for id '__NEXT_DATA__' run into error. [<a href="https://github.com/2Abendsegler/GClh/issues/2494" title="Issue 2494">2494</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Uncaught TypeError: Window.getComputedStyle: Argument 1 is not an object. [<a href="https://github.com/2Abendsegler/GClh/issues/2474" title="Issue 2474">2474</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] No edit links to own TB logs in dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2484" title="Issue 2484">2484</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Clicking on a TB in Latest Activity area causes an Uncaught TypeError. [<a href="https://github.com/2Abendsegler/GClh/issues/2467" title="Issue 2467">2467</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(02.12.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15:
