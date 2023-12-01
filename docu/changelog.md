@@ -68,7 +68,7 @@
 		</ul>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Ower Dashboard] Hide survey like it is done for the green feedback icon. [<a href="https://github.com/2Abendsegler/GClh/issues/2482" title="Issue 2482">2482</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Cache Owner Dashboard] Hide survey like it is done for the green feedback icon. [<a href="https://github.com/2Abendsegler/GClh/issues/2482" title="Issue 2482">2482</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.15.1/Screen02.jpg" alt="Screen02.jpg"><br><br>
 	</li>
 	<li>
@@ -78,22 +78,22 @@
 		<strong>Fix:</strong> [Log Form] Submitting an image name in a new log leads to a blank page. [<a href="https://github.com/2Abendsegler/GClh/issues/2500" title="Issue 2500">2500</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log Form] Determine user data for id '__NEXT_DATA__' run into error. [<a href="https://github.com/2Abendsegler/GClh/issues/2494" title="Issue 2494">2494</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Log Form] Signature is insert into edit form. [<a href="https://github.com/2Abendsegler/GClh/issues/2475" title="Issue 2475">2475</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Edit] VIP, VUP, message, mail icons not available on edit log page if calling from edit button on view log page. [<a href="https://github.com/2Abendsegler/GClh/issues/2492" title="Issue 2492">2492</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [New Dashboard] No edit links to own TB logs in dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2484" title="Issue 2484">2484</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Log Form] On the edit log page, GClh is not running, but the GClh header is available on the page. [<a href="https://github.com/2Abendsegler/GClh/issues/2472" title="Issue 2472">2472</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log Form] Signature is insert into edit form. [<a href="https://github.com/2Abendsegler/GClh/issues/2475" title="Issue 2475">2475</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Log Form] Determine user data for id '__NEXT_DATA__' run into error. [<a href="https://github.com/2Abendsegler/GClh/issues/2494" title="Issue 2494">2494</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Form] Uncaught TypeError: Window.getComputedStyle: Argument 1 is not an object. [<a href="https://github.com/2Abendsegler/GClh/issues/2474" title="Issue 2474">2474</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log Form] On the edit log page, GClh is not running, but the GClh header is available on the page. [<a href="https://github.com/2Abendsegler/GClh/issues/2472" title="Issue 2472">2472</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [New Dashboard] No edit links to own TB logs in dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2484" title="Issue 2484">2484</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [New Dashboard] Clicking on a TB in Latest Activity area causes an Uncaught TypeError. [<a href="https://github.com/2Abendsegler/GClh/issues/2467" title="Issue 2467">2467</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
