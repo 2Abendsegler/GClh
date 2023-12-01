@@ -5150,16 +5150,16 @@ var mainGC = function() {
                     var tbs = getTbsAV();
                     if (tbs.length > 0) {
                         for (let i=0; i<tbs.length; i++) {
-                            let tbC = getTbCodeAV(tbs[i]);
-                            // Save TB for autovisit if it is new.
-                            if (getValue("autovisit_"+tbC, "new") === "new") {
-                                setValue("autovisit_"+tbC, settings_autovisit_default);
-                            }
                             // Copy existing buttons for auto visit feature.
                             if ($(tbs[i]).find('.segmented-buttons.gclh_autovisit')[0] || !$(tbs[i]).find('.segmented-buttons')[0]) continue;
                             var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
                             $(autoButtons).addClass('gclh_autovisit');
                             $(tbs[i]).find('.segmented-buttons')[0].append(autoButtons);
+                            // Save TB for autovisit if it is new.
+                            let tbC = getTbCodeAV(tbs[i]);
+                            if (getValue("autovisit_"+tbC, "new") === "new") {
+                                setValue("autovisit_"+tbC, settings_autovisit_default);
+                            }
                             // Adapt copied buttons for auto visit feature.
                             $(tbs[i]).find('.gclh_autovisit label')[2].remove();
                             $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
