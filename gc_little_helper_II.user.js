@@ -5120,7 +5120,7 @@ var mainGC = function() {
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
             function getTbActionTypeAV(tb) {
-                let r = $(tb).find('div:not[.gclh_autovisit] input[type="radio"]');
+                let r = $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[type="radio"]');
                 for (let i=0; i<3; i++) {
                     if (r[i].checked) return r[i].value;
                 }
@@ -5129,10 +5129,10 @@ var mainGC = function() {
                 let tbC = getTbCodeAV(tb);
                 if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
                     if (getTbActionTypeAV(tb) == '-1') {
-                        $(tb).find('div:not[.gclh_autovisit] input[value="75"]')[0].click();
+                        $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="75"]')[0].click();
                     }
                 } else if (getTbActionTypeAV(tb) == '75') {
-                    $(tb).find('div:not[.gclh_autovisit] input[value="-1"]')[0].click();
+                    $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="-1"]')[0].click();
                 }
                 $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
                 $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
@@ -5150,38 +5150,31 @@ var mainGC = function() {
                     var tbs = getTbsAV();
                     if (tbs.length > 0) {
                         for (let i=0; i<tbs.length; i++) {
-                            if ($(tbs[i]).hasClass('gclh_autovisit_build')) continue;
-                            $(tbs[i]).addClass('gclh_autovisit_build');
                             let tbC = getTbCodeAV(tbs[i]);
-                            if (!$('#gclh_action_list_'+tbC)[0]) {
-                                // Save TB for autovisit if it is new.
-                                if (getValue("autovisit_"+tbC, "new") === "new") {
-                                    setValue("autovisit_"+tbC, settings_autovisit_default);
-                                }
-                                // Build a parent container for the buttons.
-                                $(tbs[i]).find('.tb-info-container').after('<div id="gclh_action_list_'+tbC+'" class="gclh_action_list"></div>');
-                                // Move existing buttons into parent container.
-                                $(tbs[i]).find('.segmented-buttons').appendTo('#gclh_action_list_'+tbC+'');
-                                // Copy existing buttons for auto visit feature.
-                                var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
-                                $(autoButtons).addClass('gclh_autovisit');
-                                $('#gclh_action_list_'+tbC).append(autoButtons);
-                                // Adapt copied buttons for auto visit feature.
-                                $(tbs[i]).find('.gclh_autovisit label')[2].remove();
-                                $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
-                                $(tbs[i]).find('.gclh_autovisit input')[1].value = 1;
-                                $(tbs[i]).find('.gclh_autovisit span')[1].innerHTML = 'Auto Visit';
-                                $(tbs[i]).find('.gclh_autovisit label').each(function() {
-                                    $(this).find('input')[0].setAttribute('name', 'autovisit_'+tbC);
-                                    $(this).find('input')[0].setAttribute('data-event-category', '');
-                                    $(this).find('input')[0].setAttribute('data-event-label', '');
-                                    $(this).find('input')[0].setAttribute('data-testid', '');
-                                    $(this).find('input')[0].addEventListener('click', function(evt) {
-                                        setValue(evt.target.name, (evt.target.value==1 ? true : false));
-                                        buildAutoAV(tbs[i]);
-                                    })
-                                });
+                            // Save TB for autovisit if it is new.
+                            if (getValue("autovisit_"+tbC, "new") === "new") {
+                                setValue("autovisit_"+tbC, settings_autovisit_default);
                             }
+                            // Copy existing buttons for auto visit feature.
+                            if ($(tbs[i]).find('.segmented-buttons.gclh_autovisit')[0] || !$(tbs[i]).find('.segmented-buttons')[0]) continue;
+                            var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
+                            $(autoButtons).addClass('gclh_autovisit');
+                            $(tbs[i]).find('.segmented-buttons')[0].append(autoButtons);
+                            // Adapt copied buttons for auto visit feature.
+                            $(tbs[i]).find('.gclh_autovisit label')[2].remove();
+                            $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
+                            $(tbs[i]).find('.gclh_autovisit input')[1].value = 1;
+                            $(tbs[i]).find('.gclh_autovisit span')[1].innerHTML = 'Auto Visit';
+                            $(tbs[i]).find('.gclh_autovisit label').each(function() {
+                                $(this).find('input')[0].setAttribute('name', 'autovisit_'+tbC);
+                                $(this).find('input')[0].setAttribute('data-event-category', '');
+                                $(this).find('input')[0].setAttribute('data-event-label', '');
+                                $(this).find('input')[0].setAttribute('data-testid', '');
+                                $(this).find('input')[0].addEventListener('click', function(evt) {
+                                    setValue(evt.target.name, (evt.target.value==1 ? true : false));
+                                    buildAutoAV(tbs[i]);
+                                })
+                            });
                             buildAutoAV(tbs[i]);
                         }
                     }
@@ -5200,13 +5193,24 @@ var mainGC = function() {
                         });
                     }
                 }
+                if ($('ul.tb-list')[0] && !$('ul.tb-list.gclh_autovisitObserver')[0]) {
+                    $('ul.tb-list').addClass('gclh_autovisitObserver');
+                    const config = { childList: true, subtree: true };
+                    const autovisitObserver = new MutationObserver(function(_, observer) {
+                        observer.disconnect();
+                        waitForTbsAV(0);
+                        observer.observe($('ul.tb-list')[0], config);
+                    });
+                    autovisitObserver.observe($('ul.tb-list')[0], config);
+                }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
             }
             try {
                 if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
                     waitForTbsAV(0);
-                    css += '.gclh_action_list {margin-top: 4px;}';
-                    css += '.gclh_autovisit {justify-content: normal !important; margin-top: 4px;}';
+                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px;}';
+                    css += '.segmented-buttons.gclh_autovisit {position: absolute; display: block; margin-top: 60px;}';
+                    css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
                 }
             } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
 
