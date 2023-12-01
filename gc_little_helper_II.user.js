@@ -5119,7 +5119,7 @@ var mainGC = function() {
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
             function getTbActionTypeAV(tb) {
-                let r = $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[type="radio"]');
+                let r = $(tb).find('div:not[.gclh_autovisit] input[type="radio"]');
                 for (let i=0; i<3; i++) {
                     if (r[i].checked) return r[i].value;
                 }
@@ -5128,10 +5128,10 @@ var mainGC = function() {
                 let tbC = getTbCodeAV(tb);
                 if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
                     if (getTbActionTypeAV(tb) == '-1') {
-                        $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="75"]')[0].click();
+                        $(tb).find('div:not[.gclh_autovisit] input[value="75"]')[0].click();
                     }
                 } else if (getTbActionTypeAV(tb) == '75') {
-                    $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="-1"]')[0].click();
+                    $(tb).find('div:not[.gclh_autovisit] input[value="-1"]')[0].click();
                 }
                 $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
                 $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
