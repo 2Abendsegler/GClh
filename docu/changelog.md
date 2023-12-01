@@ -70,8 +70,7 @@
 	<li>
 		<strong>New:</strong> [Cache Owner Dashboard] Hide survey like it is done for the green feedback icon. [<a href="https://github.com/2Abendsegler/GClh/issues/2482" title="Issue 2482">2482</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.15.1/Screen02.jpg" alt="Screen02.jpg"><br>
-		Hide share button.<br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_socialshare" title="Link to your GClh II Config">Settings -> Global - Hiding:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_feedback_icon" title="Link to your GClh II Config">Settings -> Global - Hiding:<br>
 		<img src="../images/0.15.1/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
 	</li>
