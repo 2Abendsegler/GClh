@@ -13781,21 +13781,21 @@ var mainGC = function() {
                     }
                 }, 50);
             }
-
+            function getNIDFromLineListNotif(notif) {
+                return $(notif).find('td a')[0].id;
+            }
             function expandLinesListNotif() {
-                $('table.Table tr a[href*="edit.aspx?NID="]').closest('tr').each(function(){
-                    var nid = $(this).find('a[href*="edit.aspx?NID="]')[0].href.match(/NID=(\d*)/);
-                    if (nid && nid[1]) {
-                        var item = $(this);
-                        $(item).find('td.gclh_icons').before('<td class="gclh_add gclh_coords" style="white-space: nowrap;"></td><td class="gclh_add gclh_dist"></td><td class="gclh_add gclh_mail"></td>');
-                        $.get('https://www.geocaching.com/notify/edit.aspx?NID=' + nid[1], null, function(c){
-                            var coords = getCoordsFromFieldsNotif(c);
-                            $(item).find('td.gclh_coords')[0].innerHTML = coords;
-                            $(item).find('td.gclh_dist')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_tbDistance')[0].value;
-                            $(item).find('td.gclh_mail')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_ddlAltEmails')[0]?.value || $(c).find('a[href="/account/settings/emailpreferences"]').parent().prev('dd').html().trim();
-                            $(item).find('td.gclh_mail').addClass('gclh_add_last');
-                        });
-                    }
+                $('table.Table tbody tr').each(function(){
+                    let nid = getNIDFromLineListNotif(this);
+                    var item = $(this);
+                    $(item).find('td.gclh_icons').before('<td class="gclh_add"><span class="gclh_coords" style="white-space: nowrap;"></span></td><td class="gclh_add"><span class="gclh_dist"></span></td><td class="gclh_add"><span class="gclh_mail"></span></td>');
+                    $.get('https://www.geocaching.com/notify/edit.aspx?NID=' + nid, null, function(c){
+                        var coords = getCoordsFromFieldsNotif(c);
+                        $(item).find('.gclh_coords')[0].innerHTML = coords;
+                        $(item).find('.gclh_dist')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_tbDistance')[0].value;
+                        $(item).find('.gclh_mail')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_ddlAltEmails')[0]?.value || $(c).find('a[href="/account/settings/emailpreferences"]').parent().prev('dd').html().trim();
+                        $(item).find('.gclh_mail').addClass('gclh_add_last');
+                    });
                 });
             }
             function clickEnableCheckboxListNotif(nid, item) {
@@ -13901,8 +13901,48 @@ var mainGC = function() {
                 }, false);
                 if (!getValue('set_switch_notification_show_page_info', true)) $('#gclh_info')[0].click();
             }
+            function getObjectsFromLineListNotif(line) {
+                let notif = $(line).closest('tr');
+                let nid = getNIDFromLineListNotif(notif);
+                let delIcon = $(notif).find('a.gclh_delete');
+                let workIcon = $(notif).find('span.gclh_work');
+                let undoIcon = $(notif).find('a.gclh_undo');
+                return [notif, nid, delIcon, workIcon, undoIcon];
+            }
+            function deactivateLinksInLineListNotif(notif) {
+                notif.addClass('gclh_disabled');
+                $(notif).find('a:not(.gclh_delete, .gclh_undo)').each(function(){
+                    $(this)[0].setAttribute('save_href', $(this)[0].href);
+                    $(this)[0].href = 'javascript:void(0);';
+                });
+            }
+            function activateLinksInLineListNotif(notif) {
+                notif.removeClass('gclh_disabled');
+                $(notif).find('a:not(.gclh_delete, .gclh_undo)').each(function(){
+                    $(this)[0].href = $(this)[0].getAttribute('save_href');
+                });
+            }
+            function openPopupForLineListNotif(nid, name) {
+                var ident = new Date().getTime();
+                var openPopup = window.open('https://www.geocaching.com/notify/edit.aspx?NID=' + nid + '&' + name, ident, 'width=240, height=100, top=0, left=10000');
+                // A pop up could not be opened in browser, probably because of a pop up blocker, so we'll inform the user.
+                if (openPopup == null) {
+                    alert('A pop up blocker was detected. Please allow pop ups for this site, reload the page and try again.');
+                } else {
+                    return openPopup;
+                }
+            }
+            function checkStatusPopupForLineListNotif(waitCount, openPopup, beforeIcon, afterIcon, notifToActivate) {
+                if (typeof openPopup !== 'undefined' && openPopup !== false && openPopup.closed) {
+                    beforeIcon.addClass('gclh_hide');
+                    afterIcon.removeClass('gclh_hide');
+                    if (notifToActivate) {
+                        activateLinksInLineListNotif(notifToActivate);
+                    }
+                } else {setTimeout(function(){checkStatusPopupForLineListNotif(waitCount, openPopup, beforeIcon, afterIcon, notifToActivate);}, 250);}
+            }
             function improveLinesListNotif() {
-                $('table.Table tr a[href*="edit.aspx?NID="]').closest('tr').each(function(){
+                $('table.Table tbody tr').each(function(){
                     var nid = $(this).find('a[href*="edit.aspx?NID="]')[0].href.match(/NID=(\d*)/);
                     if (nid && nid[1]) {
                         nid = nid[1];
@@ -13910,6 +13950,7 @@ var mainGC = function() {
                         var itemCeckbox = $(this).find('a[href="?did='+nid+'"]')[0];
                         var itemCachetype = $(this).find('img[src*="/images/WptTypes/sm/"]').closest('td')[0];
                         var itemName = $(this).find('td:nth-child(3)')[0];
+                        var itemCacheTypeName = $(this).find('td:nth-child(4)')[0];
                         var itemEdit = $(this).find('a[href*="edit.aspx?NID="]')[0];
                         // Mark the icons cell.
                         $(cellIcons).addClass('gclh_icons');
@@ -13928,20 +13969,46 @@ var mainGC = function() {
                             itemCachetype.innerHTML = '';
                             $(itemCachetype).append('<svg class="gclh_icon_cachetype"><use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + icon + '"></use></svg>');
                         }
-                        // Build an edit link for cell Name / Log types.
+                        // Build an edit link for Name / Log types.
                         var name = itemName.innerHTML;
                         itemName.innerHTML = '';
                         $(itemName).append('<a href="edit.aspx?NID=' + nid + '" class="gclh_name" title="Edit notification">' + name + '</a>');
+                        // Build span tag for cache type name.
+                        var name = itemCacheTypeName.innerHTML;
+                        itemCacheTypeName.innerHTML = '';
+                        $(itemCacheTypeName).append('<span>' + name + '</span>');
                         // Change edit link to icon.
                         itemEdit.innerHTML = '';
                         itemEdit.setAttribute('title', 'Edit notification');
                         $(itemEdit).addClass('gclh_icon');
                         $(itemEdit).append('<svg style="height: 17px; width: 17px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-edit-currentcolor"></use></svg>');
                         $(itemEdit).closest('td')[0].setAttribute('style', 'white-space: nowrap;');
-                        // Build copy link behind the edit link.
+                        // Build copy icon behind the edit icon.
                         $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy as new notification"><img src="' + global_copy_icon2 + '"></a>');
-                        // Build delete link behind the edit link.
-                        $(itemEdit).after('<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>');
+                        // Build delete icon, work icon and undo icon behind the edit icon.
+                        var itemDelete = '<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>';
+                        var itemWork = '<span class="gclh_icon gclh_work gclh_hide"><img src="' + urlImages + 'ajax-loader.gif"></span>';
+                        var itemUndo = '<a href="javascript:void(0);" class="gclh_icon gclh_undo gclh_hide" title="Undo deletion of the notification via popup"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" fill="currentColor"></path></svg></a>';
+                        $(itemEdit).after(itemDelete + itemWork + itemUndo);
+                        $(this).find('.gclh_delete')[0].addEventListener("click", function() {
+                            var [notif, nid, delIcon, workIcon, undoIcon] = getObjectsFromLineListNotif(this);
+                            if (delIcon.hasClass('gclh_hide')) return;
+                            delIcon.addClass('gclh_hide');
+                            workIcon.prop('title', 'Waiting for deletion');
+                            workIcon.removeClass('gclh_hide');
+                            deactivateLinksInLineListNotif(notif);
+                            var openPopup = openPopupForLineListNotif(nid, 'GClhDelete');
+                            checkStatusPopupForLineListNotif(0, openPopup, workIcon, undoIcon);
+                        }, false);
+                        $(this).find('.gclh_undo')[0].addEventListener("click", function() {
+                            var [notif, nid, delIcon, workIcon, undoIcon] = getObjectsFromLineListNotif(this);
+                            if (undoIcon.hasClass('gclh_hide')) return;
+                            undoIcon.addClass('gclh_hide');
+                            workIcon.prop('title', 'Waiting for undo deletion');
+                            workIcon.removeClass('gclh_hide');
+                            var openPopup = openPopupForLineListNotif(nid, 'GClhUndo');
+                            checkStatusPopupForLineListNotif(0, openPopup, workIcon, delIcon, notif);
+                        }, false);
                     }
                 });
             }
@@ -13950,9 +14017,14 @@ var mainGC = function() {
             css += 'table.Table thead th {white-space: nowrap}';
             css += 'table.Table.gclh_hide_add th.gclh_add, table.Table.gclh_hide_add td.gclh_add {display: none;}';
             css += '.gclh_name {color: #4a4a4a !important; text-decoration: none !important;}';
-            css += '.gclh_disabled {opacity: 0.4;}';
+            css += '.gclh_disabled td > a:not(.gclh_delete, .gclh_undo), .gclh_disabled td > span:not(.gclh_work), .gclh_disabled td > svg {opacity: 0.4;}';
+            css += '.gclh_disabled a:not(.gclh_delete, .gclh_undo) {cursor: default;}';
+            css += '.gclh_hide {display: none;}';
             css += '.gclh_icons {width: 80px;}';
             css += '.gclh_icon svg, .gclh_icon img {height: 18px; width: 18px; padding: 4px; vertical-align: middle; color: #4a4a4a;}';
+            css += '.gclh_delete svg {height: 20px; width: 20px; margin-top: 1px;}';
+            css += '.gclh_undo svg {height: 16px; width: 16px; margin-right: 2px; margin-left: 2px;}';
+            css += '.gclh_work img {height: 11px; width: 18px; vertical-align: middle; padding-left: 5px; padding-right: 5px;}';
             css += '.gclh_icon_add svg {height: 20px; width: 20px; padding: 3px;}';
             css += '.gclh_icon_cachetype {height: 24px; width: 24px;}';
             css += '.gclh_hide_info .gclh_info {display: none;}';
@@ -13965,7 +14037,6 @@ var mainGC = function() {
             css += 'table.LatLongTable td {padding-left: 0px;}';
             css += '.Checkbox label {top: 0px;}';
             css += '.EditNotificationForm table {margin-bottom: 0px;}';
-            css += '.gclh_delete {visibility: hidden;}';
 
             // Improve notification list page.
             if (document.location.href.match(/\.com\/notify\/default\.aspx/) && $('table.Table tbody tr')[0]) {
@@ -13985,7 +14056,6 @@ var mainGC = function() {
                 $('table .gclh_col_name')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_cachetype')[0])});
                 $('table .gclh_col_cachetype')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_name')[0])});
             }
-
             // Improve notification.
             if (document.location.href.match(/\.com\/notify\/edit\.aspx/)) {
                 // Alignment, white space tuning.
@@ -14025,6 +14095,22 @@ var mainGC = function() {
                 var nid = document.location.href.match(/\.com\/notify\/edit\.aspx\?CopyNID=(\d+)/);
                 if (nid && nid[1]) {
                     prepareCopyNotif(nid[1]);
+                }
+            }
+            // Delete notification via popup. We are here in the popup.
+            if (document.location.href.match(/\.com\/notify\/edit\.aspx\?NID=(\d+)&GClhDelete/)) {
+                if ($('#ctl00_ContentBody_LogNotify_btnArchive')[0] && !$('#divContentMain p.Success')[0]) {
+                    $('#ctl00_ContentBody_LogNotify_btnArchive').click();
+                } else if ($('#divContentMain p.Success')[0]) {
+                    setTimeout(function() {window.close();},10);
+                }
+            }
+            // Undo deletion of notification via popup. We are here in the popup.
+            if (document.location.href.match(/\.com\/notify\/edit\.aspx\?NID=(\d+)&GClhUndo/)) {
+                if ($('#ctl00_ContentBody_LogNotify_btnGo')[0] && !$('#divContentMain p.Success')[0]) {
+                    $('#ctl00_ContentBody_LogNotify_btnGo').click();
+                } else if ($('#divContentMain p.Success')[0]) {
+                    setTimeout(function() {window.close();},10);
                 }
             }
             appendCssStyle(css);
