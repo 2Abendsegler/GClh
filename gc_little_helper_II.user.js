@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15.1
+// @version      0.15.2
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2023 2Abendsegler, 2017-2021 Ruko2010, 2019-2023 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -723,6 +723,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
     c.settings_improve_notifications = getValue("settings_improve_notifications", true);
+    c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
 
     tlc('START userToken');
     try {
@@ -5286,7 +5287,8 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
             }
             try {
-                if (settings_hide_socialshare) hideSocialShareButton(0);
+                if (settings_hide_share_log_button_log_view) hideSocialShareButton(0);
+                if (settings_hide_socialshare) css = 'ul.social-media-buttons {display: none !important;}';
             } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
 
             // Build copy to clipboard icon for logtext.
@@ -13779,21 +13781,21 @@ var mainGC = function() {
                     }
                 }, 50);
             }
-
+            function getNIDFromLineListNotif(notif) {
+                return $(notif).find('td a')[0].id;
+            }
             function expandLinesListNotif() {
-                $('table.Table tr a[href*="edit.aspx?NID="]').closest('tr').each(function(){
-                    var nid = $(this).find('a[href*="edit.aspx?NID="]')[0].href.match(/NID=(\d*)/);
-                    if (nid && nid[1]) {
-                        var item = $(this);
-                        $(item).find('td.gclh_icons').before('<td class="gclh_add gclh_coords" style="white-space: nowrap;"></td><td class="gclh_add gclh_dist"></td><td class="gclh_add gclh_mail"></td>');
-                        $.get('https://www.geocaching.com/notify/edit.aspx?NID=' + nid[1], null, function(c){
-                            var coords = getCoordsFromFieldsNotif(c);
-                            $(item).find('td.gclh_coords')[0].innerHTML = coords;
-                            $(item).find('td.gclh_dist')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_tbDistance')[0].value;
-                            $(item).find('td.gclh_mail')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_ddlAltEmails')[0]?.value || $(c).find('a[href="/account/settings/emailpreferences"]').parent().prev('dd').html().trim();
-                            $(item).find('td.gclh_mail').addClass('gclh_add_last');
-                        });
-                    }
+                $('table.Table tbody tr').each(function(){
+                    let nid = getNIDFromLineListNotif(this);
+                    var item = $(this);
+                    $(item).find('td.gclh_icons').before('<td class="gclh_add"><span class="gclh_coords" style="white-space: nowrap;"></span></td><td class="gclh_add"><span class="gclh_dist"></span></td><td class="gclh_add"><span class="gclh_mail"></span></td>');
+                    $.get('https://www.geocaching.com/notify/edit.aspx?NID=' + nid, null, function(c){
+                        var coords = getCoordsFromFieldsNotif(c);
+                        $(item).find('.gclh_coords')[0].innerHTML = coords;
+                        $(item).find('.gclh_dist')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_tbDistance')[0].value;
+                        $(item).find('.gclh_mail')[0].innerHTML = $(c).find('#ctl00_ContentBody_LogNotify_ddlAltEmails')[0]?.value || $(c).find('a[href="/account/settings/emailpreferences"]').parent().prev('dd').html().trim();
+                        $(item).find('.gclh_mail').addClass('gclh_add_last');
+                    });
                 });
             }
             function clickEnableCheckboxListNotif(nid, item) {
@@ -13899,8 +13901,48 @@ var mainGC = function() {
                 }, false);
                 if (!getValue('set_switch_notification_show_page_info', true)) $('#gclh_info')[0].click();
             }
+            function getObjectsFromLineListNotif(line) {
+                let notif = $(line).closest('tr');
+                let nid = getNIDFromLineListNotif(notif);
+                let delIcon = $(notif).find('a.gclh_delete');
+                let workIcon = $(notif).find('span.gclh_work');
+                let undoIcon = $(notif).find('a.gclh_undo');
+                return [notif, nid, delIcon, workIcon, undoIcon];
+            }
+            function deactivateLinksInLineListNotif(notif) {
+                notif.addClass('gclh_disabled');
+                $(notif).find('a:not(.gclh_delete, .gclh_undo)').each(function(){
+                    $(this)[0].setAttribute('save_href', $(this)[0].href);
+                    $(this)[0].href = 'javascript:void(0);';
+                });
+            }
+            function activateLinksInLineListNotif(notif) {
+                notif.removeClass('gclh_disabled');
+                $(notif).find('a:not(.gclh_delete, .gclh_undo)').each(function(){
+                    $(this)[0].href = $(this)[0].getAttribute('save_href');
+                });
+            }
+            function openPopupForLineListNotif(nid, name) {
+                var openPopup = window.open('https://www.geocaching.com/notify/edit.aspx?NID=' + nid + '&' + name, nid, 'width=240, height=100, top=0, left=10000');
+                // Eigentlich sollte bei einem einzigen Pop up nach einem Klick gar kein Pop up Blocker anspringen. Falls das Pop up nicht geöffnet werden
+                // kann, sollte aber auf jeden Fall eine Nachricht erfolgen.
+                if (openPopup == null) {
+                    alert('The pop up could not be opened. A pop up blocker may be running. To use this feature, pop ups must be allowed for this website.');
+                } else {
+                    return openPopup;
+                }
+            }
+            function checkStatusPopupForLineListNotif(waitCount, openPopup, beforeIcon, afterIcon, notifToActivate) {
+                if (typeof openPopup !== 'undefined' && openPopup !== false && openPopup.closed) {
+                    beforeIcon.addClass('gclh_hide_icon');
+                    afterIcon.removeClass('gclh_hide_icon');
+                    if (notifToActivate) {
+                        activateLinksInLineListNotif(notifToActivate);
+                    }
+                } else {setTimeout(function(){checkStatusPopupForLineListNotif(waitCount, openPopup, beforeIcon, afterIcon, notifToActivate);}, 250);}
+            }
             function improveLinesListNotif() {
-                $('table.Table tr a[href*="edit.aspx?NID="]').closest('tr').each(function(){
+                $('table.Table tbody tr').each(function(){
                     var nid = $(this).find('a[href*="edit.aspx?NID="]')[0].href.match(/NID=(\d*)/);
                     if (nid && nid[1]) {
                         nid = nid[1];
@@ -13908,6 +13950,7 @@ var mainGC = function() {
                         var itemCeckbox = $(this).find('a[href="?did='+nid+'"]')[0];
                         var itemCachetype = $(this).find('img[src*="/images/WptTypes/sm/"]').closest('td')[0];
                         var itemName = $(this).find('td:nth-child(3)')[0];
+                        var itemCacheTypeName = $(this).find('td:nth-child(4)')[0];
                         var itemEdit = $(this).find('a[href*="edit.aspx?NID="]')[0];
                         // Mark the icons cell.
                         $(cellIcons).addClass('gclh_icons');
@@ -13926,20 +13969,46 @@ var mainGC = function() {
                             itemCachetype.innerHTML = '';
                             $(itemCachetype).append('<svg class="gclh_icon_cachetype"><use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + icon + '"></use></svg>');
                         }
-                        // Build an edit link for cell Name / Log types.
+                        // Build an edit link for Name / Log types.
                         var name = itemName.innerHTML;
                         itemName.innerHTML = '';
                         $(itemName).append('<a href="edit.aspx?NID=' + nid + '" class="gclh_name" title="Edit notification">' + name + '</a>');
+                        // Build span tag for cache type name.
+                        var name = itemCacheTypeName.innerHTML;
+                        itemCacheTypeName.innerHTML = '';
+                        $(itemCacheTypeName).append('<span>' + name + '</span>');
                         // Change edit link to icon.
                         itemEdit.innerHTML = '';
                         itemEdit.setAttribute('title', 'Edit notification');
                         $(itemEdit).addClass('gclh_icon');
                         $(itemEdit).append('<svg style="height: 17px; width: 17px;"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-edit-currentcolor"></use></svg>');
                         $(itemEdit).closest('td')[0].setAttribute('style', 'white-space: nowrap;');
-                        // Build copy link behind the edit link.
+                        // Build copy icon behind the edit icon.
                         $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy as new notification"><img src="' + global_copy_icon2 + '"></a>');
-                        // Build delete link behind the edit link.
-                        $(itemEdit).after('<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>');
+                        // Build delete icon, work icon and undo icon behind the edit icon.
+                        var itemDelete = '<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>';
+                        var itemWork = '<span class="gclh_icon gclh_work gclh_hide_icon"><img src="' + urlImages + 'ajax-loader.gif"></span>';
+                        var itemUndo = '<a href="javascript:void(0);" class="gclh_icon gclh_undo gclh_hide_icon" title="Undo deletion of the notification via popup"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" fill="currentColor"></path></svg></a>';
+                        $(itemEdit).after(itemDelete + itemWork + itemUndo);
+                        $(this).find('.gclh_delete')[0].addEventListener("click", function() {
+                            var [notif, nid, delIcon, workIcon, undoIcon] = getObjectsFromLineListNotif(this);
+                            if (delIcon.hasClass('gclh_hide_icon')) return;
+                            delIcon.addClass('gclh_hide_icon');
+                            workIcon.prop('title', 'Waiting for deletion');
+                            workIcon.removeClass('gclh_hide_icon');
+                            deactivateLinksInLineListNotif(notif);
+                            var openPopup = openPopupForLineListNotif(nid, 'GClhDelete');
+                            checkStatusPopupForLineListNotif(0, openPopup, workIcon, undoIcon);
+                        }, false);
+                        $(this).find('.gclh_undo')[0].addEventListener("click", function() {
+                            var [notif, nid, delIcon, workIcon, undoIcon] = getObjectsFromLineListNotif(this);
+                            if (undoIcon.hasClass('gclh_hide_icon')) return;
+                            undoIcon.addClass('gclh_hide_icon');
+                            workIcon.prop('title', 'Waiting for undo deletion');
+                            workIcon.removeClass('gclh_hide_icon');
+                            var openPopup = openPopupForLineListNotif(nid, 'GClhUndo');
+                            checkStatusPopupForLineListNotif(0, openPopup, workIcon, delIcon, notif);
+                        }, false);
                     }
                 });
             }
@@ -13948,9 +14017,14 @@ var mainGC = function() {
             css += 'table.Table thead th {white-space: nowrap}';
             css += 'table.Table.gclh_hide_add th.gclh_add, table.Table.gclh_hide_add td.gclh_add {display: none;}';
             css += '.gclh_name {color: #4a4a4a !important; text-decoration: none !important;}';
-            css += '.gclh_disabled {opacity: 0.4;}';
+            css += '.gclh_disabled td > a:not(.gclh_delete, .gclh_undo), .gclh_disabled td > span:not(.gclh_work), .gclh_disabled td > svg {opacity: 0.4;}';
+            css += '.gclh_disabled a:not(.gclh_delete, .gclh_undo) {cursor: default;}';
+            css += '.gclh_hide_icon {display: none;}';
             css += '.gclh_icons {width: 80px;}';
             css += '.gclh_icon svg, .gclh_icon img {height: 18px; width: 18px; padding: 4px; vertical-align: middle; color: #4a4a4a;}';
+            css += '.gclh_delete svg {height: 20px; width: 20px; margin-top: 1px;}';
+            css += '.gclh_undo svg {height: 16px; width: 16px; margin-right: 2px; margin-left: 2px;}';
+            css += '.gclh_work img {height: 11px; width: 18px; vertical-align: middle; padding-left: 5px; padding-right: 5px;}';
             css += '.gclh_icon_add svg {height: 20px; width: 20px; padding: 3px;}';
             css += '.gclh_icon_cachetype {height: 24px; width: 24px;}';
             css += '.gclh_hide_info .gclh_info {display: none;}';
@@ -13963,7 +14037,6 @@ var mainGC = function() {
             css += 'table.LatLongTable td {padding-left: 0px;}';
             css += '.Checkbox label {top: 0px;}';
             css += '.EditNotificationForm table {margin-bottom: 0px;}';
-            css += '.gclh_delete {visibility: hidden;}';
 
             // Improve notification list page.
             if (document.location.href.match(/\.com\/notify\/default\.aspx/) && $('table.Table tbody tr')[0]) {
@@ -13983,7 +14056,6 @@ var mainGC = function() {
                 $('table .gclh_col_name')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_cachetype')[0])});
                 $('table .gclh_col_cachetype')[0].addEventListener('click', function() {sortTableListNotif($('table.Table')[0], this, $('table .gclh_col_name')[0])});
             }
-
             // Improve notification.
             if (document.location.href.match(/\.com\/notify\/edit\.aspx/)) {
                 // Alignment, white space tuning.
@@ -14023,6 +14095,22 @@ var mainGC = function() {
                 var nid = document.location.href.match(/\.com\/notify\/edit\.aspx\?CopyNID=(\d+)/);
                 if (nid && nid[1]) {
                     prepareCopyNotif(nid[1]);
+                }
+            }
+            // Delete notification via popup. We are here in the popup.
+            if (document.location.href.match(/\.com\/notify\/edit\.aspx\?NID=(\d+)&GClhDelete/)) {
+                if ($('#ctl00_ContentBody_LogNotify_btnArchive')[0] && !$('#divContentMain p.Success')[0]) {
+                    $('#ctl00_ContentBody_LogNotify_btnArchive').click();
+                } else if ($('#divContentMain p.Success')[0]) {
+                    setTimeout(function() {window.close();},10);
+                }
+            }
+            // Undo deletion of notification via popup. We are here in the popup.
+            if (document.location.href.match(/\.com\/notify\/edit\.aspx\?NID=(\d+)&GClhUndo/)) {
+                if ($('#ctl00_ContentBody_LogNotify_btnGo')[0] && !$('#divContentMain p.Success')[0]) {
+                    $('#ctl00_ContentBody_LogNotify_btnGo').click();
+                } else if ($('#divContentMain p.Success')[0]) {
+                    setTimeout(function() {window.close();},10);
                 }
             }
             appendCssStyle(css);
@@ -14515,8 +14603,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/vrdP/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iF5"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/gTcm/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iGf"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15896,7 +15984,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "02.12.2023";
+            var thanksLastUpdate = "08.12.2023";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -15942,7 +16030,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hiding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
             html += checkboxy('settings_hide_facebook', 'Hide login procedures via Facebook, Google, Apple') + "<br>";
-            html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter') + "<br>";
+            html += checkboxy('settings_hide_socialshare', 'Hide social sharing via Facebook, Twitter (X)') + "<br>";
             html += checkboxy('settings_hide_feedback_icon', 'Hide feedbacks and surveys')  + show_help('With this option you can hide for example the green feedback icon bottom right on a page or the survey about the purpose of the visit of the cache owner dashboard page.') + "<br>";
             html += checkboxy('settings_hide_warning_message', 'Hide warning message') + show_help("With this option you can choose the possibility to hide a potential warning message of the masters of the GC pages.<br><br>One example is the down time warning message which comes from time to time and is placed unnecessarily a lot of days at the top of pages. You can hide it except for a small line in the top right side of the pages. You can activate the warning message again if your mouse goes to this area.<br><br>If the warning message is deleted of the masters, this small area is deleted too.") + "<br>";
             html += checkboxy('settings_remove_banner', 'Hide a blue banner (added close button to each of them)') + show_help("With blue banners below the page header, new page layouts or new features are pointed out. If you don't want that, you don't have the option to hide the annoying banner. This parameter adds a button to decide which banners to hide. If the parameter is deactivated, the hidden banners are deleted again.") + "<br>";
@@ -16615,6 +16703,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
+            html += checkboxy('settings_hide_share_log_button_log_view', 'Hide \"Share log\" button on page view geocache log') + show_help("With this option you can hide the \"Share log\" button on page view geocache log.<br><br>If you just want to hide the social sharing icons for Facebook, Twitter (X) behind the \"Share log\" button instead, you can do this with the parameter \"Hide social sharing via Facebook, Twitter (X)\" in the \"Global - Hiding\" area.") + "<br>";
             html += checkboxy('settings_add_log_templates', 'Add log templates') + show_help("Log templates are predefined texts. All of your templates will be displayed on the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
@@ -17966,6 +18055,7 @@ var mainGC = function() {
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
                 'settings_improve_notifications',
+                'settings_hide_share_log_button_log_view',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);

@@ -370,5 +370,6 @@
   "settings_public_profile_smaller_privacy_btn": false,
   "settings_searchmap_improve_add_to_list_height": 130,
   "settings_searchmap_improve_add_to_list": true,
-  "settings_improve_notifications": true
+  "settings_improve_notifications": true,
+  "settings_hide_share_log_button_log_view": false
 }
