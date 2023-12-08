@@ -46,7 +46,7 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Change:</strong> [Log View] Hide social sharing via Facebook, Twitter (X). Hide share button. [<a href="https://github.com/2Abendsegler/GClh/issues/2512" title="Issue 2512">2512</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Change:</strong> [Log View] Hide social sharing via Facebook, Twitter (X). Hide share button. [<a href="https://github.com/2Abendsegler/GClh/issues/2512" title="Issue 2512">2512</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		Hide social sharing via Facebook, Twitter (X):<br>
 		<img src="../images/0.15.2/Screen01.jpg" alt="Screen01.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_socialshare" title="Link to your GClh II Config">Settings -> Global - Hiding:<br>
@@ -56,10 +56,10 @@
 		<img src="../images/0.15.2/Screen03.jpg" alt="Screen03.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_share_log_button_log_view" title="Link to your GClh II Config">Settings -> Log:<br>
 		<img src="../images/0.15.2/Screen04.jpg" alt="Screen04.jpg"></a><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		If you want to use this feature, you have to activate it.<br><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Notification] Delete notification from notification list with one click. [<a href="https://github.com/2Abendsegler/GClh/issues/2514" title="Issue 2514">2514</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Notification] Delete notification from notification list with one click. [<a href="https://github.com/2Abendsegler/GClh/issues/2514" title="Issue 2514">2514</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 		<img src="../images/0.15.2/Screen05.gif" alt="Screen05.gif"><br>
 		You can also undo the deletion with one click.<br>
 	</li>
