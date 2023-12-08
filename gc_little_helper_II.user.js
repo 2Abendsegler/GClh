@@ -13923,11 +13923,11 @@ var mainGC = function() {
                 });
             }
             function openPopupForLineListNotif(nid, name) {
-                var ident = new Date().getTime();
-                var openPopup = window.open('https://www.geocaching.com/notify/edit.aspx?NID=' + nid + '&' + name, ident, 'width=240, height=100, top=0, left=10000');
-                // A pop up could not be opened in browser, probably because of a pop up blocker, so we'll inform the user.
+                var openPopup = window.open('https://www.geocaching.com/notify/edit.aspx?NID=' + nid + '&' + name, nid, 'width=240, height=100, top=0, left=10000');
+                // Eigentlich sollte bei einem einzigen Pop up nach einem Klick gar kein Pop up Blocker anspringen. Falls das Pop up nicht geöffnet werden
+                // kann, sollte aber auf jeden Fall eine Nachricht erfolgen.
                 if (openPopup == null) {
-                    alert('A pop up blocker was detected. Please allow pop ups for this site, reload the page and try again.');
+                    alert('The pop up could not be opened. A pop up blocker may be running. To use this feature, pop ups must be allowed for this website.');
                 } else {
                     return openPopup;
                 }
