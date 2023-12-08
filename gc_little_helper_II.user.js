@@ -13934,8 +13934,8 @@ var mainGC = function() {
             }
             function checkStatusPopupForLineListNotif(waitCount, openPopup, beforeIcon, afterIcon, notifToActivate) {
                 if (typeof openPopup !== 'undefined' && openPopup !== false && openPopup.closed) {
-                    beforeIcon.addClass('gclh_hide');
-                    afterIcon.removeClass('gclh_hide');
+                    beforeIcon.addClass('gclh_hide_icon');
+                    afterIcon.removeClass('gclh_hide_icon');
                     if (notifToActivate) {
                         activateLinksInLineListNotif(notifToActivate);
                     }
@@ -13987,25 +13987,25 @@ var mainGC = function() {
                         $(itemEdit).after('<a href="edit.aspx?CopyNID=' + nid + '#first" class="gclh_icon" title="Copy as new notification"><img src="' + global_copy_icon2 + '"></a>');
                         // Build delete icon, work icon and undo icon behind the edit icon.
                         var itemDelete = '<a href="javascript:void(0);" class="gclh_icon gclh_delete" title="Delete notification via popup"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-delete"></use></svg></a>';
-                        var itemWork = '<span class="gclh_icon gclh_work gclh_hide"><img src="' + urlImages + 'ajax-loader.gif"></span>';
-                        var itemUndo = '<a href="javascript:void(0);" class="gclh_icon gclh_undo gclh_hide" title="Undo deletion of the notification via popup"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" fill="currentColor"></path></svg></a>';
+                        var itemWork = '<span class="gclh_icon gclh_work gclh_hide_icon"><img src="' + urlImages + 'ajax-loader.gif"></span>';
+                        var itemUndo = '<a href="javascript:void(0);" class="gclh_icon gclh_undo gclh_hide_icon" title="Undo deletion of the notification via popup"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" fill="currentColor"></path></svg></a>';
                         $(itemEdit).after(itemDelete + itemWork + itemUndo);
                         $(this).find('.gclh_delete')[0].addEventListener("click", function() {
                             var [notif, nid, delIcon, workIcon, undoIcon] = getObjectsFromLineListNotif(this);
-                            if (delIcon.hasClass('gclh_hide')) return;
-                            delIcon.addClass('gclh_hide');
+                            if (delIcon.hasClass('gclh_hide_icon')) return;
+                            delIcon.addClass('gclh_hide_icon');
                             workIcon.prop('title', 'Waiting for deletion');
-                            workIcon.removeClass('gclh_hide');
+                            workIcon.removeClass('gclh_hide_icon');
                             deactivateLinksInLineListNotif(notif);
                             var openPopup = openPopupForLineListNotif(nid, 'GClhDelete');
                             checkStatusPopupForLineListNotif(0, openPopup, workIcon, undoIcon);
                         }, false);
                         $(this).find('.gclh_undo')[0].addEventListener("click", function() {
                             var [notif, nid, delIcon, workIcon, undoIcon] = getObjectsFromLineListNotif(this);
-                            if (undoIcon.hasClass('gclh_hide')) return;
-                            undoIcon.addClass('gclh_hide');
+                            if (undoIcon.hasClass('gclh_hide_icon')) return;
+                            undoIcon.addClass('gclh_hide_icon');
                             workIcon.prop('title', 'Waiting for undo deletion');
-                            workIcon.removeClass('gclh_hide');
+                            workIcon.removeClass('gclh_hide_icon');
                             var openPopup = openPopupForLineListNotif(nid, 'GClhUndo');
                             checkStatusPopupForLineListNotif(0, openPopup, workIcon, delIcon, notif);
                         }, false);
@@ -14019,7 +14019,7 @@ var mainGC = function() {
             css += '.gclh_name {color: #4a4a4a !important; text-decoration: none !important;}';
             css += '.gclh_disabled td > a:not(.gclh_delete, .gclh_undo), .gclh_disabled td > span:not(.gclh_work), .gclh_disabled td > svg {opacity: 0.4;}';
             css += '.gclh_disabled a:not(.gclh_delete, .gclh_undo) {cursor: default;}';
-            css += '.gclh_hide {display: none;}';
+            css += '.gclh_hide_icon {display: none;}';
             css += '.gclh_icons {width: 80px;}';
             css += '.gclh_icon svg, .gclh_icon img {height: 18px; width: 18px; padding: 4px; vertical-align: middle; color: #4a4a4a;}';
             css += '.gclh_delete svg {height: 20px; width: 20px; margin-top: 1px;}';
