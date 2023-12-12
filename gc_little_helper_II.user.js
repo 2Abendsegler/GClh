@@ -724,6 +724,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
     c.settings_improve_notifications = getValue("settings_improve_notifications", true);
     c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
+    c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
 
     tlc('START userToken');
     try {
@@ -9595,6 +9596,26 @@ var mainGC = function() {
                 }
             }
 
+            // Hide TB Activity
+            function hideTBActivity(log) {
+                if (settings_dashboard_hide_tb_activity && $(log).find('.label-text a')[0].href.match(/coord.info\/TB\w+/ig)) {
+                    $(log)[0].style.display = 'none';
+                    checkDay($(log)[0].parentNode);
+                }
+            }
+            // Removes the Date for Days Without Logs
+            function checkDay(container) {
+                let unfilterd = $(container).find('.activity-item');
+                let filtered = Array.from(unfilterd).filter(li => li.style.display == 'none');
+                if (unfilterd.length <= filtered.length) {
+                    container.parentNode.parentNode.style.display = 'none';
+                }
+                // The Date of the current Date is displayed outside the list of days
+                if ($('.activity-groups > li')[0].style.display === 'none') {
+                    $('.activity-block-header')[0].style.display = 'none';
+                } 
+            }
+
             // Common functions for features in Latest Activity list.
             function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
@@ -9617,6 +9638,7 @@ var mainGC = function() {
                             buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
                         }
                         backupLogtextMarkdownAF($($('#ActivityFeed .activity-item')[i]));
+                        hideTBActivity($($('#ActivityFeed .activity-item')[i]));
                     }
                 }
                 waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
@@ -9645,7 +9667,7 @@ var mainGC = function() {
                 buildEventLatestActivityAF(0);
                 processLogsAF(0);
             }
-            if (settings_show_edit_links_for_logs || settings_show_cache_type_icons_in_dashboard) {
+            if (settings_show_edit_links_for_logs || settings_show_cache_type_icons_in_dashboard || settings_dashboard_hide_tb_activity) {
                 startAF();
             }
 
@@ -16440,6 +16462,9 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all TB/Coin logs in the Latest Activity') + "<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
 
             html += "<div class='gclh_old_new_line'>Old Dashboard Only</div>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide TB/Coin visits on your dashboard') + "<br>";
@@ -18056,6 +18081,7 @@ var mainGC = function() {
                 'settings_searchmap_improve_add_to_list',
                 'settings_improve_notifications',
                 'settings_hide_share_log_button_log_view',
+                'settings_dashboard_hide_tb_activity',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
