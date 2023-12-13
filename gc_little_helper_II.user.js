@@ -4767,7 +4767,9 @@ var mainGC = function() {
                 if ($('#gc-md-editor_md')[0] && keepGClhChanges && !_logtext == '') {
                     $('#gc-md-editor_md')[0].value = _logtext;
                 }
-                observer.observe(document.body, config);
+                if (is_page('logform')) {
+                    observer.observe(document.body, config);
+                }
             });
             logpageObserver.observe(document.body, config);
 
