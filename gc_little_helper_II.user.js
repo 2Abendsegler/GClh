@@ -5300,7 +5300,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 100) setTimeout(function(){buildCopyToClipboardForLogtext(waitCount);}, 100);
             }
             try {
-                if (typeof pageData !== 'undefined' && ((typeof pageData.logText !== 'undefined' && pageData.logText != '') || getValue('last_logtext', '') != '')) {
+                if (typeof pageData !== 'undefined' && ((typeof pageData.logText !== 'undefined' && pageData.logText != '') || (typeof pageData.logText === 'undefined' && getValue('last_logtext', '') != ''))) {
                     buildCopyToClipboardForLogtext(0);
                     css += 'li.meta-data-item:last-child {display: block;}';
                     css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
