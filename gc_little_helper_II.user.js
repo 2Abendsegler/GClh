@@ -5293,12 +5293,12 @@ var mainGC = function() {
             function buildCopyToClipboardForLogtext(waitCount) {
                 if ($('li.meta-data-item:last span.meta-data-label')[0] && !$('#gclh_copyLogtextToClipboard')[0]) {
                     $('li.meta-data-item:last span.meta-data-label').after('<span id="gclh_copyLogtextToClipboard"><span></span></span>');
-                    addCopyToClipboardLink((pageData.logText || getValue('last_logtext', '')), $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
+                    addCopyToClipboardLink(pageData.logText, $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
                 }
                 waitCount++; if (waitCount <= 100) setTimeout(function(){buildCopyToClipboardForLogtext(waitCount);}, 100);
             }
             try {
-                if (typeof pageData !== 'undefined' && ((typeof pageData.logText !== 'undefined' && pageData.logText != '') || (typeof pageData.logText === 'undefined' && getValue('last_logtext', '') != ''))) {
+                if (typeof pageData !== 'undefined' && typeof pageData.logText !== 'undefined' && pageData.logText != '') {
                     buildCopyToClipboardForLogtext(0);
                     css += 'li.meta-data-item:last-child {display: block;}';
                     css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
