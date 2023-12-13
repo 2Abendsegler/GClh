@@ -4743,9 +4743,7 @@ var mainGC = function() {
             let css = '';
 
             // Have we changed the logtext?
-            let keepGClhChanges = !isEdit && ((!isTB && settings_add_cache_log_signature)
-                && ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)))
-                || (isTB && settings_add_tb_log_signature);
+            let keepGClhChanges = false;
             let _logtext = ''; // The Logtext
 
             // When the user enter a key to the logfield, changes by GClh (Signature and Templates) are take over by GS script.
@@ -4842,10 +4840,10 @@ var mainGC = function() {
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
                             logfield.value = text;
                             _logtext = text;
+                            logfield.dispatchEvent(new Event('input'));
+                            window.dispatchEvent(new Event('gclhLogTextChanges'));
                         }
                         if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
-                        logfield.dispatchEvent(new Event('input'));
-                        window.dispatchEvent(new Event('gclhLogTextChanges'));
                         logfield.focus();
                         logfield.selectionStart = 0;
                         logfield.selectionEnd = 0;
@@ -5295,12 +5293,12 @@ var mainGC = function() {
             function buildCopyToClipboardForLogtext(waitCount) {
                 if ($('li.meta-data-item:last span.meta-data-label')[0] && !$('#gclh_copyLogtextToClipboard')[0]) {
                     $('li.meta-data-item:last span.meta-data-label').after('<span id="gclh_copyLogtextToClipboard"><span></span></span>');
-                    addCopyToClipboardLink(pageData.logText, $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
+                    addCopyToClipboardLink((pageData.logText || getValue('last_logtext', '')), $('#gclh_copyLogtextToClipboard span')[0], 'Logtext', 'float: right; margin-right: 8px;');
                 }
                 waitCount++; if (waitCount <= 100) setTimeout(function(){buildCopyToClipboardForLogtext(waitCount);}, 100);
             }
             try {
-                if (typeof pageData !== 'undefined' && typeof pageData.logText !== 'undefined' && pageData.logText != '') {
+                if (typeof pageData !== 'undefined' && ((typeof pageData.logText !== 'undefined' && pageData.logText != '') || (typeof pageData.logText === 'undefined' && getValue('last_logtext', '') != ''))) {
                     buildCopyToClipboardForLogtext(0);
                     css += 'li.meta-data-item:last-child {display: block;}';
                     css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
