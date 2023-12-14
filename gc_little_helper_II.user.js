@@ -9599,21 +9599,26 @@ var mainGC = function() {
             // Hide TB Activity
             function hideTBActivity(log) {
                 if (settings_dashboard_hide_tb_activity && $(log).find('.label-text a')[0].href.match(/coord.info\/TB\w+/ig)) {
-                    $(log)[0].style.display = 'none';
-                    checkDay($(log)[0].parentNode);
+                    $(log).addClass('gclh_hidden_log');
+                    checkDay($(log).parent());
                 }
             }
             // Removes the Date for Days Without Logs
             function checkDay(container) {
                 let unfilterd = $(container).find('.activity-item');
-                let filtered = Array.from(unfilterd).filter(li => li.style.display == 'none');
+                let filtered = Array.from(unfilterd).filter(li => $(li).hasClass('gclh_hidden_log'));
                 if (unfilterd.length <= filtered.length) {
-                    container.parentNode.parentNode.style.display = 'none';
+                    $(container).parents('li:not(.activity-item)').addClass('gclh_hidden_day');
                 }
                 // The Date of the current Date is displayed outside the list of days
-                if ($('.activity-groups > li')[0].style.display === 'none') {
-                    $('.activity-block-header')[0].style.display = 'none';
-                } 
+                if ($('.activity-groups > li:first').hasClass('gclh_hidden_day')) {
+                    let firstDay = $('.activity-groups > li:not(.gclh_hidden_day)')[0];
+                    $('div > .activity-block-header h2')[0].innerHTML = $(firstDay).find('h2').html();
+                    $(firstDay).find('.activity-block-header')[0].style.display = 'none';
+                }
+            }
+            if (settings_dashboard_hide_tb_activity) {
+                css += '.gclh_hidden_day, .gclh_hidden_log {display: none !important;}';
             }
 
             // Common functions for features in Latest Activity list.
