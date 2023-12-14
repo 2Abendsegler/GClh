@@ -13800,12 +13800,32 @@ var mainGC = function() {
                     });
                 });
             }
-            function clickEnableCheckboxListNotif(nid, item) {
-                if ($(item).closest('tr').hasClass('gclh_disabled')) return;
-                $(item).find('img')[0].src = urlImages + 'ajax-loader.gif';
+            function setTitleCheckboxListNotif(a) {
+                a.title = (a.children[0].src.match('checkbox_off') ? 'click to enable\n(right click to enable all with same name)' : 'click to disable\n(right click to disable all with same name)');
+            }
+            function clickEnableCheckboxListNotif(nid, a) {
+                if ($(a).closest('tr').hasClass('gclh_disabled')) return;
+                var img = $(a).find('img')[0];
+                if (img.src.match('ajax-loader.gif')) return;
+                img.src = urlImages + 'ajax-loader.gif';
                 $.get('https://www.geocaching.com/notify/default.aspx?did=' + nid, null, function(c){
-                    $(item).find('img')[0].src = $(c).find('a[href="?did='+nid+'"] img')[0].src;
-                    $(item).find('img')[0].alt = $(c).find('a[href="?did='+nid+'"] img')[0].alt;
+                    img.src = $(c).find('a[href="?did='+nid+'"] img')[0].src;
+                    img.alt = $(c).find('a[href="?did='+nid+'"] img')[0].alt;
+                    setTitleCheckboxListNotif(a);
+                });
+            }
+            function clickEnableCheckboxWithSameNameListNotif(a) {
+                if ($(a).closest('tr').hasClass('gclh_disabled')) return;
+                var imgA = $(a).find('img')[0];
+                if (imgA.src.match('ajax-loader.gif')) return;
+                var srcA = imgA.src;
+                var nameA = $(a).closest('tr').find('td:nth-child(3) a strong')[0].innerText;
+                $('table.Table tbody tr').each(function(){
+                    var nidB = getNIDFromLineListNotif(this);
+                    var cbB = $(this).find('td a')[0];
+                    var srcB = $(cbB).find('img')[0].src;
+                    var nameB = $(cbB).closest('tr').find('td:nth-child(3) a strong')[0].innerText;
+                    if (srcB == srcA && nameB == nameA) clickEnableCheckboxListNotif(nidB, cbB);
                 });
             }
             function enableIconAdditionalDataListNotif(waitCount) {
@@ -13959,8 +13979,10 @@ var mainGC = function() {
                         // Handle checkbox for enable a notification.
                         itemCeckbox.setAttribute('id', nid);
                         itemCeckbox.setAttribute('href', 'javascript:void(0);');
-                        itemCeckbox.setAttribute('title', 'Enable/disable notification');
-                        itemCeckbox.addEventListener("click", function() {clickEnableCheckboxListNotif(nid, this);}, false);
+                        setTitleCheckboxListNotif(itemCeckbox);
+                        itemCeckbox.addEventListener('click', function() {clickEnableCheckboxListNotif(nid, this);}, false);
+                        itemCeckbox.oncontextmenu = function(){return false;};
+                        $(itemCeckbox).bind('contextmenu.new', function() {clickEnableCheckboxWithSameNameListNotif(this);});
                         // Replace cache type icon.
                         var iconNo = itemCachetype.innerHTML.match(/images\/WptTypes\/sm\/(.+)\.gif/);
                         var icon = '';
