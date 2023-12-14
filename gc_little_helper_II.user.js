@@ -4743,9 +4743,7 @@ var mainGC = function() {
             let css = '';
 
             // Have we changed the logtext?
-            let keepGClhChanges = !isEdit && ((!isTB && settings_add_cache_log_signature)
-                && ((!isDraft) || (isDraft && settings_log_signature_on_fieldnotes)))
-                || (isTB && settings_add_tb_log_signature);
+            let keepGClhChanges = false;
             let _logtext = ''; // The Logtext
 
             // When the user enter a key to the logfield, changes by GClh (Signature and Templates) are take over by GS script.
@@ -4844,10 +4842,10 @@ var mainGC = function() {
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
                             logfield.value = text;
                             _logtext = text;
+                            logfield.dispatchEvent(new Event('input'));
+                            window.dispatchEvent(new Event('gclhLogTextChanges'));
                         }
                         if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
-                        logfield.dispatchEvent(new Event('input'));
-                        window.dispatchEvent(new Event('gclhLogTextChanges'));
                         logfield.focus();
                         logfield.selectionStart = 0;
                         logfield.selectionEnd = 0;
