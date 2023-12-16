@@ -727,6 +727,7 @@ var variablesInit = function(c) {
     c.settings_remove_target_log_view = getValue("settings_remove_target_log_view", false);
     c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
     c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
+    c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
 
     tlc('START userToken');
     try {
@@ -5251,6 +5252,37 @@ var mainGC = function() {
                     css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
                 }
             } catch(e) {gclh_error("Replicate TB-Header to bottom in improve log form",e);}
+
+            // Sort TBs by name.
+            var dir = -1;
+            function sortTBListByName() {
+                var ul = $('ul.tb-list')[0];
+                var li = Array.prototype.slice.call(ul.children, 0);
+                dir = dir * -1;
+                li = li.sort(function (a, b) {
+                    var aa = $(a).find('.tb-name a')[0].innerText.trim();
+                    var bb = $(b).find('.tb-name a')[0].innerText.trim();
+                    return dir * (aa .localeCompare(bb));
+                });
+                for(i = 0; i < li.length; ++i) ul.appendChild(li[i]);
+            }
+            function buildTBSortButton(waitCount) {
+                if ($('ul.tb-list')[0] && $('.tb-inventory-header h2:not(.gclh_sortByName)').length > 0) {
+                    var tbHeader = $('.tb-inventory-header h2:not(.gclh_sortByName)');
+                    for (let i=0; i<tbHeader.length; i++) {
+                        $(tbHeader[i]).addClass('gclh_sortByName');
+                        tbHeader[i].innerHTML += '<button class="link-button">Sort by name</button>';
+                        tbHeader[i].children[0].addEventListener('click', sortTBListByName, false);
+                    }
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBSortButton(waitCount);}, 200);
+            }
+            try {
+                if (!isTB && !$('.no-trackables-container')[0] && settings_button_sort_tbs_by_name_log_form) {
+                    buildTBSortButton(0);
+                    css += '.tb-inventory-header h2.gclh_sortByName button {margin-left: 20px;}';
+                }
+            } catch(e) {gclh_error("Sort TBs by name in improve log form",e);}
 
             // Send Log with F2.
             function buildSendLogWithF2(waitCount) {
@@ -16785,6 +16817,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_share_log_button_log_view', 'Hide \"Share log\" button on view log page') + show_help("With this option you can hide the \"Share log\" button on page view geocache log.<br><br>If you just want to hide the social sharing icons for Facebook, Twitter (X) behind the \"Share log\" button instead, you can do this with the parameter \"Hide social sharing via Facebook, Twitter (X)\" in the \"Global - Hiding\" area.") + "<br>";
             html += checkboxy('settings_remove_target_log_form', 'Do not open links on log page automatic in new browser tab') + show_help("The links on the pages \"Log this geocache\" and \"Edit log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
             html += checkboxy('settings_remove_target_log_view', 'Do not open links on view log page automatic in new browser tab') + show_help("The links on the page \"View geocache log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
+            html += checkboxy('settings_button_sort_tbs_by_name_log_form', 'Enable sorting of TBs by name') + "<br>";
             html += checkboxy('settings_add_log_templates', 'Add log templates') + show_help("Log templates are predefined texts. All of your templates will be displayed on the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
@@ -18140,6 +18173,7 @@ var mainGC = function() {
                 'settings_remove_target_log_view',
                 'settings_hide_share_log_button_log_view',
                 'settings_dashboard_hide_tb_activity',
+                'settings_button_sort_tbs_by_name_log_form',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
