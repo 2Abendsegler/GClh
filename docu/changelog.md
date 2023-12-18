@@ -70,6 +70,26 @@
 		<img src="../images/0.15.3/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br><br><br>
 	</li>
+	<li>
+		<strong>New:</strong> [Dashboard] Hide TB-Logs from activity feed. [<a href="https://github.com/2Abendsegler/GClh/issues/2520" title="Issue 2520">2520</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<img src="../images/0.15.3/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_hide_tb_activity" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen10.jpg" alt="Screen10.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Notification] Right mouse click to enable, disable all notifications with same name. [<a href="https://github.com/2Abendsegler/GClh/issues/2528" title="Issue 2528">2528</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<img src="../images/0.15.3/Screen01.gif" alt="Screen01.gif"><br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Edit, Log View] Logtext changes no longer possible. [<a href="https://github.com/2Abendsegler/GClh/issues/2525" title="Issue 2525">2525</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form, Log Edit] Improve checking whether the last changes come from GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/2524" title="Issue 2524">2524</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Edit] Default log type must not be set in edit mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2518" title="Issue 2518">2518</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 	</ul>
 <br>
 (20.12.2023)<br>
