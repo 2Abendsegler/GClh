@@ -371,5 +371,11 @@
   "settings_searchmap_improve_add_to_list_height": 130,
   "settings_searchmap_improve_add_to_list": true,
   "settings_improve_notifications": true,
-  "settings_hide_share_log_button_log_view": false
+  "settings_remove_target_log_form": false,
+  "settings_remove_target_log_view": false,
+  "settings_hide_locked_tbs_log_form": true,
+  "settings_hide_own_tbs_log_form": false,
+  "settings_hide_share_log_button_log_view": false,
+  "settings_dashboard_hide_tb_activity": false,
+  "settings_button_sort_tbs_by_name_log_form": true
 }
