@@ -5132,7 +5132,7 @@ var mainGC = function() {
                 }
             } catch(e) {gclh_error("Show additional cache info in improve log form",e);}
 
-            // Hide own or locked TBs.
+            // Hide own or locked trackables.
             function setNoVisitForHiddenTBs() {
                 var tbsNotNoVisit = $('ul.tb-list li.tb-item.gclh_hideTB .segmented-buttons:first .segmented-item:first:not(.checked)');
                 for (let i=0; i<tbsNotNoVisit.length; i++) {
@@ -5155,7 +5155,7 @@ var mainGC = function() {
                         $(tbs[i]).addClass('gclh_hideTB_checked');
                     }
                 }
-                // Hide complete TB area if no TB left over and set no TBs message.
+                // Hide complete trackable area if no trackable left over and set no trackables message.
                 if ($('.trackable-inventory .mantine-Accordion-content > div')[0]) {
                     if ($('ul.tb-list li.tb-item:not(.gclh_hideTB)').length == 0 && !$('.trackable-inventory .mantine-Accordion-content > div').hasClass('gclh_hideTB')) {
                         $('.trackable-inventory .mantine-Accordion-content > div').addClass('gclh_hideTB');
@@ -5180,7 +5180,7 @@ var mainGC = function() {
                     waitForTbsHide(0);
                     css += 'ul.tb-list li.tb-item.gclh_hideTB, .trackable-inventory .mantine-Accordion-panel .gclh_hideTB {display: none !important;}';
                 }
-            } catch(e) {gclh_error("Hide own or locked TBs in improve log form",e);}
+            } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
 
             // Auto visit for TBs.
             function getTbsAV() {return (isTbHideActiv ? $('ul.tb-list li.tb-item.gclh_hideTB_checked:not(.gclh_hideTB)') : $('ul.tb-list li.tb-item'))}
@@ -16855,8 +16855,8 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
-            html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked TBs from TB list') + show_help("A TB can be marked as locked in the TB listing. Locked TBs cannot be logged. With this option you can hide such TBs from TB list.") + "<br>";
-            html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own TBs from TB list') + show_help("With this option you can hide your own TBs from TB list.") + "<br>";
+            html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked trackables from trackable inventory') + show_help("A trackable can be marked as locked in the trackable listing. Locked trackables cannot be logged. With this option you can hide such trackables from trackable inventory.") + "<br>";
+            html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own trackables from trackable inventory') + show_help("With this option you can hide your own trackables from trackable inventory.") + "<br>";
             html += checkboxy('settings_hide_share_log_button_log_view', 'Hide \"Share log\" button on view log page') + show_help("With this option you can hide the \"Share log\" button on page view geocache log.<br><br>If you just want to hide the social sharing icons for Facebook, Twitter (X) behind the \"Share log\" button instead, you can do this with the parameter \"Hide social sharing via Facebook, Twitter (X)\" in the \"Global - Hiding\" area.") + "<br>";
             html += checkboxy('settings_remove_target_log_form', 'Do not open links on log page automatic in new browser tab') + show_help("The links on the pages \"Log this geocache\" and \"Edit log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
             html += checkboxy('settings_remove_target_log_view', 'Do not open links on view log page automatic in new browser tab') + show_help("The links on the page \"View geocache log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
