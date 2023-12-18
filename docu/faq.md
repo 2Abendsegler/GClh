@@ -11,6 +11,7 @@
 <a href="#7-en">7. How can I contribute to GClh?</a> | <a href="#7-de">7. Wie kann ich etwas zum GClh beitragen?</a>
 <a href="#8-en">8. Where can I get help with the GClh?</a> | <a href="#8-de">8. Wo bekomme ich Hilfe zum GClh?</a>
 <a href="#9-en">9. How can I report a bug or a feature request?</a> | <a href="#9-de">9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?</a>
+<a href="#10-en">10. What can I do if individual features don't work or don't always work?</a> | <a href="#10-de">10. Was kann ich tun, wenn einzelne Features nicht oder nicht immer funktionieren?</a>
 
 ---
 <a id="en" href="#en"><img src="../images/flag_en.png"></a>
@@ -168,6 +169,13 @@ If you need help with the GClh, or if you have questions about the GClh, you can
 ## 9. How can I report a bug or a feature request?
 For a bug or a feature request you can open a <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">new issue</a> on our development platform at GitHub.<br><br>
 Or you can create a note in one of the forums or on our discussions page. See <a href="#8-en">FAQ 8</a>.<br>
+<br>
+
+<a id="10-en"></a>
+## 10. What can I do if individual features don't work or don't always work?
+1. You must accept all cookies from geocaching.com and not just the necessary ones. Otherwise, errors in the website's cookie processing can lead to aborts in the script.<br><a href="//"><img src="../images/cookie_accepting_en.jpg"></a><br>
+2. Alternatively to 1. only the necessary cookies can be accepted by geocaching.com if cookie processing is blocked at the same time. For example, the entry "cookiebot.com" can be included in "My Filters" in the "uBlock Origin" add-on.<br>
+3. If the "Ghostery" add-on is installed, "Never Consent" must be switched off for "geocaching.com".<br>
 <br>
 <br>
 
@@ -327,4 +335,11 @@ Wenn du Hilfe zum GClh benötigst, oder wenn du Fragen zum GClh hast, dann kanns
 ## 9. Wie kann ich einen Fehler melden oder eine Anfrage zu einem neuen Feature stellen?
 Zu einem Fehler oder einer Anfrage zu einem neuen Feature kannst du ein <a href="https://github.com/2Abendsegler/GClh/issues/new/choose">neues Issue</a> auf unserer Entwicklungsplattform bei GitHub eröffnen.<br><br>
 Oder du kannst dich in einem der Foren oder auf unserer Diskussions Seite melden. Siehe dazu <a href="#8-de">FAQ 8</a>.<br>
+<br>
+
+<a id="10-de"></a>
+## 10. Was kann ich tun, wenn einzelne Features nicht oder nicht immer funktionieren?
+1. Es müssen alle Cookies von geocaching.com akzeptiert werden und nicht nur die notwendigen. Andernfalls können die Fehler in der Cookie Verarbeitung der Webseite zu Abbrüchen im Script führen.<br><a href="//"><img src="../images/cookie_accepting_de.jpg"></a><br>
+2. Alternativ zu 1. können auch nur die notwendigen Cookies von geocaching.com akzeptiert werden, wenn gleichzeitig die Cookie Verarbeitung blockiert wird. Dazu kann beispielsweise im Add on "uBlock Origin" in "Meine Filter" der Eintrag "cookiebot.com" aufgenommen werden.<br>
+3. Ist das Add on "Ghostery" installiert, muss "Never Consent" für "geocaching.com" ausgeschaltet werden.<br>
 <br>
