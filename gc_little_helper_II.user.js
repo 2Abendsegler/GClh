@@ -5419,7 +5419,7 @@ var mainGC = function() {
                 if (settings_hide_socialshare) css = 'ul.social-media-buttons {display: none !important;}';
             } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
 
-            // Build copy to clipboard icon for logtext.
+            // Build copy to clipboard icon for logtext in cache logs.
             function buildCopyToClipboardForLogtext(waitCount) {
                 if ($('li.meta-data-item:last span.meta-data-label')[0] && !$('#gclh_copyLogtextToClipboard')[0]) {
                     $('li.meta-data-item:last span.meta-data-label').after('<span id="gclh_copyLogtextToClipboard"><span></span></span>');
@@ -5428,7 +5428,11 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 100) setTimeout(function(){buildCopyToClipboardForLogtext(waitCount);}, 100);
             }
             try {
-                if (typeof pageData !== 'undefined' && typeof pageData.logText !== 'undefined' && pageData.logText != '') {
+                // The icon is not always available for TB Logs.
+                // Background: After adding a TB log and after changing a TB log, you will automatically be taken to the View Log page. The View Log page
+                // is not accessed, only the page content is exchanged. Therefore the logtext is not available on the View Log page. See also pull request
+                // 2537 for further information.
+                if (!isTB && typeof pageData !== 'undefined' && typeof pageData.logText !== 'undefined' && pageData.logText != '') {
                     buildCopyToClipboardForLogtext(0);
                     css += 'li.meta-data-item:last-child {display: block;}';
                     css += 'li.meta-data-item:last-child > div {display: inline-block; margin-right: 8px;}';
