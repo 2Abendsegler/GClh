@@ -71,7 +71,7 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Dashboard] Hide TB-Logs from activity feed. [<a href="https://github.com/2Abendsegler/GClh/issues/2520" title="Issue 2520">2520</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>New:</strong> [New Dashboard] Hide TB-Logs from activity feed. [<a href="https://github.com/2Abendsegler/GClh/issues/2520" title="Issue 2520">2520</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		<img src="../images/0.15.3/Screen04.jpg" alt="Screen04.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_hide_tb_activity" title="Link to your GClh II Config">Settings -> Log:<br>
 		<img src="../images/0.15.3/Screen10.jpg" alt="Screen10.jpg"></a><br>
@@ -80,6 +80,9 @@
 	<li>
 		<strong>New:</strong> [Notification] Right mouse click to enable, disable all notifications with same name. [<a href="https://github.com/2Abendsegler/GClh/issues/2528" title="Issue 2528">2528</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.15.3/Screen01.gif" alt="Screen01.gif"><br><br>
+	</li>
+	<li>
+		<strong>Change:</strong> [Log View] "Copy Logtext to clipboard" icon is no longer supported for trackable logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2537" title="Issue 2537">2537</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Edit, Log View] Logtext changes no longer possible. [<a href="https://github.com/2Abendsegler/GClh/issues/2525" title="Issue 2525">2525</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
