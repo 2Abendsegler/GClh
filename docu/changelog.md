@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0153" title="GClh II version 0.15.3 (20.12.2023)">v0.15.3</a> &nbsp;
 <a href="#v0152" title="GClh II version 0.15.2 (09.12.2023)">v0.15.2</a> &nbsp;
 <a href="#v0151" title="GClh II version 0.15.1 (02.12.2023)">v0.15.1</a> &nbsp;
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
@@ -40,6 +41,63 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.15.3:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Log Form] Enable sorting of trackables by name. [<a href="https://github.com/2Abendsegler/GClh/issues/2531" title="Issue 2531">2531</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15.3/Screen05.jpg" alt="Screen05.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_button_sort_tbs_by_name_log_form" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Hide own or locked trackables. [<a href="https://github.com/2Abendsegler/GClh/issues/2506" title="Issue 2506">2506</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15.3/Screen07.jpg" alt="Screen07.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_locked_tbs_log_form" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen08.jpg" alt="Screen08.jpg"></a><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_own_tbs_log_form" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen09.jpg" alt="Screen09.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form, Log Edit, Log View] Do not open links in log automatic in new browser tab. [<a href="https://github.com/2Abendsegler/GClh/issues/2529" title="Issue 2529">2529</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_remove_target_log_form" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_remove_target_log_view" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Hide TB-Logs from activity feed. [<a href="https://github.com/2Abendsegler/GClh/issues/2520" title="Issue 2520">2520</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.15.3/Screen04.jpg" alt="Screen04.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_hide_tb_activity" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.3/Screen10.jpg" alt="Screen10.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Notification] Right mouse click to enable, disable all notifications with same name. [<a href="https://github.com/2Abendsegler/GClh/issues/2528" title="Issue 2528">2528</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.15.3/Screen01.gif" alt="Screen01.gif"><br><br>
+	</li>
+	<li>
+		<strong>Change:</strong> [Log View] "Copy Logtext to clipboard" icon is no longer supported for trackable logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2537" title="Issue 2537">2537</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Edit, Log View] Logtext changes no longer possible. [<a href="https://github.com/2Abendsegler/GClh/issues/2525" title="Issue 2525">2525</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form, Log Edit] Improve checking whether the last changes come from GClh. [<a href="https://github.com/2Abendsegler/GClh/issues/2524" title="Issue 2524">2524</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Edit] Default log type must not be set in edit mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2518" title="Issue 2518">2518</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	</ul>
+<br>
+(20.12.2023)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15.2:
