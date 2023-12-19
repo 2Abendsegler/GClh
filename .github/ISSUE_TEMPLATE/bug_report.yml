@@ -11,7 +11,9 @@ body:
     attributes:
       label: Describe the bug
       description: A clear and concise description of what the bug is.
-      placeholder: If I do xxx, yyy does not work. I tried also...
+      placeholder: |
+        
+        If I do xxx, yyy does not work. I tried also... 
     validations:
       required: true
   - type: textarea
@@ -20,6 +22,7 @@ body:
       label: To Reproduce
       description: Steps to reproduce the behavior
       placeholder: |
+        
         1. Go to '...'
         2. Click on '....'
         3. Scroll down to '....'
@@ -31,7 +34,9 @@ body:
     attributes:
       label: Expected behavior
       description: A clear and concise description of what you expected to happen.
-      placeholder: "Instead, the following should happen: ..."
+      placeholder: |
+        
+        "Instead, the following should happen: ..."
     validations:
       required: false
   - type: dropdown
