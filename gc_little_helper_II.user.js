@@ -725,6 +725,8 @@ var variablesInit = function(c) {
     c.settings_improve_notifications = getValue("settings_improve_notifications", true);
     c.settings_remove_target_log_form = getValue("settings_remove_target_log_form", false);
     c.settings_remove_target_log_view = getValue("settings_remove_target_log_view", false);
+    c.settings_hide_locked_tbs_log_form = getValue("settings_hide_locked_tbs_log_form", true);
+    c.settings_hide_own_tbs_log_form = getValue("settings_hide_own_tbs_log_form", false);
     c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
     c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
     c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
@@ -5131,8 +5133,58 @@ var mainGC = function() {
                 }
             } catch(e) {gclh_error("Show additional cache info in improve log form",e);}
 
+            // Hide own or locked trackables.
+            function setNoVisitForHiddenTBs() {
+                var tbsNotNoVisit = $('ul.tb-list li.tb-item.gclh_hideTB .segmented-buttons:first .segmented-item:first:not(.checked)');
+                for (let i=0; i<tbsNotNoVisit.length; i++) {
+                    tbsNotNoVisit[i].click();
+                }
+            }
+            function waitForTbsHide(waitCount) {
+                // Hide TBs.
+                if ($('ul.tb-list li.tb-item:not(.gclh_hideTB_checked)').length > 0) {
+                    var tbs = $('ul.tb-list li.tb-item:not(.gclh_hideTB_checked)');
+                    for (let i=0; i<tbs.length; i++) {
+                        var match = $(tbs[i]).find('.ref-code')[0].innerText.match(/(.*)\|(.*)/);
+                        if (match && match[2]) {
+                            var refCode = match[2].trim();
+                            var trackable = $.grep(pageData.trackables, function(e){return e.referenceCode == refCode;});
+                            if ((settings_hide_locked_tbs_log_form && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
+                                $(tbs[i]).addClass('gclh_hideTB');
+                            }
+                        }
+                        $(tbs[i]).addClass('gclh_hideTB_checked');
+                    }
+                }
+                // Hide complete trackable area if no trackable left over and set no trackables message.
+                if ($('.trackable-inventory .mantine-Accordion-content > div')[0]) {
+                    if ($('ul.tb-list li.tb-item:not(.gclh_hideTB)').length == 0 && !$('.trackable-inventory .mantine-Accordion-content > div').hasClass('gclh_hideTB')) {
+                        $('.trackable-inventory .mantine-Accordion-content > div').addClass('gclh_hideTB');
+                        $('.trackable-inventory .mantine-Accordion-content > div').after('<div class="no-trackables-container" style="display: flex; justify-content: center;">No trackables in your inventory.</div>');
+                    }
+                }
+                // Build events for click to buttons visit all and drop all.
+                var button = $('.tb-inventory-header:first button:not(.gclh_hideTB_event)');
+                for (let i=0; i<button.length; i++) {
+                    $(button[i]).addClass('gclh_hideTB_event');
+                    button[i].addEventListener('click', function(){
+                        setTimeout(function(){setNoVisitForHiddenTBs();}, 10);
+                    });
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsHide(waitCount);}, 200);
+            }
+            try {
+                var isTbHideActiv = false;
+                if (!isTB && !$('.no-trackables-container')[0] && (settings_hide_locked_tbs_log_form || settings_hide_own_tbs_log_form)
+                    && typeof pageData !== 'undefined' && typeof pageData.trackables !== 'undefined' && pageData.trackables.length > 0) {
+                    isTbHideActiv = true;
+                    waitForTbsHide(0);
+                    css += 'ul.tb-list li.tb-item.gclh_hideTB, .trackable-inventory .mantine-Accordion-panel .gclh_hideTB {display: none !important;}';
+                }
+            } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
+
             // Auto visit for TBs.
-            function getTbsAV() {return $('ul.tb-list li.tb-item');}
+            function getTbsAV() {return (isTbHideActiv ? $('ul.tb-list li.tb-item.gclh_hideTB_checked:not(.gclh_hideTB)') : $('ul.tb-list li.tb-item'))}
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
             function getTbActionTypeAV(tb) {
@@ -5215,7 +5267,9 @@ var mainGC = function() {
                     const autovisitObserver = new MutationObserver(function(_, observer) {
                         observer.disconnect();
                         waitForTbsAV(0);
-                        observer.observe($('ul.tb-list')[0], config);
+                        if (is_page('logform')) {
+                            observer.observe($('ul.tb-list')[0], config);
+                        }
                     });
                     autovisitObserver.observe($('ul.tb-list')[0], config);
                 }
@@ -5247,7 +5301,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
             }
             try {
-                if (!isTB) {
+                if (!isTB && !$('.no-trackables-container')[0]) {
                     buildTBHeaderToBottom(0);
                     css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
                 }
@@ -5324,6 +5378,7 @@ var mainGC = function() {
 // Improve log view.
     function runImproveLogView() {
         try {
+            const isTB = document.location.pathname.match(/^\/live\/log\/(gl|tl)[a-z0-9]+/i)[1] === 'TL';
             if (typeof $('#__NEXT_DATA__')[0] !== 'undefined' && $('#__NEXT_DATA__')[0].innerText) {
                 try {
                     var nextData = JSON.parse($('#__NEXT_DATA__')[0].innerText);
@@ -5333,6 +5388,24 @@ var mainGC = function() {
                 }
             }
             let css = '';
+
+            // Build own edit button with real link. Is required for complete pageData on the edit log page.
+            function buildOwnEditButton(waitCount) {
+                if ($('li.masthead-control button[data-testid="edit-log"]')[0] && !$('.gclh_editButton')[0]) {
+                    $($('li.masthead-control button[data-testid="edit-log"]')[0].closest('li')).addClass('gclh_editButton');
+                    var link = 'https://www.geocaching.com/live/geocache/' + pageData.geocache.referenceCode + '/log/' + pageData.referenceCode + '/edit?logType=' + pageData.logType.id;
+                    var button = $( $('.gclh_editButton button')[0] ).clone()[0];
+                    $(button)[0].addEventListener('click', function(){document.location.href = link;});
+                    $('.gclh_editButton button')[0].remove();
+                    $('.gclh_editButton')[0].append(button);
+                }
+                waitCount++; if (waitCount <= 100) setTimeout(function(){buildOwnEditButton(waitCount);}, 100);
+            }
+            try {
+                if (!isTB && typeof pageData !== 'undefined' && typeof pageData.geocache !== 'undefined' && typeof pageData.referenceCode !== 'undefined' && typeof pageData.logType !== 'undefined') {
+                    buildOwnEditButton(0);
+                }
+            } catch(e) {gclh_error("Build own edit button with real link in improve log view",e);}
 
             // Hide social share button.
             function hideSocialShareButton(waitCount) {
@@ -16814,6 +16887,8 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
+            html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked trackables from trackable inventory') + show_help("A trackable can be marked as locked in the trackable listing. Locked trackables cannot be logged. With this option you can hide such trackables from trackable inventory.") + "<br>";
+            html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own trackables from trackable inventory') + show_help("With this option you can hide your own trackables from trackable inventory.") + "<br>";
             html += checkboxy('settings_hide_share_log_button_log_view', 'Hide \"Share log\" button on view log page') + show_help("With this option you can hide the \"Share log\" button on page view geocache log.<br><br>If you just want to hide the social sharing icons for Facebook, Twitter (X) behind the \"Share log\" button instead, you can do this with the parameter \"Hide social sharing via Facebook, Twitter (X)\" in the \"Global - Hiding\" area.") + "<br>";
             html += checkboxy('settings_remove_target_log_form', 'Do not open links on log page automatic in new browser tab') + show_help("The links on the pages \"Log this geocache\" and \"Edit log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
             html += checkboxy('settings_remove_target_log_view', 'Do not open links on view log page automatic in new browser tab') + show_help("The links on the page \"View geocache log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
@@ -18171,6 +18246,8 @@ var mainGC = function() {
                 'settings_improve_notifications',
                 'settings_remove_target_log_form',
                 'settings_remove_target_log_view',
+                'settings_hide_locked_tbs_log_form',
+                'settings_hide_own_tbs_log_form',
                 'settings_hide_share_log_button_log_view',
                 'settings_dashboard_hide_tb_activity',
                 'settings_button_sort_tbs_by_name_log_form',
