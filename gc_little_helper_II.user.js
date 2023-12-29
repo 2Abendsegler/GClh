@@ -4978,12 +4978,17 @@ var mainGC = function() {
                 }
             } catch(e) {gclh_error("Log Templates in improve log form",e);}
 
+//xxxx Umgestellt auf .post-button-container
             // Save last log text.
-            function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
+            function saveLastLog() {
+                setValue("last_logtext", $('#gc-md-editor_md')[0].value);
+console.log('GClh save last log: SAVE');
+            }
             function buildClickForSaveLastLog(waitCount) {
-                if ($('button.submit-button')[0] && !$('button.submit-button.gclh_build_click')[0]) {
-                    $('button.submit-button')[0].addEventListener('click', saveLastLog, true);
-                    $('button.submit-button').addClass('gclh_build_click');
+                if ($('.post-button-container')[0] && !$('.gclh_save_last_log')[0]) {
+                    $('.post-button-container').addClass('gclh_save_last_log');
+                    $('.post-button-container')[0].addEventListener('click', saveLastLog, true);
+console.log('GClh save last log: Build Event');
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildClickForSaveLastLog(waitCount);}, 200);
             }
