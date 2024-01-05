@@ -5473,6 +5473,10 @@ var mainGC = function() {
             observer.observe(document.body, config);
         });
         logviewObserver.observe(document.body, config);
+        // Safeguard: if FF loads the page from browser cache then it is already fully loaded at this point,
+        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
+        // In Chrome or if one forces a page reload from the server this isn't an issue.
+        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
     }
 
 // Improve Mail.
