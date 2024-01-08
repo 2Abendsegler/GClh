@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15.3
+// @version      0.15.4
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2024 2Abendsegler, 2017-2021 Ruko2010, 2019-2024 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -4813,21 +4813,29 @@ var mainGC = function() {
 
             // Default logtypes.
             function setDefaultLogtype(waitCount) {
-                if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText) {
+                // Get React properties of logtype selection.
+                const logtype_selection = document.querySelector('.css-i2jsxq-control'),
+                    obj_keys = Object.keys(logtype_selection);
+                // If cache owner and React properties are present set logtype.
+                if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText && obj_keys[0]) {
                     // Get default logtype.
-                    let logtype = decode_innerText($('.hidden-by a')[0]) == global_me ? settings_default_logtype_owner
+                    const logtype = decode_innerText($('.hidden-by a')[0]) == global_me ? settings_default_logtype_owner
                                   : pageData.isEvent ? settings_default_logtype_event
                                   : isTB ? settings_default_tb_logtype : settings_default_logtype;
-                    // Return if no logtype is selected or selected logtype is not possible.
-                    if (logtype == -1 || !pageData.logTypes.some(e => e.value == logtype)) return;
-                    // Reload Page with default logtype.
-                    document.location = `${document.location}?logType=${logtype}`;
+                    // Get index of default logtype from available logtypes. 
+                    const ind = pageData.logTypes.map(v => v.value).indexOf(Number(logtype));
+                    // Return if no logtype is selected or selected logtype is not available for this cache.
+                    if (logtype == -1 || ind == -1) return;
+                    // Use React properties to set default logtype.
+                    const mem_props = logtype_selection[obj_keys[0]].child.memoizedProps;
+                    const option = mem_props.options[ind];
+                    mem_props.selectOption(option);
                     return;
                 }
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined' && typeof pageData.logTypes.some !== 'undefined'
+                if (!isEdit && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined'
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -5464,6 +5472,10 @@ var mainGC = function() {
             observer.observe(document.body, config);
         });
         logviewObserver.observe(document.body, config);
+        // Safeguard: if FF loads the page from browser cache then it is already fully loaded at this point,
+        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
+        // In Chrome or if one forces a page reload from the server this isn't an issue.
+        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
     }
 
 // Improve Mail.
@@ -10730,10 +10742,27 @@ var mainGC = function() {
                     }
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
-            // each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom call 'searchThisArea(0);' inside
+
+            // Preserve zoom parameter in URLs.
+            // (on page load zoom parameter in URL is ignored and zoom level defaults to 14)
+            let use_zoom_from_url = true;
+            function setZoom() {
+                if (use_zoom_from_url && unsafeWindow.MapSettings && unsafeWindow.MapSettings.Map) {
+                    // Only once on page load.
+                    use_zoom_from_url = false;
+                    const urlSearchParams = new URLSearchParams(window.location.search),
+                        zoom = urlSearchParams.has('zoom') ? Number(urlSearchParams.get('zoom')) : 14;
+                    if (zoom !== 14) {
+                        unsafeWindow.MapSettings.Map.setZoom(zoom);
+                    }
+                }
+            }
+
+            // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
             // (for reference: https://stackoverflow.com/a/64927639)
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
+                    setZoom();
                     searchThisArea(0);
                     return target.apply(thisArg, argArray);
                 }
@@ -14788,8 +14817,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/JmdN/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iGn"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/lzUt/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iGU"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16169,7 +16198,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "20.12.2023";
+            var thanksLastUpdate = "08.01.2024";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
