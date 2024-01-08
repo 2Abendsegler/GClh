@@ -10743,10 +10743,27 @@ var mainGC = function() {
                     }
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
-            // each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom call 'searchThisArea(0);' inside
+
+            // Preserve zoom parameter in URLs.
+            // (on page load zoom parameter in URL is ignored and zoom level defaults to 14)
+            let use_zoom_from_url = true;
+            function setZoom() {
+                if (use_zoom_from_url && unsafeWindow.MapSettings && unsafeWindow.MapSettings.Map) {
+                    // Only once on page load.
+                    use_zoom_from_url = false;
+                    const urlSearchParams = new URLSearchParams(window.location.search),
+                        zoom = urlSearchParams.has('zoom') ? Number(urlSearchParams.get('zoom')) : 14;
+                    if (zoom !== 14) {
+                        unsafeWindow.MapSettings.Map.setZoom(zoom);
+                    }
+                }
+            }
+
+            // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
             // (for reference: https://stackoverflow.com/a/64927639)
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
+                    setZoom();
                     searchThisArea(0);
                     return target.apply(thisArg, argArray);
                 }
