@@ -4813,21 +4813,30 @@ var mainGC = function() {
 
             // Default logtypes.
             function setDefaultLogtype(waitCount) {
-                if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText) {
+                // Get React properties of logtype selection.
+                const logtype_selection = document.querySelector('.css-i2jsxq-control'),
+                    obj_keys = Object.keys(logtype_selection);
+                // If cache owner and React properties are present set logtype.
+                if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText && obj_keys[0]) {
                     // Get default logtype.
-                    let logtype = decode_innerText($('.hidden-by a')[0]) == global_me ? settings_default_logtype_owner
+                    const logtype = decode_innerText($('.hidden-by a')[0]) == global_me ? settings_default_logtype_owner
                                   : pageData.isEvent ? settings_default_logtype_event
                                   : isTB ? settings_default_tb_logtype : settings_default_logtype;
-                    // Return if no logtype is selected or selected logtype is not possible.
-                    if (logtype == -1 || !pageData.logTypes.some(e => e.value == logtype)) return;
-                    // Reload Page with default logtype.
-                    document.location = `${document.location}?logType=${logtype}`;
+                    // Get index of default logtype from available logtypes. 
+                    const ind = pageData.logTypes.map(v => v.value).indexOf(Number(logtype));
+                    // Return if no logtype is selected or selected logtype is not available for this cache.
+                    if (logtype == -1 || ind == -1) return;
+
+                    // Use React properties to set default logtype.
+                    const mem_props = logtype_selection[obj_keys[0]].child.memoizedProps;
+                    const option = mem_props.options[ind];
+                    mem_props.selectOption(option);
                     return;
                 }
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined' && typeof pageData.logTypes.some !== 'undefined'
+                if (!isEdit && typeof pageData !== 'undefined' && typeof pageData.logTypes !== 'undefined'
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -5464,6 +5473,10 @@ var mainGC = function() {
             observer.observe(document.body, config);
         });
         logviewObserver.observe(document.body, config);
+        // Safeguard: if FF loads the page from browser cache then it is already fully loaded at this point,
+        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
+        // In Chrome or if one forces a page reload from the server this isn't an issue.
+        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
     }
 
 // Improve Mail.
