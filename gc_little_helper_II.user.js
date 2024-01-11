@@ -4814,8 +4814,8 @@ var mainGC = function() {
             // Default logtypes.
             function setDefaultLogtype(waitCount) {
                 // Get React properties of logtype selection.
-                const logtype_selection = document.querySelector('.css-i2jsxq-control'),
-                    obj_keys = Object.keys(logtype_selection);
+                const logtype_selection = document.querySelector('#react-select-cache-log-type-input').parentElement.parentElement;
+                const obj_keys = Object.keys(logtype_selection);
                 // If cache owner and React properties are present set logtype.
                 if ($('.hidden-by a')[0] && $('.hidden-by a')[0].innerText && obj_keys[0]) {
                     // Get default logtype.
