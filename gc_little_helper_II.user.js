@@ -8503,7 +8503,7 @@ var mainGC = function() {
                 '    <div class="FloatLeft LogDisplayRight">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
-                '           <img title="${LogType}" alt="${LogType}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${LogType}</strong><small class="gclh_logCounter"></small></div>' +
+                '           <img title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
                 '      <div class="HalfRight AlignRight">' +
                 '        <span class="minorDetails LogDate">${Visited}</span></div>' +
                 '      <div class="Clear LogContent markdown-output">' +
