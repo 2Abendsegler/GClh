@@ -4788,6 +4788,25 @@ var mainGC = function() {
                 }
             });
             logpageObserver.observe(document.body, config);
+            // Set width of logform to width of window
+            function setWidthOfLogForm (waitcount) {
+                var logNode = $("main");
+                if(undefined != logNode && logNode.length >0){
+                    var resizeFunction = function(ev){
+                        var parentWidth = logNode[0].parentNode.parentNode.parentNode.offsetWidth;
+                        logNode[0].style.width=parentWidth * 0.9 + 'px';
+                        logNode[0].style.maxWidth=parentWidth + 'px';
+                    };
+                    var parentWidth = logNode[0].parentNode.parentNode.parentNode.offsetWidth;
+                    logNode[0].style.width=parentWidth * 0.9 + 'px';
+                    logNode[0].style.maxWidth=parentWidth + 'px';
+                    window.addEventListener('resize', resizeFunction);
+                }
+                else{
+                    waitCount++; if (waitCount <= 1000) setTimeout(function(){buildWarningForGClhChanges(waitCount);}, 10);
+                }
+            }
+            setWidthOfLogForm(0);
 
             // Save State and Logtext after changes by GClh (Signature and Templates).
             window.addEventListener('gclhLogTextChanges', () => {
@@ -5455,6 +5474,23 @@ var mainGC = function() {
 
             // Append the style.
             if (!$('#gclh_css_improveLogView')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogView');
+
+	    //Set width of log-view to width of window
+            function setWidthOfLogForm (waitcount) {
+                var logNode = $("div[data-testid='log-view']");
+                if(undefined != logNode && logNode.length > 0){
+                    var resizeFunction = function(ev){
+                        var parentWidth = logNode[0].parentNode.parentNode.parentNode.offsetWidth;
+                        logNode[0].style.width=parentWidth * 0.9 + 'px';
+                    };
+                    resizeFunction(null);
+                    window.addEventListener('resize', resizeFunction);
+                }
+                else{
+                    waitCount++; if (waitCount <= 1000) setTimeout(function(){buildWarningForGClhChanges(waitCount);}, 10);
+                }
+            }
+            setWidthOfLogForm(0);
         } catch(e) {gclh_error("Improve log view",e);}
     }
 
