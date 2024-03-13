@@ -63,7 +63,7 @@
 				Hide a Cache (effects not yet checked)<br>
 			</li>
 			<li>
-				My Lists, Bookmark Lists (List Hub, List Details)<br><br>
+				My Lists, Bookmark Lists ... (List Hub, List Details)<br><br>
 			</li>
 		</ul>
 		More pages are planned in the next few weeks:<br>
