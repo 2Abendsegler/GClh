@@ -4831,7 +4831,7 @@ var mainGC = function() {
                     const option = mem_props.options[ind];
                     mem_props.selectOption(option);
                     // Because the set log type is updated here late, so that the log type is sometimes not yet available when processing the autovisits,
-                    // we set it here.
+                    // we set it here for the meantime.
                     $('input[name="logType"]')[0].value = option.value;
                     return;
                 }
