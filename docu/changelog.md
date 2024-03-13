@@ -50,6 +50,33 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>Info:</strong> GClh features are no longer available on some pages (Tech migration).<br>
+		With the release notes of February 26, 2024, GS announced that it would be carrying out a technical migration for some websites. Unfortunately, these adjustments mean that almost no GClh features are available on the pages anymore. Unfortunately, the adjustments required for the GClh are very large.<br>
+		I took a look at it for the My Lists pages. Almost every line in the coding has to be revised. This page alone will take us many days. It will probably become particularly problematic soon after the technical migration of the Search Map.<br>
+		I don't know when we'll be able to rework the entire pages, sorry.<br>
+		The following pages are currently affected:<br>
+		<ul>
+			<li>
+				Cache owner dashboard<br>
+			</li>
+			<li>
+				Hide a Cache (effects not yet checked)<br>
+			</li>
+			<li>
+				My Lists, Bookmark Lists (List Hub, List Details)<br>
+			</li>
+		</ul>
+		More pages are planned in the next few weeks:<br>
+		<ul>
+			<li>
+				Search page<br>
+			</li>
+			<li>
+				Search Map<br>
+			</li>
+		</ul>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Log Form] Default logtype overrides logtype from URL. [<a href="https://github.com/2Abendsegler/GClh/issues/2555" title="Issue 2555">2555</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
