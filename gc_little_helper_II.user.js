@@ -4830,6 +4830,9 @@ var mainGC = function() {
                     const mem_props = logtype_selection[obj_keys[0]].child.memoizedProps;
                     const option = mem_props.options[ind];
                     mem_props.selectOption(option);
+                    // Because the set log type is updated here late, so that the log type is sometimes not yet available when processing the autovisits,
+                    // we set it here for the meantime.
+                    $('input[name="logType"]')[0].value = option.value;
                     return;
                 }
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
