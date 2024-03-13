@@ -50,13 +50,13 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Log Form] Default logtype overrides logtype from URL. [<a href="https://github.com/2Abendsegler/GClh/issues/2555" title="Issue 2555">2555</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> [Log Form] Default logtype overrides logtype from URL. [<a href="https://github.com/2Abendsegler/GClh/issues/2555" title="Issue 2555">2555</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> [Log Form] Autovisits are not set if log type "Found it" is set by default. [<a href="https://github.com/2Abendsegler/GClh/issues/2561" title="Issue 2561">2561</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> [Log Form] Autovisits are not set if log type "Found it" is set by default. [<a href="https://github.com/2Abendsegler/GClh/issues/2561" title="Issue 2561">2561</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing] In the logs the old description "Needs archived" is used instead of "Reviewer attention requested". [<a href="https://github.com/2Abendsegler/GClh/issues/2556" title="Issue 2556">2556</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Fix:</strong> [Cache Listing] In the logs the old description "Needs archived" is used instead of "Reviewer attention requested". [<a href="https://github.com/2Abendsegler/GClh/issues/2556" title="Issue 2556">2556</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing / Search Map / Browse Map] Geoname elevation errors are no longer displayed in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/2569" title="Issue 2569">2569</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -72,7 +72,7 @@ released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abends
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Log Form] Default logtypes run into error: can't convert null to object. [<a href="https://github.com/2Abendsegler/GClh/issues/2549" title="Issue 2549">2549</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		<strong>Fix:</strong> [Log Form] Default logtypes run into error: can't convert null to object. [<a href="https://github.com/2Abendsegler/GClh/issues/2549" title="Issue 2549">2549</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 	</li>
 </ul>
 <br>
