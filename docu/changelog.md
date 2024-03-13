@@ -72,7 +72,7 @@
 				Search page<br>
 			</li>
 			<li>
-				Search Map<br><br>
+				Search Map<br><br><br>
 			</li>
 		</ul>
 	</li>
