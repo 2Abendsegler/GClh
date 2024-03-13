@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0156" title="GClh II version 0.15.6 (14.03.2024)">v0.15.6</a> &nbsp;
 <a href="#v0155" title="GClh II version 0.15.5 (11.01.2024)">v0.15.5</a> &nbsp;
 <a href="#v0154" title="GClh II version 0.15.4 (09.01.2024)">v0.15.4</a> &nbsp;
 <a href="#v0153" title="GClh II version 0.15.3 (20.12.2023)">v0.15.3</a> &nbsp;
@@ -43,6 +44,28 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.15.6:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Log Form] Default logtype overrides logtype from URL. [<a href="https://github.com/2Abendsegler/GClh/issues/2555" title="Issue 2555">2555</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Autovisits are not set if log type "Found it" is set by default. [<a href="https://github.com/2Abendsegler/GClh/issues/2561" title="Issue 2561">2561</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] In the logs the old description "Needs archived" is used instead of "Reviewer attention requested". [<a href="https://github.com/2Abendsegler/GClh/issues/2556" title="Issue 2556">2556</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing / Search Map / Browse Map] Geoname elevation errors are no longer displayed in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/2569" title="Issue 2569">2569</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+</ul>
+<br>
+(14.03.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15.5:
