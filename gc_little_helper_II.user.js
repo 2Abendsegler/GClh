@@ -3680,7 +3680,7 @@ var mainGC = function() {
             elevationServicesData[3]['function'] = addElevationToWaypoints_GeonamesElevation;
             function addElevationToWaypoints_GoogleElevation(responseDetails) {
                 try {
-                    context = responseDetails.context;
+                    var context = responseDetails.context;
                     json = JSON.parse(responseDetails.responseText);
                     if ( json.status != "OK") {
                         var mess = "\naddElevationToWaypoints_GoogleElevation():\n- Get elevations: retries: "+context.retries+"\n- json-status: "+json.status+"\n- json.error_message: "+json.error_message;
@@ -3704,7 +3704,7 @@ var mainGC = function() {
             }
             function addElevationToWaypoints_OpenElevation(responseDetails) {
                 try {
-                    context = responseDetails.context;
+                    var context = responseDetails.context;
                     if ( responseDetails.responseText[0] != '{' ) {
                         // Workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data.
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.substring(0,100)+"…");
@@ -3738,23 +3738,30 @@ var mainGC = function() {
             }
             function addElevationToWaypoints_GeonamesElevation(responseDetails) {
                 try {
-                    context = responseDetails.context;
+                    var context = responseDetails.context;
                     if (responseDetails.responseText.match(/<html>/)) {
                         if (responseDetails.responseText.match(/Service Unavailable/)) {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable\n- url: "+responseDetails.finalUrl);
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": Service Unavailable.");
+                            console.log(responseDetails);
                         } else {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText+"\n- url: "+responseDetails.finalUrl);
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": Unknown error, see details.");
+                            console.log(responseDetails);
                         }
                         getElevations(context.retries+1,context.locations);
-                        return;
                     } else {
-                        json = JSON.parse(responseDetails.responseText);
-                        var elevations = [];
-                        for (var i=0; i<json.geonames.length; i++) {
-                            if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
-                            else elevations.push(json.geonames[i].astergdem);
+                        var json = JSON.parse(responseDetails.responseText);
+                        if (!json.geonames) {
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": json.geonames is undefined.");
+                            console.log(responseDetails);
+                            getElevations(context.retries+1,context.locations);
+                        } else {
+                            var elevations = [];
+                            for (var i=0; i<json.geonames.length; i++) {
+                                if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
+                                else elevations.push(json.geonames[i].astergdem);
+                            }
+                            addElevationToWaypoints(elevations,context);
                         }
-                        addElevationToWaypoints(elevations,context);
                     }
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
@@ -3875,22 +3882,22 @@ var mainGC = function() {
                         onload: elevationServices[serviceIndex]['function'],
                         onerror: function(responseDetails) {
                             var context = responseDetails.context;
-                            gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
-                            console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                            console.error("GClh_ERROR (no header alert) - getElevations("+context.serviceName+") - " + document.location.href + ": GM_xmlhttpRequest() reported error.");
+                            console.log(responseDetails);
                             getElevations(context.retries+1,context.locations);
                         },
                         onreadystatechange: function(responseDetails) {
                         },
                         ontimeout: function(responseDetails) {
                             var context = responseDetails.context;
-                            gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported timeout.', 'stack': '' });
-                            console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                            console.error("GClh_ERROR (no header alert) - getElevations("+context.serviceName+") - " + document.location.href + ": GM_xmlhttpRequest() reported timeout.");
+                            console.log(responseDetails);
                             getElevations(context.retries+1,context.locations);
                         },
                         onabort: function(responseDetails) {
                             var context = responseDetails.context;
-                            gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported abort.', 'stack': '' });
-                            console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                            console.error("GClh_ERROR (no header alert) - getElevations("+context.serviceName+") - " + document.location.href + ": GM_xmlhttpRequest() reported abort.");
+                            console.log(responseDetails);
                             getElevations(context.retries+1,context.locations);
                         },
                     });
