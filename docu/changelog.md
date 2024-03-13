@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0156" title="GClh II version 0.15.6 (14.03.2024)">v0.15.6</a> &nbsp;
 <a href="#v0155" title="GClh II version 0.15.5 (11.01.2024)">v0.15.5</a> &nbsp;
 <a href="#v0154" title="GClh II version 0.15.4 (09.01.2024)">v0.15.4</a> &nbsp;
 <a href="#v0153" title="GClh II version 0.15.3 (20.12.2023)">v0.15.3</a> &nbsp;
@@ -45,11 +46,60 @@
 <span id="readme"></span>
 
 ---
+## v0.15.6:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Info:</strong> GClh features are no longer available on some pages (Tech migration).<br><br>
+		With the <a href="https://forums.geocaching.com/GC/index.php?/topic/397274-release-notes-website-tech-migrations-february-26-2024/" title="link to the release notes of February 26, 2024">release notes of February 26, 2024</a> , GS announced that it would be carrying out a technical migration for some websites. Unfortunately, these adjustments mean that almost no GClh features are available on the pages anymore. Unfortunately, the adjustments required for the GClh are very large.<br><br>
+		We took a look at it for the My Lists pages. Almost every line in the coding has to be revised. This pages alone will take us many days. It will probably become particularly problematic soon after the technical migration of the Search Map.<br><br>
+		We don't know when we'll be able to rework the entire pages, sorry.<br><br>
+		The following pages are currently affected:<br>
+		<ul>
+			<li>
+				Cache owner dashboard<br>
+			</li>
+			<li>
+				Hide a Cache (effects not yet checked)<br>
+			</li>
+			<li>
+				My Lists, Bookmark Lists ... (List Hub, List Details)<br><br>
+			</li>
+		</ul>
+		More pages are planned in the next few weeks:<br>
+		<ul>
+			<li>
+				Search page<br>
+			</li>
+			<li>
+				Search Map<br><br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Default logtype overrides logtype from URL. [<a href="https://github.com/2Abendsegler/GClh/issues/2555" title="Issue 2555">2555</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Autovisits are not set if log type "Found it" is set by default. [<a href="https://github.com/2Abendsegler/GClh/issues/2561" title="Issue 2561">2561</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] In the logs the old description "Needs archived" is used instead of "Reviewer attention requested". [<a href="https://github.com/2Abendsegler/GClh/issues/2556" title="Issue 2556">2556</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing / Search Map / Browse Map] Geoname elevation errors are no longer displayed in the page header. [<a href="https://github.com/2Abendsegler/GClh/issues/2569" title="Issue 2569">2569</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+</ul>
+<br>
+(14.03.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+
+---
 ## v0.15.5:
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Log Form] Default logtypes run into error: can't convert null to object. [<a href="https://github.com/2Abendsegler/GClh/issues/2549" title="Issue 2549">2549</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		<strong>Fix:</strong> [Log Form] Default logtypes run into error: can't convert null to object. [<a href="https://github.com/2Abendsegler/GClh/issues/2549" title="Issue 2549">2549</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 	</li>
 </ul>
 <br>

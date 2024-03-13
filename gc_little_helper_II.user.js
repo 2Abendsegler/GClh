@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15.5
+// @version      0.15.6
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2024 2Abendsegler, 2017-2021 Ruko2010, 2019-2024 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -3680,7 +3680,7 @@ var mainGC = function() {
             elevationServicesData[3]['function'] = addElevationToWaypoints_GeonamesElevation;
             function addElevationToWaypoints_GoogleElevation(responseDetails) {
                 try {
-                    context = responseDetails.context;
+                    var context = responseDetails.context;
                     json = JSON.parse(responseDetails.responseText);
                     if ( json.status != "OK") {
                         var mess = "\naddElevationToWaypoints_GoogleElevation():\n- Get elevations: retries: "+context.retries+"\n- json-status: "+json.status+"\n- json.error_message: "+json.error_message;
@@ -3704,7 +3704,7 @@ var mainGC = function() {
             }
             function addElevationToWaypoints_OpenElevation(responseDetails) {
                 try {
-                    context = responseDetails.context;
+                    var context = responseDetails.context;
                     if ( responseDetails.responseText[0] != '{' ) {
                         // Workaround: sometimes OpenElevation answers with an HTML formatted content not with JSON data.
                         gclh_log("\naddElevationToWaypoints_OpenElevation():\n- Unexpected response data:"+responseDetails.responseText.substring(0,100)+"…");
@@ -3738,23 +3738,30 @@ var mainGC = function() {
             }
             function addElevationToWaypoints_GeonamesElevation(responseDetails) {
                 try {
-                    context = responseDetails.context;
+                    var context = responseDetails.context;
                     if (responseDetails.responseText.match(/<html>/)) {
                         if (responseDetails.responseText.match(/Service Unavailable/)) {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Info: Service Unavailable\n- url: "+responseDetails.finalUrl);
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": Service Unavailable.");
+                            console.log(responseDetails);
                         } else {
-                            gclh_log("\naddElevationToWaypoints_GeonamesElevation():\n- Error:\n"+responseDetails.responseText+"\n- url: "+responseDetails.finalUrl);
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": Unknown error, see details.");
+                            console.log(responseDetails);
                         }
                         getElevations(context.retries+1,context.locations);
-                        return;
                     } else {
-                        json = JSON.parse(responseDetails.responseText);
-                        var elevations = [];
-                        for (var i=0; i<json.geonames.length; i++) {
-                            if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
-                            else elevations.push(json.geonames[i].astergdem);
+                        var json = JSON.parse(responseDetails.responseText);
+                        if (!json.geonames) {
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": json.geonames is undefined.");
+                            console.log(responseDetails);
+                            getElevations(context.retries+1,context.locations);
+                        } else {
+                            var elevations = [];
+                            for (var i=0; i<json.geonames.length; i++) {
+                                if (json.geonames[i].astergdem === -9999 || json.geonames[i].astergdem === -32768) elevations.push("0");
+                                else elevations.push(json.geonames[i].astergdem);
+                            }
+                            addElevationToWaypoints(elevations,context);
                         }
-                        addElevationToWaypoints(elevations,context);
                     }
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
@@ -3875,22 +3882,22 @@ var mainGC = function() {
                         onload: elevationServices[serviceIndex]['function'],
                         onerror: function(responseDetails) {
                             var context = responseDetails.context;
-                            gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported error.', 'stack': '' });
-                            console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                            console.error("GClh_ERROR (no header alert) - getElevations("+context.serviceName+") - " + document.location.href + ": GM_xmlhttpRequest() reported error.");
+                            console.log(responseDetails);
                             getElevations(context.retries+1,context.locations);
                         },
                         onreadystatechange: function(responseDetails) {
                         },
                         ontimeout: function(responseDetails) {
                             var context = responseDetails.context;
-                            gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported timeout.', 'stack': '' });
-                            console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                            console.error("GClh_ERROR (no header alert) - getElevations("+context.serviceName+") - " + document.location.href + ": GM_xmlhttpRequest() reported timeout.");
+                            console.log(responseDetails);
                             getElevations(context.retries+1,context.locations);
                         },
                         onabort: function(responseDetails) {
                             var context = responseDetails.context;
-                            gclh_error("getElevations("+context.serviceName+")", { 'message': 'GM_xmlhttpRequest() reported abort.', 'stack': '' });
-                            console.log(responseDetails); // workaround gclh_log doesn't work for responseDetails. Error message 'TypeError: Function.prototype.toString called on incompatible object'
+                            console.error("GClh_ERROR (no header alert) - getElevations("+context.serviceName+") - " + document.location.href + ": GM_xmlhttpRequest() reported abort.");
+                            console.log(responseDetails);
                             getElevations(context.retries+1,context.locations);
                         },
                     });
@@ -4830,12 +4837,15 @@ var mainGC = function() {
                     const mem_props = logtype_selection[obj_keys[0]].child.memoizedProps;
                     const option = mem_props.options[ind];
                     mem_props.selectOption(option);
+                    // Because the set log type is updated here late, so that the log type is sometimes not yet available when processing the autovisits,
+                    // we set it here for the meantime.
+                    $('input[name="logType"]')[0].value = option.value;
                     return;
                 }
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!isEdit && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined'
+                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined'
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -8503,7 +8513,7 @@ var mainGC = function() {
                 '    <div class="FloatLeft LogDisplayRight">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
-                '           <img title="${LogType}" alt="${LogType}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${LogType}</strong><small class="gclh_logCounter"></small></div>' +
+                '           <img title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
                 '      <div class="HalfRight AlignRight">' +
                 '        <span class="minorDetails LogDate">${Visited}</span></div>' +
                 '      <div class="Clear LogContent markdown-output">' +
@@ -14817,8 +14827,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/Z628/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iG0"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/gb7s/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iIN"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16198,7 +16208,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "11.01.2024";
+            var thanksLastUpdate = "13.03.2024";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16952,7 +16962,7 @@ var mainGC = function() {
             html += "    <option value=\"2\" " + (settings_default_logtype == "2" ? "selected=\"selected\"" : "") + ">Found it</option>";
             html += "    <option value=\"3\" " + (settings_default_logtype == "3" ? "selected=\"selected\"" : "") + ">Didn't find it</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
-            html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner maintenance requested</option>";
+            html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner attention requested</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
             html += "  <tr><td>Default event log type</td>";
             html += "    <td><select class='gclh_form' id='settings_default_logtype_event'>";
