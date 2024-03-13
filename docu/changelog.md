@@ -50,10 +50,10 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Info:</strong> GClh features are no longer available on some pages (Tech migration).<br>
-		With the release notes of February 26, 2024, GS announced that it would be carrying out a technical migration for some websites. Unfortunately, these adjustments mean that almost no GClh features are available on the pages anymore. Unfortunately, the adjustments required for the GClh are very large.<br>
-		I took a look at it for the My Lists pages. Almost every line in the coding has to be revised. This page alone will take us many days. It will probably become particularly problematic soon after the technical migration of the Search Map.<br>
-		I don't know when we'll be able to rework the entire pages, sorry.<br>
+		<strong>Info:</strong> GClh features are no longer available on some pages (Tech migration).<br><br>
+		With the <a href="[https://github.com/2Abendsegler/GClh/issues/2555](https://forums.geocaching.com/GC/index.php?/topic/397274-release-notes-website-tech-migrations-february-26-2024/)" title="link to the release notes of February 26, 2024">release notes of February 26, 2024</a> , GS announced that it would be carrying out a technical migration for some websites. Unfortunately, these adjustments mean that almost no GClh features are available on the pages anymore. Unfortunately, the adjustments required for the GClh are very large.<br><br>
+		I took a look at it for the My Lists pages. Almost every line in the coding has to be revised. This page alone will take us many days. It will probably become particularly problematic soon after the technical migration of the Search Map.<br><br>
+		I don't know when we'll be able to rework the entire pages, sorry.<br><br>
 		The following pages are currently affected:<br>
 		<ul>
 			<li>
@@ -63,7 +63,7 @@
 				Hide a Cache (effects not yet checked)<br>
 			</li>
 			<li>
-				My Lists, Bookmark Lists (List Hub, List Details)<br>
+				My Lists, Bookmark Lists (List Hub, List Details)<br><br>
 			</li>
 		</ul>
 		More pages are planned in the next few weeks:<br>
@@ -72,7 +72,7 @@
 				Search page<br>
 			</li>
 			<li>
-				Search Map<br>
+				Search Map<br><br>
 			</li>
 		</ul>
 	</li>
