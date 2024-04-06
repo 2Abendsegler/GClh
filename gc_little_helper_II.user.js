@@ -7145,9 +7145,7 @@ var mainGC = function() {
                 "a.myfriends {" +
                 "  color:#00AA00;" +
                 "  text-decoration:none;} " +
-                "a.gclh_resetBtn {" +
-                "  font-family:'Noto Sans',Arial,Helvetica,sans-serif;" +
-                "  padding-top:0.4em !important;}" +
+                "#invitation-button-root button {padding: 8px; margin-left: 4px; line-height: 1.3;}" +
                 ".AddFriendTextbox {" +
                 "  width:48%;}";
             appendCssStyle(myf);
@@ -7284,9 +7282,9 @@ var mainGC = function() {
                 if (document.getElementById('invitation-button-root').firstChild && document.getElementsByClassName('send-invitation-btn') && document.getElementsByClassName('send-invitation-btn').item(0)) {
                     var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
                     buttonClasses = buttonClasses.replace('send-invitation-btn','');
-                    buttonClasses = buttonClasses.replace('gc-button-disabled','');
+                    buttonClasses = buttonClasses.replace('disabled','');
                     buttonClasses = buttonClasses + ' gclh_resetBtn';
-                    var button = document.createElement("a");
+                    var button = document.createElement("button");
                     button.setAttribute("class", buttonClasses);
                     button.setAttribute("href", "javascript:void(0);");
                     button.addEventListener("click", gclh_reset_counter, false);
