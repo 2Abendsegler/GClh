@@ -1604,7 +1604,7 @@ var mainGC = function() {
 // Set upgrade button.
     function setUpgradeButton() {
         if (global_isBasic && !settings_upgrade_button_header_remove) {
-            $('.messagecenterheaderwidget.li-messages').before('<li><a class="cta-upgrade desktop-upgrade-cta" data-event-action="Header Click" data-event-category="data" data-event-label="Upgrade CTA" href="https://payments.geocaching.com//?upgrade=true" title="Upgrade">Upgrade</a></li>');
+            $('.messagecenterheaderwidget.li-messages').before('<li style="align-items: center; display: flex;"><a class="cta-upgrade desktop-upgrade-cta" data-event-action="Header Click" data-event-category="data" data-event-label="Upgrade CTA" href="https://payments.geocaching.com//?upgrade=true" title="Upgrade">Upgrade</a></li>');
         }
     }
 
