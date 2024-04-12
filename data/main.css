@@ -90,6 +90,7 @@ gclh_nav ul {
     overflow: initial;
     white-space: initial;
     text-overflow: ellipsis;
+    height: 37px;
 }
 .menu>li.mobile {
     display: none;
