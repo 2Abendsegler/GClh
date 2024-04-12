@@ -13788,11 +13788,10 @@ var mainGC = function() {
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_geocachesOwnerViewSettings').hide();
                 $('.finds-col-header h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-                // Hidden Caches
-                $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
+                $('.finds-col-header .minorDetails').html('&nbsp;'+$('.finds-col-header .minorDetails').html());
                 $('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings').hide();
-                // Links to Caches
-                $('.minorDetails').html('&nbsp;'+$('.minorDetails').html());
+                $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
+                $('.hides-col-header .minorDetails').html('&nbsp;'+$('.hides-col-header .minorDetails').html());
             } else if (url.match(/tab=trackables/i)) {
                 if (!$('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings a').attr('href');
