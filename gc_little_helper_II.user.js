@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15.6
+// @version      0.15.7
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2024 2Abendsegler, 2017-2021 Ruko2010, 2019-2024 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -730,6 +730,8 @@ var variablesInit = function(c) {
     c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
     c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
     c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
+    c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
+    c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
 
     tlc('START userToken');
     try {
@@ -1602,7 +1604,7 @@ var mainGC = function() {
 // Set upgrade button.
     function setUpgradeButton() {
         if (global_isBasic && !settings_upgrade_button_header_remove) {
-            $('.messagecenterheaderwidget.li-messages').before('<li><a class="cta-upgrade desktop-upgrade-cta" data-event-action="Header Click" data-event-category="data" data-event-label="Upgrade CTA" href="https://payments.geocaching.com//?upgrade=true" title="Upgrade">Upgrade</a></li>');
+            $('.messagecenterheaderwidget.li-messages').before('<li style="align-items: center; display: flex;"><a class="cta-upgrade desktop-upgrade-cta" data-event-action="Header Click" data-event-category="data" data-event-label="Upgrade CTA" href="https://payments.geocaching.com//?upgrade=true" title="Upgrade">Upgrade</a></li>');
         }
     }
 
@@ -1723,6 +1725,9 @@ var mainGC = function() {
                     css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                     // Vertikales Menü ausrichten.
                     if (settings_bookmarks_top_menu) {
+                        if (is_page("find_cache")) {
+                            css += ".#m li:not(.attention-link-parent) ul.#sm {margin-top: 17px;}";
+                        }
                         css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
                         // Menü, Searchfield ausrichten in Abhängigkeit von Schriftgröße. Menü nicht flex.
                         if (settings_menu_float_right) {
@@ -1853,6 +1858,15 @@ var mainGC = function() {
                         }
                     } else if (document.location.href.match(/\.com\/notify\/default\.aspx/)) {
                         css += ".span-20 {width: " + new_width + "px;}";
+                    } else if (is_page("logform")) {
+                        if (settings_larger_content_width_log_form) {
+                            css += ".content-container {width: " + new_width + "px !important; max-width: unset !important;}";
+                            css += ".form-container {margin-left: 0px !important; margin-right: 0px !important;}";
+                            css += ".breadcrumbs {margin-left: 0px !important; margin-right: 0px !important; padding-left: 0px !important; padding-right: 0px !important;}";
+                        }
+                        if (settings_less_space_log_lines_log_form) {
+                            css += "#gc-md-editor_md, .markdown-output {line-height: 1.375; font-size: 14px; gap: 0px;}";
+                        }
                     }
                 }
                 appendCssStyle(css);
@@ -3276,8 +3290,10 @@ var mainGC = function() {
                                 document.getElementById('cacheNoteText').focus();
                             } else {
                                 // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
-                                if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
-                                    $("#cacheNoteText").height(calcHeightOfCacheNote());
+                                if (settings_adapt_height_cache_notes) {
+                                    if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
+                                        $("#cacheNoteText").height(calcHeightOfCacheNote());
+                                    }
                                 }
                             }
                         }
@@ -7145,9 +7161,7 @@ var mainGC = function() {
                 "a.myfriends {" +
                 "  color:#00AA00;" +
                 "  text-decoration:none;} " +
-                "a.gclh_resetBtn {" +
-                "  font-family:'Noto Sans',Arial,Helvetica,sans-serif;" +
-                "  padding-top:0.4em !important;}" +
+                "#invitation-button-root button {padding: 8px; margin-left: 4px; line-height: 1.3;}" +
                 ".AddFriendTextbox {" +
                 "  width:48%;}";
             appendCssStyle(myf);
@@ -7284,9 +7298,9 @@ var mainGC = function() {
                 if (document.getElementById('invitation-button-root').firstChild && document.getElementsByClassName('send-invitation-btn') && document.getElementsByClassName('send-invitation-btn').item(0)) {
                     var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
                     buttonClasses = buttonClasses.replace('send-invitation-btn','');
-                    buttonClasses = buttonClasses.replace('gc-button-disabled','');
+                    buttonClasses = buttonClasses.replace('disabled','');
                     buttonClasses = buttonClasses + ' gclh_resetBtn';
-                    var button = document.createElement("a");
+                    var button = document.createElement("button");
                     button.setAttribute("class", buttonClasses);
                     button.setAttribute("href", "javascript:void(0);");
                     button.addEventListener("click", gclh_reset_counter, false);
@@ -13790,11 +13804,10 @@ var mainGC = function() {
                 let icon = $('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyIcon').attr('src');
                 $('#ctl00_ContentBody_ProfilePanel1_geocachesOwnerViewSettings').hide();
                 $('.finds-col-header h3').append(`&nbsp;<a href="${link}" class="gclh_privacy" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesPrivacyText').html().trim()} - Change it here"><img src="${icon}" /></a>`);
-                // Hidden Caches
-                $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
+                $('.finds-col-header .minorDetails').html('&nbsp;'+$('.finds-col-header .minorDetails').html());
                 $('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings').hide();
-                // Links to Caches
-                $('.minorDetails').html('&nbsp;'+$('.minorDetails').html());
+                $('.hides-col-header h3').append(`&nbsp;<img src="/images/icons/public_icon.svg" title="${$('#ctl00_ContentBody_ProfilePanel1_geocachesHideOwnerViewSettings span').html().trim()}" />`);
+                $('.hides-col-header .minorDetails').html('&nbsp;'+$('.hides-col-header .minorDetails').html());
             } else if (url.match(/tab=trackables/i)) {
                 if (!$('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings')[0]) return;
                 let link = $('#ctl00_ContentBody_ProfilePanel1_trackablesOwnerViewSettings a').attr('href');
@@ -14827,8 +14840,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/gb7s/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iIN"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/Mn1D/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iI7"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16208,7 +16221,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "13.03.2024";
+            var thanksLastUpdate = "12.04.2024";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16936,6 +16949,8 @@ var mainGC = function() {
             html += checkboxy('settings_remove_target_log_form', 'Do not open links on log page automatic in new browser tab') + show_help("The links on the pages \"Log this geocache\" and \"Edit log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
             html += checkboxy('settings_remove_target_log_view', 'Do not open links on view log page automatic in new browser tab') + show_help("The links on the page \"View geocache log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
             html += checkboxy('settings_button_sort_tbs_by_name_log_form', 'Enable sorting of trackables by name') + "<br>";
+            html += checkboxy('settings_larger_content_width_log_form', 'Larger page width') + show_help("With this option you can expand the page width according to the setting in the parameter \"Page width\" in the \"Global\" section.") + "<br>";
+            html += checkboxy('settings_less_space_log_lines_log_form', 'Less space between the lines of the log') + "<br>";
             html += checkboxy('settings_add_log_templates', 'Add log templates') + show_help("Log templates are predefined texts. All of your templates will be displayed on the log form. All you have to do is click on a template and it will be placed in your log. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<font class='gclh_small' style='font-style: italic; margin-left: 240px; margin-top: 25px; width: 320px; position: absolute; z-index: -1;' >Please note that log templates are useful for automatically entering the number of finds, the date of discovery and the like in the log, but that cache owners are people who are happy about individual logs for their cache. Geocaching is not just about pushing your own statistics, but also about experiencing something. Please take some time to give something back to the owners by telling them about your experiences and writing them good logs. Then there will also be cachers in the future who like to take the trouble to set up new caches. The log templates are useful, but can never replace a complete log.</font>";
@@ -18294,6 +18309,8 @@ var mainGC = function() {
                 'settings_hide_share_log_button_log_view',
                 'settings_dashboard_hide_tb_activity',
                 'settings_button_sort_tbs_by_name_log_form',
+                'settings_larger_content_width_log_form',
+                'settings_less_space_log_lines_log_form',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);

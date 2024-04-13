@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0157" title="GClh II version 0.15.7 (13.04.2024)">v0.15.7</a> &nbsp;
 <a href="#v0156" title="GClh II version 0.15.6 (14.03.2024)">v0.15.6</a> &nbsp;
 <a href="#v0155" title="GClh II version 0.15.5 (11.01.2024)">v0.15.5</a> &nbsp;
 <a href="#v0154" title="GClh II version 0.15.4 (09.01.2024)">v0.15.4</a> &nbsp;
@@ -44,6 +45,52 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.15.7:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Log Form] Enlarge width of log form. [<a href="https://github.com/2Abendsegler/GClh/issues/2565" title="Issue 2565">2565</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		The "Page width" parameter can be used to set the width of the geocaching pages. This is not a new parameter. New is only, that this width is now also used for the narrow log form page.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_new_width" title="Link to your GClh II Config">Settings -> Global:<br>
+		<img src="../images/0.15.7/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
+		If you don't want that, you can deactivate the page width for the log form page with the new parameter.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_larger_content_width_log_form" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.7/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+		Before / Larger page width:<br>
+		<img src="../images/0.15.7/Screen05.jpg" alt="Screen05.jpg"> <img src="../images/0.15.7/Screen04.jpg" alt="Screen04.jpg"><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Less space between log lines. [<a href="https://github.com/2Abendsegler/GClh/issues/2581" title="Issue 2581">2581</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		This feature reduces the space between the lines of a log. In addition, the differences between the log text and the log preview are reduced.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_less_space_log_lines_log_form" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.15.7/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+		Log text: Before / Less space between the lines of a log<br>
+		<img src="../images/0.15.7/Screen08.jpg" alt="Screen08.jpg"> <img src="../images/0.15.7/Screen06.jpg" alt="Screen06.jpg"><br><br>
+		Log preview: Before / Less space between the lines of a log<br>
+		<img src="../images/0.15.7/Screen09.jpg" alt="Screen09.jpg"> <img src="../images/0.15.7/Screen07.jpg" alt="Screen07.jpg"><br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Friends] Reset button doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2575" title="Issue 2575">2575</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Public Profile] For the hide caches in own profile, the finds and not the hides are linked. [<a href="https://github.com/2Abendsegler/GClh/issues/2577" title="Issue 2577">2577</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Upgrade button for basic member is not aligned. [<a href="https://github.com/2Abendsegler/GClh/issues/2584" title="Issue 2584">2584</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search] Submenu is no longer aligned correctly (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2585" title="Issue 2585">2585</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Adapt the height of the "personal cache note edit field" doesn't always work. [<a href="https://github.com/2Abendsegler/GClh/issues/2586" title="Issue 2586">2586</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(13.04.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15.6:
