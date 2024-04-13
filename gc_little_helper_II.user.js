@@ -3290,8 +3290,10 @@ var mainGC = function() {
                                 document.getElementById('cacheNoteText').focus();
                             } else {
                                 // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
-                                if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
-                                    $("#cacheNoteText").height(calcHeightOfCacheNote());
+                                if (settings_adapt_height_cache_notes) {
+                                    if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
+                                        $("#cacheNoteText").height(calcHeightOfCacheNote());
+                                    }
                                 }
                             }
                         }
