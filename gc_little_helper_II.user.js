@@ -4735,10 +4735,9 @@ var mainGC = function() {
     }
     if (settings_hide_socialshare && document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/)) {
         try {
-            if ($('.btn.btn-facebook')[0]) {
-                $('.btn.btn-facebook')[0].parentNode.style.display = "none";
-                $('.btn.btn-facebook')[0].parentNode.previousElementSibling.style.display = "none";
-                if ($('.share-button-group')[0]) $('.share-button-group')[0].style.marginBottom = "0";
+            if ($('.vendor-button-facebook')[0]) {
+                $('.vendor-button-facebook')[0].parentNode.style.display = "none";
+                $('.vendor-button-facebook')[0].parentNode.previousElementSibling.style.display = "none";
             }
         } catch(e) {gclh_error("Hide socialshare2",e);}
     }
