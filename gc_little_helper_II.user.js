@@ -15438,10 +15438,10 @@ var mainGC = function() {
         var list = '';
         $(content).find('ul.BookmarkList li').each(function() {
             if ( $(this).find('a[href*="/profile/?guid="], a[href*="/p/?guid="]')[0] && $(this).find('a[href*="/profile/?guid="], a[href*="/p/?guid="]')[0].innerHTML.match(global_me) &&
-                 $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML                                           ) {
-                if (!ary.includes($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML)) {
+                 $(this).find('a[href*="/bookmarks/view.aspx?guid="], a[href*="/plan/lists/BM"]')[0] && $(this).find('a[href*="/bookmarks/view.aspx?guid="], a[href*="/plan/lists/BM"]')[0].innerHTML                                           ) {
+                if (!ary.includes($(this).find('a[href*="/bookmarks/view.aspx?guid="], a[href*="/plan/lists/BM"]')[0].innerHTML)) {
                     count++;
-                    ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="]')[0].innerHTML);
+                    ary.push($(this).find('a[href*="/bookmarks/view.aspx?guid="], a[href*="/plan/lists/BM"]')[0].innerHTML);
                 }
             }
         });
