@@ -820,7 +820,7 @@ var mainGMaps = function() {
                     css += '#gclh_map_links svg:hover {opacity: 0.85;}';
                     css += '.search_map_icon {height: 20px !important;}';
                     css += '.gb_nd {padding-left: 4px;}';
-                    css += '.UV9Ngc {padding-right: 33px !important;}';
+                    css += '.UV9Ngc {padding-right: 48px !important;}';
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){addGcButton(waitCount);}, 200);}
             }
