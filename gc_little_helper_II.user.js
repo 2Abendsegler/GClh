@@ -844,18 +844,18 @@ var mainGMaps = function() {
 
 var mainGSearch = function() {
     try {
-        // Add links to Google Maps on Google Search page.
+        // Add links to Google Maps on Google Search Results pages.
         if (settings_add_links_google_maps_on_google_search) {
             function setGMapsLinks() {
                 var searchPara = new URLSearchParams(window.location.search).get('q');
                 if (searchPara) {
                     var mapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(searchPara);
-                    // Beispiele: "fürstenlager bensheim" oder "bensheim auerbach"
+                    // Examples: "fürstenlager bensheim", "bensheim auerbach".
                     if ($('a img#lu_map')[0]) {
                         if ($('a[href*="/maps/place/"] img#lu_map')[0]) return;
                         var link = $('img#lu_map')[0].closest('a');
                         link.href = mapsUrl;
-                    // Beispiel: "N 49° 41.000 E 008° 37.000" oder eine Adresse
+                    // Example: "N 49° 41.000 E 008° 37.000", an address.
                     } else if ($('div#lu_map')[0]) {
                         if ($('a div#lu_map')[0]) return;
                         var map = $('div#lu_map')[0];
@@ -863,7 +863,7 @@ var mainGSearch = function() {
                         link.href = mapsUrl;
                         map.parentNode.insertBefore(link, map);
                         link.appendChild(map);
-                    // Beispiel: "Bensheim", "Ukraine" oder "Rhein"
+                    // Example: "Bensheim", "Ukraine", "Rhein"
                     } else if ($('div.EeWPwe')[0]) {
                         if ($('div.EeWPwe a[href*="/maps/place/"]')[0]) return;
                         var button = '';
@@ -878,7 +878,7 @@ var mainGSearch = function() {
                         button +=   '</div>';
                         button += '</a>';
                         $('div.EeWPwe').append(button);
-                        // Fehlende CSS.
+                        // Missing CSS.
                         var css = '';
                         css += '.ZkkK1e.ZkkK1e {line-height: normal; font-family: arial,sans-serif;}';
                         css += '.ZkkK1e {-moz-box-sizing: border-box; box-sizing: border-box; border-radius: 18px; cursor: pointer; display: inline-block; height: 36px; min-width: 36px; position: relative; background: #fff; border: 1px solid #dadce0; color: #3c4043;}';
@@ -888,7 +888,7 @@ var mainGSearch = function() {
                         css += '.xlY4q {font-size: 14px; line-height: 34px; padding: 0 8px; padding-right: 8px;}';
                         css += '.VDgVie {text-align: center;}';
                         appendCssStyle(css);
-                    // Beispiel: "Nil"
+                    // Example: "Nil"
                     } else if ($('div.V1GY4c img')[0]) {
                         if ($('div.V1GY4c img')[0].closest('a[href]:not([href=""]):not([href=" "])')) return;
                         var map = $('div.V1GY4c')[0];
