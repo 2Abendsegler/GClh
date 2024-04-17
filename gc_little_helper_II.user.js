@@ -17,6 +17,7 @@
 // @match        https://www.certitudes.org/*
 // @include      https://maps.google.tld/*
 // @include      https://www.google.tld/maps*
+// @include      https://www.google.tld/search*
 // @exclude      /^https?://www\.geocaching\.com/(login|jobs|careers|brandedpromotions|promotions|blog|help|seek/sendtogps|profile/profilecontent)/
 // @require      https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/init.js
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
@@ -63,6 +64,8 @@ var start = function(c) {
                     tlc('BodyContent found');
                     if (document.location.href.match(/^https:\/\/maps\.google\./) || document.location.href.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/maps/)) {
                         mainGMaps();
+                    } else if (document.location.href.match(/^https:\/\/www\.google\.[a-zA-Z.]*\/search/)){
+                        mainGSearch();
                     } else if (document.location.href.match(/^https:\/\/www\.openstreetmap\.org/)) {
                         mainOSM();
                     } else if (document.location.href.match(/^https:\/\/www\.geocaching\.com/)) {
@@ -431,6 +434,7 @@ var variablesInit = function(c) {
     c.settings_switch_from_google_maps_to_new_gc_map_in_same_tab = getValue("settings_switch_from_google_maps_to_new_gc_map_in_same_tab", false);
     c.settings_add_link_google_maps_on_gc_map = getValue("settings_add_link_google_maps_on_gc_map", true);
     c.settings_switch_to_google_maps_in_same_tab = getValue("settings_switch_to_google_maps_in_same_tab", false);
+    c.settings_add_links_google_maps_on_google_search = getValue("settings_add_links_google_maps_on_google_search", false);
     c.settings_add_link_gc_map_on_osm = getValue("settings_add_link_gc_map_on_osm", true);
     c.settings_switch_from_osm_to_gc_map_in_same_tab = getValue("settings_switch_from_osm_to_gc_map_in_same_tab", false);
     c.settings_add_link_new_gc_map_on_osm = getValue("settings_add_link_new_gc_map_on_osm", true);
@@ -836,6 +840,61 @@ var mainGMaps = function() {
             hideLeftSidebar(0);
         }
     } catch(e) {gclh_error("mainGMaps",e);}
+};
+
+var mainGSearch = function() {
+    try {
+        // Add links to Google Maps on Google Search page.
+        if (settings_add_links_google_maps_on_google_search) {
+            function setGMapsLinks() {
+                var searchPara = new URLSearchParams(window.location.search).get('q');
+                if (searchPara) {
+                    var mapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(searchPara);
+                    // Beispiele: "fürstenlager bensheim" oder "bensheim auerbach"
+                    if ($('a img#lu_map')[0]) {
+                        if ($('a[href*="/maps/place/"] img#lu_map')[0]) return;
+                        var link = $('img#lu_map')[0].closest('a');
+                        link.href = mapsUrl;
+                    // Beispiel: "N 49° 41.000 E 008° 37.000"
+                    } else if ($('div#lu_map')[0]) {
+                        if ($('a div#lu_map')[0]) return;
+                        var map = $('div#lu_map')[0];
+                        var link = document.createElement('a');
+                        link.href = mapsUrl;
+                        map.parentNode.insertBefore(link, map);
+                        link.appendChild(map);
+                    // Beispiel: "Bensheim" oder "Ukraine"
+                    } else if ($('.EeWPwe')[0]) {
+                        if ($('.EeWPwe a[href*="/maps/place/"]')[0]) return;
+                        var button = '';
+                        button += '<a class="XaCzsb" href="' + mapsUrl + '" style="cursor: pointer;">';
+                        button +=   '<div class="la4Yvb ZkkK1e yUTMj k1U36b">';
+                        button +=     '<div class="POUQwd WN4Zxc">';
+                        button +=       '<span><span style="height:20px;line-height:20px;width:20px" class="z1asCe Y5lOv">';
+                        button +=         '<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"></path></svg>';
+                        button +=       '</span></span>';
+                        button +=     '</div>';
+                        button +=     '<div class="xlY4q VDgVie VIZLse"><span class="m0MNmc">In Google Maps öffnen</span></div>';
+                        button +=   '</div>';
+                        button += '</a>';
+                        $('.EeWPwe').append(button);
+                        // Fehlende CSS.
+                        var css = '';
+                        css += '.ZkkK1e.ZkkK1e {line-height: normal; font-family: arial,sans-serif;}';
+                        css += '.ZkkK1e {-moz-box-sizing: border-box; box-sizing: border-box; border-radius: 18px; cursor: pointer; display: inline-block; height: 36px; min-width: 36px; position: relative; background: #fff; border: 1px solid #dadce0; color: #3c4043;}';
+                        css += '.POUQwd.WN4Zxc {padding: 7px 0 7px 11px;}';
+                        css += '.xlY4q, .POUQwd, .XqKfz {-moz-box-sizing: border-box; box-sizing: border-box; display: inline-block; height: 34px; vertical-align: bottom;}';
+                        css += '.xlY4q.VIZLse {padding-right: 11px;}';
+                        css += '.xlY4q {font-size: 14px; line-height: 34px; padding: 0 8px; padding-right: 8px;}';
+                        css += '.VDgVie {text-align: center;}';
+                        appendCssStyle(css);
+                    }
+                }
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setGMapsLinks);
+            else setGMapsLinks();
+        }
+    } catch(e) {gclh_error("mainGSearch",e);}
 };
 
 ////////////////////////////////
@@ -16567,28 +16626,31 @@ var mainGC = function() {
             html += "</div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps Page</b></div>";
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
-            html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to Browse Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in Browse Map.") + "<br>";
+            html += checkboxy('settings_add_link_gc_map_on_google_maps', 'Add link to Browse Map on Google Maps') + show_help("With this option an icon is placed on the Google Maps page to link to the same area in Browse Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_google_maps_to_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += checkboxy('settings_add_link_new_gc_map_on_google_maps', 'Add link to Search Map on Google Maps') + show_help("With this option an icon are placed on the Google Maps page to link to the same area in Search Map.") + "<br>";
+            html += checkboxy('settings_add_link_new_gc_map_on_google_maps', 'Add link to Search Map on Google Maps') + show_help("With this option an icon is placed on the Google Maps page to link to the same area in Search Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_google_maps_to_new_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Google Maps.") + "<br>";
+            html += checkboxy('settings_add_link_google_maps_on_gc_map', 'Add link to Google Maps on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Google Maps.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_google_maps_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_add_links_google_maps_on_google_search', 'Add link to Google Maps on maps of the Google Search Results pages') + show_help("Since March 2024 Google Maps not being linked from Google Search Results pages in the European Union. With this option some of these links to Google Maps will be restored, so that the links to GC Maps on Google Maps can be used again. In particular, the links and buttons on the maps on the Google Search Results pages have been restored, so that the maps are clickable again.<br><br>It is only relevant for the Member States of the European Union (EU) and for the Member States in the  Europäischen Wirtschaftsraum (EWS) respectively for the Google Search Results pages with their top level domains. You can find details on googles support page here: https://support.google.com/websearch/thread/261655134") + "<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Openstreetmap Page</b></div>";
-            html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to Browse Map on Openstreetmap') + show_help("With this option an icon are placed on the Openstreetmap page to link to the same area in Browse Map.") + "<br>";
+            html += checkboxy('settings_add_link_gc_map_on_osm', 'Add link to Browse Map on Openstreetmap') + show_help("With this option an icon is placed on the Openstreetmap page to link to the same area in Browse Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += checkboxy('settings_add_link_new_gc_map_on_osm', 'Add link to Search Map on Openstreetmap') + show_help("With this option an icon are placed on the Openstreetmap page to link to the same area in Search Map.") + "<br>";
+            html += checkboxy('settings_add_link_new_gc_map_on_osm', 'Add link to Search Map on Openstreetmap') + show_help("With this option an icon is placed on the Openstreetmap page to link to the same area in Search Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_from_osm_to_new_gc_map_in_same_tab', 'Switch in same browser tab') + "<br>";
-            html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Openstreetmap.") + "<br>";
+            html += checkboxy('settings_add_link_osm_on_gc_map', 'Add link to Openstreetmap on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Openstreetmap.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_osm_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Flopp's Map Page</b></div>";
-            html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Flopp\'s Map.") + "<br>";
+            html += checkboxy('settings_add_link_flopps_on_gc_map', 'Add link to Flopp\'s Map on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Flopp\'s Map.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_flopps_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>GeoHack Page</b></div>";
-            html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in GeoHack.") + "<br>";
+            html += checkboxy('settings_add_link_geohack_on_gc_map', 'Add link to GeoHack on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in GeoHack.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_geohack_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterOn2;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Komoot Page</b></div>";
-            html += checkboxy('settings_add_link_komoot_on_gc_map', 'Add link to Komoot on Browse and Search Map') + show_help("With this option an icon are placed on the Browse Map and on the Search Map page to link to the same area in Komoot.") + "<br>";
+            html += checkboxy('settings_add_link_komoot_on_gc_map', 'Add link to Komoot on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Komoot.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_komoot_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
@@ -18064,6 +18126,7 @@ var mainGC = function() {
                 'settings_switch_from_google_maps_to_new_gc_map_in_same_tab',
                 'settings_add_link_google_maps_on_gc_map',
                 'settings_switch_to_google_maps_in_same_tab',
+                'settings_add_links_google_maps_on_google_search',
                 'settings_add_link_gc_map_on_osm',
                 'settings_switch_from_osm_to_gc_map_in_same_tab',
                 'settings_add_link_new_gc_map_on_osm',
