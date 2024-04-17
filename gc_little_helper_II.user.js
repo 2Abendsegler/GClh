@@ -855,7 +855,7 @@ var mainGSearch = function() {
                         if ($('a[href*="/maps/place/"] img#lu_map')[0]) return;
                         var link = $('img#lu_map')[0].closest('a');
                         link.href = mapsUrl;
-                    // Beispiel: "N 49° 41.000 E 008° 37.000"
+                    // Beispiel: "N 49° 41.000 E 008° 37.000" oder eine Adresse
                     } else if ($('div#lu_map')[0]) {
                         if ($('a div#lu_map')[0]) return;
                         var map = $('div#lu_map')[0];
@@ -863,9 +863,9 @@ var mainGSearch = function() {
                         link.href = mapsUrl;
                         map.parentNode.insertBefore(link, map);
                         link.appendChild(map);
-                    // Beispiel: "Bensheim" oder "Ukraine"
-                    } else if ($('.EeWPwe')[0]) {
-                        if ($('.EeWPwe a[href*="/maps/place/"]')[0]) return;
+                    // Beispiel: "Bensheim", "Ukraine" oder "Rhein"
+                    } else if ($('div.EeWPwe')[0]) {
+                        if ($('div.EeWPwe a[href*="/maps/place/"]')[0]) return;
                         var button = '';
                         button += '<a class="XaCzsb" href="' + mapsUrl + '" style="cursor: pointer;">';
                         button +=   '<div class="la4Yvb ZkkK1e yUTMj k1U36b">';
@@ -877,7 +877,7 @@ var mainGSearch = function() {
                         button +=     '<div class="xlY4q VDgVie VIZLse"><span class="m0MNmc">Open in Maps</span></div>';
                         button +=   '</div>';
                         button += '</a>';
-                        $('.EeWPwe').append(button);
+                        $('div.EeWPwe').append(button);
                         // Fehlende CSS.
                         var css = '';
                         css += '.ZkkK1e.ZkkK1e {line-height: normal; font-family: arial,sans-serif;}';
@@ -888,6 +888,14 @@ var mainGSearch = function() {
                         css += '.xlY4q {font-size: 14px; line-height: 34px; padding: 0 8px; padding-right: 8px;}';
                         css += '.VDgVie {text-align: center;}';
                         appendCssStyle(css);
+                    // Beispiel: "Nil"
+                    } else if ($('div.V1GY4c img')[0]) {
+                        if ($('div.V1GY4c img')[0].closest('a[href]:not([href=""]):not([href=" "])')) return;
+                        var map = $('div.V1GY4c')[0];
+                        var link = document.createElement('a');
+                        link.href = mapsUrl;
+                        map.parentNode.insertBefore(link, map);
+                        link.appendChild(map);
                     }
                 }
             }
