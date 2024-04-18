@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0158" title="GClh II version 0.15.8 (20.04.2024)">v0.15.8</a> &nbsp;
 <a href="#v0157" title="GClh II version 0.15.7 (13.04.2024)">v0.15.7</a> &nbsp;
 <a href="#v0156" title="GClh II version 0.15.6 (14.03.2024)">v0.15.6</a> &nbsp;
 <a href="#v0155" title="GClh II version 0.15.5 (11.01.2024)">v0.15.5</a> &nbsp;
@@ -45,6 +46,36 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.15.8:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Note:</strong> [Firefox, TamperMonkey] Blank screen after script update via TamperMonkey in Firefox browser.<br>
+		After an update of the GClh or another script, some Firefox installations result in a blank screen. The problem is probably caused by an older version of the TamperMonkey script manager. Please upgrade the TamperMonkey add-on via Firefox. We do not know whether other script managers are also affected.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Google Maps] Google Maps not being linked from Google Search Results pages. [<a href="https://github.com/2Abendsegler/GClh/issues/2597" title="Issue 2597">2597</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		Since March 2024 Google Maps not being linked from Google Search Results pages in the European Union. With this option some of these links to Google Maps will be restored, so that the links to GC Maps on Google Maps can be used again. In particular, the links and buttons on the maps on the Google Search Results pages have been restored, so that the maps are clickable again.<br><br>
+		It is only relevant for the Member States of the European Union (EU) and for the Member States in the Europäischen Wirtschaftsraum (EWS) respectively for the Google Search Results pages with their top level domains. You can find details on googles support page [here](https://support.google.com/websearch/thread/261655134).<br><br>
+		If you want to get all the links back, then the add-on "Google Search Maps Button" (Description: Adds back the Maps button to Google search pages and makes the search result map images clickable again for seamless navigation.) might interest you. You should only use one of the two, the add-on or our new feature. In any case, we were inspired by the add-on to make our adjustments. Thanks to the developer.<br><br>
+		[Here](https://github.com/2Abendsegler/GClh/issues/2597#issuecomment-2060285124) in the issue 2597 you can find some examples.<br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Google Maps] GC Map Icons overlap unpleasant with Google Maps elements. [<a href="https://github.com/2Abendsegler/GClh/issues/2596" title="Issue 2596">2596</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing, Browse Map, Search Map] Number of bookmark lists in which a cache is contained are no longer displayed with "Add to List(0)". [<a href="https://github.com/2Abendsegler/GClh/issues/2594" title="Issue 2594">2594</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Leaderboard] Hide social sharing via Facebook, X doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2591" title="Issue 2591">2591</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(20.04.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15.7:
