@@ -52,8 +52,8 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Note:</strong> [Firefox, TamperMonkey] Blank screen after script update via TamperMonkey in Firefox browser.<br><br>
-		After an update of the GClh or another script, some Firefox installations result in a blank screen. The problem is probably caused by an older version of the TamperMonkey script manager. Please upgrade the TamperMonkey add-on via Firefox. We do not know whether other script managers are also affected.<br><br><br>
+		<strong>Note:</strong> [Firefox, TamperMonkey] Blank screen after script update via Tampermonkey in Firefox browser.<br><br>
+		After an update of the GClh or another script, some Firefox installations result in a blank screen. The problem is probably caused by an older version of the Tampermonkey script manager. Please upgrade the Tampermonkey add-on via Firefox. We do not know whether other script managers are also affected.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Google Maps] Google Maps not being linked from Google Search Results pages. [<a href="https://github.com/2Abendsegler/GClh/issues/2597" title="Issue 2597">2597</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
