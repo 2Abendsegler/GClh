@@ -52,7 +52,7 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Note:</strong> [Firefox, TamperMonkey] Blank screen after script update via Tampermonkey in Firefox browser.<br><br>
+		<strong>Note:</strong> [Firefox, Tampermonkey] Blank screen after script update via Tampermonkey in Firefox browser.<br><br>
 		After an update of the GClh or another script, some Firefox installations result in a blank screen. The problem is probably caused by an older version of the Tampermonkey script manager. Please upgrade the Tampermonkey add-on via Firefox. We do not know whether other script managers are also affected.<br><br><br>
 	</li>
 	<li>
