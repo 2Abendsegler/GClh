@@ -69,7 +69,7 @@
 		<strong>Fix:</strong> [Google Maps] GC Map Icons overlap unpleasant with Google Maps elements. [<a href="https://github.com/2Abendsegler/GClh/issues/2596" title="Issue 2596">2596</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing, Browse Map, Search Map] Number of bookmark lists in which a cache is contained are no longer displayed with "Add to List(0)". [<a href="https://github.com/2Abendsegler/GClh/issues/2594" title="Issue 2594">2594</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Cache Listing, Browse Map, Search Map] Number of bookmark lists in which a cache is contained are no longer displayed with "Add to List". [<a href="https://github.com/2Abendsegler/GClh/issues/2594" title="Issue 2594">2594</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Leaderboard] Hide social sharing via Facebook, X doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2591" title="Issue 2591">2591</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
