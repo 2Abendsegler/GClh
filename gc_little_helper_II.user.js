@@ -8114,6 +8114,7 @@ var mainGC = function() {
                                     a.setAttribute("href", "javascript:void(0);");
                                     a.setAttribute("logid", log_infos[user][x]["id"]);
                                     a.className = "gclh_log";
+                                    a.setAttribute("style", "vertical-align: sub;");
                                     a.addEventListener("click", function() {
                                         gotoLogid(this, $(this).attr('logid'), 0);
                                     }, false);
