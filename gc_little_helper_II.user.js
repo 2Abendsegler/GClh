@@ -935,6 +935,14 @@ var mainPGC = function() {
         html += '<tfoot><tr><td colSpan="5">';
         html += '<h4>Create PQ(s) on geocaching.com<span class="gclh_counter">';
         html += '<span class="gclh_counter_completed" title="Number of PQs completed">0</span> | <span class="gclh_counter_started" title="Number of PQs started">0</span> | <span class="gclh_counter_total" title="Total number of PQs to be done">0</span></span></h4>';
+        var sel = getSelection();
+        if ($.param(sel).includes('=United+States') && !$.param(sel).includes('=United+States%7C')) {
+            html += '<h5>Error:</h5>';
+            html += '<p>Your country specification "United States" can not be specified on the PQ page.</p>';
+            html += '</td></tr></tfoot>';
+            $(side).append(html);
+            return;
+        }
         var error_text = checkSelectErrorAvailable();
         if (error_text != '') {
             html += '<h5>Error:</h5>';
