@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.15.8
+// @version      0.15.9
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2024 2Abendsegler, 2017-2021 Ruko2010, 2019-2024 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -935,6 +935,14 @@ var mainPGC = function() {
         html += '<tfoot><tr><td colSpan="5">';
         html += '<h4>Create PQ(s) on geocaching.com<span class="gclh_counter">';
         html += '<span class="gclh_counter_completed" title="Number of PQs completed">0</span> | <span class="gclh_counter_started" title="Number of PQs started">0</span> | <span class="gclh_counter_total" title="Total number of PQs to be done">0</span></span></h4>';
+        var sel = getSelection();
+        if ($.param(sel).includes('=United+States') && !$.param(sel).includes('=United+States%7C')) {
+            html += '<h5>Error:</h5>';
+            html += '<p>Your country specification "United States" can not be specified on the PQ page.</p>';
+            html += '</td></tr></tfoot>';
+            $(side).append(html);
+            return;
+        }
         var error_text = checkSelectErrorAvailable();
         if (error_text != '') {
             html += '<h5>Error:</h5>';
@@ -1905,8 +1913,10 @@ var mainGC = function() {
                     // Besonderheiten:
                     if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                     if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
-                    if (is_page("cache_listing")) css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10 - 6) + "px !important;}";
-                    else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
+                    if (is_page("cache_listing")) {
+                        css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10 - 6) + "px !important;}";
+                        css += ".container {max-width: " + new_width + "px;}";
+                    } else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                         css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
                         if (is_page("publicProfile")) {
@@ -2571,7 +2581,7 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0].append(saved);
             }
             // Set Stop Ignoring.
-            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="], li a[href*="/p/?guid="]');
+            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/plan/lists/"], li a[href*="/profile/?guid="], li a[href*="/p/?guid="]');
             for (var i=0; (i+1) < bmLs.length; i=i+2) {
                 if (bmLs[i].innerHTML.match(/^Ignore List$/) && bmLs[i+1] && bmLs[i+1].innerHTML == global_me) {
                     changeIgnoreButton('Stop Ignoring');
@@ -2631,7 +2641,7 @@ var mainGC = function() {
     }
 
 // Improve Add to list in cache listing.
-    if (is_page("cache_listing") && settings_improve_add_to_list && $('.add-to-list')[0]) {
+    if (is_page("cache_listing") && settings_improve_add_to_list && $('.btn-add-to-list')[0]) {
         try {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
             var css = ".add-list {max-height: " + height + "px !important;}"
@@ -2639,25 +2649,26 @@ var mainGC = function() {
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
-                    + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
+                    + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}"
+                    + ".icon-premium {margin-bottom: -2px;}";
             // Ugly display in Add to List pop up (GS bug since weeks).
             css += "#newListName {height: 42px;} .add-list-submit {display: inline-block;}";
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;}';
             appendCssStyle(css);
-            $('.add-to-list').addClass('working');
+            $('.btn-add-to-list').addClass('working');
             function check_for_add_to_list(waitCount) {
                 if ( typeof $('#fancybox-loading')[0] !== "undefined") {
-                    $('.add-to-list').removeClass('working');
-                    $('.add-to-list')[0].addEventListener("click", function() {
+                    $('.btn-add-to-list').removeClass('working');
+                    $('.btn-add-to-list')[0].addEventListener("click", function() {
                         window.scroll(0, 0);
                         setFocusToField(0, '#newListName');
                     });
-                    $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
+                    $('.btn-add-to-list')[0].innerHTML = '<a href="' + $('.btn-add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.btn-add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
                         $('#ctl00_ContentBody_GeoNav_uxAddToListBtn a')[0].append($('<span class="add_to_list_count">(' + ownBMLsCount + ')</span>')[0]);
-                        $('.add-to-list a')[0].setAttribute('title', ownBMLsText);
+                        $('.btn-add-to-list a')[0].setAttribute('title', ownBMLsText);
                         $('.add_to_list_count')[0].setAttribute('title', ownBMLsList);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);}
@@ -8112,6 +8123,7 @@ var mainGC = function() {
                                     a.setAttribute("href", "javascript:void(0);");
                                     a.setAttribute("logid", log_infos[user][x]["id"]);
                                     a.className = "gclh_log";
+                                    a.setAttribute("style", "vertical-align: sub;");
                                     a.addEventListener("click", function() {
                                         gotoLogid(this, $(this).attr('logid'), 0);
                                     }, false);
@@ -14906,8 +14918,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/TnEf/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iI9"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/j1HD/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iKf"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16288,7 +16300,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "18.04.2024";
+            var thanksLastUpdate = "12.06.2024";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";

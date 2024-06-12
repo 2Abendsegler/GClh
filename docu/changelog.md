@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0159" title="GClh II version 0.15.9 (13.06.2024)">v0.15.9</a> &nbsp;
 <a href="#v0158" title="GClh II version 0.15.8 (20.04.2024)">v0.15.8</a> &nbsp;
 <a href="#v0157" title="GClh II version 0.15.7 (13.04.2024)">v0.15.7</a> &nbsp;
 <a href="#v0156" title="GClh II version 0.15.6 (14.03.2024)">v0.15.6</a> &nbsp;
@@ -46,6 +47,34 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.15.9:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Compact layout in "Add to list" pop up no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2609" title="Issue 2609">2609</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Ignore" feature no longer works properly. [<a href="https://github.com/2Abendsegler/GClh/issues/2608" title="Issue 2608">2608</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Listing no longer centered and in intended area. [<a href="https://github.com/2Abendsegler/GClh/issues/2603" title="Issue 2603">2603</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Alignment of the icons in the VIP boxes is incorrect. [<a href="https://github.com/2Abendsegler/GClh/issues/2605" title="Issue 2605">2605</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [PQ-Splitter] The country specification "United States" can not be specified on the PQ page. [<a href="https://github.com/2Abendsegler/GClh/issues/2607" title="Issue 2607">2607</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Maps] Map layer "Thunderforest OpenCycleMap" stopped working. [<a href="https://github.com/2Abendsegler/GClh/issues/2606" title="Issue 2606">2606</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(13.06.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15.8:
