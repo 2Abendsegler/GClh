@@ -2581,7 +2581,7 @@ var mainGC = function() {
                 $('#ctl00_ContentBody_GeoNav_uxIgnoreBtn')[0].append(saved);
             }
             // Set Stop Ignoring.
-            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/profile/?guid="], li a[href*="/p/?guid="]');
+            var bmLs = $('.BookmarkList').last().find('li a[href*="/bookmarks/view.aspx?guid="], li a[href*="/plan/lists/"], li a[href*="/profile/?guid="], li a[href*="/p/?guid="]');
             for (var i=0; (i+1) < bmLs.length; i=i+2) {
                 if (bmLs[i].innerHTML.match(/^Ignore List$/) && bmLs[i+1] && bmLs[i+1].innerHTML == global_me) {
                     changeIgnoreButton('Stop Ignoring');
@@ -2641,7 +2641,7 @@ var mainGC = function() {
     }
 
 // Improve Add to list in cache listing.
-    if (is_page("cache_listing") && settings_improve_add_to_list && $('.add-to-list')[0]) {
+    if (is_page("cache_listing") && settings_improve_add_to_list && $('.btn-add-to-list')[0]) {
         try {
             var height = ((parseInt(settings_improve_add_to_list_height) < 100) ? parseInt(100) : parseInt(settings_improve_add_to_list_height));
             var css = ".add-list {max-height: " + height + "px !important;}"
@@ -2649,25 +2649,26 @@ var mainGC = function() {
                     + ".add-list li button {font-size: 14px !important; margin: 0 !important; height: 18px !important;}"
                     + ".status {font-size: 14px !important; width: unset !important;}"
                     + ".status.success, .success-message {right: 2px !important; padding: 0 5px !important; background-color: white !important; color: #E0B70A !important;}"
-                    + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}";
+                    + ".CacheDetailNavigation .add_to_list_count {padding-left: 4px; color: inherit;}"
+                    + ".icon-premium {margin-bottom: -2px;}";
             // Ugly display in Add to List pop up (GS bug since weeks).
             css += "#newListName {height: 42px;} .add-list-submit {display: inline-block;}";
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;}';
             appendCssStyle(css);
-            $('.add-to-list').addClass('working');
+            $('.btn-add-to-list').addClass('working');
             function check_for_add_to_list(waitCount) {
                 if ( typeof $('#fancybox-loading')[0] !== "undefined") {
-                    $('.add-to-list').removeClass('working');
-                    $('.add-to-list')[0].addEventListener("click", function() {
+                    $('.btn-add-to-list').removeClass('working');
+                    $('.btn-add-to-list')[0].addEventListener("click", function() {
                         window.scroll(0, 0);
                         setFocusToField(0, '#newListName');
                     });
-                    $('.add-to-list')[0].innerHTML = '<a href="' + $('.add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.add-to-list')[0].innerHTML + '</a>';
+                    $('.btn-add-to-list')[0].innerHTML = '<a href="' + $('.btn-add-to-list').attr('data-href') + '" style="padding-left: unset;">' + $('.btn-add-to-list')[0].innerHTML + '</a>';
                     if ($('.sidebar')[0] && $('#ctl00_ContentBody_GeoNav_uxAddToListBtn')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs($('.sidebar')[0]);
                         $('#ctl00_ContentBody_GeoNav_uxAddToListBtn a')[0].append($('<span class="add_to_list_count">(' + ownBMLsCount + ')</span>')[0]);
-                        $('.add-to-list a')[0].setAttribute('title', ownBMLsText);
+                        $('.btn-add-to-list a')[0].setAttribute('title', ownBMLsText);
                         $('.add_to_list_count')[0].setAttribute('title', ownBMLsList);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){check_for_add_to_list(waitCount);}, 100);}
