@@ -13626,15 +13626,14 @@ var mainGC = function() {
         // All hides.
         if ($('.hides-col-header .minorDetails a')[0]) $('.hides-col-header .minorDetails a')[0].href = '/seek/nearest.aspx?u='+urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML);
         $('.finds-col table tbody tr a, .hides-col table tbody tr a').each(function() {
-            // Cache type founds.
-            let match = /\/play\/search\?types=(\d+).*&sc=(False|True)&fb=([^&]+).*/gi.exec(this.href);
+            let match = /\/play\/results\?ct=(\d+).*&(fb|hb)=.*/gi.exec(this.href);
             if (match) {
-                this.href = '/seek/nearest.aspx?ul=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + getCacheTx(match[1]);
-            }
-            // Cache type hides.
-            match = /\/play\/search\?types=(\d+).*&sc=(False|True)&owner\[0\]=([^&]+).*/gi.exec(this.href);
-            if (match) {
-                this.href = '/seek/nearest.aspx?u=' + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + getCacheTx(match[1]);
+                let [_full, type, foundOrHide] = match;
+                foundOrHide = foundOrHide == 'fb' ? 'ul' : 'u';
+                this.href =
+                    `/seek/nearest.aspx?${foundOrHide}=` +
+                    urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) +
+                    getCacheTx(type);
             }
         });
     }
