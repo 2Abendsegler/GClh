@@ -19896,6 +19896,7 @@ var mainGC = function() {
             else if (cacheType.match(/Groundspeak HQ/i)) cacheSymbol = '#hq';
             else if (cacheType.match(/event/i)) cacheSymbol = '#event';
             else if (cacheType.match(/GPS Adventures Exhibit Cache/i)) cacheSymbol = '#gpsa';
+            else if (cacheType.match(/Block Party/i)) cacheSymbol = '#blockparty'
         }
         return cacheSymbol;
     }
