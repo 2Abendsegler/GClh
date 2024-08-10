@@ -10943,7 +10943,7 @@ var mainGC = function() {
                             let span = document.createElement('span');
                             span.setAttribute('class', 'gclhOwner');
                             if ($('.geocache-owner-name')[0] && $('.geocache-placed-date')[0] && $('.geocache-owner')[0]) {
-                                span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
+                                span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML.replace('<span><a id=', '<span> <a id=') + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
                                 document.querySelector('.geocache-owner').appendChild(span);
                             }
                         }
