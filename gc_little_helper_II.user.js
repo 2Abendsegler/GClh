@@ -8961,7 +8961,7 @@ var mainGC = function() {
                     setTimeout(function() { // Force direct display refresh.
                         $(logsTab).find('tbody').children().remove();
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType.toUpperCase() == log_type.toUpperCase() || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                            if (logs[i] && (logs[i].LogType.toLowerCase() == log_type.toLowerCase() || (logs[i].LogTypeID == 45 && log_type.toLowerCase() == 'owner attention requested') || (logs[i].LogTypeID == 7 && log_type.toLowerCase() == 'reviewer attention requested') || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
