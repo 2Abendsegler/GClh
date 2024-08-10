@@ -3383,7 +3383,7 @@ var mainGC = function() {
         // Create Character Counter for Personal Cache Note.
         try {
             $('#cacheNoteText + div').append('<div id="gclh_char_count" style="float: right;"></div>');
-            createCounterElement('personalCacheNoteCount', $('#cacheNoteText')[0], {anchor: $('#gclh_char_count')[0]})
+            createCounterElement('personalCacheNoteCount', $('#cacheNoteText')[0], {anchor: $('#gclh_char_count')[0], initLength: $('#srOnlyCacheNote').html().length})
         } catch(e) {gclh_error("Create Character Counter for Personal Cache Note",e);}
         // Append CSS.
         appendCssStyle(css);
@@ -4487,7 +4487,7 @@ var mainGC = function() {
                             if (wordsArr[i].trim() != '') words++;
                         }
                         counterspan.innerHTML = "Loglength:" + (newLogpage ? '&nbsp;' : "<br />");
-                        counterelement.innerHTML = '<span>' + $(logfield).val().replace(/\n/g, "\r\n").length + '/4000 (' + words + ' words)</span>';
+                        counterelement.innerHTML = '<span>' + $(logfield).val().length + '/4000 (' + words + ' words)</span>';
                         counterspan.appendChild(counterelement);
                         if (!newLogpage) document.getElementById('litDescrCharCount').parentNode.appendChild(counterspan);
                         else {
@@ -19958,18 +19958,18 @@ var mainGC = function() {
     }
 
 // Length, Maxlength of field and number of words.
-    function createCounterElement(countername, textarea, options={maxLength: undefined, showWords: false, anchor: null}) {
-        var counterelement = document.createElement('span');
-        var counterspan = document.createElement('p');
+    function createCounterElement(countername, textarea, options={maxLength: undefined, showWords: false, anchor: null, initLength: 0}) {
+        let counterelement = document.createElement('span');
+        let counterspan = document.createElement('p');
         const maxLength = options.maxLength || textarea.maxLength;
         counterspan.style = 'margin-bottom: 0px';
         counterspan.id = countername;
         counterspan.innerHTML = "Length:&nbsp;";
-        counterelement.innerHTML = "<span>" + $(textarea).val().replace(/\n/g, "\r\n").length + "/" + maxLength + "</span>";
+        const length = $(textarea).val().length || options.initLength;
+        counterelement.innerHTML = `<span>${length}/${maxLength}</span>`;
         counterspan.appendChild(counterelement);
-        if (options.anchor) {
-            options.anchor.append(counterspan);
-        } else textarea.parentNode.append(counterspan);
+        if (options.anchor) options.anchor.append(counterspan);
+        else textarea.parentNode.append(counterspan);
         textarea.addEventListener("keyup", function() {
             limitedField(textarea, $(counterelement).find('span')[0], maxLength, options.showWords);
         }, false);
@@ -19979,7 +19979,7 @@ var mainGC = function() {
     }
     function limitedField(editor, counterelement, maxLength, showWords) {
         changed = true;
-        var length = $(editor).val().replace(/\n/g, "\r\n").length;
+        var length = $(editor).val().length;
         if (length >= maxLength) {
             counterelement.innerHTML = '<font color="red">' + length + '/' + maxLength + '</font>';
         } else counterelement.innerHTML = length + '/' + maxLength;
