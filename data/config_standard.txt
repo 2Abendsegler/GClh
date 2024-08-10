@@ -83,6 +83,7 @@
   "settings_switch_from_google_maps_to_new_gc_map_in_same_tab": false,
   "settings_add_link_google_maps_on_gc_map": true,
   "settings_switch_to_google_maps_in_same_tab": false,
+  "settings_add_links_google_maps_on_google_search": false,
   "settings_add_link_gc_map_on_osm": true,
   "settings_switch_from_osm_to_gc_map_in_same_tab": false,
   "settings_add_link_new_gc_map_on_osm": true,
@@ -377,5 +378,7 @@
   "settings_hide_own_tbs_log_form": false,
   "settings_hide_share_log_button_log_view": false,
   "settings_dashboard_hide_tb_activity": false,
-  "settings_button_sort_tbs_by_name_log_form": true
+  "settings_button_sort_tbs_by_name_log_form": true,
+  "settings_larger_content_width_log_form": true,
+  "settings_less_space_log_lines_log_form": true
 }
