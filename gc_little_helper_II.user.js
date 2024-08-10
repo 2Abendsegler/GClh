@@ -1561,6 +1561,7 @@ var mainGC = function() {
             if (document.location.href.match(/\.com\/hide\//)) {
                 if ($('#btnContinue')[0]) var id = "btnContinue";
                 else if ($('#ctl00_ContentBody_btnSaveAndPreview')[0]) var id = "ctl00_ContentBody_btnSaveAndPreview";
+                else if ($('#btnSaveAndPreview')[0]) var id = "btnSaveAndPreview";
                 else if ($('#btnSubmit')[0]) var id = "btnSubmit";
                 else if ($('#btnNext')[0]) var id = "btnNext";
                 else if ($('#ctl00_ContentBody_btnSubmit')[0]) var id = "ctl00_ContentBody_btnSubmit";
