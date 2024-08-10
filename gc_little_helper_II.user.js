@@ -19966,7 +19966,9 @@ var mainGC = function() {
         counterspan.id = countername;
         counterspan.innerHTML = "Length:&nbsp;";
         const length = $(textarea).val().length || options.initLength;
-        counterelement.innerHTML = `<span>${length}/${maxLength}</span>`;
+        if (length >= maxLength)
+            counterelement.innerHTML = `<span><font color="red">${length}/${maxLength}</font></span>`;
+        else counterelement.innerHTML = `<span>${length}/${maxLength}</span>`;
         counterspan.appendChild(counterelement);
         if (options.anchor) options.anchor.append(counterspan);
         else textarea.parentNode.append(counterspan);
@@ -19980,9 +19982,9 @@ var mainGC = function() {
     function limitedField(editor, counterelement, maxLength, showWords) {
         changed = true;
         var length = $(editor).val().length;
-        if (length >= maxLength) {
-            counterelement.innerHTML = '<font color="red">' + length + '/' + maxLength + '</font>';
-        } else counterelement.innerHTML = length + '/' + maxLength;
+        if (length >= maxLength)
+            counterelement.innerHTML = `<font color="red">${length}/${maxLength}</font>`;
+        else counterelement.innerHTML = length + '/' + maxLength;
         if (showWords) {
             var wordsArr = $(editor).val().replace(/\n/g, ' ').split(' ');
             var words = 0;
