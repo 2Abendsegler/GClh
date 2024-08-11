@@ -736,6 +736,7 @@ var variablesInit = function(c) {
     c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
     c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
+    c.settings_listing_bigger_avatar_with_mouse = getValue("settings_listing_bigger_avatar_with_mouse", true);
 
     tlc('START userToken');
     try {
@@ -8787,6 +8788,7 @@ var mainGC = function() {
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         gclh_add_vip_icon();
+                        buildEventShowBiggerAvatar();
                         setLinesColorInCacheListing();
                         unsafeWindow.$("#cache_logs_container").addClass('gclh_override_standard_templates_done');
                     }, 0);
@@ -8800,6 +8802,7 @@ var mainGC = function() {
             }
             function loadListener(e) {
                 gclh_add_vip_icon();
+                buildEventShowBiggerAvatar();
                 setLinesColorInCacheListing();
             }
             (document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).addEventListener('DOMNodeInserted', loadListener);
@@ -8834,6 +8837,16 @@ var mainGC = function() {
                     var link = elements[i];
                     link = gclh_build_vipvup(link.name, global_vups, "vup", link);  // Ist oben bei VIP. VUP.
                     unsafeWindow.$(link).addClass("gclh_vup_hasIcon");
+                }
+            }
+            // Build event for bigger avatar.
+            function buildEventShowBiggerAvatar() {
+                if (!settings_show_thumbnails || !settings_listing_bigger_avatar_with_mouse) return;
+                var elements = $(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).find("p.logOwnerAvatar").not(".gclh_avatar_hasEvent");
+                for (var i = 0; i < elements.length; i++) {
+                    var link = elements[i];
+                    link.addEventListener('mouseover', showBiggerAvatar);
+                    unsafeWindow.$(link).addClass("gclh_avatar_hasEvent");
                 }
             }
             var lastFired = 0;
@@ -8874,6 +8887,7 @@ var mainGC = function() {
                             }
                             unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                             gclh_add_vip_icon();
+                            buildEventShowBiggerAvatar();
                             setLinesColorInCacheListing();
                             if (isUpvoteActive) updateUpvoteEvents(logs);
                             showFavIcons();
@@ -8925,6 +8939,7 @@ var mainGC = function() {
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         gclh_add_vip_icon();
+                        buildEventShowBiggerAvatar();
                         setLinesColorInCacheListing();
                         if (isUpvoteActive) updateUpvoteEvents(logs);
                         if (countLogs === logs.length) setMarkerDisableDynamicLogLoad(); // all logs loaded
@@ -8967,6 +8982,7 @@ var mainGC = function() {
                         }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         gclh_add_vip_icon();
+                        buildEventShowBiggerAvatar();
                         setLinesColorInCacheListing();
                         if (isUpvoteActive) updateUpvoteEvents(logs);
                         setMarkerDisableDynamicLogLoad();
@@ -9092,6 +9108,7 @@ var mainGC = function() {
 
                     unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                     gclh_add_vip_icon();
+                    buildEventShowBiggerAvatar();
                     setLinesColorInCacheListing();
                     if (isUpvoteActive) updateUpvoteEvents(logs);
                     setMarkerDisableDynamicLogLoad();
@@ -9250,6 +9267,7 @@ var mainGC = function() {
                                 }
                                 unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                                 gclh_add_vip_icon();
+                                buildEventShowBiggerAvatar();
                                 setLinesColorInCacheListing();
                                 showFavIcons();
                                 updateUpvoteEvents(logs);
@@ -9403,6 +9421,7 @@ var mainGC = function() {
                             gclh_build_vip_list();
                             gclh_add_vip_icon();
                         }
+                        buildEventShowBiggerAvatar();
                         setLinesColorInCacheListing();
                         // Remove GC logs, so that the links to the log ids, e.g. from the VIPs or the Latest logs, work again.
                         // (Apparently GS simply creates the 25 logs again when they are gone. And that in the form <table> <tr>, there is
@@ -10483,6 +10502,20 @@ var mainGC = function() {
         link.onmouseover = placeToolTip;
         link.appendChild(span);
     }
+    // Build avatar thumbnail without an explicit "load" is necessary if the mouse is just already above the small image which has to be transferred
+    // to a big image.
+    function avatarThumbnailWithoutLoad(link) {
+        var thumb = link.children[0];
+        var img = document.createElement('img');
+        img.src = thumb.src.replace(/img\.geocaching\.com\/user\/(avatar|display|square250)/, "s3.amazonaws.com/gs-geo-images");
+        img.className = "gclh_max";
+        img.setAttribute("style", "display: unset;");
+        var span = document.createElement('span');
+        span.appendChild(img);
+        link.className += " gclh_thumb";
+        link.appendChild(span);
+        link.addEventListener('mouseover', function(e) {placeToolTip(e, true);});
+    }
     function showBiggerAvatarsLink() {
         addButtonOverLogs(showBiggerAvatars, "gclh_show_bigger_avatars", true, "Show bigger avatars", "Bigger avatars", "Show bigger avatar images while hovering with the mouse");
     }
@@ -10503,6 +10536,16 @@ var mainGC = function() {
                 $('#gclh_show_bigger_avatars input')[0].removeAttribute('disabled');
             }, 100);
         } catch(e) {gclh_error("showBiggerAvatars",e);}
+    }
+    function showBiggerAvatar() {
+        try {
+            var link = $(this)[0];
+            if (link && link.children[0] && link.children[0].children[0] && !link.children[0].children[1]) {
+                link.removeEventListener('mouseover', showBiggerAvatar);
+                link.children[0].children[0].setAttribute("style", "margin-bottom: 0px; height: 48px;");
+                avatarThumbnailWithoutLoad(link.children[0]);
+            }
+        } catch(e) {gclh_error("showBiggerAvatar",e);}
     }
 
 // Show gallery images in 2 instead of 4 cols.
@@ -16689,7 +16732,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
             html += checkboxy('settings_faster_profile_trackables', 'Load trackables faster without images') + show_help("With this option you can stop the load on the trackable pages after the necessary data are loaded. You disclaim of the lengthy load of the images of the trackables. This procedure is much faster as load all data, because every image is loaded separate and not in a bigger bundle like it is for the non image data.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Gallery</b></div>";
-            var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works in cache and TB logs, in the cache and TB image galleries and in the public profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it also works for the avatars in the displayed logs in cache listing. <br><br>And if you activate \"Show bigger avatar image while hovering with the mouse\", it also works for avatars in public profiles.") + "&nbsp; Max size of big image <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
+            var content_settings_show_thumbnails = checkboxy('settings_show_thumbnails', 'Show thumbnails of images') + show_help("With this option the images are displayed as thumbnails to have a preview. If you hover with your mouse over a thumbnail, you can see the big one.<br><br>This works for images in cache and TB logs, for avatars in cache logs, for images in the cache and TB image galleries and for images in the public profile image gallery. <br><br>And after pressing button \"Show bigger avatars\" in cache listing, it also works for the avatars in the displayed logs in cache listing. <br><br>And if you activate \"Show bigger avatar image while hovering with the mouse\" in section \"Public Profile\", it also works for the avatar in public profiles. <br><br>And if you activate \"Show bigger avatar image while hovering with the mouse\" in section \"Listing - Logs\", it also works for the avatars in cache logs.") + "&nbsp; Max size of big image <input class='gclh_form' size=3 type='text' id='settings_hover_image_max_size' value='" + settings_hover_image_max_size + "'> px <br>";
             html += content_settings_show_thumbnails.replace("show_thumbnails", "show_thumbnailsX1").replace("max_size", "max_sizeX1");
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX1', 'Show caption on top');
             var content_geothumbs = "<font class='gclh_small' style='margin-left: 140px; margin-top: 4px;'> (Alternative <a href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a>" + show_help("A great alternative to the GC little helper II bigger image functionality with \"Show thumbnails of images\" and \"Show bigger images in gallery\", provides the script <a class='gclh_ref_ht_ext' href='https://benchmarks.org.uk/greasemonkey/geothumbs.php' target='_blank'>Geothumbs</a> (Geocaching Thumbnails). <br><br>The script works like GC little helper II with Firefox, Google Chrome and Opera via Tampermonkey script. <br><br>If you use Geothumbs, you have to uncheck both GC little helper II bigger image functionality \"Show thumbnails of images\" and \"Show bigger images in gallery\".") + ")</font>" + "<br>";
@@ -16975,6 +17018,9 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_imgcaption_on_topX0', 'Show caption on top');
             html += content_geothumbs;
             html += " &nbsp; &nbsp;" + "Spoiler filter <input class='gclh_form' type='text' id='settings_spoiler_stringsX0' value='" + settings_spoiler_strings + "'>" + show_help("If one of these words is found in the caption of the image, there will be no real thumbnail. It is to prevent seeing spoilers. Words have to be divided by |. If the field is empty, no checking is done. Default is \"spoiler|hinweis\".") + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_listing_bigger_avatar_with_mouse', 'Show bigger avatar image while hovering with the mouse') + show_help("With this option you can choose if a bigger avatar image will load and shown while hovering with the mouse over the small avatar image.<br><br>This option requires \"Show thumbnails of images\".") + "<br>";
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += content_settings_hide_upvotes.replace("settings_hide_upvotes", "settings_hide_upvotesX0");
             html += content_settings_smaller_upvotes_icons.replace("settings_smaller_upvotes_icons", "settings_smaller_upvotes_iconsX0");
             html += content_settings_no_wiggle_upvotes_click.replace("settings_no_wiggle_upvotes_click", "settings_no_wiggle_upvotes_clickX0");
@@ -17741,14 +17787,17 @@ var mainGC = function() {
             setEvForDepPara("settings_show_thumbnails", "settings_imgcaption_on_top");
             setEvForDepPara("settings_show_thumbnails", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnails", "settings_public_profile_avatar_show_thumbnail");
+            setEvForDepPara("settings_show_thumbnails", "settings_listing_bigger_avatar_with_mouse");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_hover_image_max_size");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_imgcaption_on_top");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnailsX0", "settings_public_profile_avatar_show_thumbnail");
+            setEvForDepPara("settings_show_thumbnailsX0", "settings_listing_bigger_avatar_with_mouse");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_hover_image_max_size");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_imgcaption_on_top");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_spoiler_strings");
             setEvForDepPara("settings_show_thumbnailsX1", "settings_public_profile_avatar_show_thumbnail");
+            setEvForDepPara("settings_show_thumbnailsX1", "settings_listing_bigger_avatar_with_mouse");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_zoom");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_layer");
             setEvForDepPara("settings_map_overview_build", "settings_map_overview_browse_map_icon");
@@ -18385,6 +18434,7 @@ var mainGC = function() {
                 'settings_button_sort_tbs_by_name_log_form',
                 'settings_larger_content_width_log_form',
                 'settings_less_space_log_lines_log_form',
+                'settings_listing_bigger_avatar_with_mouse',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
