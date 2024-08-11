@@ -715,6 +715,7 @@ var variablesInit = function(c) {
     c.settings_drafts_log_icons = getValue("settings_drafts_log_icons", true);
     c.settings_drafts_go_automatic_back = getValue("settings_drafts_go_automatic_back", false);
     c.settings_drafts_after_new_logging_view_log = getValue("settings_drafts_after_new_logging_view_log", false);
+    c.settings_drafts_after_new_logging_view_log_button = getValue("settings_drafts_after_new_logging_view_log_button", true);
     c.settings_after_new_logging_view_log = getValue("settings_after_new_logging_view_log", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
@@ -2204,19 +2205,30 @@ var mainGC = function() {
             // Automatic go back to drafts page.
             if (settings_drafts_go_automatic_back) document.location = 'https://www.geocaching.com/account/drafts';
             // Automatic go to view log page.
-            else if (settings_drafts_after_new_logging_view_log && $('#uxViewNewLogLink')[0]) document.location = $('#uxViewNewLogLink')[0].href + '&gclhDraft';
+            else if (settings_drafts_after_new_logging_view_log && $('#uxViewNewLogLink')[0]) document.location = $('#uxViewNewLogLink')[0].href + '#gclhDraft';
         // Non Drafts related logging with new log form.
         } else if (is_page("cache_listing") && $('#uxViewNewLogLink')[0] && !$('#uxNewLogExtraLink')[0]) {
             // Automatic go to view log page.
             if (settings_after_new_logging_view_log) document.location = $('#uxViewNewLogLink')[0].href;
         }
         // After automatic go to view log page, because of Drafts related logging with new log form.
-        if (document.location.href.match(/\.com\/seek\/log\.aspx\?LUID=(.*)&gclhDraft/) && $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p')[0]) {
-            if (!document.location.href.match(/&edit=true/) && !$('#ctl00_ContentBody_LogBookPanel1_btnCancel')[0]) {
-                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel')[0].style.float = 'none';
-                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p')[0].style.float = 'right';
-                $('#ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoLinkPanel p').before('<span id="ctl00_ContentBody_LogBookPanel1_lblErrorMessage" class="Warning" style="float: left"><p class="Success">You have submitted your draft. <a href="/my/fieldnotes.aspx" title="Submit more drafts">Submit more drafts</a>.</p></span>');
+        if (document.location.href.match(/\.com\/live\/log\/(.*)#gclhDraft/) && settings_drafts_after_new_logging_view_log && settings_drafts_after_new_logging_view_log_button) {
+            function buildDraftButton(waitCount) {
+                if ($('.masthead-controls .masthead-control.gclh_editButton')[0] && !$('.masthead-controls .masthead-control.gclh_draftButton')[0]) {
+                    var li = $('.masthead-controls .masthead-control.gclh_editButton').clone();
+                    if (li && $(li).find('button')[0] && $(li).find('svg')[0] && $(li).find('span')[0]) {
+                        li.removeClass('gclh_editButton');
+                        li.addClass('gclh_draftButton');
+                        $(li).find('button').prop('dataset').testid = '';
+                        $(li).find('button')[0].addEventListener('click', function(){document.location = 'https://www.geocaching.com/account/drafts';});
+                        $(li).find('svg')[0].remove();
+                        $(li).find('span')[0].innerHTML = 'Back to Drafts';
+                        $('.masthead-controls').append(li);
+                    }
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildDraftButton(waitCount);}, 100);
             }
+            buildDraftButton(0);
         }
     } catch(e) {gclh_error("Automatic processing from listing after logging",e);}
 
@@ -16991,9 +17003,15 @@ var mainGC = function() {
             var content_settings_after_sending_log = 'After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br><br>';
             var content_settings_after_sending_draft_related_log1 = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>";
             var content_settings_after_sending_draft_related_log2 = checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            var content_settings_after_sending_draft_related_log2_button = "&nbsp; " + checkboxy('settings_drafts_after_new_logging_view_log_button', 'Show button "Back to Drafts" on view log page') + "<br>";
             html += content_settings_after_sending_draft_related_log1;
             html += newParameterOn3;
             html += content_settings_after_sending_draft_related_log2;
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
+            html += newParameterOn2;
+            html += content_settings_after_sending_draft_related_log2_button;
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterOn3;
             html += checkboxy('settings_drafts_download_show_button', 'Enable draft download feature') + show_help("With this option you can activate the draft download feature. A download button will then appear next to the upload button on the draft page.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_download_change_logdate', 'Change log dates of the drafts in download file') + show_help("With this option you can choose whether the log dates in the drafts is reduced by one second. This is necessary if you might want to upload the drafts in the download file later, after deleting the drafts on the drafts page, as uploading with the same log date is not possible.") + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
@@ -17012,6 +17030,11 @@ var mainGC = function() {
             html += content_settings_after_sending_draft_related_log1.replace("settings_drafts_go_automatic_back", "settings_drafts_go_automatic_backX0");
             html += newParameterOn3;
             html += content_settings_after_sending_draft_related_log2.replace("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_logX0");
+            html += newParameterVersionSetzen('0.12') + newParameterOff;
+            html += newParameterOn2;
+            html += content_settings_after_sending_draft_related_log2_button.replace("settings_drafts_after_new_logging_view_log_button", "settings_drafts_after_new_logging_view_log_buttonX0");
+            html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterOn3;
             html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
@@ -17595,16 +17618,24 @@ var mainGC = function() {
             handleRadioTopMenu(true);
             $('#settings_load_logs_with_gclh')[0].addEventListener("click", alert_settings_load_logs_with_gclh, false);
             $('#settings_drafts_go_automatic_back')[0].addEventListener("click", function() {
-                if ($('#settings_drafts_go_automatic_back').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
+                if ($('#settings_drafts_go_automatic_back').prop('checked') && $('#settings_drafts_after_new_logging_view_log').prop('checked')) {
+                    $('#settings_drafts_after_new_logging_view_log')[0].click();
+                }
             }, false);
             $('#settings_drafts_go_automatic_backX0')[0].addEventListener("click", function() {
-                if ($('#settings_drafts_go_automatic_backX0').prop('checked')) $('#settings_drafts_after_new_logging_view_log, #settings_drafts_after_new_logging_view_logX0').prop('checked', false);
+                if ($('#settings_drafts_go_automatic_backX0').prop('checked') && $('#settings_drafts_after_new_logging_view_logX0').prop('checked')) {
+                    $('#settings_drafts_after_new_logging_view_logX0')[0].click();
+                }
             }, false);
             $('#settings_drafts_after_new_logging_view_log')[0].addEventListener("click", function() {
-                if ($('#settings_drafts_after_new_logging_view_log').prop('checked')) $('#settings_drafts_go_automatic_back,#settings_drafts_go_automatic_backX0').prop('checked', false);
+                if ($('#settings_drafts_after_new_logging_view_log').prop('checked') && $('#settings_drafts_go_automatic_back').prop('checked')) {
+                    $('#settings_drafts_go_automatic_back')[0].click();
+                }
             }, false);
             $('#settings_drafts_after_new_logging_view_logX0')[0].addEventListener("click", function() {
-                if ($('#settings_drafts_after_new_logging_view_logX0').prop('checked')) $('#settings_drafts_go_automatic_back,#settings_drafts_go_automatic_backX0').prop('checked', false);
+                if ($('#settings_drafts_after_new_logging_view_logX0').prop('checked') && $('#settings_drafts_go_automatic_backX0').prop('checked')) {
+                    $('#settings_drafts_go_automatic_backX0')[0].click();
+                }
             }, false);
             $('#restore_settings_lines_color_zebra')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lines_color_user')[0].addEventListener("click", restoreField, false);
@@ -17660,6 +17691,7 @@ var mainGC = function() {
             setEvForDouPara("settings_show_eventday", "click");
             setEvForDouPara("settings_drafts_go_automatic_back", "click");
             setEvForDouPara("settings_drafts_after_new_logging_view_log", "click");
+            setEvForDouPara("settings_drafts_after_new_logging_view_log_button", "click");
 
             // Events setzen für Parameter, die im GClh Config eine Abhängigkeit derart auslösen, dass andere Parameter aktiviert bzw.
             // deaktiviert werden müssen. ZB. können Mail Icons in VIP List (Parameter "settings_show_mail_in_viplist") nur aufgebaut
@@ -17874,6 +17906,10 @@ var mainGC = function() {
             setEvForDepPara("settings_drafts_cache_link", "settings_drafts_cache_link_new_tab");
             setEvForDepPara("settings_drafts_download_show_button", "settings_drafts_download_change_logdate");
             setEvForDepPara("settings_searchmap_improve_add_to_list","settings_searchmap_improve_add_to_list_height");
+            setEvForDepPara("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_log_button");
+            setEvForDepPara("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_log_buttonX0");
+            setEvForDepPara("settings_drafts_after_new_logging_view_logX0", "settings_drafts_after_new_logging_view_log_button");
+            setEvForDepPara("settings_drafts_after_new_logging_view_logX0", "settings_drafts_after_new_logging_view_log_buttonX0");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -18365,6 +18401,7 @@ var mainGC = function() {
                 'settings_drafts_log_icons',
                 'settings_drafts_go_automatic_back',
                 'settings_drafts_after_new_logging_view_log',
+                'settings_drafts_after_new_logging_view_log_button',
                 'settings_after_new_logging_view_log',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
