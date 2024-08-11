@@ -2197,21 +2197,21 @@ var mainGC = function() {
         }
     }
 
-// Automatic processing after logging with new or old log form.
+// Automatic processing after cache logging with new or old log form.
     try {
-        // Drafts related logging with new or old log form.
+        // Drafts related cache logging with new or old log form.
         if ((is_page("cache_listing") && $('#uxViewNewLogLink')[0] && $('#uxNewLogExtraLink')[0]) ||
             (document.location.href.match(/\.com\/seek\/log\.aspx\?PLogGuid=([a-zA-Z0-9-]*)/) && $('#ctl00_ContentBody_LogBookPanel1_lblErrorMessage .Success')[0])) {
             // Automatic go back to drafts page.
             if (settings_drafts_go_automatic_back) document.location = 'https://www.geocaching.com/account/drafts';
             // Automatic go to view log page.
             else if (settings_drafts_after_new_logging_view_log && $('#uxViewNewLogLink')[0]) document.location = $('#uxViewNewLogLink')[0].href + '#gclhDraft';
-        // Non Drafts related logging with new log form.
+        // Non Drafts related cache logging or edit log with new log form.
         } else if (is_page("cache_listing") && $('#uxViewNewLogLink')[0] && !$('#uxNewLogExtraLink')[0]) {
             // Automatic go to view log page.
             if (settings_after_new_logging_view_log) document.location = $('#uxViewNewLogLink')[0].href;
         }
-        // After automatic go to view log page, because of Drafts related logging with new log form.
+        // After automatic go to view log page, because of Drafts related cache logging with new log form.
         if (document.location.href.match(/\.com\/live\/log\/(.*)#gclhDraft/) && settings_drafts_after_new_logging_view_log && settings_drafts_after_new_logging_view_log_button) {
             function buildDraftButton(waitCount) {
                 if ($('.masthead-controls .masthead-control.gclh_editButton')[0] && !$('.masthead-controls .masthead-control.gclh_draftButton')[0]) {
@@ -17000,9 +17000,8 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_drafts_color_visited_link', 'Color a visited link') + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_old_log_form', 'Use old-fashioned log form to log a draft') + show_help("If you enable this option, you always get the old log form instead of the new one to log drafts related logs.<br><br>Please look also the parameter \"Use old-fashioned log form to log non drafts related logs\" in the \"Log\" area.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_drafts_log_icons', 'Show logtype icon instead of text') + "<br>";
-            var content_settings_after_sending_log = 'After sending a new log using the new log form, the listing will appear. After sending a new log using the old log form, the view log page will appear.<br><br>';
-            var content_settings_after_sending_draft_related_log1 = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related log, automatic go back to drafts') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go back to the drafts page.') + "<br>";
-            var content_settings_after_sending_draft_related_log2 = checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            var content_settings_after_sending_draft_related_log1 = checkboxy('settings_drafts_go_automatic_back', 'After sending a draft related cache log, automatic go back to drafts') + show_help('If it was a draft related cache log, you can enable this option to automatic go back to the drafts page, instead of going to cache listing.') + "<br>";
+            var content_settings_after_sending_draft_related_log2 = checkboxy('settings_drafts_after_new_logging_view_log', 'After sending a draft related cache log, automatic view log') + show_help('If it was a draft related cache log, you can enable this option to automatic go to view log page, instead of going to cache listing.') + "<br>";
             var content_settings_after_sending_draft_related_log2_button = "&nbsp; " + checkboxy('settings_drafts_after_new_logging_view_log_button', 'Show button "Back to Drafts" on view log page') + "<br>";
             html += content_settings_after_sending_draft_related_log1;
             html += newParameterOn3;
@@ -17035,7 +17034,7 @@ var mainGC = function() {
             html += content_settings_after_sending_draft_related_log2_button.replace("settings_drafts_after_new_logging_view_log_button", "settings_drafts_after_new_logging_view_log_buttonX0");
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += newParameterOn3;
-            html += checkboxy('settings_after_new_logging_view_log', 'After sending a non draft related log, automatic view log') + show_help(content_settings_after_sending_log + 'If it was not a draft related log, you can enable this option to automatic go to view log page.') + "<br>";
+            html += checkboxy('settings_after_new_logging_view_log', 'After sending or edit a non draft related cache log, automatic view log') + show_help('If it was not a draft related cache log or it was an edit of a cache log, you can enable this option to automatic go to view log page, instead of going to cache listing.') + "<br>";
             html += newParameterVersionSetzen('0.12') + newParameterOff;
             var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
