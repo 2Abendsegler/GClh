@@ -847,61 +847,69 @@ var mainGSearch = function() {
     try {
         // Add links to Google Maps on Google Search Results pages.
         if (settings_add_links_google_maps_on_google_search) {
-            function setGMapsLinks() {
+            function setGMapsLinks(waitCount) {
                 var searchPara = new URLSearchParams(window.location.search).get('q');
                 if (searchPara) {
                     var mapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(searchPara);
-                    // Examples: "fürstenlager bensheim", "bensheim auerbach".
-                    if ($('a img#lu_map')[0]) {
-                        if ($('a[href*="/maps/place/"] img#lu_map')[0]) return;
-                        var link = $('img#lu_map')[0].closest('a');
-                        link.href = mapsUrl;
-                    // Example: "N 49° 41.000 E 008° 37.000", an address.
-                    } else if ($('div#lu_map')[0]) {
-                        if ($('a div#lu_map')[0]) return;
-                        var map = $('div#lu_map')[0];
-                        var link = document.createElement('a');
-                        link.href = mapsUrl;
-                        map.parentNode.insertBefore(link, map);
-                        link.appendChild(map);
-                    // Example: "Bensheim", "Ukraine", "Rhein"
+                    // Categorie 1: Examples: "Bensheim Auerbach", "Port Kawkas".
+                    if ($('a g-img#lu_map')[0]) {
+                        if (!$('a[href*="/maps?q="] #lu_map')[0]) {
+                            var link = $('#lu_map')[0].closest('a');
+                            link.href = mapsUrl;
+                        }
+                    // Categorie 2: Example: "N 49° 41.000 E 008° 37.000", an address.
+                    } else if ($('.lu_map_section #lu_map')[0] && $('.lu_map_section .yXg2De .yXg2De div')[0]) {
+                        if (!$('.lu_map_section .yXg2De .yXg2De a[href*="/maps?q="] div')[0]) {
+                            var map = $('.lu_map_section .yXg2De .yXg2De div')[0];
+                            var link = document.createElement('a');
+                            link.href = mapsUrl;
+                            map.parentNode.insertBefore(link, map);
+                            link.appendChild(map);
+                            var css = '';
+                            css += '.yXg2De a div {cursor: pointer;}';
+                            appendCssStyle(css);
+                        }
+                    // Categorie 3: Example: "Bensheim", "Ukraine", "Rhein", "Fürstenlager Bensheim".
                     } else if ($('div.EeWPwe')[0]) {
-                        if ($('div.EeWPwe a[href*="/maps/place/"]')[0]) return;
-                        var button = '';
-                        button += '<a class="XaCzsb" href="' + mapsUrl + '" style="cursor: pointer;">';
-                        button +=   '<div class="la4Yvb ZkkK1e yUTMj k1U36b">';
-                        button +=     '<div class="POUQwd WN4Zxc">';
-                        button +=       '<span><span style="height:20px;line-height:20px;width:20px" class="z1asCe Y5lOv">';
-                        button +=         '<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"></path></svg>';
-                        button +=       '</span></span>';
-                        button +=     '</div>';
-                        button +=     '<div class="xlY4q VDgVie VIZLse"><span class="m0MNmc">Open in Maps</span></div>';
-                        button +=   '</div>';
-                        button += '</a>';
-                        $('div.EeWPwe').append(button);
-                        // Missing CSS.
-                        var css = '';
-                        css += '.ZkkK1e.ZkkK1e {line-height: normal; font-family: arial,sans-serif;}';
-                        css += '.ZkkK1e {-moz-box-sizing: border-box; box-sizing: border-box; border-radius: 18px; cursor: pointer; display: inline-block; height: 36px; min-width: 36px; position: relative; background: #fff; border: 1px solid #dadce0; color: #3c4043;}';
-                        css += '.POUQwd.WN4Zxc {padding: 7px 0 7px 11px;}';
-                        css += '.xlY4q, .POUQwd, .XqKfz {-moz-box-sizing: border-box; box-sizing: border-box; display: inline-block; height: 34px; vertical-align: bottom;}';
-                        css += '.xlY4q.VIZLse {padding-right: 11px;}';
-                        css += '.xlY4q {font-size: 14px; line-height: 34px; padding: 0 8px; padding-right: 8px;}';
-                        css += '.VDgVie {text-align: center;}';
-                        appendCssStyle(css);
-                    // Example: "Nil"
+                        if (!$('div.EeWPwe a[href*="/maps?q="]')[0]) {
+                            var button = '';
+                            button += '<a class="XaCzsb" href="' + mapsUrl + '" style="cursor: pointer;">';
+                            button +=   '<div class="la4Yvb ZkkK1e yUTMj k1U36b">';
+                            button +=     '<div class="POUQwd WN4Zxc">';
+                            button +=       '<span><span style="height:20px;line-height:20px;width:20px" class="z1asCe Y5lOv">';
+                            button +=         '<svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"></path></svg>';
+                            button +=       '</span></span>';
+                            button +=     '</div>';
+                            button +=     '<div class="xlY4q VDgVie VIZLse"><span class="m0MNmc">Open in Maps</span></div>';
+                            button +=   '</div>';
+                            button += '</a>';
+                            $('div.EeWPwe').append(button);
+                            // Missing CSS.
+                            var css = '';
+                            css += '.ZkkK1e.ZkkK1e {line-height: normal; font-family: arial,sans-serif;}';
+                            css += '.ZkkK1e {-moz-box-sizing: border-box; box-sizing: border-box; border-radius: 18px; cursor: pointer; display: inline-block; height: 36px; min-width: 36px; position: relative; background: #fff; border: 1px solid #dadce0; color: #3c4043;}';
+                            css += '.POUQwd.WN4Zxc {padding: 7px 0 7px 11px;}';
+                            css += '.xlY4q, .POUQwd, .XqKfz {-moz-box-sizing: border-box; box-sizing: border-box; display: inline-block; height: 34px; vertical-align: bottom;}';
+                            css += '.xlY4q.VIZLse {padding-right: 11px;}';
+                            css += '.xlY4q {font-size: 14px; line-height: 34px; padding: 0 8px; padding-right: 8px;}';
+                            css += '.VDgVie {text-align: center;}';
+                            appendCssStyle(css);
+                        }
+                    // Categorie 4: Example: "Nil"
                     } else if ($('div.V1GY4c img')[0]) {
-                        if ($('div.V1GY4c img')[0].closest('a[href]:not([href=""]):not([href=" "])')) return;
-                        var map = $('div.V1GY4c')[0];
-                        var link = document.createElement('a');
-                        link.href = mapsUrl;
-                        map.parentNode.insertBefore(link, map);
-                        link.appendChild(map);
+                        if (!$('div.V1GY4c img')[0].closest('a[href]:not([href=""]):not([href=" "])')) {
+                            var map = $('div.V1GY4c')[0];
+                            var link = document.createElement('a');
+                            link.href = mapsUrl;
+                            map.parentNode.insertBefore(link, map);
+                            link.appendChild(map);
+                        }
                     }
                 }
+                waitCount++; if (waitCount <= 25) setTimeout(function(){setGMapsLinks(waitCount);}, 200);
             }
-            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setGMapsLinks);
-            else setGMapsLinks();
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setGMapsLinks(0));
+            else setGMapsLinks(0);
         }
     } catch(e) {gclh_error("mainGSearch",e);}
 };
