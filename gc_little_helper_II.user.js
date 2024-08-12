@@ -5120,9 +5120,9 @@ var mainGC = function() {
             // Save last log text.
             function saveLastLog() {setValue("last_logtext", $('#gc-md-editor_md')[0].value);}
             function buildClickForSaveLastLog(waitCount) {
-                if ($('button.submit-button')[0] && !$('button.submit-button.gclh_build_click')[0]) {
-                    $('button.submit-button')[0].addEventListener('click', saveLastLog, true);
-                    $('button.submit-button').addClass('gclh_build_click');
+                if ($('.post-button-container')[0] && !$('.post-button-container.gclh_save_last_log')[0]) {
+                    $('.post-button-container').bind('click', () => { saveLastLog() });
+                    $('.post-button-container').addClass('gclh_save_last_log');
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildClickForSaveLastLog(waitCount);}, 200);
             }
