@@ -5176,16 +5176,16 @@ var mainGC = function() {
             // The fields difficulty, terrain, favoritePoints and premiumFavoriteScore are available in page data ("__NEXT_DATA__", props.pageProps.loggable),
             // but the fields have no values. In addition, the watchers are not included there. Therefore, we cannot replace the website reading with this data.
             function outputAddCacheInfo(aci, waitCount) {
-                if ($('.loggable-header')[0] && $('.loggable-header .gc-geocache-icon')[0] && $('.loggable-header .geocache-link')[0]) {
+                if ($('.loggable-header')[0] && $('.loggable-header span:first')[0] && $('.loggable-header .geocache-link')[0]) {
                     if ($('.gclh_aci_working')[0] && !$('.gclh_aci')[0]) {
                         $('.loggable-header').append('<span class="gclh_aci">' + aci + '</span>');
                         $('.loggable-header').removeClass('gclh_aci_working');
                         // Set variable length of cache name.
                         $('.loggable-header .geocache-link')[0].title = $('.loggable-header .geocache-link')[0].innerText;
                         function setMaxwidthOfCacheName(waitCount) {
-                            if (!$('.loggable-header')[0] || !$('.loggable-header .gc-geocache-icon')[0] || !$('.gclh_aci')[0]) return;
+                            if (!$('.loggable-header')[0] || !$('.loggable-header span:first')[0] || !$('.gclh_aci')[0]) return;
                             var newMaxWidth = parseInt(window.getComputedStyle($('.loggable-header')[0]).width) - 38
-                                            - parseInt(window.getComputedStyle($('.loggable-header .gc-geocache-icon')[0]).width)
+                                            - parseInt(window.getComputedStyle($('.loggable-header span:first')[0]).width)
                                             - ($('.loggable-header .badge')[0] ? parseInt(window.getComputedStyle($('.loggable-header .badge')[0]).width) : 0)
                                             - parseInt(window.getComputedStyle($('.gclh_aci')[0]).width);
                             var oldMaxWidth = (parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) ? parseInt(window.getComputedStyle($('.loggable-header .geocache-link')[0]).maxWidth) : 0);
@@ -5255,7 +5255,7 @@ var mainGC = function() {
                 });
             }
             function waitForAddCacheInfo(waitCount) {
-                if ($('.loggable-header')[0] && $('.loggable-header .gc-geocache-icon')[0] && $('.loggable-header .geocache-link')[0] && !$('.gclh_aci_working')[0] && !$('.gclh_aci')[0]) {
+                if ($('.loggable-header')[0] && $('.loggable-header span:first')[0] && $('.loggable-header .geocache-link')[0] && !$('.gclh_aci_working')[0] && !$('.gclh_aci')[0]) {
                     $('.loggable-header').addClass('gclh_aci_working');
                     getAddCacheInfo();
                 }
