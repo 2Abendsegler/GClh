@@ -358,6 +358,7 @@
   "settings_drafts_log_icons": true,
   "settings_drafts_go_automatic_back": false,
   "settings_drafts_after_new_logging_view_log": false,
+  "settings_drafts_after_new_logging_view_log_button": true,
   "settings_after_new_logging_view_log": false,
   "settings_listing_hide_external_link_warning": false,
   "settings_listing_links_new_tab": false,
@@ -380,5 +381,6 @@
   "settings_dashboard_hide_tb_activity": false,
   "settings_button_sort_tbs_by_name_log_form": true,
   "settings_larger_content_width_log_form": true,
-  "settings_less_space_log_lines_log_form": true
+  "settings_less_space_log_lines_log_form": true,
+  "settings_listing_bigger_avatar_with_mouse": true
 }

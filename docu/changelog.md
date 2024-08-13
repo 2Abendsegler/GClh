@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v016" title="GClh II version 0.16 (13.08.2024)">v0.16</a> &nbsp;
 <a href="#v0159" title="GClh II version 0.15.9 (13.06.2024)">v0.15.9</a> &nbsp;
 <a href="#v0158" title="GClh II version 0.15.8 (20.04.2024)">v0.15.8</a> &nbsp;
 <a href="#v0157" title="GClh II version 0.15.7 (13.04.2024)">v0.15.7</a> &nbsp;
@@ -47,6 +48,75 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Show number of characters in the Personal Cache Note. [<a href="https://github.com/2Abendsegler/GClh/issues/2560" title="Issue 2560">2560</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		The number of characters and words is displayed for the text in the Personal Cache Note.<br>
+		<img src="../images/0.16/Screen04.gif" alt="Screen04.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Show bigger avatar image in cache listing log. [<a href="https://github.com/2Abendsegler/GClh/issues/2559" title="Issue 2559">2559</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16/Screen05.gif" alt="Screen05.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_bigger_avatar_with_mouse" title="Link to your GClh II Config">Settings -> Listing - Logs:<br>
+		<img src="../images/0.16/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form, Log View] Link to Drafts page is missing (after sending a draft related log, automatic view log). [<a href="https://github.com/2Abendsegler/GClh/issues/2488" title="Issue 2488">2488</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_after_new_logging_view_log_button" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.16/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Edit, Log View] After edit a log, go back to log view. [<a href="https://github.com/2Abendsegler/GClh/issues/2490" title="Issue 2490">2490</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_after_new_logging_view_log" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.16/Screen07.jpg" alt="Screen07.jpg"></a><br>
+		This parameter is not new. If the parameter is enabled, the log will be displayed after editing a cache log, just like after a new log.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Mail and Message Form] Placeholder for GC-Code without brackets. [<a href="https://github.com/2Abendsegler/GClh/issues/2617" title="Issue 2617">2617</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_mail_signature" title="Link to your GClh II Config">Settings -> Mail and Message Form:<br>
+		<img src="../images/0.16/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		This parameter is not new, only the placeholder is new.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Global] Enlarge navigation field in header so that GC codes are visible. [<a href="https://github.com/2Abendsegler/GClh/issues/2628" title="Issue 2628">2628</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Google Maps] Google Maps not being linked from Google Search Results pages. [<a href="https://github.com/2Abendsegler/GClh/issues/2626" title="Issue 2626">2626</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Additional cache info in log form are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/2633" title="Issue 2633">2633</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Log template "Last Cache-Log" inserts old Log instead of last one. [<a href="https://github.com/2Abendsegler/GClh/issues/2542" title="Issue 2542">2542</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Larger page width no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2623" title="Issue 2623">2623</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Public Profile] Old cache type links no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2618" title="Issue 2618">2618</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Select log types in listing not working for some types. [<a href="https://github.com/2Abendsegler/GClh/issues/2620" title="Issue 2620">2620</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Link in cache details for caches with cache type "Geocaching HQ Block Party" missing. [<a href="https://github.com/2Abendsegler/GClh/issues/2619" title="Issue 2619">2619</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Separate "Placed by" and Owner by space in cache details. [<a href="https://github.com/2Abendsegler/GClh/issues/2629" title="Issue 2629">2629</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Edit Cache Listing] F2 to save and preview the edited cache listing no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2624" title="Issue 2624">2624</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(13.06.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.15.9:
