@@ -3327,7 +3327,7 @@ var mainGC = function() {
     }
 
 // Personal cache note at cache listing.
-    if (is_page("cache_listing")) {
+    if (is_page("cache_listing") && !global_isBasic) {
         var css = '';
         // Improve cursor when displaying or editing the personal cache note. It's upside down.
         css += '#viewCacheNote {cursor: pointer;} #cacheNoteText {cursor: text;}';
