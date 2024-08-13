@@ -54,33 +54,33 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Cache Listing] Show number of characters in the Personal Cache Note. [<a href="https://github.com/2Abendsegler/GClh/issues/2560" title="Issue 2560">2560</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		<strong>New:</strong> [Cache Listing] Show number of characters in the Personal Cache Note. [<a href="https://github.com/2Abendsegler/GClh/issues/2560" title="Issue 2560">2560</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 		The number of characters and words is displayed for the text in the Personal Cache Note.<br>
-		<img src="../images/0.16/Screen04.gif" alt="Screen04.gif"><br><br><br>
+		<img src="../images/0.16/Screen04.gif" alt="Screen04.gif"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing] Show bigger avatar image in cache listing log. [<a href="https://github.com/2Abendsegler/GClh/issues/2559" title="Issue 2559">2559</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
-		<img src="../images/0.16/Screen05.gif" alt="Screen05.gif"><br><br>
+		<strong>New:</strong> [Cache Listing] Show bigger avatar image in cache listing log. [<a href="https://github.com/2Abendsegler/GClh/issues/2559" title="Issue 2559">2559</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16/Screen05.gif" alt="Screen05.gif"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_bigger_avatar_with_mouse" title="Link to your GClh II Config">Settings -> Listing - Logs:<br>
-		<img src="../images/0.16/Screen06.jpg" alt="Screen06.jpg"></a><br><br><br>
+		<img src="../images/0.16/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Log Form, Log View] Link to Drafts page is missing (after sending a draft related log, automatic view log). [<a href="https://github.com/2Abendsegler/GClh/issues/2488" title="Issue 2488">2488</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
-		<img src="../images/0.16/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		<strong>New:</strong> [Log Form, Log View] Link to Drafts page is missing (after sending a draft related log, automatic view log). [<a href="https://github.com/2Abendsegler/GClh/issues/2488" title="Issue 2488">2488</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16/Screen02.jpg" alt="Screen02.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_drafts_after_new_logging_view_log_button" title="Link to your GClh II Config">Settings -> Log:<br>
-		<img src="../images/0.16/Screen03.jpg" alt="Screen03.jpg"></a><br><br><br>
+		<img src="../images/0.16/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Log Edit, Log View] After edit a log, go back to log view. [<a href="https://github.com/2Abendsegler/GClh/issues/2490" title="Issue 2490">2490</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Log Edit, Log View] After edit a log, go back to log view. [<a href="https://github.com/2Abendsegler/GClh/issues/2490" title="Issue 2490">2490</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_after_new_logging_view_log" title="Link to your GClh II Config">Settings -> Log:<br>
 		<img src="../images/0.16/Screen07.jpg" alt="Screen07.jpg"></a><br>
-		This parameter is not new. If the parameter is enabled, the log will be displayed after editing a cache log, just like after a new log.<br><br><br>
+		This parameter is not new. If the parameter is enabled, the log will be displayed after editing a cache log, just like after a new log.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Mail and Message Form] Placeholder for GC-Code without brackets. [<a href="https://github.com/2Abendsegler/GClh/issues/2617" title="Issue 2617">2617</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>New:</strong> [Mail and Message Form] Placeholder for GC-Code without brackets. [<a href="https://github.com/2Abendsegler/GClh/issues/2617" title="Issue 2617">2617</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_mail_signature" title="Link to your GClh II Config">Settings -> Mail and Message Form:<br>
 		<img src="../images/0.16/Screen01.jpg" alt="Screen01.jpg"></a><br>
-		This parameter is not new, only the placeholder is new.<br><br><br>
+		This parameter is not new, only the placeholder is new.<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Global] Enlarge navigation field in header so that GC codes are visible. [<a href="https://github.com/2Abendsegler/GClh/issues/2628" title="Issue 2628">2628</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
