@@ -2,6 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0162" title="GClh II version 0.16.2 (30.08.2024)">v0.16.2</a> &nbsp;
 <a href="#v0161" title="GClh II version 0.16.1 (13.08.2024)">v0.16.1</a> &nbsp;
 <a href="#v016" title="GClh II version 0.16 (13.08.2024)">v0.16</a> &nbsp;
 <a href="#v0159" title="GClh II version 0.15.9 (13.06.2024)">v0.15.9</a> &nbsp;
@@ -49,6 +50,32 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.2:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] New button to "Copy Coordinates to Clipboard" for every waypoint. [<a href="https://github.com/2Abendsegler/GClh/issues/2650" title="Issue 2650">2650</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16.2/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_ctoc_coords_waypoints" title="Link to your GClh II Config">Settings -> Listing - Additional Waypoints:<br>
+		<img src="../images/0.16.2/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Note:</strong> [Google Chrome, Tampermonkey] Scripts do not start.<br>
+		If scripts no longer start in browser Google Chrome with script manager Tampermonkey, then this could be due to a bug in Tampermonkey. Please install the latest version of Tampermonkey.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Country links to caches you have found do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2648" title="Issue 2648">2648</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search] Alignment of search buttons on filters incorrect. [<a href="https://github.com/2Abendsegler/GClh/issues/2647" title="Issue 2647">2647</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(30.08.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.1:

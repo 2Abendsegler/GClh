@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.1
+// @version      0.16.2
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2024 2Abendsegler, 2017-2021 Ruko2010, 2019-2024 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -738,6 +738,7 @@ var variablesInit = function(c) {
     c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
     c.settings_listing_bigger_avatar_with_mouse = getValue("settings_listing_bigger_avatar_with_mouse", true);
+    c.settings_listing_ctoc_coords_waypoints = getValue("settings_listing_ctoc_coords_waypoints", true);
 
     tlc('START userToken');
     try {
@@ -2426,7 +2427,7 @@ var mainGC = function() {
                         if (getValue("settings_new_width") > 0) var new_width = parseInt(getValue("settings_new_width")) - 310 - 180;
                         else var new_width = 950 - 310 - 180;
                         var css = "a.gclh_latest_log:hover {position: relative;}"
-                                + "a.gclh_latest_log span {display: none; position: absolute; left: -" + new_width + "px; width: " + new_width + "px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
+                                + "a.gclh_latest_log span {display: none; position: absolute; left: -" + new_width + "px; width: " + new_width + "px; margin-left: 6px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
                                 + "a.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
                         appendCssStyle(css);
                         // In den GC Logs ist die Id für die Logs immer die Gleiche ..., ja doch ..., is klar ne ..., GS halt.
@@ -3765,6 +3766,22 @@ var mainGC = function() {
         $('.HideWarningMessage')[0].style.display = "none";
         $('.ShowWarningMessage')[0].style.display = "";
         $('.ShowWarningMessage')[0].addEventListener("mouseover", warnMessageMouseOver, false);
+    }
+
+// Set copy to clipboard button for Waypoints.
+    if (settings_listing_ctoc_coords_waypoints && is_page("cache_listing")) {
+        try {
+            var tbl = getWaypointTable();
+            var length = tbl.find("tbody > tr").length;
+            for (var i=0; i<length/2; i++) {
+                var row1st = tbl.find("tbody > tr").eq(i*2);
+                var cellCoordinates = row1st.find("td:eq(5)");
+                var tmp_coords = toDec(cellCoordinates.text().trim());
+                if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                    addCopyToClipboardLink(cellCoordinates.text().trim(), cellCoordinates[0].childNodes[0], "Coordinates");
+                }
+            }
+        } catch(e) {gclh_error("Set copy to clipboard button for Waypoints",e);}
     }
 
 // Driving direction for every waypoint.
@@ -8021,6 +8038,7 @@ var mainGC = function() {
                     "  top: -310px;" +
                     "  left: -702px;" +
                     "  width: 700px;" +
+                    "  margin-left: 6px;" +
                     "  padding: 5px;" +
                     "  text-decoration: none;" +
                     "  text-align: left;" +
@@ -11887,7 +11905,7 @@ var mainGC = function() {
             css += '#gclh_third_line img, #gclh_third_line svg {vertical-align: middle !important;}';
             css += '#gclh_latest_logs, #gclh_third_line {position: relative;}';
             css += 'div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}';
-            css += 'div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; margin-top: -5px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
             css += 'div.gclh_latest_log:hover span img {opacity: 1;}';
             css += '#searchmap_sidebar_enhancements {color: #4a4a4a;}';
@@ -13120,7 +13138,7 @@ var mainGC = function() {
                         if (item && item[0]) {
                             var a = document.createElement("a");
                             a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
-                            a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.setAttribute("href", "/play/search?ot=country&hf=0&sa=1&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=false#myListsLink");
                             a.setAttribute("style", "color: #3d76c5;");
                             a.innerHTML = tableItems[i].children[0].innerHTML;
                             tableItems[i].children[0].innerHTML = "";
@@ -14972,8 +14990,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/sVd5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iLr"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/OMJZ/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iLI"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16331,6 +16349,7 @@ var mainGC = function() {
             html += thanksLineBuild("BlueEagle23",          "",                         false, false, false, true,  false);
             html += thanksLineBuild("Cappa-d",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("Chrono81",             "",                         false, false, false, true,  false);
+            html += thanksLineBuild("",                     "dcjkfgdjhd",               false, false, false, true,  false);
             html += thanksLineBuild("dennistreysa",         "",                         false, false, false, true,  false);
             html += thanksLineBuild("Die C-SAU Bande",      "UJstr",                    false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
@@ -16354,7 +16373,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "13.08.2024";
+            var thanksLastUpdate = "30.08.2024";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16973,6 +16992,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_hint', 'Hide the additional hints behind a link') + show_help("This option hides the hints behind a link. You have to click it to display the hints (already decrypted). This option remove also the description of the decryption.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional Waypoints</b>" + "</div>";
+            html += checkboxy('settings_listing_ctoc_coords_waypoints', 'Show "Copy Coordinates to Clipboard" button for every waypoint') + show_help("Shows for every waypoint in the waypoint list a button to copy the coordinates of the waypoint to the clipboard.") + "<br>";
             html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypointsX0', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
@@ -18463,6 +18483,7 @@ var mainGC = function() {
                 'settings_larger_content_width_log_form',
                 'settings_less_space_log_lines_log_form',
                 'settings_listing_bigger_avatar_with_mouse',
+                'settings_listing_ctoc_coords_waypoints',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -19097,7 +19118,7 @@ var mainGC = function() {
 // Build line with user and contribution on config screen "thanks".
     function thanksLineBuild(gcname, ghname, proj, devl, dev, err, sepa) {
         return "<tr " + (sepa == true ? "class='separator'" : "") + ">" +
-               "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : ghname) + "</td>" +
+               "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : "<span title='"+ghname+"'>"+ghname+"</span>") + "</td>" +
                thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
     }
     function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : "") + "'></td>";}
@@ -20427,7 +20448,7 @@ function is_page(name) {
     } else if (name == "map") {
         if (url.match(/^\/map/)) status = true;
     } else if (name == "find_cache") {
-        if (url.match(/^\/play\/(search|geocache)/)) status = true;
+        if (url.match(/^\/play\/(results|search|geocache)/)) status = true;
     } else if (name == "collection_1") {
         if (url.match(/^\/play\/(friendleague|leaderboard|souvenircampaign|guidelines|promotions)/)) status = true;
     } else if (name == "hide_cache") {
