@@ -13120,7 +13120,7 @@ var mainGC = function() {
                         if (item && item[0]) {
                             var a = document.createElement("a");
                             a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
-                            a.setAttribute("href", "/play/search?ot=4&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=True#myListsLink");
+                            a.setAttribute("href", "/play/search?ot=country&hf=0&sa=1&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=false#myListsLink");
                             a.setAttribute("style", "color: #3d76c5;");
                             a.innerHTML = tableItems[i].children[0].innerHTML;
                             tableItems[i].children[0].innerHTML = "";
