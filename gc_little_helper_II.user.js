@@ -2426,7 +2426,7 @@ var mainGC = function() {
                         if (getValue("settings_new_width") > 0) var new_width = parseInt(getValue("settings_new_width")) - 310 - 180;
                         else var new_width = 950 - 310 - 180;
                         var css = "a.gclh_latest_log:hover {position: relative;}"
-                                + "a.gclh_latest_log span {display: none; position: absolute; left: -" + new_width + "px; width: " + new_width + "px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
+                                + "a.gclh_latest_log span {display: none; position: absolute; left: -" + new_width + "px; width: " + new_width + "px; margin-left: 6px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000;}"
                                 + "a.gclh_latest_log:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
                         appendCssStyle(css);
                         // In den GC Logs ist die Id für die Logs immer die Gleiche ..., ja doch ..., is klar ne ..., GS halt.
@@ -8021,6 +8021,7 @@ var mainGC = function() {
                     "  top: -310px;" +
                     "  left: -702px;" +
                     "  width: 700px;" +
+                    "  margin-left: 6px;" +
                     "  padding: 5px;" +
                     "  text-decoration: none;" +
                     "  text-align: left;" +
@@ -11887,7 +11888,7 @@ var mainGC = function() {
             css += '#gclh_third_line img, #gclh_third_line svg {vertical-align: middle !important;}';
             css += '#gclh_latest_logs, #gclh_third_line {position: relative;}';
             css += 'div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}';
-            css += 'div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; margin-top: -5px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
             css += 'div.gclh_latest_log:hover span img {opacity: 1;}';
             css += '#searchmap_sidebar_enhancements {color: #4a4a4a;}';
