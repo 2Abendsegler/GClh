@@ -2,7 +2,7 @@
 <a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
-<a href="#v0162" title="GClh II version 0.16.2 (31.08.2024)">v0.16.2</a> &nbsp;
+<a href="#v0162" title="GClh II version 0.16.2 (30.08.2024)">v0.16.2</a> &nbsp;
 <a href="#v0161" title="GClh II version 0.16.1 (13.08.2024)">v0.16.1</a> &nbsp;
 <a href="#v016" title="GClh II version 0.16 (13.08.2024)">v0.16</a> &nbsp;
 <a href="#v0159" title="GClh II version 0.15.9 (13.06.2024)">v0.15.9</a> &nbsp;
@@ -73,7 +73,7 @@
 	</li>
 </ul>
 <br>
-(31.08.2024)<br>
+(30.08.2024)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
 
