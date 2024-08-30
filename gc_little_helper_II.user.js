@@ -19097,7 +19097,7 @@ var mainGC = function() {
 // Build line with user and contribution on config screen "thanks".
     function thanksLineBuild(gcname, ghname, proj, devl, dev, err, sepa) {
         return "<tr " + (sepa == true ? "class='separator'" : "") + ">" +
-               "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : ghname) + "</td>" +
+               "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : "<span title='"+ghname+"'>"+ghname+"</span>") + "</td>" +
                thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
     }
     function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : "") + "'></td>";}
