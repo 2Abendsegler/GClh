@@ -738,6 +738,7 @@ var variablesInit = function(c) {
     c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
     c.settings_listing_bigger_avatar_with_mouse = getValue("settings_listing_bigger_avatar_with_mouse", true);
+    c.settings_listing_ctoc_coords_waypoints = getValue("settings_listing_ctoc_coords_waypoints", true);
 
     tlc('START userToken');
     try {
@@ -3765,6 +3766,22 @@ var mainGC = function() {
         $('.HideWarningMessage')[0].style.display = "none";
         $('.ShowWarningMessage')[0].style.display = "";
         $('.ShowWarningMessage')[0].addEventListener("mouseover", warnMessageMouseOver, false);
+    }
+
+// Set copy to clipboard button for Waypoints.
+    if (settings_listing_ctoc_coords_waypoints && is_page("cache_listing")) {
+        try {
+            var tbl = getWaypointTable();
+            var length = tbl.find("tbody > tr").length;
+            for (var i=0; i<length/2; i++) {
+                var row1st = tbl.find("tbody > tr").eq(i*2);
+                var cellCoordinates = row1st.find("td:eq(5)");
+                var tmp_coords = toDec(cellCoordinates.text().trim());
+                if (typeof tmp_coords[0] !== 'undefined' && typeof tmp_coords[1] !== 'undefined') {
+                    addCopyToClipboardLink(cellCoordinates.text().trim(), cellCoordinates[0].childNodes[0], "Coordinates");
+                }
+            }
+        } catch(e) {gclh_error("Set copy to clipboard button for Waypoints",e);}
     }
 
 // Driving direction for every waypoint.
@@ -16974,6 +16991,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_hint', 'Hide the additional hints behind a link') + show_help("This option hides the hints behind a link. You have to click it to display the hints (already decrypted). This option remove also the description of the decryption.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional Waypoints</b>" + "</div>";
+            html += checkboxy('settings_listing_ctoc_coords_waypoints', 'Show "Copy Coordinates to Clipboard" button for every waypoint') + show_help("Shows for every waypoint in the waypoint list a button to copy the coordinates of the waypoint to the clipboard.") + "<br>";
             html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypointsX0', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
@@ -18464,6 +18482,7 @@ var mainGC = function() {
                 'settings_larger_content_width_log_form',
                 'settings_less_space_log_lines_log_form',
                 'settings_listing_bigger_avatar_with_mouse',
+                'settings_listing_ctoc_coords_waypoints',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
