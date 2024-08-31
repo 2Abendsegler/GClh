@@ -16992,7 +16992,9 @@ var mainGC = function() {
             html += checkboxy('settings_hide_hint', 'Hide the additional hints behind a link') + show_help("This option hides the hints behind a link. You have to click it to display the hints (already decrypted). This option remove also the description of the decryption.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Additional Waypoints</b>" + "</div>";
+            html += newParameterOn3;
             html += checkboxy('settings_listing_ctoc_coords_waypoints', 'Show "Copy Coordinates to Clipboard" button for every waypoint') + show_help("Shows for every waypoint in the waypoint list a button to copy the coordinates of the waypoint to the clipboard.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_driving_direction_link', 'Show link to Google driving direction for every waypoint') + show_help("Shows for every waypoint in the waypoint list a link to Google driving direction from home location to coordinates of the waypoint.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypointsX0', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
