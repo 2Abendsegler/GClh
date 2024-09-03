@@ -3768,7 +3768,7 @@ var mainGC = function() {
         $('.ShowWarningMessage')[0].addEventListener("mouseover", warnMessageMouseOver, false);
     }
 
-// Set copy to clipboard button for Waypoints.
+// Set copy coordinates to clipboard button for Waypoints.
     if (settings_listing_ctoc_coords_waypoints && is_page("cache_listing")) {
         try {
             var tbl = getWaypointTable();
@@ -4904,6 +4904,8 @@ var mainGC = function() {
                 }
             }
             let css = '';
+            // Enlarge the date field so that everything is visible also in trackable logs.
+            css += '.gc-date-picker {min-width: 122px;}';
 
             // Have we changed the logtext?
             let keepGClhChanges = false;
