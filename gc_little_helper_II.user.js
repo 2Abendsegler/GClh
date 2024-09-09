@@ -1947,7 +1947,7 @@ var mainGC = function() {
                         }
                     } else if (document.location.href.match(/\.com\/notify\/default\.aspx/)) {
                         css += ".span-20 {width: " + new_width + "px;}";
-                    } else if (is_page("logform")) {
+                    } else if (is_page("logform") || document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) {
                         if (settings_larger_content_width_log_form) {
                             css += ".content-container, .content-container section, .content-container form {width: " + new_width + "px !important; max-width: unset !important;}";
                             css += ".form-container {margin-left: 0px !important; margin-right: 0px !important;}";
