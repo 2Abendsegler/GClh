@@ -13177,6 +13177,56 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve statistic map page",e);}
     }
 
+// Improve finds per month chart in statistics: change chart height dynamically.
+    if ((document.URL.search("statistics.aspx") >= 0 || document.URL.search("tab=stats#profilepanel") >= 0)
+        && $('#uxFindsPerMonthChartContainer')[0]) {
+        try {
+            // Don't use chart container 'div#uxFindsPerMonthChartContainer' for resizables directly
+            // (otherwise resizable gets invalid after each chart update).
+            // Rather use its parent container and resize both, then everything works.
+            // And use more actual jqueryui from page, otherwise resize handler stays invisible.
+            let $drawChartContainer = unsafeWindow.$('#uxFindsPerMonthChartContainer');
+            let $drawChartContainerParent = $drawChartContainer.parent();
+
+            // Style horizontal resize handle and hide overflow.
+            appendCssStyle('.ui-resizable-s {left: 50%; background-image: url("https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/images/ui-icons_4A4A4A_256x240.png") !important;}');
+            $drawChartContainerParent.css('overflow', 'hidden');
+
+            // Get draw chart script from page.
+            let drawChartScript_str = $drawChartContainer.next()[0].text;           
+
+            // Add resize handler to chart container parent.
+            const height_default = $drawChartContainerParent.height();
+            const offset = 85;
+            $drawChartContainerParent.resizable({
+                alsoResize: '#uxFindsPerMonthChartContainer',
+                classes: { "ui-resizable-s": "ui-icon ui-icon-grip-solid-horizontal" },
+                handles: "s",
+                minHeight: height_default,
+                resize: function (_event, ui) {
+                    // Change chart area height.
+                    let tmp = drawChartScript_str.replace(/'left':50[^\}]*/, "'left':50,'height':" + (ui.size.height - offset));
+                    // Draw updated chart.
+                    eval(tmp);
+                },
+                stop: function (_event, ui) {
+                    // For own statistics, store height of chart container parent.
+                    if (isOwnStatisticsPage()) setValue("finds_per_month_chart_statistic", ui.size.height);
+                }
+            });
+
+            // For own statistics, restore height from last visit, otherwise use default value.
+            // Note: In FF, creation of resize handler must be finished before chart is drawn, otherwise chart width is slightly off.
+            setTimeout(function () {
+                const height = isOwnStatisticsPage() ? getValue("finds_per_month_chart_statistic", height_default) : height_default;
+                $drawChartContainerParent.height(height);
+                $drawChartContainer.height(height);
+                let tmp = drawChartScript_str.replace(/'left':50[^\}]*/, "'left':50,'height':" + (height - offset));
+                eval(tmp);
+            }, 500);
+        } catch (e) { gclh_error("Improve finds per month chart in own statistics", e); }
+    }
+
 // Post log from listing (inline).
     try {
         // iframe aufbauen und verbergen.
