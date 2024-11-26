@@ -10661,41 +10661,83 @@ var mainGC = function() {
         try {
             // Map control and display of found caches at corrected coordinates.
             if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
-                unsafeWindow.MapSettings = { 'Map': null };
-                // Add proxy to get map instance and cache data.
-                unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                // Add React object to global space.
+                try {
+                    unsafeWindow.webpackChunk_N_E.push([
+                        [66666],
+                        { 66667: () => {} },
+                        (n) => { unsafeWindow.React = n(2784); }
+                    ]);
+                } catch(e) {gclh_error("Push to webpackChunk_N_E",e);}
+
+                unsafeWindow.MapSettings = {'Map': null};
+                // Add proxy to get map instance.
+                if (unsafeWindow.React?.useState) {
+                    unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                        apply: (target, thisArg, argArray) => {
+                            let useState = target.apply(thisArg, argArray);
+                            if (useState[0]?.__version) {
+                                getMapInstance(useState);
+                            }
+                            return useState;
+                        }
+                    });
+                }
+
+                unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
                     apply: (target, thisArg, argArray) => {
                         let useState = target.apply(thisArg, argArray);
-                        if (useState && useState[0]) {
-                            getMapInstance(useState);
-                            if (settings_show_found_caches_at_corrected_coords_but) processCaches(useState);
+                        if (useState && useState[0]?.updates) {
+                            console.log('useState[0].updates');
+                            console.log(useState[0].updates);
                         }
+                        if (useState && useState?.updates) {
+                            console.log('useState.updates');
+                            console.log(useState.updates);
+                        }
+                        if (useState && useState.initialData) {
+                            useState.initialData.distanceInKM = 0;
+                            useState.initialData.geocacheTypes = [2,3];
+                            useState.initialData.hideFinds = null;
+                            useState.initialData.hideOwned = 1;
+
+                            console.log('useState.initialData');
+                            console.log(useState.initialData);
+                        }
+
+                        //if (useState) console.log(useState);
+
                         return useState;
                     }
                 });
             }
 
+            setTimeout(() => document.querySelector('button[data-event-label="Filters - Apply"]').click(), 5000);
+
             // Get map instance.
             const getMapInstance = (state) => {
+                //console.log('getMapInstance');
+                // Only set once.
                 if (unsafeWindow.MapSettings.Map !== null) return;
-                // Leaflet maps.
-                if (state[0]._mapPane) {
-                    unsafeWindow.MapSettings.Map = state[0];
-                }
-                // Google maps.
-                if (state[0].__gm) {
+
+                if (state[0].map) {
+                    // Leaflet maps.
+                    unsafeWindow.MapSettings.Map = state[0].map;
+                } else if (state[0].__gm) {
+                    // TODO: Google maps.
                     unsafeWindow.MapSettings.Map = state[0];
                 }
             }
             // Refresh map.
             const redrawMap = () => {
-                if (unsafeWindow.MapSettings.Map._mapPane) {
+                //console.log('redrawMap');
+                if (unsafeWindow.MapSettings?.Map?._mapPane) {
                     // Leaflet maps.
                     unsafeWindow.MapSettings.Map.fitBounds(unsafeWindow.MapSettings.Map.getBounds());
                     // Clear cache selection.
                     unsafeWindow.MapSettings.Map.fireEvent('click');
-                } else if (unsafeWindow.MapSettings.Map.__gm) {
-                    // Google maps.
+                } else if (unsafeWindow.MapSettings?.Map?.__gm) {
+                    // TODO: Google maps.
                     // To force a map redraw, select the 1st cache from the list, then trigger a click into the map.
                     // ("map.fitBounds(map.getBounds())" would do the same but zooms out one level afterwards, reason unknown.)
                     $('.geocache-item-details-container').first().click();
@@ -20551,7 +20593,7 @@ function is_page(name) {
     } else if (name == "lists") {
         if (url.match(/^\/plan\/lists/)) status = true;
     } else if (name == "searchmap") {
-        if (url.match(/^\/play\/map/)) status = true;
+        if (url.match(/^\/live\/play\/map/)) status = true;
     } else if (name == "map") {
         if (url.match(/^\/map/)) status = true;
     } else if (name == "find_cache") {
