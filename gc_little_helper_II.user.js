@@ -10670,6 +10670,7 @@ var mainGC = function() {
                     ]);
                 } catch(e) {gclh_error("Push to webpackChunk_N_E",e);}
 
+                // Initialize Map object.
                 unsafeWindow.MapSettings = {'Map': null};
                 // Add proxy to get map instance.
                 if (unsafeWindow.React?.useState) {
@@ -10683,36 +10684,142 @@ var mainGC = function() {
                         }
                     });
                 }
-
-                unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
-                    apply: (target, thisArg, argArray) => {
-                        let useState = target.apply(thisArg, argArray);
-                        if (useState && useState[0]?.updates) {
-                            console.log('useState[0].updates');
-                            console.log(useState[0].updates);
-                        }
-                        if (useState && useState?.updates) {
-                            console.log('useState.updates');
-                            console.log(useState.updates);
-                        }
-                        if (useState && useState.initialData) {
-                            useState.initialData.distanceInKM = 0;
-                            useState.initialData.geocacheTypes = [2,3];
-                            useState.initialData.hideFinds = null;
-                            useState.initialData.hideOwned = 1;
-
-                            console.log('useState.initialData');
-                            console.log(useState.initialData);
-                        }
-
-                        //if (useState) console.log(useState);
-
-                        return useState;
-                    }
-                });
             }
 
-            setTimeout(() => document.querySelector('button[data-event-label="Filters - Apply"]').click(), 5000);
+            /* Default filters */
+            // Check if default filters have to be set.
+            function run_setDefaultFilters() {
+                // Default gclh filters must not be set in the following cases:
+                // 1) bookmark lists (url has special type)
+                // 2) mapping results from new search page or any stored search map url
+                //    -> parameters 'asc=' and 'sort=' are always present
+                // 3) matrix searches (covered by 2))
+                // 4) page props aren't available
+                if (document.location.href.match(/\.com\/live\/play\/map\?bmCode=/) ||
+                    window.location.search.match(/asc=|sort=/) ||
+                    !unsafeWindow.__NEXT_DATA__?.props?.pageProps) {
+                    return false;
+                } else return true;
+            }
+            console.log('run_setDefaultFilters: ' + run_setDefaultFilters());
+            if (run_setDefaultFilters()) {
+                // Set default filters.
+                setDefaultFilters();
+                // Wipe initial search results.
+                unsafeWindow.__NEXT_DATA__.props.pageProps.searchResults = {'results': [], 'total': 0};
+
+                /*// Working hide sidebar.
+                waitForElementThenRun('button[data-testid="sidebar-toggle"]', () => {
+                    document.querySelector('button[data-testid="sidebar-toggle"]').click();
+                }, 20000);*/
+
+                // Wipe initial sidebar content (empty search only).
+                waitForElementThenRun('div.sidebar-content', () => {
+                    document.querySelector('div.sidebar-content').replaceChildren();
+                    document.querySelector('p.results-label').textContent = '';
+                    console.log('wipe initial sidebar content');
+                }, 20000);
+
+                // Perform search with default filters.
+                const distanceFrom = 'input[data-event-label="Filters - Distance From"]';
+                const func = () => {
+                    // Reset distance value in order to force a value change.
+                    // (this is the trigger to force a search with default filters by the observer)
+                    console.log('Distance From: ' + document.querySelector(distanceFrom).getAttribute('value'));
+                    document.querySelector(distanceFrom).setAttribute('value', '');
+                    console.log('Distance From: ' + document.querySelector(distanceFrom).getAttribute('value'));
+
+                    // Observe distance value for change, then run filtered search (only once).
+                    const cb = function(_mutationsList, observer) {
+                        console.log('Distance From: ' + document.querySelector(distanceFrom).getAttribute('value'));
+                        // Run filtered search.
+                        document.querySelector('button[data-event-label="Filters - Apply"]').click();
+                        observer.disconnect();
+                        observer = null;
+                        console.log('observer disconnected');
+                    }
+                    const config = {
+                        attributes: true,
+                        attributeFilter: ["value"]
+                    };
+                    const observer = new MutationObserver(cb);
+                    const target = document.querySelector(distanceFrom);
+                    observer.observe(target, config);
+                }
+                waitForElementThenRun(distanceFrom, func, 20000);
+            }
+
+            // Set gclh default filters.
+            // If no gclh default filters are specified, then GS default filters are removed instead.
+            // (note that for bm lists and search urls no GS default filters are set and thus don't need removal)
+            function setDefaultFilters() {
+                console.log('setDefaultFilters');
+
+                // Get reference to object that holds filters.
+                let filterData = unsafeWindow.__NEXT_DATA__.props.pageProps.filterData;
+
+                // "hideFinds": null=All, 0=Found by me, 1=Not found by me; GS default value: 1
+                if (settings_map_hide_found) {
+                    // Show only caches not found by you (GS sets filter by default, but doesn't hurt to set again, in case this changes).
+                    filterData.hideFinds = 1;
+                } else {
+                    // Show all caches (unset GS default filter).
+                    filterData.hideFinds = null;
+                    // Unset "notFoundBy" filter (set by default by GS).
+                    filterData.notFoundBy = [];
+                }
+                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: 1
+                if (settings_map_hide_hidden) {
+                    // Show only caches you don't own (GS sets filter by default, but doesn't hurt to set again, in case this changes).
+                    filterData.hideOwned = 1;
+                } else {
+                    // Show all caches (unset GS default filter).
+                    filterData.hideOwned = null;
+                }
+
+                // "geocacheTypes": [2, 9, 3773, 3]=cache types to show; GS default: [] (all)
+                //  Cache types from search map:
+                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6, 3653
+                //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
+                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453, 1304, 3774, 4738
+                //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
+                let types_to_show = [2, 9, 3773, 3, 8, 137, 5, 11, 1858, 4, 6, 3653, 13, 453, 1304, 3774, 4738, 7005];
+                const gclh_cache_types = [2, 3, 4, 5, 6, 8, 11, 13, 137, 453, 1858, 7005];
+                let types_filtered = [];
+                // Hide cache types.
+                for (let i = 0; i < gclh_cache_types.length; i++) {
+                    // If cache type isn't filtered, there's nothing to do for this type.
+                    if (!window["settings_map_hide_" + gclh_cache_types[i]]) continue;
+
+                    // Add cache type(s) to array of filtered cache types.
+                    switch (gclh_cache_types[i]) {
+                        case 3: case 4: case 5: case 8: case 11: case 13: case 137: case 1858: case 7005:
+                            types_filtered.push(gclh_cache_types[i]);
+                            break;
+                        case 2:
+                            types_filtered.push(2, 9, 3773);
+                            break;
+                        case 6:
+                            types_filtered.push(6, 3653);
+                            break;
+                        case 453:
+                            types_filtered.push(453, 1304, 3774, 4738);
+                            break;
+                        default:
+                            gclh_log(`No instruction found for cache type ${gclh_cache_types[i]}.`);
+                    }
+                }
+                // Only set cache type filter if at least one cache type is hidden.
+                if (types_filtered[0]) {
+                    // Remove the filtered cache types from the array of all cache types to show.
+                    types_to_show = types_to_show.filter(val => !types_filtered.includes(val));
+                    // Set "geocacheTypes" filter.
+                    filterData.geocacheTypes = types_to_show;
+                }
+
+                // Print all available search parameters (for debugging).
+                //console.table(JSON.parse(JSON.stringify(filterData)));
+            }
 
             // Get map instance.
             const getMapInstance = (state) => {
@@ -11541,97 +11648,7 @@ var mainGC = function() {
                 }
                 clickToClose(0);
             }
-
-            // Default filters.
-            let runSetFilter = true;
-            let cache_types = [2,3,4,5,6,8,11,137,1858];
-            // Check if filters are to set.
-            var filtersAreToSet = false;
-            if (!settings_map_hide_found || !settings_map_hide_hidden) {
-                filtersAreToSet = true;
-            } else {
-                for (let i=0; i<cache_types.length; i++) {
-                    if (window['settings_map_hide_'+cache_types[i]]) {
-                        filtersAreToSet = true;
-                    }
-                }
-            }
-            if (isGclhMatrix) filtersAreToSet = false;
-            // Set default filters.
-            function setFilter() {
-                // If bookmarklist or no filter is to set.
-                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/) || !filtersAreToSet) {
-                    // Hide sidebar.
-                    window.setTimeout(function(){hideSidebar();}, 500);
-                // If no bookmarklist and filters are to set.
-                } else {
-                    // Run only once.
-                    if (!runSetFilter) return;
-                    runSetFilter = false;
-                    // Check if search URL already has filters set: if not then set default filters otherwise keep current filter.
-                    if (!document.location.href.split('&').length > 7) return;
-                    // Check if there isn't already an input in search field of detail screen.
-                    // (Das betrifft auch eine Umschaltung von My Lists auf Search. Auch hier dürfen keine Defaults gesetzt werden.)
-                    if ($('#gc-search-typeahead-input')[0] && !$('#gc-search-typeahead-input').attr('value') == "") return;
-                    // Don't display the filter screen during the default settings are running.
-                    $('body').addClass('default_settings_running');
-                    // Some filters have to be clicked twice, otherwise the selection isn't reliable.
-                    function doubleClick(sel) {
-                        $(sel).click().click();
-                    }
-                    // Wait for filter screen.
-                    function waitForFilter(waitCount) {
-                        if ($('#gc-search-filters')[0] &&
-                            $('#found-status-filter .gc-radio-control-container:nth-child(1) label')[0] &&
-                            $('#cache-owner-filter .gc-radio-control-container:nth-child(1) label')[0] &&
-                            $('.gc-location-typeahead .inner-wrapper')[0]) {
-                            // Set location "Home Location" to prevent zoom out, if there isn't already a location.
-                            if (!$('.gc-location-typeahead .inner-wrapper button.chip')[0]) {
-                                if ($('.filter-group-header:first').hasClass('collapsed')) {
-                                    var collapsed = true;
-                                    $('.filter-group-header:first').click();
-                                } else var collapsed = false;
-                                $('.gc-location-typeahead .inner-wrapper').click();
-                                $('.gc-autocomplete-menu li').click();
-                                if (collapsed == true) {
-                                    $('.filter-group-header:first').click();
-                                }
-                            }
-                            // Hide found caches.
-                            if (!settings_map_hide_found) {
-                                doubleClick('#found-status-filter .gc-radio-control-container:nth-child(1) label');
-                            }
-                            // Hide owned caches.
-                            if (!settings_map_hide_hidden) {
-                                doubleClick('#cache-owner-filter .gc-radio-control-container:nth-child(1) label');
-                            }
-                            // Hide cache types.
-                            $('input[value="2"][id*="cache-type"]').parents('.filter-container').find('button.gc-selection-toggle').click();
-                            for (let i=0; i<cache_types.length; i++) {
-                                if (window['settings_map_hide_'+cache_types[i]]) {
-                                    $('input[value="'+cache_types[i]+'"][id*="cache-type"]').click();
-                                }
-                            }
-                            // Apply filters to map and close.
-                            window.setTimeout(function(){
-                                doubleClick('#gc-search-filters .last-filter-control');
-                                // Display the filter screen again after the default settings.
-                                $('body').removeClass('default_settings_running');
-                            }, 90);
-                            // Hide sidebar.
-                            window.setTimeout(function(){hideSidebar();}, 100);
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilter(waitCount);}, 50);}
-                    }
-                    // Wait for filter button and open filter.
-                    function waitForFilterButton(waitCount) {
-                        if ($('button.gc-filter-toggle')[0]) {
-                            $('button.gc-filter-toggle').click();
-                            waitForFilter(0);
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilterButton(waitCount);}, 100);}
-                    }
-                    waitForFilterButton(0);
-                }
-            }
+            hideSidebar();
 
             // Improve add to list pop up.
             function improveAddtolistPopup() {
@@ -11731,7 +11748,6 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
-                setFilter();
                 scrollInCacheList();
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
@@ -11742,7 +11758,6 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-                setFilter();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 and Ctrl+s in filter screen.
                 prepareKeydownF2InFilterScreen();
