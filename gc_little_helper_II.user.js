@@ -7285,7 +7285,8 @@ var mainGC = function() {
                 "a.myfriends {" +
                 "  color:#00AA00;" +
                 "  text-decoration:none;} " +
-                "#invitation-button-root button {padding: 8px; margin-left: 4px; line-height: 1.3;}" +
+                "#invitation-button-root {display: flex;}" +
+                "#invitation-button-root button {padding: 8px; margin-left: 4px; line-height: 1.3; min-width: unset;}" +
                 ".AddFriendTextbox {" +
                 "  width:48%;}";
             appendCssStyle(myf);
@@ -7357,7 +7358,8 @@ var mainGC = function() {
                 // Bottom line.
                 friend.getElementsByTagName("p")[0].innerHTML = "<a name='lnk_profilegallery2' href='" + name.href + '&tab=gallery#profilepanel' + "'>Gallery</a> | " + friend.getElementsByTagName("p")[0].innerHTML;
             }
-            function gclh_reset_counter() {
+            function gclh_reset_counter(e) {
+                e.preventDefault();
                 var friends = document.getElementsByClassName("FriendText");
                 var resetTime = new Date().getTime();
                 setValue("friends_founds_last_reset", resetTime);
@@ -7389,7 +7391,7 @@ var mainGC = function() {
                     spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 }
             }
-            if (settings_friendlist_summary) {
+            function buildFriendlistSummary() {
                 // "last reset" anzeigen.
                 var spanT = document.createElement("span");
                 var ld = getValue("friends_founds_last_reset", 0);
@@ -7419,9 +7421,8 @@ var mainGC = function() {
                 }
             }
             function waitForInvitationButton(waitCount) {
-                if (document.getElementById('invitation-button-root').firstChild && document.getElementsByClassName('send-invitation-btn') && document.getElementsByClassName('send-invitation-btn').item(0)) {
-                    var buttonClasses = document.getElementsByClassName('send-invitation-btn').item(0).className;
-                    buttonClasses = buttonClasses.replace('send-invitation-btn','');
+                if ($('#invitation-button-root button')[0] && $('#invitation-button-root button')[0].className) {
+                    var buttonClasses = $('#invitation-button-root button')[0].className;
                     buttonClasses = buttonClasses.replace('disabled','');
                     buttonClasses = buttonClasses + ' gclh_resetBtn';
                     var button = document.createElement("button");
@@ -7430,6 +7431,7 @@ var mainGC = function() {
                     button.addEventListener("click", gclh_reset_counter, false);
                     button.innerHTML = "Reset Counter";
                     document.getElementById("invitation-button-root").lastChild.after(button);
+                    if (settings_friendlist_summary) buildFriendlistSummary();
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForInvitationButton(waitCount);}, 100);}
             }
             waitForInvitationButton(0);
