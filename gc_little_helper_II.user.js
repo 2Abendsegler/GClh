@@ -2053,7 +2053,7 @@ var mainGC = function() {
                     code += "  else document.location.href = '/seek/nearest.aspx?navi_search='+search;";
                     code += "}";
                     injectPageScript(code, "body");
-                    var searchfield = "<li><input onKeyDown='if (event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='9' name='navi_search' id='navi_search' style='margin-bottom: -1px; padding: 1px; font-weight: bold; font-family: sans-serif; border-radius: 7px 7px 7px 7px;' value='" + settings_bookmarks_search_default + "'></li>";
+                    var searchfield = "<li><input onKeyDown='if (event.keyCode==13 && event.ctrlKey == false && event.altKey == false && event.shiftKey == false) {gclh_search_logs(); return false;}' type='text' size='" + (browser == 'firefox' ? "9":"7") + "' name='navi_search' id='navi_search' style='margin-bottom: -1px; padding: 1px; font-weight: bold; font-family: sans-serif; border-radius: 7px 7px 7px 7px;' value='" + settings_bookmarks_search_default + "'></li>";
                     $(".Menu, .menu").append(searchfield);
                 }
 
@@ -13213,7 +13213,7 @@ var mainGC = function() {
             $drawChartContainerParent.css('overflow', 'hidden');
 
             // Get draw chart script from page.
-            let drawChartScript_str = $drawChartContainer.next()[0].text;           
+            let drawChartScript_str = $drawChartContainer.next()[0].text;
 
             // Add resize handler to chart container parent.
             const height_default = $drawChartContainerParent.height();
