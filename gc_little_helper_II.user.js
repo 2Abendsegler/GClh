@@ -5567,14 +5567,16 @@ var mainGC = function() {
 
             // Hide social share button.
             function hideSocialShareButton(waitCount) {
-                if ($('li.masthead-control button[data-testid="share-log"]')[0] && window.getComputedStyle($('li.masthead-control button[data-testid="share-log"]')[0].closest('li')).display != 'none') {
-                    $('li.masthead-control button[data-testid="share-log"]')[0].closest('li').style.display = 'none';
-                }
+                $('li.masthead-control button[data-testid="share-log"]').each(function() {
+                    if (window.getComputedStyle($(this)[0].closest('li')).display != 'none') {
+                        $(this)[0].closest('li').style.display = 'none';
+                    }
+                });
                 waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
             }
             try {
                 if (settings_hide_share_log_button_log_view) hideSocialShareButton(0);
-                if (settings_hide_socialshare) css = 'ul.social-media-buttons {display: none !important;}';
+                if (settings_hide_socialshare) css += 'ul.social-media-buttons {display: none !important;}';
             } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
 
             // Build copy to clipboard icon for logtext in cache logs.
