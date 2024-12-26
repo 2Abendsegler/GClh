@@ -468,6 +468,7 @@ var variablesInit = function(c) {
     c.settings_multi_homezone = JSON.parse(getValue("settings_multi_homezone", "{}"));
     c.settings_show_hillshadow = getValue("settings_show_hillshadow", false);
     c.settings_map_layers = getValue("settings_map_layers", "").split("###");
+    c.settings_default_logtype_control = getValue("settings_default_logtype_control", true);
     c.settings_default_logtype = getValue("settings_default_logtype", "-1");
     c.settings_default_logtype_event = getValue("settings_default_logtype_event", c.settings_default_logtype);
     c.settings_default_logtype_owner = getValue("settings_default_logtype_owner", c.settings_default_logtype);
@@ -4985,7 +4986,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined'
+                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined' && settings_default_logtype_control
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -17194,32 +17195,35 @@ var mainGC = function() {
             html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_default_logtype_control', 'Set default log types') + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += "<table><tbody>";
-            html += "  <tr><td>Default log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
+            html += "  <tr><td>&nbsp; Default log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"2\" " + (settings_default_logtype == "2" ? "selected=\"selected\"" : "") + ">Found it</option>";
             html += "    <option value=\"3\" " + (settings_default_logtype == "3" ? "selected=\"selected\"" : "") + ">Didn't find it</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner attention requested</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
-            html += "  <tr><td>Default event log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_logtype_event'>";
+            html += "  <tr><td>&nbsp; Default event log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_event'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
             html += "    <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype_event == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
-            html += "  <tr><td>Default owner log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_logtype_owner'>";
+            html += "  <tr><td>&nbsp; Default owner log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_owner'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"46\" " + (settings_default_logtype_owner == "46" ? "selected=\"selected\"" : "") + ">Owner maintenance</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"22\" " + (settings_default_logtype_owner == "22" ? "selected=\"selected\"" : "") + ">Disable</option>";
             html += "    <option value=\"5\" " + (settings_default_logtype_owner == "5" ? "selected=\"selected\"" : "") + ">Archive</option>";
             html += "    <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option></select></td>";
-            html += "  <tr><td>Default TB log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_tb_logtype'>";
+            html += "  <tr><td>&nbsp; Default TB log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_tb_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"4\" " + (settings_default_tb_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
@@ -18023,6 +18027,10 @@ var mainGC = function() {
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature");
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature_on_fieldnotes");
             setEvForDepPara("settings_add_tb_log_signature","settings_tb_signature");
+            setEvForDepPara("settings_default_logtype_control","settings_default_logtype");
+            setEvForDepPara("settings_default_logtype_control","settings_default_logtype_event");
+            setEvForDepPara("settings_default_logtype_control","settings_default_logtype_owner");
+            setEvForDepPara("settings_default_logtype_control","settings_default_tb_logtype");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
@@ -18555,6 +18563,7 @@ var mainGC = function() {
                 'settings_less_space_log_lines_log_form',
                 'settings_listing_bigger_avatar_with_mouse',
                 'settings_listing_ctoc_coords_waypoints',
+                'settings_default_logtype_control',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
