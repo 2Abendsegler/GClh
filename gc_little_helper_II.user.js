@@ -5342,6 +5342,8 @@ var mainGC = function() {
             } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
 
             // Auto visit for TBs.
+            var classesSelected = '';
+            var classesNotSelected = '';
             function getTbsAV() {return (isTbHideActiv ? $('ul.tb-list li.tb-item.gclh_hideTB_checked:not(.gclh_hideTB)') : $('ul.tb-list li.tb-item'))}
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
@@ -5360,9 +5362,9 @@ var mainGC = function() {
                 } else if (getTbActionTypeAV(tb) == '75') {
                     $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="-1"]')[0].click();
                 }
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
-            }
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').prop('class', classesNotSelected);
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').prop('class', classesSelected);
+           }
             function buildAutosAV() {
                 let tbs = getTbsAV();
                 if (tbs.length > 0) {
@@ -5386,6 +5388,9 @@ var mainGC = function() {
                             if (getValue("autovisit_"+tbC, "new") === "new") {
                                 setValue("autovisit_"+tbC, settings_autovisit_default);
                             }
+                            // Notice classes for selected and not selected buttons.
+                            classesSelected = $(tbs[i]).find('.gclh_autovisit label')[0].className;
+                            classesNotSelected = $(tbs[i]).find('.gclh_autovisit label')[1].className;
                             // Adapt copied buttons for auto visit feature.
                             $(tbs[i]).find('.gclh_autovisit label')[2].remove();
                             $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
@@ -5436,25 +5441,35 @@ var mainGC = function() {
             try {
                 if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
                     waitForTbsAV(0);
-                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px;}';
-                    css += '.segmented-buttons.gclh_autovisit {position: absolute; display: block; margin-top: 60px;}';
+                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
+                    css += '.segmented-buttons.gclh_autovisit {position: absolute; margin-top: 60px !important;}';
                     css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
                 }
             } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
 
             // Replicate TB-Header to bottom.
             function buildTBHeaderToBottom(waitCount) {
-                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
-                    $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
-                    $('.gclh_tb_clear_all')[0].addEventListener("click", function(){
-                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
-                    });
-                    $('.gclh_tb_visit_all')[0].addEventListener("click", function(){
-                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
-                    });
-                    $('.gclh_tb_drop_all')[0].addEventListener("click", function(){
-                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
-                    });
+                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-inventory-header .button-container button')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
+                    var tbHeader = $( $('.tb-inventory-header')[0] ).clone()[0];
+                    $(tbHeader).addClass('gclh_tb_header_bottom');
+                    if (!$(tbHeader).find('button[data-event-label*="clear all"]')[0]) {
+                        var tbClearButton = $( $('.tb-inventory-header .button-container button')[0] ).clone()[0];
+                        $(tbClearButton).attr('data-event-label', 'Cache Log - clear all');
+                        $(tbClearButton)[0].innerText = 'Clear all';
+                        $(tbHeader).find('.button-container button')[0].before(tbClearButton);
+                    }
+                    if (!$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
+                        $('.tb-list').after(tbHeader);
+                        $('.gclh_tb_header_bottom button[data-event-label*="clear all"]')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
+                        });
+                        $('.gclh_tb_header_bottom button[data-event-label*="visit all"]')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
+                        });
+                        $('.gclh_tb_header_bottom button[data-event-label*="drop all"]')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
+                        });
+                    }
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
             }
