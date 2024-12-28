@@ -458,6 +458,8 @@ var variablesInit = function(c) {
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_show_eventtime_with_24_hours = getValue("settings_show_eventtime_with_24_hours", false);
+    c.settings_show_eventinfo_in_desc = getValue("settings_show_eventinfo_in_desc", true);
+    c.settings_show_eventinfo_in_desc_bold = getValue("settings_show_eventinfo_in_desc_bold", true);
     c.settings_show_google_maps = getValue("settings_show_google_maps", true);
     c.settings_show_log_it = getValue("settings_show_log_it", true);
     c.settings_show_nearestuser_profil_link = getValue("settings_show_nearestuser_profil_link", true);
@@ -2286,40 +2288,41 @@ var mainGC = function() {
     }
 
 // Improve event date and event time in cache listing.
-    if (is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
-        // Show eventday beside date.
-        if (settings_show_eventday) {
-            try {
-                var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-                if (match == null) {
-                    match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+    if (is_page("cache_listing") && $('h2.CacheDescriptionHeader')[0] && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-|4738$|4738-)/) &&  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents, Block Party
+        $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof eventCacheData !== 'undefined' && typeof eventCacheData.start !== 'undefined' && typeof eventCacheData.end !== 'undefined' && typeof chromeSettings !== 'undefined' && typeof chromeSettings.locale !== 'undefined') {
+        try {
+            var startdate = eventCacheData.start.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',});
+            var weekday = '';
+            var starttime = eventCacheData.start.toLocaleTimeString(chromeSettings.locale, {timeStyle: 'short',});
+            var endtime = eventCacheData.end.toLocaleTimeString(chromeSettings.locale, {timeStyle: 'short',});
+            // Show eventday beside date.
+            if (settings_show_eventday) {
+                weekday = ' (' + eventCacheData.start.getWeekday() + ')';
+                var elem = document.createTextNode(weekday + ' ');
+                var side = $('#ctl00_ContentBody_mcd2')[0];
+                side.insertBefore(elem, side.childNodes[1]);
+            }
+            // Show eventtime in 24 hours format.
+            if (settings_show_eventtime_with_24_hours) {
+                let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
+                    starttime = eventCacheData.start.toLocaleTimeString('de-DE', {timeStyle: 'short',})
+                    $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], starttime);
+                    endtime = eventCacheData.end.toLocaleTimeString('de-DE', {timeStyle: 'short',})
+                    $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], endtime);
+                    startdate = eventCacheData.start.toLocaleDateString('de-DE', {year: 'numeric', month: 'long', day: 'numeric',});
                 }
-                if (match != null) {
-                    var date = new Date(match[3], match[1]-1, match[2]);
-                    if (date != "Invalid Date") {
-                        var name = " (" + date.getWeekday() + ") ";
-                        var elem = document.createTextNode(name);
-                        var side = $('#ctl00_ContentBody_mcd2')[0];
-                        side.insertBefore(elem, side.childNodes[1]);
-                    }
-                }
-            } catch(e) {gclh_error("Show eventday beside date",e);}
-        }
-        // Show eventtime in 24 hours format.
-        if (settings_show_eventtime_with_24_hours) {
-            try {
-                if ($('#ctl00_ContentBody_mcd2') && $('#mcd3')[0] && $('#mcd4')[0]) {
-                    let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
-                    let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
-                    if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
-                        var t = convert12To24Hour(sStr[2]);
-                        $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], t);
-                        var t = convert12To24Hour(eStr[2]);
-                        $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], t);
-                    }
-                }
-            } catch(e) {gclh_error("Show eventtime in 24 hours format",e);}
-        }
+            }
+            // Show the start and end of the event again at the beginning of the cache description.
+//var settings_show_eventinfo_in_desc = true;
+//var settings_show_eventinfo_in_desc_bold = true;
+            if (settings_show_eventinfo_in_desc) {
+                var elem = document.createElement('p');
+                elem.innerHTML = (settings_show_eventinfo_in_desc_bold ? '<strong>':'') + startdate + weekday + ', ' + starttime + ' - ' + endtime + (settings_show_eventinfo_in_desc_bold ? '</strong>':'');
+                $('h2.CacheDescriptionHeader')[0].after(elem);
+            }
+        } catch(e) {gclh_error("Improve event date and event time in cache listing",e);}
     }
 
 // Show real owner.
@@ -5365,7 +5368,7 @@ var mainGC = function() {
                 }
                 $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').prop('class', classesNotSelected);
                 $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').prop('class', classesSelected);
-           }
+            }
             function buildAutosAV() {
                 let tbs = getTbsAV();
                 if (tbs.length > 0) {
@@ -16917,9 +16920,9 @@ var mainGC = function() {
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived and disabled caches') + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If this option is enabled, the alias that an owner used to publish the cache is replaced with the real owner name.") + "<br>";
-            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
+            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter.") + "<br>";
+            html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
             html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
@@ -17054,6 +17057,14 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_eventinfo_in_desc', 'Show event info at the beginning of the cache description') + show_help("With this option an event info with the event startdate, the event weekday, the event starttime and the event endtime can be displayed.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_eventinfo_in_desc_bold', 'Show event info bold') + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += "&nbsp; " + checkboxy('settings_show_eventdayX1', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
+            html += newParameterOn1;
+            html += "&nbsp; " + checkboxy('settings_show_eventtime_with_24_hoursX0', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before trying to load it. If an image is unreachable or dosen't exists, a placeholder is shown. The mouse over the placeholder will shown the image link. A mouse click to the placeholder will open the link in a new tab.") + "<br>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
             html += checkboxy('settings_listing_hide_external_link_warning', 'Hide external link warning message') + show_help("With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.") + "<br>";
@@ -17823,6 +17834,7 @@ var mainGC = function() {
             setEvForDouPara("settings_smaller_upvotes_icons", "click");
             setEvForDouPara("settings_no_wiggle_upvotes_click", "click");
             setEvForDouPara("settings_show_eventday", "click");
+            setEvForDouPara("settings_show_eventtime_with_24_hours", "click");
             setEvForDouPara("settings_drafts_go_automatic_back", "click");
             setEvForDouPara("settings_drafts_after_new_logging_view_log", "click");
             setEvForDouPara("settings_drafts_after_new_logging_view_log_button", "click");
@@ -18051,6 +18063,9 @@ var mainGC = function() {
             setEvForDepPara("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_log_buttonX0");
             setEvForDepPara("settings_drafts_after_new_logging_view_logX0", "settings_drafts_after_new_logging_view_log_button");
             setEvForDepPara("settings_drafts_after_new_logging_view_logX0", "settings_drafts_after_new_logging_view_log_buttonX0");
+            setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventinfo_in_desc_bold");
+            setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventdayX1");
+            setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -18265,6 +18280,8 @@ var mainGC = function() {
                 'settings_show_bbcode',
                 'settings_show_eventday',
                 'settings_show_eventtime_with_24_hours',
+                'settings_show_eventinfo_in_desc',
+                'settings_show_eventinfo_in_desc_bold',
                 'settings_show_mail',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
