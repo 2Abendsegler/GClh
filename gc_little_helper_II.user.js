@@ -470,6 +470,7 @@ var variablesInit = function(c) {
     c.settings_multi_homezone = JSON.parse(getValue("settings_multi_homezone", "{}"));
     c.settings_show_hillshadow = getValue("settings_show_hillshadow", false);
     c.settings_map_layers = getValue("settings_map_layers", "").split("###");
+    c.settings_default_logtype_control = getValue("settings_default_logtype_control", true);
     c.settings_default_logtype = getValue("settings_default_logtype", "-1");
     c.settings_default_logtype_event = getValue("settings_default_logtype_event", c.settings_default_logtype);
     c.settings_default_logtype_owner = getValue("settings_default_logtype_owner", c.settings_default_logtype);
@@ -4988,7 +4989,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined'
+                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined' && settings_default_logtype_control
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -5345,6 +5346,8 @@ var mainGC = function() {
             } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
 
             // Auto visit for TBs.
+            var classesSelected = '';
+            var classesNotSelected = '';
             function getTbsAV() {return (isTbHideActiv ? $('ul.tb-list li.tb-item.gclh_hideTB_checked:not(.gclh_hideTB)') : $('ul.tb-list li.tb-item'))}
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
@@ -5363,8 +5366,8 @@ var mainGC = function() {
                 } else if (getTbActionTypeAV(tb) == '75') {
                     $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="-1"]')[0].click();
                 }
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').prop('class', classesNotSelected);
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').prop('class', classesSelected);
             }
             function buildAutosAV() {
                 let tbs = getTbsAV();
@@ -5389,6 +5392,9 @@ var mainGC = function() {
                             if (getValue("autovisit_"+tbC, "new") === "new") {
                                 setValue("autovisit_"+tbC, settings_autovisit_default);
                             }
+                            // Notice classes for selected and not selected buttons.
+                            classesSelected = $(tbs[i]).find('.gclh_autovisit label')[0].className;
+                            classesNotSelected = $(tbs[i]).find('.gclh_autovisit label')[1].className;
                             // Adapt copied buttons for auto visit feature.
                             $(tbs[i]).find('.gclh_autovisit label')[2].remove();
                             $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
@@ -5439,25 +5445,35 @@ var mainGC = function() {
             try {
                 if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
                     waitForTbsAV(0);
-                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px;}';
-                    css += '.segmented-buttons.gclh_autovisit {position: absolute; display: block; margin-top: 60px;}';
+                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
+                    css += '.segmented-buttons.gclh_autovisit {position: absolute; margin-top: 60px !important;}';
                     css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
                 }
             } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
 
             // Replicate TB-Header to bottom.
             function buildTBHeaderToBottom(waitCount) {
-                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
-                    $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
-                    $('.gclh_tb_clear_all')[0].addEventListener("click", function(){
-                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
-                    });
-                    $('.gclh_tb_visit_all')[0].addEventListener("click", function(){
-                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
-                    });
-                    $('.gclh_tb_drop_all')[0].addEventListener("click", function(){
-                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
-                    });
+                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-inventory-header .button-container button')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
+                    var tbHeader = $( $('.tb-inventory-header')[0] ).clone()[0];
+                    $(tbHeader).addClass('gclh_tb_header_bottom');
+                    if (!$(tbHeader).find('button[data-event-label*="clear all"]')[0]) {
+                        var tbClearButton = $( $('.tb-inventory-header .button-container button')[0] ).clone()[0];
+                        $(tbClearButton).attr('data-event-label', 'Cache Log - clear all');
+                        $(tbClearButton)[0].innerText = 'Clear all';
+                        $(tbHeader).find('.button-container button')[0].before(tbClearButton);
+                    }
+                    if (!$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
+                        $('.tb-list').after(tbHeader);
+                        $('.gclh_tb_header_bottom button[data-event-label*="clear all"]')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
+                        });
+                        $('.gclh_tb_header_bottom button[data-event-label*="visit all"]')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
+                        });
+                        $('.gclh_tb_header_bottom button[data-event-label*="drop all"]')[0].addEventListener("click", function(){
+                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
+                        });
+                    }
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
             }
@@ -5570,14 +5586,16 @@ var mainGC = function() {
 
             // Hide social share button.
             function hideSocialShareButton(waitCount) {
-                if ($('li.masthead-control button[data-testid="share-log"]')[0] && window.getComputedStyle($('li.masthead-control button[data-testid="share-log"]')[0].closest('li')).display != 'none') {
-                    $('li.masthead-control button[data-testid="share-log"]')[0].closest('li').style.display = 'none';
-                }
+                $('li.masthead-control button[data-testid="share-log"]').each(function() {
+                    if (window.getComputedStyle($(this)[0].closest('li')).display != 'none') {
+                        $(this)[0].closest('li').style.display = 'none';
+                    }
+                });
                 waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
             }
             try {
                 if (settings_hide_share_log_button_log_view) hideSocialShareButton(0);
-                if (settings_hide_socialshare) css = 'ul.social-media-buttons {display: none !important;}';
+                if (settings_hide_socialshare) css += 'ul.social-media-buttons {display: none !important;}';
             } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
 
             // Build copy to clipboard icon for logtext in cache logs.
@@ -17190,32 +17208,35 @@ var mainGC = function() {
             html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_default_logtype_control', 'Set default log types') + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += "<table><tbody>";
-            html += "  <tr><td>Default log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
+            html += "  <tr><td>&nbsp; Default log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"2\" " + (settings_default_logtype == "2" ? "selected=\"selected\"" : "") + ">Found it</option>";
             html += "    <option value=\"3\" " + (settings_default_logtype == "3" ? "selected=\"selected\"" : "") + ">Didn't find it</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner attention requested</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
-            html += "  <tr><td>Default event log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_logtype_event'>";
+            html += "  <tr><td>&nbsp; Default event log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_event'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
             html += "    <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype_event == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
-            html += "  <tr><td>Default owner log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_logtype_owner'>";
+            html += "  <tr><td>&nbsp; Default owner log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_owner'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"46\" " + (settings_default_logtype_owner == "46" ? "selected=\"selected\"" : "") + ">Owner maintenance</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"22\" " + (settings_default_logtype_owner == "22" ? "selected=\"selected\"" : "") + ">Disable</option>";
             html += "    <option value=\"5\" " + (settings_default_logtype_owner == "5" ? "selected=\"selected\"" : "") + ">Archive</option>";
             html += "    <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option></select></td>";
-            html += "  <tr><td>Default TB log type</td>";
-            html += "    <td><select class='gclh_form' id='settings_default_tb_logtype'>";
+            html += "  <tr><td>&nbsp; Default TB log type</td>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_tb_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"4\" " + (settings_default_tb_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
@@ -18020,6 +18041,10 @@ var mainGC = function() {
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature");
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature_on_fieldnotes");
             setEvForDepPara("settings_add_tb_log_signature","settings_tb_signature");
+            setEvForDepPara("settings_default_logtype_control","settings_default_logtype");
+            setEvForDepPara("settings_default_logtype_control","settings_default_logtype_event");
+            setEvForDepPara("settings_default_logtype_control","settings_default_logtype_owner");
+            setEvForDepPara("settings_default_logtype_control","settings_default_tb_logtype");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
@@ -18557,6 +18582,7 @@ var mainGC = function() {
                 'settings_less_space_log_lines_log_form',
                 'settings_listing_bigger_avatar_with_mouse',
                 'settings_listing_ctoc_coords_waypoints',
+                'settings_default_logtype_control',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
