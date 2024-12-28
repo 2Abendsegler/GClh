@@ -458,6 +458,8 @@ var variablesInit = function(c) {
     c.settings_faster_profile_trackables = getValue("settings_faster_profile_trackables", false);
     c.settings_show_eventday = getValue("settings_show_eventday", true);
     c.settings_show_eventtime_with_24_hours = getValue("settings_show_eventtime_with_24_hours", false);
+    c.settings_show_eventinfo_in_desc = getValue("settings_show_eventinfo_in_desc", true);
+    c.settings_show_eventinfo_in_desc_bold = getValue("settings_show_eventinfo_in_desc_bold", true);
     c.settings_show_google_maps = getValue("settings_show_google_maps", true);
     c.settings_show_log_it = getValue("settings_show_log_it", true);
     c.settings_show_nearestuser_profil_link = getValue("settings_show_nearestuser_profil_link", true);
@@ -468,7 +470,6 @@ var variablesInit = function(c) {
     c.settings_multi_homezone = JSON.parse(getValue("settings_multi_homezone", "{}"));
     c.settings_show_hillshadow = getValue("settings_show_hillshadow", false);
     c.settings_map_layers = getValue("settings_map_layers", "").split("###");
-    c.settings_default_logtype_control = getValue("settings_default_logtype_control", true);
     c.settings_default_logtype = getValue("settings_default_logtype", "-1");
     c.settings_default_logtype_event = getValue("settings_default_logtype_event", c.settings_default_logtype);
     c.settings_default_logtype_owner = getValue("settings_default_logtype_owner", c.settings_default_logtype);
@@ -2286,40 +2287,41 @@ var mainGC = function() {
     }
 
 // Improve event date and event time in cache listing.
-    if (is_page("cache_listing") && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/)) {  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
-        // Show eventday beside date.
-        if (settings_show_eventday) {
-            try {
-                var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
-                if (match == null) {
-                    match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+    if (is_page("cache_listing") && $('h2.CacheDescriptionHeader')[0] && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/) &&  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
+        $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof eventCacheData !== 'undefined' && typeof eventCacheData.start !== 'undefined' && typeof eventCacheData.end !== 'undefined' && typeof chromeSettings !== 'undefined' && typeof chromeSettings.locale !== 'undefined') {
+        try {
+            var startdate = eventCacheData.start.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',});
+            var weekday = '';
+            var starttime = eventCacheData.start.toLocaleTimeString(chromeSettings.locale, {timeStyle: 'short',});
+            var endtime = eventCacheData.end.toLocaleTimeString(chromeSettings.locale, {timeStyle: 'short',});
+            // Show eventday beside date.
+            if (settings_show_eventday) {
+                weekday = ' (' + eventCacheData.start.getWeekday() + ')';
+                var elem = document.createTextNode(weekday + ' ');
+                var side = $('#ctl00_ContentBody_mcd2')[0];
+                side.insertBefore(elem, side.childNodes[1]);
+            }
+            // Show eventtime in 24 hours format.
+            if (settings_show_eventtime_with_24_hours) {
+                let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
+                    starttime = eventCacheData.start.toLocaleTimeString('de-DE', {timeStyle: 'short',})
+                    $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], starttime);
+                    endtime = eventCacheData.end.toLocaleTimeString('de-DE', {timeStyle: 'short',})
+                    $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], endtime);
+                    startdate = eventCacheData.start.toLocaleDateString('de-DE', {year: 'numeric', month: 'long', day: 'numeric',});
                 }
-                if (match != null) {
-                    var date = new Date(match[3], match[1]-1, match[2]);
-                    if (date != "Invalid Date") {
-                        var name = " (" + date.getWeekday() + ") ";
-                        var elem = document.createTextNode(name);
-                        var side = $('#ctl00_ContentBody_mcd2')[0];
-                        side.insertBefore(elem, side.childNodes[1]);
-                    }
-                }
-            } catch(e) {gclh_error("Show eventday beside date",e);}
-        }
-        // Show eventtime in 24 hours format.
-        if (settings_show_eventtime_with_24_hours) {
-            try {
-                if ($('#ctl00_ContentBody_mcd2') && $('#mcd3')[0] && $('#mcd4')[0]) {
-                    let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
-                    let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
-                    if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
-                        var t = convert12To24Hour(sStr[2]);
-                        $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], t);
-                        var t = convert12To24Hour(eStr[2]);
-                        $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], t);
-                    }
-                }
-            } catch(e) {gclh_error("Show eventtime in 24 hours format",e);}
-        }
+            }
+            // Show the start and end of the event again at the beginning of the cache description.
+//var settings_show_eventinfo_in_desc = true;
+//var settings_show_eventinfo_in_desc_bold = true;
+            if (settings_show_eventinfo_in_desc) {
+                var elem = document.createElement('p');
+                elem.innerHTML = (settings_show_eventinfo_in_desc_bold ? '<strong>':'') + startdate + weekday + ', ' + starttime + ' - ' + endtime + (settings_show_eventinfo_in_desc_bold ? '</strong>':'');
+                $('h2.CacheDescriptionHeader')[0].after(elem);
+            }
+        } catch(e) {gclh_error("Improve event date and event time in cache listing",e);}
     }
 
 // Show real owner.
@@ -4986,7 +4988,7 @@ var mainGC = function() {
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){setDefaultLogtype(waitCount);}, 10);
             }
             try {
-                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined' && settings_default_logtype_control
+                if (!isEdit && !document.location.href.match(/logType=/i) && typeof pageData !== 'undefined' && typeof pageData.isEvent !== 'undefined' && typeof pageData.logTypes !== 'undefined'
                     && ((!isDraft && !isTB && (settings_default_logtype || settings_default_logtype_event || settings_default_logtype_owner))
                         || isTB && settings_default_tb_logtype)) {
                     setDefaultLogtype(0);
@@ -5343,8 +5345,6 @@ var mainGC = function() {
             } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
 
             // Auto visit for TBs.
-            var classesSelected = '';
-            var classesNotSelected = '';
             function getTbsAV() {return (isTbHideActiv ? $('ul.tb-list li.tb-item.gclh_hideTB_checked:not(.gclh_hideTB)') : $('ul.tb-list li.tb-item'))}
             function getLogTypeAV() {return $('input[name="logType"]').val();}
             function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
@@ -5363,9 +5363,9 @@ var mainGC = function() {
                 } else if (getTbActionTypeAV(tb) == '75') {
                     $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="-1"]')[0].click();
                 }
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').prop('class', classesNotSelected);
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').prop('class', classesSelected);
-           }
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').removeClass('checked');
+                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').addClass('checked');
+            }
             function buildAutosAV() {
                 let tbs = getTbsAV();
                 if (tbs.length > 0) {
@@ -5389,9 +5389,6 @@ var mainGC = function() {
                             if (getValue("autovisit_"+tbC, "new") === "new") {
                                 setValue("autovisit_"+tbC, settings_autovisit_default);
                             }
-                            // Notice classes for selected and not selected buttons.
-                            classesSelected = $(tbs[i]).find('.gclh_autovisit label')[0].className;
-                            classesNotSelected = $(tbs[i]).find('.gclh_autovisit label')[1].className;
                             // Adapt copied buttons for auto visit feature.
                             $(tbs[i]).find('.gclh_autovisit label')[2].remove();
                             $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
@@ -5442,35 +5439,25 @@ var mainGC = function() {
             try {
                 if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
                     waitForTbsAV(0);
-                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
-                    css += '.segmented-buttons.gclh_autovisit {position: absolute; margin-top: 60px !important;}';
+                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px;}';
+                    css += '.segmented-buttons.gclh_autovisit {position: absolute; display: block; margin-top: 60px;}';
                     css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
                 }
             } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
 
             // Replicate TB-Header to bottom.
             function buildTBHeaderToBottom(waitCount) {
-                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-inventory-header .button-container button')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
-                    var tbHeader = $( $('.tb-inventory-header')[0] ).clone()[0];
-                    $(tbHeader).addClass('gclh_tb_header_bottom');
-                    if (!$(tbHeader).find('button[data-event-label*="clear all"]')[0]) {
-                        var tbClearButton = $( $('.tb-inventory-header .button-container button')[0] ).clone()[0];
-                        $(tbClearButton).attr('data-event-label', 'Cache Log - clear all');
-                        $(tbClearButton)[0].innerText = 'Clear all';
-                        $(tbHeader).find('.button-container button')[0].before(tbClearButton);
-                    }
-                    if (!$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
-                        $('.tb-list').after(tbHeader);
-                        $('.gclh_tb_header_bottom button[data-event-label*="clear all"]')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
-                        });
-                        $('.gclh_tb_header_bottom button[data-event-label*="visit all"]')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
-                        });
-                        $('.gclh_tb_header_bottom button[data-event-label*="drop all"]')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
-                        });
-                    }
+                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-list')[0] && !$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
+                    $('.tb-list').after('<div class="tb-inventory-header gclh_tb_header_bottom"><h2>' + $('.tb-inventory-header h2')[0].innerHTML + '</h2><div class="button-container"><button class="link-button gclh_tb_clear_all">Clear all</button><button class="link-button gclh_tb_visit_all">Visit all</button><button class="link-button gclh_tb_drop_all">Drop all</button></div></div>');
+                    $('.gclh_tb_clear_all')[0].addEventListener("click", function(){
+                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
+                    });
+                    $('.gclh_tb_visit_all')[0].addEventListener("click", function(){
+                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
+                    });
+                    $('.gclh_tb_drop_all')[0].addEventListener("click", function(){
+                        $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
+                    });
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
             }
@@ -5583,16 +5570,14 @@ var mainGC = function() {
 
             // Hide social share button.
             function hideSocialShareButton(waitCount) {
-                $('li.masthead-control button[data-testid="share-log"]').each(function() {
-                    if (window.getComputedStyle($(this)[0].closest('li')).display != 'none') {
-                        $(this)[0].closest('li').style.display = 'none';
-                    }
-                });
+                if ($('li.masthead-control button[data-testid="share-log"]')[0] && window.getComputedStyle($('li.masthead-control button[data-testid="share-log"]')[0].closest('li')).display != 'none') {
+                    $('li.masthead-control button[data-testid="share-log"]')[0].closest('li').style.display = 'none';
+                }
                 waitCount++; if (waitCount <= 100) setTimeout(function(){hideSocialShareButton(waitCount);}, 100);
             }
             try {
                 if (settings_hide_share_log_button_log_view) hideSocialShareButton(0);
-                if (settings_hide_socialshare) css += 'ul.social-media-buttons {display: none !important;}';
+                if (settings_hide_socialshare) css = 'ul.social-media-buttons {display: none !important;}';
             } catch(e) {gclh_error("Hide socialshare4 in improve log view",e);}
 
             // Build copy to clipboard icon for logtext in cache logs.
@@ -16917,9 +16902,9 @@ var mainGC = function() {
             html += checkboxy('settings_log_status_icon_visible', 'Set log status icon always visible') + show_help("With this option, the log status icon is always displayed complete, even if the cache is deactivated or archived. The log status icon is located above the cache type icons and indicates for example if a cache was found, if there is a personal note or if there are corrected coordinates.") + "<br>";
             html += checkboxy('settings_strike_archived', 'Strike through title of archived and disabled caches') + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If this option is enabled, the alias that an owner used to publish the cache is replaced with the real owner name.") + "<br>";
-            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
+            html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
             html += newParameterOn1;
-            html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter.") + "<br>";
+            html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
             html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
@@ -17054,6 +17039,14 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
+            html += newParameterOn3;
+            html += checkboxy('settings_show_eventinfo_in_desc', 'Show event info at the beginning of the cache description') + show_help("With this option an event info with the event startdate, the event weekday, the event starttime and the event endtime can be displayed.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_eventinfo_in_desc_bold', 'Show event info bold') + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += "&nbsp; " + checkboxy('settings_show_eventdayX1', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
+            html += newParameterOn1;
+            html += "&nbsp; " + checkboxy('settings_show_eventtime_with_24_hoursX0', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
+            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before trying to load it. If an image is unreachable or dosen't exists, a placeholder is shown. The mouse over the placeholder will shown the image link. A mouse click to the placeholder will open the link in a new tab.") + "<br>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
             html += checkboxy('settings_listing_hide_external_link_warning', 'Hide external link warning message') + show_help("With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.") + "<br>";
@@ -17197,35 +17190,32 @@ var mainGC = function() {
             html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
-            html += newParameterOn3;
-            html += checkboxy('settings_default_logtype_control', 'Set default log types') + "<br>";
-            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += "<table><tbody>";
-            html += "  <tr><td>&nbsp; Default log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype'>";
+            html += "  <tr><td>Default log type</td>";
+            html += "    <td><select class='gclh_form' id='settings_default_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"2\" " + (settings_default_logtype == "2" ? "selected=\"selected\"" : "") + ">Found it</option>";
             html += "    <option value=\"3\" " + (settings_default_logtype == "3" ? "selected=\"selected\"" : "") + ">Didn't find it</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner attention requested</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
-            html += "  <tr><td>&nbsp; Default event log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_event'>";
+            html += "  <tr><td>Default event log type</td>";
+            html += "    <td><select class='gclh_form' id='settings_default_logtype_event'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
             html += "    <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype_event == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
-            html += "  <tr><td>&nbsp; Default owner log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_owner'>";
+            html += "  <tr><td>Default owner log type</td>";
+            html += "    <td><select class='gclh_form' id='settings_default_logtype_owner'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"46\" " + (settings_default_logtype_owner == "46" ? "selected=\"selected\"" : "") + ">Owner maintenance</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"22\" " + (settings_default_logtype_owner == "22" ? "selected=\"selected\"" : "") + ">Disable</option>";
             html += "    <option value=\"5\" " + (settings_default_logtype_owner == "5" ? "selected=\"selected\"" : "") + ">Archive</option>";
             html += "    <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option></select></td>";
-            html += "  <tr><td>&nbsp; Default TB log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_tb_logtype'>";
+            html += "  <tr><td>Default TB log type</td>";
+            html += "    <td><select class='gclh_form' id='settings_default_tb_logtype'>";
             html += "    <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"4\" " + (settings_default_tb_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
@@ -17823,6 +17813,7 @@ var mainGC = function() {
             setEvForDouPara("settings_smaller_upvotes_icons", "click");
             setEvForDouPara("settings_no_wiggle_upvotes_click", "click");
             setEvForDouPara("settings_show_eventday", "click");
+            setEvForDouPara("settings_show_eventtime_with_24_hours", "click");
             setEvForDouPara("settings_drafts_go_automatic_back", "click");
             setEvForDouPara("settings_drafts_after_new_logging_view_log", "click");
             setEvForDouPara("settings_drafts_after_new_logging_view_log_button", "click");
@@ -18029,10 +18020,6 @@ var mainGC = function() {
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature");
             setEvForDepPara("settings_add_cache_log_signature","settings_log_signature_on_fieldnotes");
             setEvForDepPara("settings_add_tb_log_signature","settings_tb_signature");
-            setEvForDepPara("settings_default_logtype_control","settings_default_logtype");
-            setEvForDepPara("settings_default_logtype_control","settings_default_logtype_event");
-            setEvForDepPara("settings_default_logtype_control","settings_default_logtype_owner");
-            setEvForDepPara("settings_default_logtype_control","settings_default_tb_logtype");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
@@ -18051,6 +18038,9 @@ var mainGC = function() {
             setEvForDepPara("settings_drafts_after_new_logging_view_log", "settings_drafts_after_new_logging_view_log_buttonX0");
             setEvForDepPara("settings_drafts_after_new_logging_view_logX0", "settings_drafts_after_new_logging_view_log_button");
             setEvForDepPara("settings_drafts_after_new_logging_view_logX0", "settings_drafts_after_new_logging_view_log_buttonX0");
+            setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventinfo_in_desc_bold");
+            setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventdayX1");
+            setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -18265,6 +18255,8 @@ var mainGC = function() {
                 'settings_show_bbcode',
                 'settings_show_eventday',
                 'settings_show_eventtime_with_24_hours',
+                'settings_show_eventinfo_in_desc',
+                'settings_show_eventinfo_in_desc_bold',
                 'settings_show_mail',
                 'settings_gc_tour_is_working',
                 'settings_show_smaller_gc_link',
@@ -18565,7 +18557,6 @@ var mainGC = function() {
                 'settings_less_space_log_lines_log_form',
                 'settings_listing_bigger_avatar_with_mouse',
                 'settings_listing_ctoc_coords_waypoints',
-                'settings_default_logtype_control',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
