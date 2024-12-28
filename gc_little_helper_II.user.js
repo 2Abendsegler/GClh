@@ -2288,7 +2288,7 @@ var mainGC = function() {
     }
 
 // Improve event date and event time in cache listing.
-    if (is_page("cache_listing") && $('h2.CacheDescriptionHeader')[0] && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-)/) &&  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents
+    if (is_page("cache_listing") && $('h2.CacheDescriptionHeader')[0] && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-|4738$|4738-)/) &&  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents, Block Party
         $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof eventCacheData !== 'undefined' && typeof eventCacheData.start !== 'undefined' && typeof eventCacheData.end !== 'undefined' && typeof chromeSettings !== 'undefined' && typeof chromeSettings.locale !== 'undefined') {
         try {
             var startdate = eventCacheData.start.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',});
