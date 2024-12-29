@@ -10824,6 +10824,10 @@ var mainGC = function() {
             // Get map instance.
             const getMapInstance = (state) => {
                 //console.log('getMapInstance');
+
+                // if div#map-container has class .leaflet-container -> Leaflet
+                // else GM
+
                 // Only set once.
                 if (unsafeWindow.MapSettings.Map !== null) return;
 
@@ -12164,12 +12168,12 @@ var mainGC = function() {
                                     }
                                 } catch(e) {};
                             }
-                            if (document.location.pathname.match(/^\/play\/map/)) {
+                            if (document.location.pathname.match(/^\/live\/play\/map/)) {
                                 setTimeout(() => {
                                     // Remove default GS map tiles.
                                     document.querySelector('.mapboxgl-canvas').remove();
                                     // Adapt layout of gclh map layer control to GS controls.
-                                    document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width: 39px; height: 39px;');
+                                    document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width: 40px; height: 40px;');
                                     document.querySelector('#gclh_layers').setAttribute('style', 'border: 1px solid rgb(0, 178, 101);');
                                     // Ensure that map selection area is on top of map control buttons.
                                     document.querySelector('.leaflet-top.leaflet-right').setAttribute('style', 'z-index:1020;');
@@ -12207,6 +12211,7 @@ var mainGC = function() {
                     if (is_page("searchmap")) {
                         // In Search map the list items do have an additional div element as 1st child
                         // (whereas list items in Browse map don't).
+                        // TODO: seems like this is not the case anymore after tech update -> remove code section?
                         for (var i=0; i<labels.length; i++) {
                             if (labels[i].children[0].children[1].innerHTML.match(defaultLayer)) {
                                 // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
@@ -12257,16 +12262,12 @@ var mainGC = function() {
             }
             addLayerControl();
             if (is_page('map')) loopAtLayerControls(0);
-            if (is_page('searchmap')) {
+            if (is_page('searchmap_new')) {
                 setDefaultsInLayer();
                 // Remove default GS layer control.
-                (function removeGSLayerControl(waitCount = 0) {
-                    if ($('.layer-control')[0]) {
-                        $('.layer-control').parent().remove();
-                        return;
-                    }
-                    if (++waitCount <= 200) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
-                })();
+                waitForElementThenRun('div.md\\:block', () => {
+                    $('div.md\\:block, div.md\\:hidden').remove();
+                });
             }
 
             var css = '';
