@@ -12207,22 +12207,6 @@ var mainGC = function() {
                             }
                         }
                     }
-                    if (is_page("searchmap")) {
-                        // In Search map the list items do have an additional div element as 1st child
-                        // (whereas list items in Browse map don't).
-                        // TODO: seems like this is not the case anymore after tech update -> remove code section?
-                        for (var i=0; i<labels.length; i++) {
-                            if (labels[i].children[0].children[1].innerHTML.match(defaultLayer)) {
-                                // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
-                                if (labels[i].children[0].children[0].checked && labels.length > 1) {
-                                    if (i == 0) labels[i+1].children[0].children[0].click();
-                                    else labels[i-1].children[0].children[0].click();
-                                }
-                                labels[i].children[0].children[0].click();
-                                break;
-                            }
-                        }
-                    }
                 }
                 var hs = ".gclh_layers.gclh_used .leaflet-control-layers-overlays";
                 if ($(hs).find('label input')[0]) {
