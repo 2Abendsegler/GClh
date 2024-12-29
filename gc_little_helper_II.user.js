@@ -11334,11 +11334,11 @@ var mainGC = function() {
 
             // Build map control buttons.
             function buildMapControlButtons() {
-                if (!$('.map-setting-controls ul')[0]) return;
+                if (!$('div.zoom-controls')[0]) return;
                 // Relocate browse button to other buttons.
-                if (settings_relocate_other_map_buttons && !$('#gclh_browse_map')[0] && $('#browse-map-cta')[0]) {
-                    $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_browse_map" class="map-control" title="Browse geocaches"><svg><use xlink:href="#globe"></use></svg></button></li>');
-                    $('#gclh_browse_map')[0].addEventListener("click", function() { $('#browse-map-cta')[0].click(); }, false);
+                if (settings_relocate_other_map_buttons && !$('#gclh_browse_map')[0] && $('[data-testid="gc-button-link"]')[0]) {
+                    $('div.zoom-controls').parent().prepend('<div class="hidden tablet:block"><button id="gclh_browse_map" class="map-control"><svg><title>Browse geocaches</title><use href="#globe"></use></svg></button></div>');
+                    $('#gclh_browse_map')[0].addEventListener("click", function() { document.querySelector('[data-testid="gc-button-link"]').click(); }, false);
                 }
                 // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map.
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
@@ -11974,8 +11974,7 @@ var mainGC = function() {
             css += '.map-control {margin-bottom: 10px !important;}';
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
-            css += '#browse-map-cta {right: 10px;}';
-            if (settings_relocate_other_map_buttons) css += '#browse-map-cta {display: none !important;}';
+            if (settings_relocate_other_map_buttons) css += '[data-testid="gc-button-link"] {display: none !important;}';
             else css += '#gclh_layers {top: 52px;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
