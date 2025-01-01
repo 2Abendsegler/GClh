@@ -17654,10 +17654,13 @@ var mainGC = function() {
                 for (name in all_map_layers) {
                     $("#settings_maplayers_available").append(layerOption(name, (settings_map_default_layer == name)));
                 }
+            // Preserve user defined map layer order.
             } else {
                 for (name in all_map_layers) {
-                    if (settings_map_layers.indexOf(name) != -1) $("#settings_maplayers_available").append(layerOption(name, (settings_map_default_layer == name)));
-                    else $("#settings_maplayers_unavailable").append(layerOption(name, false));
+                    if (settings_map_layers.indexOf(name) === -1) $("#settings_maplayers_unavailable").append(layerOption(name, false));
+                }
+                for (i in settings_map_layers) {
+                    $("#settings_maplayers_available").append(layerOption(settings_map_layers[i], (settings_map_default_layer === settings_map_layers[i])));
                 }
             }
             // Show/Hide Einstellungen zu Layers in Map.
@@ -18253,8 +18256,8 @@ var mainGC = function() {
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
             var new_settings_map_layers = new Array();
-            for (name in all_map_layers) {
-                for (var i = 0; i < new_map_layers_available.options.length; i++) {
+            for (var i = 0; i < new_map_layers_available.options.length; i++) {
+                for (name in all_map_layers) {
                     if (name == new_map_layers_available.options[i].value) {
                         new_settings_map_layers.push(new_map_layers_available.options[i].value);
                         break;
