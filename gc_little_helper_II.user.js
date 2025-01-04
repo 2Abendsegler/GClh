@@ -13444,19 +13444,27 @@ var mainGC = function() {
         } catch(e) {gclh_error("Show Coin-Sums",e);}
     }
 
-// Show Coin Series in TB-Listing.
+// Show TB, Coin Series in TB-Listing.
     if (document.location.href.match(/\.com\/track\/details\.aspx/)) {
         try {
-            if ($('#ctl00_ContentBody_BugTypeImage')[0] && $('#ctl00_ContentBody_BugTypeImage')[0].alt && $('.BugDetailsList')[0]) {
+            if ($('.BugDetailsList')[0]) {
                 var dl = $('.BugDetailsList')[0];
                 var dt = document.createElement("dt");
                 var dd = document.createElement("dd");
                 dt.innerHTML = "Series:";
-                dd.innerHTML = $('#ctl00_ContentBody_BugTypeImage')[0].alt;
-                dl.appendChild(dt);
-                dl.appendChild(dd);
+                if ($('#ctl00_ContentBody_BugTypeImage')[0] && $('#ctl00_ContentBody_BugTypeImage')[0].alt) {
+                    dd.innerHTML = $('#ctl00_ContentBody_BugTypeImage')[0].alt;
+                    dd.title = '(Determined from trackable icon)';
+                } else if ($('#ctl00_ContentBody_lbHeading')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0] && $('head title')[0]) {
+                    dd.innerHTML = $('head title')[0].innerHTML.replace('(' + $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML + ') ', '').replace(' - ' + $('#ctl00_ContentBody_lbHeading')[0].innerHTML, '').trim();
+                    dd.title = '(Determined from page title)';
+                }
+                if (!dd.innerHTML == '') {
+                    dl.appendChild(dt);
+                    dl.appendChild(dd);
+                }
             }
-        } catch(e) {gclh_error("Show Coin Series",e);}
+        } catch(e) {gclh_error("Show TB, Coin Series",e);}
     }
 
 // Copy TB Code in TB Listing to clipboard.
