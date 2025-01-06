@@ -9896,9 +9896,9 @@ var mainGC = function() {
                 }
             }
             if (settings_show_cache_type_icons_in_dashboard) {
-                css += '.activity-label .icon:nth-child(1) {margin-right: 0px;}';
-                css += '.activity-label.has-favorite .icon-favorited {position: relative; left: -8px; margin-right: -4px;}';
-                css += '.activity-label.has-favorite a {margin-left: 0;}';
+                css += '.activity-label .icon:nth-child(1) {margin-right: 0px !important;}';
+                css += '.activity-label.has-favorite .icon-favorited {position: relative !important; left: -8px !important; margin-right: -4px !important;}';
+                css += '.activity-label.has-favorite a {margin-left: 0 !important;}';
             }
 
             // Build log texts in Markdown.
