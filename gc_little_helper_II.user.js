@@ -10672,7 +10672,8 @@ var mainGC = function() {
 
                 // Initialize Map object.
                 unsafeWindow.MapSettings = {'Map': null};
-                // Add proxy to get map instance.
+
+                // Add proxy to get (Leaflet) map instance.
                 if (unsafeWindow.React?.useState) {
                     unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
                         apply: (target, thisArg, argArray) => {
@@ -10686,7 +10687,6 @@ var mainGC = function() {
                 }
             }
 
-            /* Default filters */
             // Check if default filters have to be set.
             function run_setDefaultFilters() {
                 // Default gclh filters must not be set in the following cases:
@@ -10694,131 +10694,110 @@ var mainGC = function() {
                 // 2) mapping results from new search page or any stored search map url
                 //    -> parameters 'asc=' and 'sort=' are always present
                 // 3) matrix searches (covered by 2))
-                // 4) page props aren't available
                 if (document.location.href.match(/\.com\/live\/play\/map\?bmCode=/) ||
-                    window.location.search.match(/asc=|sort=/) ||
-                    !unsafeWindow.__NEXT_DATA__?.props?.pageProps) {
+                    window.location.search.match(/asc=|sort=/)) {
                     return false;
                 } else return true;
             }
-            console.log('run_setDefaultFilters: ' + run_setDefaultFilters());
             if (run_setDefaultFilters()) {
-                // Set default filters.
-                setDefaultFilters();
-                // Wipe initial search results.
+                /*// Wipe initial search results.
                 unsafeWindow.__NEXT_DATA__.props.pageProps.searchResults = {'results': [], 'total': 0};
+                // Wipe initial empty search sidebar content.
+                waitForElementThenRun('div.sidebar-content', () => {
+                    document.querySelector('div.sidebar-content').replaceChildren();
+                    document.querySelector('p.results-label').textContent = '';
+                    console.log('wipe initial sidebar content');
+                }, 20000);*/
 
                 /*// Working hide sidebar.
                 waitForElementThenRun('button[data-testid="sidebar-toggle"]', () => {
                     document.querySelector('button[data-testid="sidebar-toggle"]').click();
                 }, 20000);*/
 
-                // Wipe initial sidebar content (empty search only).
-                waitForElementThenRun('div.sidebar-content', () => {
-                    document.querySelector('div.sidebar-content').replaceChildren();
-                    document.querySelector('p.results-label').textContent = '';
-                    console.log('wipe initial sidebar content');
-                }, 20000);
-
-                // Perform search with default filters.
-                const distanceFrom = 'input[data-event-label="Filters - Distance From"]';
+                // Perform search with default filters:
+                // 1) wait until filters are available (e.g. found status filter)
+                // 2) wait until GS default filters are applied (otherwise ours will be overridden):
+                //    - erase default distance value
+                //    - observe this value until it will be be reset by GS default filters
+                // 3) set default filters (slightly delayed, otherwise we're too fast)
+                // 4) run filtered search
                 const func = () => {
-                    // Reset distance value in order to force a value change.
-                    // (this is the trigger to force a search with default filters by the observer)
-                    console.log('Distance From: ' + document.querySelector(distanceFrom).getAttribute('value'));
-                    document.querySelector(distanceFrom).setAttribute('value', '');
-                    console.log('Distance From: ' + document.querySelector(distanceFrom).getAttribute('value'));
+                    // Ensure that filters are not collapsed (otherwise they cannot be selected).
+                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"] svg[aria-label="Expand"]')) {
+                        document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"]').click();
+                    }
+                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"] svg[aria-label="Expand"]')) {
+                        document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"]').click();
+                    }
+                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"] svg[aria-label="Expand"]')) {
+                        document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"]').click();
+                    }
+                    // Erase default distance value.
+                    document.querySelector('[data-event-label="Filters - Distance From"]').setAttribute('value', '');
 
-                    // Observe distance value for change, then run filtered search (only once).
+                    // Observe distance value for changes, then run filtered search (only once).
                     const cb = function(_mutationsList, observer) {
-                        console.log('Distance From: ' + document.querySelector(distanceFrom).getAttribute('value'));
-                        // Run filtered search.
-                        document.querySelector('button[data-event-label="Filters - Apply"]').click();
+                        setTimeout(() => {
+                            // Set default filters.
+                            setDefaultFilters();
+                            // Run filtered search.
+                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
+                        }, 500);
+
                         observer.disconnect();
                         observer = null;
-                        console.log('observer disconnected');
                     }
                     const config = {
                         attributes: true,
                         attributeFilter: ["value"]
                     };
                     const observer = new MutationObserver(cb);
-                    const target = document.querySelector(distanceFrom);
+                    const target = document.querySelector('[data-event-label="Filters - Distance From"]');
                     observer.observe(target, config);
                 }
-                waitForElementThenRun(distanceFrom, func, 20000);
+                waitForElementThenRun('[data-event-label="Expand/Collapse Filters - Found Status"]', func, 20000);
             }
 
             // Set gclh default filters.
-            // If no gclh default filters are specified, then GS default filters are removed instead.
-            // (note that for bm lists and search urls no GS default filters are set and thus don't need removal)
             function setDefaultFilters() {
-                console.log('setDefaultFilters');
-
-                // Get reference to object that holds filters.
-                let filterData = unsafeWindow.__NEXT_DATA__.props.pageProps.filterData;
-
                 // "hideFinds": null=All, 0=Found by me, 1=Not found by me; GS default value: 1
                 if (settings_map_hide_found) {
                     // Show only caches not found by you (GS sets filter by default, but doesn't hurt to set again, in case this changes).
-                    filterData.hideFinds = 1;
+                    document.querySelector('input[data-event-label="Filters - Found Status - Not Found"]').click();
                 } else {
                     // Show all caches (unset GS default filter).
-                    filterData.hideFinds = null;
-                    // Unset "notFoundBy" filter (set by default by GS).
-                    filterData.notFoundBy = [];
+                    document.querySelector('input[data-event-label="Filters - Found Status - All"]').click();
                 }
-                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: 1
+                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: null
                 if (settings_map_hide_hidden) {
-                    // Show only caches you don't own (GS sets filter by default, but doesn't hurt to set again, in case this changes).
-                    filterData.hideOwned = 1;
+                    // Show only caches you don't own.
+                    document.querySelector('input[data-event-label="Filters - Cache Owner - Not Owned"]').click();
                 } else {
-                    // Show all caches (unset GS default filter).
-                    filterData.hideOwned = null;
+                    // Show all caches.
+                    document.querySelector('input[data-event-label="Filters - Cache Owner - All"]').click();
                 }
 
                 // "geocacheTypes": [2, 9, 3773, 3]=cache types to show; GS default: [] (all)
                 //  Cache types from search map:
-                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6, 3653
+                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6,3653
                 //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
-                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453, 1304, 3774, 4738
+                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453,1304,3774,4738
                 //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
-                let types_to_show = [2, 9, 3773, 3, 8, 137, 5, 11, 1858, 4, 6, 3653, 13, 453, 1304, 3774, 4738, 7005];
-                const gclh_cache_types = [2, 3, 4, 5, 6, 8, 11, 13, 137, 453, 1858, 7005];
-                let types_filtered = [];
-                // Hide cache types.
-                for (let i = 0; i < gclh_cache_types.length; i++) {
-                    // If cache type isn't filtered, there's nothing to do for this type.
-                    if (!window["settings_map_hide_" + gclh_cache_types[i]]) continue;
-
-                    // Add cache type(s) to array of filtered cache types.
-                    switch (gclh_cache_types[i]) {
-                        case 3: case 4: case 5: case 8: case 11: case 13: case 137: case 1858: case 7005:
-                            types_filtered.push(gclh_cache_types[i]);
-                            break;
-                        case 2:
-                            types_filtered.push(2, 9, 3773);
-                            break;
-                        case 6:
-                            types_filtered.push(6, 3653);
-                            break;
-                        case 453:
-                            types_filtered.push(453, 1304, 3774, 4738);
-                            break;
-                        default:
-                            gclh_log(`No instruction found for cache type ${gclh_cache_types[i]}.`);
+                let types_to_show = {2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event"};
+                const n_types = Object.keys(types_to_show).length;
+                // Remove hidden cache types from types_to_show.
+                for (let key in types_to_show) {
+                    if (window["settings_map_hide_" + key]) {
+                        delete types_to_show[key];
                     }
                 }
                 // Only set cache type filter if at least one cache type is hidden.
-                if (types_filtered[0]) {
-                    // Remove the filtered cache types from the array of all cache types to show.
-                    types_to_show = types_to_show.filter(val => !types_filtered.includes(val));
+                if (Object.keys(types_to_show).length < n_types) {
                     // Set "geocacheTypes" filter.
-                    filterData.geocacheTypes = types_to_show;
+                    for (let key in types_to_show) {
+                        document.querySelector('input[data-event-label="Filters - Geocache Type - ' + types_to_show[key] + '"]').click();
+                    }
                 }
-
-                // Print all available search parameters (for debugging).
-                //console.table(JSON.parse(JSON.stringify(filterData)));
             }
 
             // Get map instance.
@@ -16809,9 +16788,9 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+" src='" + imageBaseUrl + "2.png' title='Traditional'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+" src='"  + imageBaseUrl + "3.png' title='Multi-Cache'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event / Community Celebration Event'>");
-            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>") + onlyBrowseMapBehindIcon;
-            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>") + onlyBrowseMapBehindIcon;
-            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + onlyBrowseMapBehindIcon + "<br>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+" src='" + imageBaseUrl + "137.png' title='EarthCache'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+" src='" + imageBaseUrl + "4.png' title='Virtual'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+" src='" + imageBaseUrl + "11.png' title='Webcam'>") + "<br>";
