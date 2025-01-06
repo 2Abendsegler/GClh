@@ -19844,16 +19844,17 @@ var mainGC = function() {
 
 // Auto import from Dropbox.
     if (settings_sync_autoImport && (settings_sync_last.toString() === "Invalid Date" || (new Date() - settings_sync_last) > settings_sync_time) && document.URL.indexOf("#access_token") === -1) {
+        // A check to see if synchronization needs to be performed should only be made every 10 hours.
+        // This should be independent of whether a synchronization has taken place or not.
+        settings_sync_last = new Date();
+        setValue("settings_sync_last", settings_sync_last.toString());
         gclh_sync_DBHash()
             .done(function(hash) {
                 if (hash != settings_sync_hash) {
                     gclh_sync_DBLoad().done(function() {
-                        settings_sync_last = new Date();
                         settings_sync_hash = hash;
-                        setValue("settings_sync_last", settings_sync_last.toString()).done(function() {
-                            setValue("settings_sync_hash", settings_sync_hash).done(function() {
-                                if (is_page("profile")) reloadPage();
-                            });
+                        setValue("settings_sync_hash", settings_sync_hash).done(function() {
+                            if (is_page("profile")) reloadPage();
                         });
                     });
                 }
