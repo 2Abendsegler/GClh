@@ -133,7 +133,7 @@ gclh_nav ul {
     padding: 12px 0;
     position: absolute;
     transform: translateX(-2em);
-    z-index: 100;
+    z-index: 3000;
     color: #4a4a4a;
 }
 .submenu::after {
