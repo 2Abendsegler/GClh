@@ -10709,11 +10709,6 @@ var mainGC = function() {
                     console.log('wipe initial sidebar content');
                 }, 20000);*/
 
-                /*// Working hide sidebar.
-                waitForElementThenRun('button[data-testid="sidebar-toggle"]', () => {
-                    document.querySelector('button[data-testid="sidebar-toggle"]').click();
-                }, 20000);*/
-
                 // Perform search with default filters:
                 // 1) wait until filters are available (e.g. found status filter)
                 // 2) wait until GS default filters are applied (otherwise ours will be overridden):
@@ -11613,25 +11608,11 @@ var mainGC = function() {
             }
 
             // Hide sidebar.
-            let runHideSidebar = true;
-            function hideSidebar() {
-                // Run only once.
-                if (!settings_map_hide_sidebar || !runHideSidebar) return;
-                runHideSidebar = false;
-                // Close the sidebar.
-                function clickToClose(wc) {
-                    // The sidebar is still closed from the start, so wait.
-                    if (!$('.sidebar-toggle')[0] || $('body').hasClass('sidebar-is-closed')) {
-                        wc++;
-                        if (wc <= 25) setTimeout(function() { clickToClose(wc); }, 200);
-                    // The sidebar is now open.
-                    } else {
-                        $('div#sidebar-group>button.sidebar-toggle').click();
-                    }
-                }
-                clickToClose(0);
+            if (settings_map_hide_sidebar) {
+                waitForElementThenRun('button[data-testid="sidebar-toggle"]', () => {
+                    document.querySelector('button[data-testid="sidebar-toggle"]').click();
+                }, 20000);
             }
-            hideSidebar();
 
             // Improve add to list pop up.
             function improveAddtolistPopup() {
@@ -12224,7 +12205,7 @@ var mainGC = function() {
             }
             addLayerControl();
             if (is_page('map')) loopAtLayerControls(0);
-            if (is_page('searchmap_new')) {
+            if (is_page('searchmap')) {
                 setDefaultsInLayer();
                 // Remove default GS layer control.
                 waitForElementThenRun('div.md\\:block', () => {
