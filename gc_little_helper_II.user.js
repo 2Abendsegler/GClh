@@ -10659,7 +10659,7 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
-            // Map control and display of found caches at corrected coordinates.
+            // Map control.
             if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
                 // Add React object to global space.
                 try {
@@ -10682,6 +10682,22 @@ var mainGC = function() {
                                 getMapInstance(useState);
                             }
                             return useState;
+                        }
+                    });
+                }
+            }
+
+            // Cache data for display at corrected coordinates.
+            if (settings_show_found_caches_at_corrected_coords_but) {
+                // Add proxy to get cache data.
+                if (unsafeWindow.React?.useMemo) {
+                    unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
+                        apply: (target, thisArg, argArray) => {
+                            let useMemo = target.apply(thisArg, argArray);
+                            if (useMemo && useMemo?.props?.searchResults) {
+                                processCaches(useMemo);
+                            }
+                            return useMemo;
                         }
                     });
                 }
@@ -10797,115 +10813,131 @@ var mainGC = function() {
 
             // Get map instance.
             const getMapInstance = (state) => {
-                //console.log('getMapInstance');
+                if (unsafeWindow.MapSettings?.Map?._mapPane) return;
 
-                // if div#map-container has class .leaflet-container -> Leaflet
-                // else GM
-
-                // Only set once.
-                if (unsafeWindow.MapSettings.Map !== null) return;
-
+                // Leaflet maps only.
                 if (state[0].map) {
-                    // Leaflet maps.
                     unsafeWindow.MapSettings.Map = state[0].map;
-                } else if (state[0].__gm) {
-                    // TODO: Google maps.
-                    unsafeWindow.MapSettings.Map = state[0];
                 }
             }
             // Refresh map.
             const redrawMap = () => {
-                //console.log('redrawMap');
                 if (unsafeWindow.MapSettings?.Map?._mapPane) {
-                    // Leaflet maps.
+                    // Refresh Leaflet maps.
                     unsafeWindow.MapSettings.Map.fitBounds(unsafeWindow.MapSettings.Map.getBounds());
-                    // Clear cache selection.
+                    // Clear possible cache selection.
                     unsafeWindow.MapSettings.Map.fireEvent('click');
-                } else if (unsafeWindow.MapSettings?.Map?.__gm) {
-                    // TODO: Google maps.
-                    // To force a map redraw, select the 1st cache from the list, then trigger a click into the map.
-                    // ("map.fitBounds(map.getBounds())" would do the same but zooms out one level afterwards, reason unknown.)
-                    $('.geocache-item-details-container').first().click();
-                    // Clear cache selection.
-                    google.maps.event.trigger(unsafeWindow.MapSettings.Map, 'click');
+                } else {
+                    gclh_log('unsafeWindow.MapSettings.Map._mapPane not available');
                 }
             }
             // Process cache data.
             const processCaches = (state) => {
-                // Ensure that last selected cache marker is reset to original coords.
-                if (!isActive && state[0].postedCoordinatesSave) {
-                    state[0].postedCoordinates = state[0].postedCoordinatesSave;
-                    delete state[0].postedCoordinatesSave;
-                    return;
-                }
                 // Nothing to be done.
-                if (!isActive && !resetToPostedCoords) return;
+                if (!isActive) return;
 
-                // Move caches to corrected position or reset to original coords.
-                if (state[0].results && state[0].results[0]) {
-                    let caches = state[0].results;
+                // Move caches to corrected position.
+                if (state.props.searchResults.results[0]) {
+                    // On initial page load, results array is read-only -> no modifications possible.
+                    // For 'Search this area', results array is (sometimes) writable -> modifications possible.
+                    let caches = state.props.searchResults.results;
+                    // If cache objects are read-only, nothing can be done.
+                    if (Object.getOwnPropertyDescriptor(caches[0], 'name').configurable === false) return;
+
                     let gc = null;
                     for (let i = 0; i < caches.length; i++) {
                         gc = caches[i];
-                        // If cache has corrected coords, process it.
+                        // If corrected coords are available, change cache coords.
                         if (gc.userCorrectedCoordinates) {
-                            // Reset to original coords.
-                            if (resetToPostedCoords) {
-                                gc.postedCoordinates = gc.postedCoordinatesSave;
-                                delete gc.postedCoordinatesSave;
-                                continue;
-                            }
-                            if (gc.postedCoordinatesSave) {
-                                // If coords are already corrected we're finished.
-                                return;
-                            } else {
-                                // Store original coords for reset.
-                                gc.postedCoordinatesSave = gc.postedCoordinates;
-                            }
-                            // Set corrected coords.
                             gc.postedCoordinates = gc.userCorrectedCoordinates;
                         }
                     }
-                    if (resetToPostedCoords) resetToPostedCoords = false;
-                    return;
-                }
-                // Keep selected cache marker at corrected position (otherwise it jumps to original coords).
-                if (state[0].userCorrectedCoordinates && !state[0].postedCoordinatesSave) {
-                    state[0].postedCoordinatesSave = state[0].postedCoordinates;
-                    state[0].postedCoordinates = state[0].userCorrectedCoordinates;
                 }
             }
             // Button for corrected coordinates.
             const addCorrectedCoordsButton = () => {
-                waitForElementThenRun(".map-setting-controls", () => {
-                    // Clear current map instance to get a new one automatically.
-                    unsafeWindow.MapSettings.Map = null;
-                    // Add button, but only once.
-                    if ($("#gclh_corrected_coords")[0]) return;
-                    const li =
-                        '<li role="menuitem">' +
-                        '<button id="gclh_corrected_coords" class="map-control" title="Show caches at corrected coordinates">' +
-                        '<svg aria-hidden="true" style="width:20px;height: 20px;"><use xlink:href="#pencil"></use></svg>' +
-                        '</button>' +
-                        '</li>';
-                    $('.map-setting-controls>ul').prepend(li);
-                    // When changing map layers preserve current button state.
-                    if (isActive) {
-                        $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
-                    }
+                waitForElementThenRun("button.map-control", () => {
+                    const button =
+                        '<button id="gclh_corrected_coords" class="map-control" title="Found caches displayed at ' + (isActive ? 'corrected' : 'original') + ' coordinates">' +
+                        '<svg><use href="' + (isActive ? '#solved' : '#solved_disabled') + '"></use></svg>' +
+                        '</button>';
+                    $('button.map-control').first().parent().parent().prepend(button);
+
                     // Toggle button for corrected coordinates.
                     $("#gclh_corrected_coords").bind("click", () => {
+                        // Run 'Search this area' to modify coords.
+                        document.querySelector('[data-testid="search-this-area-button"]').click();
+                        // Clear possible cache selection.
+                        unsafeWindow.MapSettings.Map.fireEvent('click');
                         if (!isActive) {
+                            // Activate.
                             isActive = true;
                             setValue('showCorrectedCoords', isActive);
-                            $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
+                            $('#gclh_corrected_coords').prop('title', 'Found caches displayed at corrected coordinates');
+                            $('#gclh_corrected_coords use').attr('href', '#solved');
                         } else {
+                            // Deactivate.
                             isActive = false;
                             setValue('showCorrectedCoords', isActive);
-                            resetToPostedCoords = true;
-                            $('#gclh_corrected_coords').prop('title', 'Show found caches at corrected coordinates').css('background-color', 'rgb(255, 255, 255)');
+                            $('#gclh_corrected_coords').prop('title', 'Found caches displayed at original coordinates');
+                            $('#gclh_corrected_coords use').attr('href', '#solved_disabled');
                         }
-                        redrawMap();
+                    });
+                });
+            }
+            // Add button to toggle display of found caches between original and corrected coordinates.
+            if (settings_show_found_caches_at_corrected_coords_but) {
+                var isActive = getValue('showCorrectedCoords', false);
+                // Add button with small delay to ensure it is always at the top (necessary for FF).
+                setTimeout(addCorrectedCoordsButton, 0);
+
+                // If show at corrected coords is active, update cache locations.
+                if (isActive) {
+                    // Observe distance filter for changes:
+                    // - unset default distance value
+                    // - wait until value gets reset by GS, then data is ready and a search can be performed
+                    const anchor = '[data-event-label="Filters - Distance From"]';
+                    waitForElementThenRun(anchor, () => {
+                        // Unset default distance value.
+                        document.querySelector(anchor).setAttribute('value', '');
+                        // Wait until data is ready, then update cache locations.
+                        const cb = (_, observer) => {
+                            // Run 'Search this area' to modify coords.
+                            document.querySelector('[data-testid="search-this-area-button"]').click();
+                            observer.disconnect();
+                            observer = null;
+                        }
+                        const target = document.querySelector(anchor);
+                        const config = { attributes: true, attributeName: "value" };
+                        let observer = new MutationObserver(cb);
+                        observer.observe(target, config);
+                    });
+                }
+            }
+            // Disable corrected coords button for GM (displaying corrected coords works, but enabling/disabling doesn't work reliably).
+            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol_on_search_map) {
+                const anchor = 'use[href="#map-layers"]';
+                waitForElementThenRun(anchor, () => {
+                    // On click to layer control start observing as long as layer control is open.
+                    const $layer_control = $(anchor).parent().parent().eq(1);
+                    const cb = (_, observer) => {
+                        // As soon as layer control is closed, enable/disable corrected coords button and stop observing.
+                        if ($layer_control.attr('aria-expanded') === 'false') {
+                            if (unsafeWindow.MapSettings?.Map?._mapPane) {
+                                // Leaflet.
+                                document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
+                            } else {
+                                // GM.
+                                document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
+                            }
+                            observer.disconnect();
+                        }
+                    }
+                    const target = $layer_control[0];
+                    const config = { attributes: true, attributeName: 'aria-expanded' };
+                    const observer = new MutationObserver(cb);
+                    $layer_control.bind('click', () => {
+                        observer.observe(target, config);
                     });
                 });
             }
@@ -10913,44 +10945,6 @@ var mainGC = function() {
             // Add layer control.
             if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 addLayersOnMap();
-            }
-            // Add button to toggle display of found caches between original and corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but) {
-                var isActive = getValue('showCorrectedCoords', false);
-                var resetToPostedCoords = false;
-                addCorrectedCoordsButton();
-            }
-            // Re-add corrected coordinates button when necessary.
-            // (For GS layer control, a map layer change between Leaflet maps removes all control buttons whereas GM keeps them.)
-            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol && !settings_use_gclh_layercontrol_on_search_map) {
-                waitForElementThenRun('button.layer-control', () => {
-                    const addClickEventToLayerControl = () => {
-                        // On click to layer control start observing as long as layer control is open.
-                        $('button.layer-control').bind('click', function clickFunc() {
-                            const cb = (_, observer) => {
-                                // As soon as layer control is closed add the button and stop observing.
-                                if (!$('button.layer-control.is-open')[0]) {
-                                    addCorrectedCoordsButton();
-                                    observer.disconnect();
-                                    // Remove click event from (possibly deleted) layer control.
-                                    $('button.layer-control').unbind('click', clickFunc);
-                                    // Re-add click event to (possibly new) layer control.
-                                    setTimeout(() => {
-                                        addClickEventToLayerControl();
-                                    }, 2000);
-                                }
-                            }
-                            const target = $('.map-controls')[0];
-                            const config = {
-                                childList: true,
-                                subtree: true
-                            };
-                            const observer = new MutationObserver(cb);
-                            observer.observe(target, config);
-                        });
-                    }
-                    addClickEventToLayerControl();
-                });
             }
 
             // After go back from cache details to cache list, scroll to last position.
