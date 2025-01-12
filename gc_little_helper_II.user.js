@@ -10709,22 +10709,13 @@ var mainGC = function() {
                 // 1) bookmark lists (url has special type)
                 // 2) mapping results from new search page or any stored search map url
                 //    -> parameters 'asc=' and 'sort=' are always present
-                // 3) matrix searches (covered by 2))
+                // 3) matrix searches (covered by 2)
                 if (document.location.href.match(/\.com\/live\/play\/map\?bmCode=/) ||
                     window.location.search.match(/asc=|sort=/)) {
                     return false;
                 } else return true;
             }
             if (run_setDefaultFilters()) {
-                /*// Wipe initial search results.
-                unsafeWindow.__NEXT_DATA__.props.pageProps.searchResults = {'results': [], 'total': 0};
-                // Wipe initial empty search sidebar content.
-                waitForElementThenRun('div.sidebar-content', () => {
-                    document.querySelector('div.sidebar-content').replaceChildren();
-                    document.querySelector('p.results-label').textContent = '';
-                    console.log('wipe initial sidebar content');
-                }, 20000);*/
-
                 // Perform search with default filters:
                 // 1) wait until filters are available (e.g. found status filter)
                 // 2) wait until GS default filters are applied (otherwise ours will be overridden):
@@ -10758,12 +10749,9 @@ var mainGC = function() {
                         observer.disconnect();
                         observer = null;
                     }
-                    const config = {
-                        attributes: true,
-                        attributeFilter: ["value"]
-                    };
-                    const observer = new MutationObserver(cb);
                     const target = document.querySelector('[data-event-label="Filters - Distance From"]');
+                    const config = { attributes: true, attributeFilter: ["value"] };
+                    let observer = new MutationObserver(cb);
                     observer.observe(target, config);
                 }
                 waitForElementThenRun('[data-event-label="Expand/Collapse Filters - Found Status"]', func, 20000);
@@ -10794,7 +10782,7 @@ var mainGC = function() {
                 //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
                 //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453,1304,3774,4738
                 //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
-                let types_to_show = {2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event"};
+                let types_to_show = { 2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event" };
                 const n_types = Object.keys(types_to_show).length;
                 // Remove hidden cache types from types_to_show.
                 for (let key in types_to_show) {
@@ -10820,6 +10808,7 @@ var mainGC = function() {
                     unsafeWindow.MapSettings.Map = state[0].map;
                 }
             }
+
             // Refresh map.
             const redrawMap = () => {
                 if (unsafeWindow.MapSettings?.Map?._mapPane) {
@@ -10831,6 +10820,7 @@ var mainGC = function() {
                     gclh_log('unsafeWindow.MapSettings.Map._mapPane not available');
                 }
             }
+
             // Process cache data.
             const processCaches = (state) => {
                 // Nothing to be done.
@@ -10854,6 +10844,7 @@ var mainGC = function() {
                     }
                 }
             }
+
             // Button for corrected coordinates.
             const addCorrectedCoordsButton = () => {
                 waitForElementThenRun("button.map-control", () => {
@@ -10885,6 +10876,7 @@ var mainGC = function() {
                     });
                 });
             }
+
             // Add button to toggle display of found caches between original and corrected coordinates.
             if (settings_show_found_caches_at_corrected_coords_but) {
                 var isActive = getValue('showCorrectedCoords', false);
@@ -10914,6 +10906,7 @@ var mainGC = function() {
                     });
                 }
             }
+
             // Disable corrected coords button for GM (displaying corrected coords works, but enabling/disabling doesn't work reliably).
             if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol_on_search_map) {
                 const anchor = 'use[href="#map-layers"]';
