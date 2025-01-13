@@ -3420,7 +3420,7 @@ var mainGC = function() {
     show_mail_and_message_icon:
     try {
         // Cache, TB, Aktiv User Infos ermitteln.
-        var [global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
+        var [global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime, global_type] = getGcTbUserInfo();
         // Nicht auf Mail, Message Seite ausführen.
         if ($('#ctl00_ContentBody_SendMessagePanel1_SendEmailPanel')[0] || $('#messageArea')[0]) break show_mail_and_message_icon;
         if ((settings_show_mail || settings_show_message)) {
@@ -4233,7 +4233,7 @@ var mainGC = function() {
     if ((document.location.href.match(/\.com\/seek\/log\.aspx\?(id|guid|ID|wp|LUID|PLogGuid|code)\=/) || document.location.href.match(/\.com\/track\/log\.aspx\?(id|wid|guid|ID|LUID|PLogGuid|code)\=/)) &&
         $('#litDescrCharCount')[0] && $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0] && $('#ctl00_ContentBody_LogBookPanel1_uxLogInfo')[0] && $('#uxDateVisited')[0]) {
         try {
-            var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo();
+            var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfo();
             var aOwner = decode_innerHTML($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling.nextSibling.nextSibling.nextSibling);
             insert_smilie_fkt("ctl00_ContentBody_LogBookPanel1_uxLogInfo");
             insert_tpl_fkt();
@@ -4248,7 +4248,7 @@ var mainGC = function() {
     if (document.location.href.match(/\.com\/play\/geocache\/gc\w+\/log/) &&
         $('#LogDate')[0] && $('#logContent')[0] && $('#LogText')[0] && $('#reportProblemInfo')[0]) {
         try {
-            var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(true);
+            var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfo(true);
             var aOwner = decode_innerHTML($('.hidden-by a')[0]);
             aOwner = aOwner.match(/(.*)(<a href=)?/)[1];
             insert_smilie_fkt("LogText");
@@ -4322,6 +4322,7 @@ var mainGC = function() {
         code += "  var aGCTBName = '" + aGCTBName + "';";
         code += "  var aGCTBLink = '" + aGCTBLink + "';";
         code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
+        code += "  var aGCType = '" + aGCType + "';";
         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
         code += "  var owner = '" + aOwner + "';";
         code += "  var inhalt = document.getElementById(id).innerHTML;";
@@ -4339,6 +4340,7 @@ var mainGC = function() {
         code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
+        code += "  if (aGCType) inhalt = inhalt.replace(/#GCType#/ig, aGCType);";
         if (!newLogPage || settings_show_pseudo_as_owner) {
             code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
         }
@@ -5009,8 +5011,8 @@ var mainGC = function() {
                     text = text.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds);
                     var [aDate, aTime, aDateTime] = getDateTime();
                     text = text.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
-                    var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogForm();
-                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
+                    var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfoLogForm();
+                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate).replace(/#GCType#/ig, aGCType);
                     return text;
                 }
                 if ($('#gc-md-editor_md')[0] && !$('.gclh_signature')[0]) {
@@ -5059,6 +5061,7 @@ var mainGC = function() {
                         code += "  var aGCTBName = '" + aGCTBName + "';";
                         code += "  var aGCTBLink = '" + aGCTBLink + "';";
                         code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
+                        code += "  var aGCType = '" + aGCType + "';";
                         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
                         code += "  var owner = '" + aOwner + "';";
                         code += "  var inhalt = document.getElementById(id).innerHTML;";
@@ -5075,6 +5078,7 @@ var mainGC = function() {
                         code += "  if (aGCTBName) inhalt = inhalt.replace(/#GCTBName#/ig, aGCTBName);";
                         code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
                         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
+                        code += "  if (aGCType) inhalt = inhalt.replace(/#GCType#/ig, aGCType);";
                         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
                         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
                         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
@@ -5119,7 +5123,7 @@ var mainGC = function() {
                         liste += logic;
                         liste += "</select>";
                     }
-                    var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfoLogForm();
+                    var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfoLogForm();
                     var aOwner = decode_innerText($('.hidden-by a')[0]);
                     insertLogTemplatesFunction();
                     var liste = "";
@@ -14748,13 +14752,14 @@ var mainGC = function() {
     // Cache, TB, Aktiv User Infos ermitteln.
     function getGcTbUserInfo() {
         var g_gc = false; var g_tb = false;
-        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
+        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";var g_type = "";
         if ((settings_show_mail || settings_show_message)) {
             // Cache Listing.
             if ($('#ctl00_ContentBody_CacheName')[0]) {
                 g_gc = true;
                 g_name = $('#ctl00_ContentBody_CacheName')[0].innerHTML;
                 if ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) g_code = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
+                g_type = $('.cacheDetailsTitle a').prop('title');
             // TB Listing.
             } else if ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
                 g_tb = true;
@@ -14767,6 +14772,7 @@ var mainGC = function() {
                      $('#ctl00_ContentBody_LogBookPanel1_lbLogText')[0].childNodes[4].href.match(/\/cache_details\.aspx\?guid=/)) {
                     g_gc = true;
                     g_name = $('#ctl00_ContentBody_LogBookPanel1_lbLogText')[0].childNodes[4].innerHTML;
+                    g_type = $('.loggable-header > span > svg > title')[0].innerHTML;
                 }
                 // TB.
                 if ($('#ctl00_ContentBody_LogBookPanel1_lbLogText')[0].childNodes[4] &&
@@ -14801,7 +14807,7 @@ var mainGC = function() {
             [g_date, g_time, g_dateTime] = getDateTime();
             g_activ_username = global_me;
         }
-        return [g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime];
+        return [g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime, g_type];
     }
     // Message Icon, Mail Icon aufbauen.
     function buildSendIcons(b_side, b_username, b_art, guidSpecial) {
@@ -14876,7 +14882,7 @@ var mainGC = function() {
         var trimIt = (tpl.length == tpl.trim().length);
         tpl = tpl.replace(/#Found-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds+1 - p1 : global_founds+1).replace(/#Found_no-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds - p1 : global_founds)
         tpl = tpl.replace(/#Me#/ig, global_activ_username).replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
-        tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
+        tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link).replace(/#GCType#/ig, global_type);
         tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code.replace('(','').replace(')',''));
         if (trimIt) tpl = tpl.trim();
         return tpl;
@@ -15108,16 +15114,18 @@ var mainGC = function() {
         var GCTBLink = $('.loggable-header a.geocache-link')[0].href;
         var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
         if ($('#log-date')[0]) var LogDate = $('#log-date')[0].value;
-        return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
+        var GCType = $('.loggable-header > span > svg > title')[0].innerHTML;
+        return [GCTBName, GCTBLink, GCTBNameLink, LogDate, GCType];
     }
     function getGCTBInfo(newLogPage) {
-        var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
+        var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = ""; var GCType = "";
         if (newLogPage) {
             if ($('#LogDate'[0])) var LogDate = $('#LogDate')[0].value;
             var GCTBName = $('a.log-subheading')[0].innerHTML;
             GCTBName = GCTBName.replace(/'/g,"");
             var GCTBLink = $('a.log-subheading')[0].href;
             var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+            var GCType = $('.loggable-header > span > svg > title')[0].innerHTML;
         } else {
             if ($('#uxDateVisited')[0]) var LogDate = $('#uxDateVisited')[0].value;
             if ($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling) {
@@ -15127,7 +15135,7 @@ var mainGC = function() {
                 var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
             }
         }
-        return [GCTBName, GCTBLink, GCTBNameLink, LogDate];
+        return [GCTBName, GCTBLink, GCTBNameLink, LogDate, GCType];
     }
 
 // Show, hide box. e.g.: Both VIP boxes in the cache listing.
@@ -17187,7 +17195,7 @@ var mainGC = function() {
             html += content_settings_after_sending_draft_related_log2_button.replace("settings_drafts_after_new_logging_view_log_button", "settings_drafts_after_new_logging_view_log_buttonX0");
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_after_new_logging_view_log', 'After sending or edit a non draft related cache log, automatic view log') + show_help('If it was not a draft related cache log or it was an edit of a cache log, you can enable this option to automatic go to view log page, instead of going to cache listing.') + "<br>";
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #GCType# : GC type<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
             html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked trackables from trackable inventory') + show_help("A trackable can be marked as locked in the trackable listing. Locked trackables cannot be logged. With this option you can hide such trackables from trackable inventory.") + "<br>";
             html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own trackables from trackable inventory') + show_help("With this option you can hide your own trackables from trackable inventory.") + "<br>";
@@ -17262,7 +17270,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBCodeNoBrackets# : GC or TB code not in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBCodeNoBrackets# : GC or TB code not in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>&nbsp; #GCType# : GC type<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
