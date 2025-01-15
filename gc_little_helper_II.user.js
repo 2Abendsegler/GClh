@@ -3420,7 +3420,7 @@ var mainGC = function() {
     show_mail_and_message_icon:
     try {
         // Cache, TB, Aktiv User Infos ermitteln.
-        var [global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime, global_type] = getGcTbUserInfo();
+        var [global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
         // Nicht auf Mail, Message Seite ausführen.
         if ($('#ctl00_ContentBody_SendMessagePanel1_SendEmailPanel')[0] || $('#messageArea')[0]) break show_mail_and_message_icon;
         if ((settings_show_mail || settings_show_message)) {
@@ -14752,14 +14752,13 @@ var mainGC = function() {
     // Cache, TB, Aktiv User Infos ermitteln.
     function getGcTbUserInfo() {
         var g_gc = false; var g_tb = false;
-        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";var g_type = "";
+        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
         if ((settings_show_mail || settings_show_message)) {
             // Cache Listing.
             if ($('#ctl00_ContentBody_CacheName')[0]) {
                 g_gc = true;
                 g_name = $('#ctl00_ContentBody_CacheName')[0].innerHTML;
                 if ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) g_code = $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML;
-                g_type = $('.cacheDetailsTitle a').prop('title');
             // TB Listing.
             } else if ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
                 g_tb = true;
@@ -14772,7 +14771,6 @@ var mainGC = function() {
                      $('#ctl00_ContentBody_LogBookPanel1_lbLogText')[0].childNodes[4].href.match(/\/cache_details\.aspx\?guid=/)) {
                     g_gc = true;
                     g_name = $('#ctl00_ContentBody_LogBookPanel1_lbLogText')[0].childNodes[4].innerHTML;
-                    g_type = $('.loggable-header > span > svg > title')[0].innerHTML;
                 }
                 // TB.
                 if ($('#ctl00_ContentBody_LogBookPanel1_lbLogText')[0].childNodes[4] &&
@@ -14807,7 +14805,7 @@ var mainGC = function() {
             [g_date, g_time, g_dateTime] = getDateTime();
             g_activ_username = global_me;
         }
-        return [g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime, g_type];
+        return [g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime];
     }
     // Message Icon, Mail Icon aufbauen.
     function buildSendIcons(b_side, b_username, b_art, guidSpecial) {
@@ -14882,7 +14880,7 @@ var mainGC = function() {
         var trimIt = (tpl.length == tpl.trim().length);
         tpl = tpl.replace(/#Found-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds+1 - p1 : global_founds+1).replace(/#Found_no-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds - p1 : global_founds)
         tpl = tpl.replace(/#Me#/ig, global_activ_username).replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
-        tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link).replace(/#GCType#/ig, global_type);
+        tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
         tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code.replace('(','').replace(')',''));
         if (trimIt) tpl = tpl.trim();
         return tpl;
@@ -17270,7 +17268,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBCodeNoBrackets# : GC or TB code not in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>&nbsp; #GCType# : GC type<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBCode# : GC or TB code in brackets<br>&nbsp; #GCTBCodeNoBrackets# : GC or TB code not in brackets<br>&nbsp; #GCTBLink# : GC or TB link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
             html += "</div>";
