@@ -4817,8 +4817,8 @@ var mainGC = function() {
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#found-?(\d+)?#/ig, (_match, p1) => p1 ? finds - p1 : finds).replace(/#me#/ig, me);
         var [aDate, aTime, aDateTime] = getDateTime();
         document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
-        var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate] = getGCTBInfo(newLogPage);
-        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate);
+        var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfo(newLogPage);
+        document.getElementById(id).innerHTML = document.getElementById(id).innerHTML.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate).replace(/#GCType#/ig, aGCType);
         // Set Cursor to Pos1.
         function gclh_setFocus() {
             var input = document.getElementById(id);
@@ -15123,7 +15123,7 @@ var mainGC = function() {
             GCTBName = GCTBName.replace(/'/g,"");
             var GCTBLink = $('a.log-subheading')[0].href;
             var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
-            var GCType = $('.loggable-header > span > svg > title')[0].innerHTML;
+            if ($('.loggable-header > span > svg > title')[0]) var GCType = $('.loggable-header > span > svg > title')[0].innerHTML;
         } else {
             if ($('#uxDateVisited')[0]) var LogDate = $('#uxDateVisited')[0].value;
             if ($('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.nextSibling) {
@@ -15131,6 +15131,7 @@ var mainGC = function() {
                 GCTBName = GCTBName.replace(/'/g,"");
                 var GCTBLink = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].href;
                 var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
+                var GCType = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.children[0].title;
             }
         }
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate, GCType];
