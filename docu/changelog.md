@@ -60,27 +60,27 @@
 	</li>
 	<li>
 		<strong>Note:</strong> [FAQ] 10. What can I do if individual features don't work or don't always work?<br>
-		If the "GeocachingUtils" add-on is installed, the logs are not always displayed in the listing. Changes are made in the add-on that no longer allow GClh to display the logs. We are not planning to make any adjustments to fix the problem.<br><br>
+		If the "GeocachingUtils" add-on is installed, the logs are not always displayed in the listing. Changes are made in the add-on that no longer allow GClh to display the logs. We are not planning to make any adjustments to fix the problem.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Statistic] Own scale of graphical monthly found statistics. [<a href="https://github.com/2Abendsegler/GClh/issues/2662" title="Issue 2662">2662</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		<img src="../images/0.16.3/Screen03.gif" alt="Screen03.gif"><br><br>
+		<img src="../images/0.16.3/Screen03.gif" alt="Screen03.gif"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Log Form] Added placeholder cache type to signature and log templates. [<a href="https://github.com/2Abendsegler/GClh/issues/2687" title="Issue 2687">2687</a> / <a href="https://www.geocaching.com/profile/?u=bruzie" title="Thanks to bruzie">bruzie</a>]<br>
 		The new placeholder GCType (geocaching type) is now available for the cache signature and the log templates.<br>
-		<img src="../images/0.16.3/Screen04.jpg" alt="Screen04.jpg"><br><br>
+		<img src="../images/0.16.3/Screen04.jpg" alt="Screen04.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Event Listing] Add event start and end time back to description. [<a href="https://github.com/2Abendsegler/GClh/issues/2664" title="Issue 2664">2664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.16.3/Screen02.jpg" alt="Screen02.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventinfo_in_desc" title="Link to your GClh II Config">Settings -> Listing - Cache Description:<br>
-		<img src="../images/0.16.3/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+		<img src="../images/0.16.3/Screen01.jpg" alt="Screen01.jpg"></a><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Log Form] Control of setting of all default log types. [<a href="https://github.com/2Abendsegler/GClh/issues/2673" title="Issue 2673">2673</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_default_logtype_control" title="Link to your GClh II Config">Settings -> Log:<br>
-		<img src="../images/0.16.3/Screen05.jpg" alt="Screen05.jpg"></a><br><br>
+		<img src="../images/0.16.3/Screen05.jpg" alt="Screen05.jpg"></a><br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] The GClh features are no longer available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2661" title="Issue 2661">2661</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
