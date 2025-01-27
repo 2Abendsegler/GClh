@@ -2252,6 +2252,8 @@ var mainGC = function() {
         css += ".working, .isDisabled {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
         // Display listing images not over the maximum available width for FF and chrome.
         css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
+        // Show log totals symbols above the logs again in one line.
+        css += ".LogTotals {padding-left: 0px; display: flex; margin-bottom: 8px;} .LogTotals li {align-items: center; display: flex;} .LogTotals li + li {margin-left: 10px;} .LogTotals img {vertical-align: bottom;}";
         appendCssStyle(css);
     }
 
@@ -2456,15 +2458,22 @@ var mainGC = function() {
     }
 
 // Show log totals symbols at the top of cache listing.
-    if (is_page("cache_listing") && settings_show_log_totals && $('.LogTotals')[0] && $('#ctl00_ContentBody_size')[0]) {
+    if (is_page("cache_listing") && settings_show_log_totals && $('#ctl00_ContentBody_size')[0]) {
         try {
-            var div = document.createElement('div');
-            div.className = "gclh_LogTotals Clear";
-            var span = document.createElement('span');
-            span.innerHTML = $('.LogTotals')[0].outerHTML;
-            div.appendChild(span);
-            $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
-            appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals img {vertical-align: bottom;} .LogTotals li + li {margin-left: 8px;} .LogTotals {margin-bottom: 0px;}');
+            function waitForLogTotals(waitCount) {
+                if ($('.LogTotals')[0]) {
+                    var div = document.createElement('div');
+                    div.className = "gclh_LogTotals Clear";
+                    var ul = document.createElement('ul');
+                    $('.LogTotals li img[src*="/logtypes/"]').closest('li').each(function() {
+                        ul.innerHTML += $(this)[0].outerHTML;
+                    });
+                    div.appendChild(ul);
+                    $('#ctl00_ContentBody_size')[0].parentNode.insertBefore(div, $('#ctl00_ContentBody_size')[0].nextSibling.nextSibling.nextSibling);
+                    appendCssStyle('.gclh_LogTotals {float: right;} .gclh_LogTotals li {display: inline;} .gclh_LogTotals img {vertical-align: bottom;} .gclh_LogTotals li + li {margin-left: 10px;} .gclh_LogTotals ul {margin-bottom: 0px;}');
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLogTotals(waitCount);}, 100);}
+            }
+            waitForLogTotals(0);
         } catch(e) {gclh_error("Show log totals symbols at the top",e);}
     }
 
@@ -9096,7 +9105,6 @@ var mainGC = function() {
                     var li = document.createElement("li");
                     var link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
-                    link.setAttribute("style", "text-decoration: 'none'; padding-right: 18px;");
                     link.setAttribute("name", "logs");
                     link.addEventListener("click", gclh_filter_logs, false);
                     var img = document.createElement("img");
@@ -9212,7 +9220,7 @@ var mainGC = function() {
                 }
 
                 if (!$('#ctl00_ContentBody_lblFindCounts ul')[0]) return false;
-                $('#ctl00_ContentBody_lblFindCounts ul').append('<li><span id="search_logs"><span title="Search in logtext and username">Search in logs: </span></span></li>');
+                $('#ctl00_ContentBody_lblFindCounts ul').append('<li><span id="search_logs"><span style="margin-left: 8px;" title="Search in logtext and username">Search in logs: </span></span></li>');
                 if (!settings_add_search_in_logs_func) $('#search_logs')[0].style.display = 'none';
                 $('#search_logs').append('<form action="javascript:void(0);" style="display: inline;"><input type="text" size="10" title="Use &quot;|&quot; for an OR correlation" style="padding: 2px 2px; width: unset; margin-bottom: unset; margin-right: 0px;" id="search_logs_input"></form>');
                 $('#search_logs_input')[0].addEventListener("keyup", gclh_search_logs, false);
