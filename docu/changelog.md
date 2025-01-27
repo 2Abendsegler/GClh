@@ -1,5 +1,6 @@
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0163" title="GClh II version 0.16.3 (28.01.2025)">v0.16.3</a> &nbsp;
 <a href="#v0162" title="GClh II version 0.16.2 (30.08.2024)">v0.16.2</a> &nbsp;
 <a href="#v0161" title="GClh II version 0.16.1 (13.08.2024)">v0.16.1</a> &nbsp;
 <a href="#v016" title="GClh II version 0.16 (13.08.2024)">v0.16</a> &nbsp;
@@ -48,6 +49,98 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.3:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Note:</strong> [FAQ] 3. The GClh doesn't start.<br>
+		For chrome-based browsers such as Google Chrome, Microsoft Edge, Opera, Vivaldi... for some time now, developer mode has had to be activated in the browser in order to be able to run user scripts. How to activate developer mode in the browser is described in the <a href="https://www.tampermonkey.net/faq.php#Q209" title="Link to FAQ from Tampermonkey">FAQ from Tampermonkey</a>.<br><br>
+	</li>
+	<li>
+		<strong>Note:</strong> [FAQ] 10. What can I do if individual features don't work or don't always work?<br>
+		If the "GeocachingUtils" add-on is installed, the logs are not always displayed in the listing. Changes are made in the add-on that no longer allow GClh to display the logs. We are not planning to make any adjustments to fix the problem.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Statistic] Own scale of graphical monthly found statistics. [<a href="https://github.com/2Abendsegler/GClh/issues/2662" title="Issue 2662">2662</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<img src="../images/0.16.3/Screen03.gif" alt="Screen03.gif"><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Added placeholder cache type to signature and log templates. [<a href="https://github.com/2Abendsegler/GClh/issues/2687" title="Issue 2687">2687</a> / <a href="https://www.geocaching.com/profile/?u=bruzie" title="Thanks to bruzie">bruzie</a>]<br>
+		The new placeholder GCType (geocaching type) is now available for the cache signature and the log templates.<br>
+		<img src="../images/0.16.3/Screen04.jpg" alt="Screen04.jpg"><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Event Listing] Add event start and end time back to description. [<a href="https://github.com/2Abendsegler/GClh/issues/2664" title="Issue 2664">2664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16.3/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventinfo_in_desc" title="Link to your GClh II Config">Settings -> Listing - Cache Description:<br>
+		<img src="../images/0.16.3/Screen01.jpg" alt="Screen01.jpg"></a><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Control of setting of all default log types. [<a href="https://github.com/2Abendsegler/GClh/issues/2673" title="Issue 2673">2673</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_default_logtype_control" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.16.3/Screen05.jpg" alt="Screen05.jpg"></a><br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] The GClh features are no longer available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2661" title="Issue 2661">2661</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Fixed issues:<br>
+		<ul>
+			<li>
+				Map layer selection.<br>
+			</li>
+			<li>
+				Default filters.<br>
+			</li>
+			<li>
+				Relocate browse map button.<br>
+			</li>
+			<li>
+				Hide sidebar.<br>
+			</li>
+			<li>
+				Display found caches at corrected coordinates.<br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Friend List] "Reset Counter" button is missing after changing "Send Invitation" button. [<a href="https://github.com/2Abendsegler/GClh/issues/2666" title="Issue 2666">2666</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] The log totals icons at the top are missing and above the logs the log totals icons are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2693" title="Issue 2693">2693</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] The log totals icons are displayed incorrectly in the detailed cache information. [<a href="https://github.com/2Abendsegler/GClh/issues/2694" title="Issue 2694">2694</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [TB Listing] The serial name has no longer been displayed for a travel bug or geocoin. [<a href="https://github.com/2Abendsegler/GClh/issues/2678" title="Issue 2678">2678</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Double TB log actions. [<a href="https://github.com/2Abendsegler/GClh/issues/2659" title="Issue 2659">2659</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Enlarge the date field so that everything is visible also in trackable logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2655" title="Issue 2655">2655</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Edit Log] Larger page width no longer works if calling edit log from log view. [<a href="https://github.com/2Abendsegler/GClh/issues/2658" title="Issue 2658">2658</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [View Log] Hide "Share log" button is not working. [<a href="https://github.com/2Abendsegler/GClh/issues/2674" title="Issue 2674">2674</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Souvenirs] Türkiye is not recognized as a country in the souvenirs. [<a href="https://github.com/2Abendsegler/GClh/issues/2668" title="Issue 2668">2668</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Favorites icon almost completely disappears behind the found icon. [<a href="https://github.com/2Abendsegler/GClh/issues/2681" title="Issue 2681">2681</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Header] Same width of header search field in all browsers. [<a href="https://github.com/2Abendsegler/GClh/issues/2675" title="Issue 2675">2675</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(28.01.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.2:
