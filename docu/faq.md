@@ -203,30 +203,30 @@ Wenn du Probleme mit dem Drag & Drop beim Hinzufügen neuer Links zur Linkliste 
 
 <a id="3-de"></a>
 ## 3. Der GClh startet nicht.
-Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
-
-*Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
-<ul>
-	<li>
-		Tabs im Browser schließen, Tabs neu anwählen.<br>
-	</li>
-	<li>
-		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
-	</li>
-	<li>
-		Script Manager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
-	</li>
-</ul>
-
-*Problemen vorbeugen:* <br>
-<ul>
-	<li>
-		Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
-	</li>
-	<li>
-		(Android) Tabs im Browser schließen bevor man den Browser schließt damit beim nächsten Aufruf des Browsers die Tabs nicht mehr vorhanden sind.<br>
-	</li>
-</ul>
+1. Bei chrombasierten Browsern wie beispielsweise Google Chrome, Microsoft Edge, Opera, Vivaldi ... muss seit einiger Zeit der Entwicklermodus im Browser aktiviert werden um Benutzerskripte ausführen zu können. Wie man den Entwicklermodus im Browser aktiviert wird bei den <a href="https://www.tampermonkey.net/faq.php#Q209" title="Link zu FAQ von Tampermonkey">FAQ von Tampermonkey</a> beschrieben.<br><br>
+2. Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br><br>
+Probleme beheben: Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
+	<ul>
+		<li>
+			Tabs im Browser schließen, Tabs neu anwählen.<br>
+		</li>
+		<li>
+			Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
+		</li>
+		<li>
+			Script Manager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
+		</li>
+	</ul>
+ 	<br>
+	Problemen vorbeugen: <br>
+	<ul>
+		<li>
+			Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
+		</li>
+		<li>
+			(Android) Tabs im Browser schließen bevor man den Browser schließt damit beim nächsten Aufruf des Browsers die Tabs nicht mehr vorhanden sind.<br>
+		</li>
+	</ul>
 <br>
 
 <a id="4-de"></a>
