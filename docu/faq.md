@@ -37,30 +37,30 @@ If you have problems to drag & drop the lower links because the Linklist area is
 
 <a id="3-en"></a>
 ## 3. The GClh doesn't start.
-If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br>
-
-*Resolve problems:* Problems can be resolved depending on the situation regularly with one of the following points.<br>
-<ul>
-	<li>
-		Close tabs in browser, re-select tabs.<br>
-	</li>
-	<li>
-		Close tabs in browser, close browser, start browser, re-select tabs.<br>
-	</li>
-	<li>
-		Deactivate the script manager and reactivate it after a few seconds (unless you have deactivated "Automatic page reload").<br>
-	</li>
-</ul>
-
-*Prevent problems:* <br>
-<ul>
-	<li>
-		Close tabs in the browser before hibernating the computer, so that the tabs no longer exist when reactivated.<br>
-	</li>
-	<li>
-		(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you start the browser.<br>
-	</li>
-</ul>
+1. For chrome-based browsers such as Google Chrome, Microsoft Edge, Opera, Vivaldi... for some time now, developer mode has had to be activated in the browser in order to be able to run user scripts. How to activate developer mode in the browser is described in the <a href="https://www.tampermonkey.net/faq.php#Q209" title="Link to FAQ from Tampermonkey">FAQ from Tampermonkey</a>.<br><br>
+2. If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br><br>
+Resolve problems: Problems can be resolved depending on the situation regularly with one of the following points.<br>
+	<ul>
+		<li>
+			Close tabs in browser, re-select tabs.<br>
+		</li>
+		<li>
+			Close tabs in browser, close browser, start browser, re-select tabs.<br>
+		</li>
+		<li>
+			Deactivate the script manager and reactivate it after a few seconds (unless you have deactivated "Automatic page reload").<br>
+		</li>
+	</ul>
+	<br>
+	Prevent problems: <br>
+	<ul>
+		<li>
+			Close tabs in the browser before hibernating the computer, so that the tabs no longer exist when reactivated.<br>
+		</li>
+		<li>
+			(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you start the browser.<br>
+		</li>
+	</ul>
 <br>
 
 <a id="4-en"></a>
