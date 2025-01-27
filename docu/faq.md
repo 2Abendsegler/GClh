@@ -37,30 +37,30 @@ If you have problems to drag & drop the lower links because the Linklist area is
 
 <a id="3-en"></a>
 ## 3. The GClh doesn't start.
-If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br>
-
-*Resolve problems:* Problems can be resolved depending on the situation regularly with one of the following points.<br>
-<ul>
-	<li>
-		Close tabs in browser, re-select tabs.<br>
-	</li>
-	<li>
-		Close tabs in browser, close browser, start browser, re-select tabs.<br>
-	</li>
-	<li>
-		Deactivate the script manager and reactivate it after a few seconds (unless you have deactivated "Automatic page reload").<br>
-	</li>
-</ul>
-
-*Prevent problems:* <br>
-<ul>
-	<li>
-		Close tabs in the browser before hibernating the computer, so that the tabs no longer exist when reactivated.<br>
-	</li>
-	<li>
-		(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you start the browser.<br>
-	</li>
-</ul>
+1. For chrome-based browsers such as Google Chrome, Microsoft Edge, Opera, Vivaldi... for some time now, developer mode has had to be activated in the browser in order to be able to run user scripts. How to activate developer mode in the browser is described in the <a href="https://www.tampermonkey.net/faq.php#Q209" title="Link to FAQ from Tampermonkey">FAQ from Tampermonkey</a>.<br><br>
+2. If the GClh does not start, these are usually matching problems between the browser and the script manager. These problems mainly occur when a tab in a browser passes beyond a session. This can be caused by the user by leaving tabs in the browser, for example when hibernating. It can also be caused by the browser, for example when restoring tabs after a cancellation.<br><br>
+Resolve problems: Problems can be resolved depending on the situation regularly with one of the following points.<br>
+	<ul>
+		<li>
+			Close tabs in browser, re-select tabs.<br>
+		</li>
+		<li>
+			Close tabs in browser, close browser, start browser, re-select tabs.<br>
+		</li>
+		<li>
+			Deactivate the script manager and reactivate it after a few seconds (unless you have deactivated "Automatic page reload").<br>
+		</li>
+	</ul>
+	<br>
+	Prevent problems: <br>
+	<ul>
+		<li>
+			Close tabs in the browser before hibernating the computer, so that the tabs no longer exist when reactivated.<br>
+		</li>
+		<li>
+			(Android) Close tabs in the browser before closing the browser, so that the tabs are no longer available the next time you start the browser.<br>
+		</li>
+	</ul>
 <br>
 
 <a id="4-en"></a>
@@ -173,9 +173,10 @@ Or you can create a note in one of the forums or on our discussions page. See <a
 
 <a id="10-en"></a>
 ## 10. What can I do if individual features don't work or don't always work?
-1. You must accept all cookies from geocaching.com and not just the necessary ones. Otherwise, errors in the website's cookie processing can lead to aborts in the script.<br><a href="//"><img src="../images/cookie_accepting_en.jpg"></a><br>The cookies can be adjusted at any time in your [personal settings](https://www.geocaching.com/account/settings/cookies#CookieDeclarationChangeConsentChange).<br>
-2. Alternatively to 1. only the necessary cookies can be accepted by geocaching.com if cookie processing is blocked at the same time. For example, the entry "cookiebot.com" can be included in "My Filters" in the "uBlock Origin" add-on.<br>
-3. If the "Ghostery" add-on is installed, "Never Consent" must be switched off for "geocaching.com".<br>
+1. You must accept all cookies from geocaching.com and not just the necessary ones. Otherwise, errors in the website's cookie processing can lead to aborts in the script.<br><a href="//"><img src="../images/cookie_accepting_en.jpg"></a><br>The cookies can be adjusted at any time in your [personal settings](https://www.geocaching.com/account/settings/cookies#CookieDeclarationChangeConsentChange).<br><br>
+2. Alternatively to 1. only the necessary cookies can be accepted by geocaching.com if cookie processing is blocked at the same time. For example, the entry "cookiebot.com" can be included in "My Filters" in the "uBlock Origin" add-on.<br><br>
+3. If the "Ghostery" add-on is installed, "Never Consent" must be switched off for "geocaching.com".<br><br>
+4. If the "GeocachingUtils" add-on is installed, the logs are not always displayed in the listing. Changes are made in the add-on that no longer allow GClh to display the logs. We are not planning to make any adjustments to fix the problem.<br><br>
 <br>
 <br>
 
@@ -203,30 +204,30 @@ Wenn du Probleme mit dem Drag & Drop beim Hinzufügen neuer Links zur Linkliste 
 
 <a id="3-de"></a>
 ## 3. Der GClh startet nicht.
-Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br>
-
-*Probleme beheben:* Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
-<ul>
-	<li>
-		Tabs im Browser schließen, Tabs neu anwählen.<br>
-	</li>
-	<li>
-		Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
-	</li>
-	<li>
-		Script Manager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
-	</li>
-</ul>
-
-*Problemen vorbeugen:* <br>
-<ul>
-	<li>
-		Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
-	</li>
-	<li>
-		(Android) Tabs im Browser schließen bevor man den Browser schließt damit beim nächsten Aufruf des Browsers die Tabs nicht mehr vorhanden sind.<br>
-	</li>
-</ul>
+1. Bei chrombasierten Browsern wie beispielsweise Google Chrome, Microsoft Edge, Opera, Vivaldi ... muss seit einiger Zeit der Entwicklermodus im Browser aktiviert werden um Benutzerskripte ausführen zu können. Wie man den Entwicklermodus im Browser aktiviert wird bei den <a href="https://www.tampermonkey.net/faq.php#Q209" title="Link zu FAQ von Tampermonkey">FAQ von Tampermonkey</a> beschrieben.<br><br>
+2. Startet der GClh nicht, so handelt es sich in der Regel um Abstimmungsprobleme zwischen dem Browser und dem Script Manager. Diese Probleme treten hauptsächlich dann auf, wenn ein Tab in einem Browser über eine Session hinaus besteht. Das kann durch den User veranlaßt sein indem er Tabs im Browser beispielsweise im Ruhezustand bestehen läßt. Es kann aber auch durch den Browser veranlaßt sein beispielweise bei einer Wiederherstellung von Tabs nach einem Abbruch.<br><br>
+Probleme beheben: Probleme können je nach Sachlage regelmäßig mit einem der folgenden Punkte behoben werden.<br>
+	<ul>
+		<li>
+			Tabs im Browser schließen, Tabs neu anwählen.<br>
+		</li>
+		<li>
+			Tabs im Browser schließen, Browser schließen, Browser starten, Tabs neu anwählen.<br>
+		</li>
+		<li>
+			Script Manager deaktivieren und nach einigen Sekunden wieder aktivieren (sofern man "Automatisches Seiten-Neu-Laden" nicht deaktiviert hat).<br>
+		</li>
+	</ul>
+ 	<br>
+	Problemen vorbeugen: <br>
+	<ul>
+		<li>
+			Tabs im Browser schließen bevor man den Rechner in den Ruhezustand schickt, damit bei der Reaktivierung die Tabs nicht mehr vorhanden sind.<br>
+		</li>
+		<li>
+			(Android) Tabs im Browser schließen bevor man den Browser schließt damit beim nächsten Aufruf des Browsers die Tabs nicht mehr vorhanden sind.<br>
+		</li>
+	</ul>
 <br>
 
 <a id="4-de"></a>
@@ -339,7 +340,8 @@ Oder du kannst dich in einem der Foren oder auf unserer Diskussions Seite melden
 
 <a id="10-de"></a>
 ## 10. Was kann ich tun, wenn einzelne Features nicht oder nicht immer funktionieren?
-1. Es müssen alle Cookies von geocaching.com akzeptiert werden und nicht nur die notwendigen. Andernfalls können die Fehler in der Cookie Verarbeitung der Webseite zu Abbrüchen im Script führen.<br><a href="//"><img src="../images/cookie_accepting_de.jpg"></a><br>Die Cookies können jederzeit bei deinen [persönlichen Einstellungen](https://www.geocaching.com/account/settings/cookies#CookieDeclarationChangeConsentChange) angepasst werden.<br>
-2. Alternativ zu 1. können auch nur die notwendigen Cookies von geocaching.com akzeptiert werden, wenn gleichzeitig die Cookie Verarbeitung blockiert wird. Dazu kann beispielsweise im Add on "uBlock Origin" in "Meine Filter" der Eintrag "cookiebot.com" aufgenommen werden.<br>
-3. Ist das Add on "Ghostery" installiert, muss "Never Consent" für "geocaching.com" ausgeschaltet werden.<br>
+1. Es müssen alle Cookies von geocaching.com akzeptiert werden und nicht nur die notwendigen. Andernfalls können die Fehler in der Cookie Verarbeitung der Webseite zu Abbrüchen im Script führen.<br><a href="//"><img src="../images/cookie_accepting_de.jpg"></a><br>Die Cookies können jederzeit bei deinen [persönlichen Einstellungen](https://www.geocaching.com/account/settings/cookies#CookieDeclarationChangeConsentChange) angepasst werden.<br><br>
+2. Alternativ zu 1. können auch nur die notwendigen Cookies von geocaching.com akzeptiert werden, wenn gleichzeitig die Cookie Verarbeitung blockiert wird. Dazu kann beispielsweise im Add on "uBlock Origin" in "Meine Filter" der Eintrag "cookiebot.com" aufgenommen werden.<br><br>
+3. Ist das Add on "Ghostery" installiert, muss "Never Consent" für "geocaching.com" ausgeschaltet werden.<br><br>
+4. Ist das Add on "GeocachingUtils" installiert, werden die Logs im Listing nicht immer angezeigt. Im Add on werden Änderungen vorgenommen, die es dem GClh nicht mehr ermöglichen die Logs anzuzeigen. Wir planen keine Anpassung um das Problem zu beheben.<br><br>
 <br>

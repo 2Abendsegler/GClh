@@ -1,7 +1,5 @@
 <a href="//"><img src="https://img.shields.io/github/last-commit/2Abendsegler/gclh"></a>
 <a href="//"><img src="https://img.shields.io/github/issues/2Abendsegler/GClh"></a><a href="//"><img src="https://img.shields.io/github/issues-closed/2Abendsegler/GClh?label="></a>
-<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=https://raw.githubusercontent.com/2Abendsegler/GClh/master/last_version.txt&label=version&color=informational&query=/" title="current version"></a>
-<a href="//"><img src="https://img.shields.io/badge/dynamic/xml?url=http://c.andyhoppe.com/1676270686?output=text&label=installations&color=success&query=/" title="installations and updates"></a>
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/README.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a> &nbsp; <a href="//"><img src="https://img.shields.io/github/stars/2Abendsegler/gclh?style=social"></a><br>
 <br>
 <a href="#user-content-en" title=""><img src="/images/flag_en.png"></a>

@@ -107,6 +107,8 @@
   "settings_faster_profile_trackables": false,
   "settings_show_eventday": true,
   "settings_show_eventtime_with_24_hours": true,
+  "settings_show_eventinfo_in_desc": true,
+  "settings_show_eventinfo_in_desc_bold": true,
   "settings_show_google_maps": true,
   "settings_show_log_it": true,
   "settings_show_nearestuser_profil_link": true,
@@ -382,6 +384,7 @@
   "settings_button_sort_tbs_by_name_log_form": true,
   "settings_larger_content_width_log_form": true,
   "settings_less_space_log_lines_log_form": true,
-  "settings_listing_bigger_avatar_with_mouse": true
-  "settings_listing_ctoc_coords_waypoints": true
+  "settings_listing_bigger_avatar_with_mouse": true,
+  "settings_listing_ctoc_coords_waypoints": true,
+  "settings_default_logtype_control": true
 }
