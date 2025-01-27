@@ -12722,9 +12722,16 @@ var mainGC = function() {
                             }
 
                             // Get all type of logs and their count.
+                            var all_logs = '';
                             if ($(text).find('#ctl00_ContentBody_lblFindCounts')[0]) {
-                                var all_logs = $(text).find('#ctl00_ContentBody_lblFindCounts')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
-                            } else var all_logs = '';
+                                all_logs += '<ul class="LogTotals">';
+                                var logTypeCounts = $(text).find('#ctl00_ContentBody_lblFindCounts')[0];
+                                $(logTypeCounts).find('li').each(function() {
+                                    $(this)[0].className = '';
+                                    all_logs += $(this)[0].outerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
+                                });
+                                all_logs += '</ul>';
+                            }
 
                             // Get the number of trackables in the cache.
                             var trachables = 0;
