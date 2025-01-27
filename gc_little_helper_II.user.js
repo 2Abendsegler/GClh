@@ -10943,6 +10943,7 @@ var mainGC = function() {
             // After go back from cache details to cache list, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
+//xxxx deaktiviert
             function scrollInCacheList() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
                 if ($('#geocache-list')[0] && global_newScrollTop != 0) {
@@ -10987,6 +10988,7 @@ var mainGC = function() {
             var lngLowG = false;
             var firstRun = true;
             const ONE_MINUTE_MS = 60*1000;
+//xxxx deaktiviert
             function searchThisArea(waitCount) {
                 // For the first run.
                 if ($('.leaflet-gl-layer.mapboxgl-map')[0] || $('div.gm-style')[0]) { // Leaflet or GM
@@ -11075,6 +11077,7 @@ var mainGC = function() {
             // Preserve zoom parameter in URLs.
             // (on page load zoom parameter in URL is ignored and zoom level defaults to 14)
             let use_zoom_from_url = true;
+//xxxx deaktiviert
             function setZoom() {
                 if (use_zoom_from_url && unsafeWindow.MapSettings && unsafeWindow.MapSettings.Map) {
                     // Only once on page load.
@@ -11091,13 +11094,15 @@ var mainGC = function() {
             // (for reference: https://stackoverflow.com/a/64927639)
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
-                    setZoom();
-                    searchThisArea(0);
+//xxxx deaktiviert
+//                    setZoom();
+//                    searchThisArea(0);
                     return target.apply(thisArg, argArray);
                 }
             });
 
             // Set link to owner.
+//xxxx deaktiviert
             function setLinkToOwner() {
                 if ($('.geocache-owner')[0] && $('.cache-metadata-code')[0]) {
                     if ($('#' + $('.cache-metadata-code')[0].innerHTML + '_owner')[0]) return;
@@ -11108,6 +11113,7 @@ var mainGC = function() {
             }
 
             // Add VIP, VUP and mail icon to owner.
+//xxxx deaktiviert
             function addVipVupMailToOwner() {
                 if (($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0] && !$('.gclhOwner a[href*="email"]')[0]) || (!$('.gclhOwner a')[0] && $('.geocache-owner-name a')[0] && !$('.geocache-owner-name .gclh_vip')[0] && !$('.geocache-owner a[href*="email"]')[0])) {
                     var user = $('.gclhOwner a, .geocache-owner-name a')[0].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
@@ -11135,6 +11141,7 @@ var mainGC = function() {
             var cache_list_premium = '<span><img class="gclh_cache_list_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png"></span>';
             var enhancement_premium = '<span><img class="gclh_enhancement_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png"></span>';
 
+//xxxx deaktiviert
             function compactLayoutWait(waitCount) {
                 if ($('#geocache-list')[0]) {
                     compactLayout();
@@ -11143,6 +11150,7 @@ var mainGC = function() {
                     if (waitCount <= 100) setTimeout(function(){compactLayoutWait(waitCount);}, 50);
                 }
             }
+//xxxx deaktiviert
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
                     // Filter
@@ -11249,6 +11257,7 @@ var mainGC = function() {
             }
 
             // Set name of disabled caches in cache list strike through in special color.
+//xxxx deaktiviert
             function setStrikeDisabledInList() {
                 if (settings_searchmap_disabled && $('#geocache-list')[0]) {
                     $('.geocache-item-disabled').each(function() {
@@ -11261,6 +11270,7 @@ var mainGC = function() {
             }
 
             // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
+//xxxx deaktiviert
             function showHint() {
                 // Show hint automatically.
                 if (settings_searchmap_show_hint && $('.cache-hint-toggle')[0] && !$('.cache-hint-toggle.gclh-show-hint')[0]) {
@@ -11273,6 +11283,7 @@ var mainGC = function() {
             }
 
             // Show button to collapse activity.
+//xxxx deaktiviert
             function collapseActivity() {
                 if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > ul')[0]) {
                     if (!$('.cache-preview-activities .opener')[0]) {
@@ -11303,7 +11314,8 @@ var mainGC = function() {
                 }
                 // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map.
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
-                    initGeoServiceControl();
+//xxxx deaktiviert
+//                    initGeoServiceControl();
                 }
             }
 
@@ -11311,6 +11323,7 @@ var mainGC = function() {
             var sidebar_enhancements_favi_buffer = {}
             var sidebar_enhancements_addToList_buffer = {}
             var sidebar_enhancements_date_buffer = {}
+//xxxx deaktiviert
             function showSearchmapSidebarEnhancements(){
                 if (!settings_show_enhanced_map_popup) return true;
                 var locations = []; // Location for the Cache
@@ -11602,6 +11615,7 @@ var mainGC = function() {
             }
 
             // Improve add to list pop up.
+//xxxx deaktiviert
             function improveAddtolistPopup() {
                 function checkAddtolistPopup(waitCount, popoverFound) {
                     if ($('.Popover')[0]) popoverFound = true;
@@ -11633,6 +11647,7 @@ var mainGC = function() {
 
             // Create Save as PQ Button.
             var set_defaults = getValue('set_switch_searchmap_set_defaults', false);
+//xxxx deaktiviert
             function addCreatePQButton() {
                 if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
                     if ($('#gclh_saveAsPQ')[0]) $('.gclh_PQHead').remove();
@@ -11670,6 +11685,7 @@ var mainGC = function() {
                 $('#ctl00_gcNavigation').toggle();
                 window.dispatchEvent(new Event('resize'));
             }
+//xxxx deaktiviert
             function addHideHeaderButton() {
                 if ($('.geocache-action-bar.sidebar-control')[0] && !$('#gclh_hideHeader')[0]) {
                     let html = '<div id="gclh_hideHeader" class="hideHeaderLink toggle-filter"><span class="label">Hide header </span><div class="gclh_toggle-handle"></div></div>';
@@ -11682,6 +11698,7 @@ var mainGC = function() {
             }
 
             // Root for "Save as PQ" and "Hide Header".
+//xxxx deaktiviert
             function geocacheActionBar() {
                 if ((settings_searchmap_show_btn_save_as_pq || settings_map_show_btn_hide_header)) {
                     if (!$('#gclh_action_bar')[0]) {
@@ -11699,19 +11716,20 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
-                scrollInCacheList();
-                improveAddtolistPopup();
-                setLinkToOwner(); // Has to be run before compactLayout.
-                compactLayout();
-                addVipVupMailToOwner(); // Has to be run after compactLayout.
-                setStrikeDisabledInList();
-                showHint();
-                collapseActivity();
-                showSearchmapSidebarEnhancements();
+//xxxx deaktiviert
+//                scrollInCacheList();
+//                improveAddtolistPopup();
+//                setLinkToOwner(); // Has to be run before compactLayout.
+//                compactLayout();
+//                addVipVupMailToOwner(); // Has to be run after compactLayout.
+//                setStrikeDisabledInList();
+//                showHint();
+//                collapseActivity();
+//                showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-                geocacheActionBar(); // "Save as PQ" and "Hide Header".
+//                geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 and Ctrl+s in filter screen.
-                prepareKeydownF2InFilterScreen();
+//                prepareKeydownF2InFilterScreen();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -11749,9 +11767,12 @@ var mainGC = function() {
             };
             observer_body.observe(target_body, config_body);
             processAllSearchMap();
-            compactLayoutWait(0);
+//xxxx deaktiviert
+//            compactLayoutWait(0);
 
             var css = '';
+//xxxx deaktiviert
+/*
             // Hide button search this area and icon loading, if not link from matrix.
             if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
@@ -11917,12 +11938,15 @@ var mainGC = function() {
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
+*/
             // Build map control buttons.
             css += '.map-control {margin-bottom: 10px !important;}';
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
             if (settings_relocate_other_map_buttons) css += '[data-testid="gc-button-link"] {display: none !important;}';
             else css += '#gclh_layers {top: 52px;}';
+//xxxx deaktiviert
+/*
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -11969,6 +11993,7 @@ var mainGC = function() {
                 css += '.existing-list .gc-button:focus {box-shadow: none;}';
                 css += '.existing-list .gc-button {height: 22px;}';
             }
+*/
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
