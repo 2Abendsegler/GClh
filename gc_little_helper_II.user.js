@@ -15119,13 +15119,13 @@ var mainGC = function() {
 
 // GC/TB Name, GC/TB Link, GC/TB Name Link, preliminary LogDate.
     function getGCTBInfoLogForm() {
-        var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = "";
+        var GCTBName = ""; var GCTBLink = ""; var GCTBNameLink = ""; var LogDate = ""; var GCType = "";
         var GCTBName = $('.loggable-header a.geocache-link')[0].innerText;
         GCTBName = GCTBName.replace(/'/g,"");
         var GCTBLink = $('.loggable-header a.geocache-link')[0].href;
         var GCTBNameLink = "[" + GCTBName + "](" + GCTBLink + ")";
         if ($('#log-date')[0]) var LogDate = $('#log-date')[0].value;
-        var GCType = $('.loggable-header > span > svg > title')[0].innerHTML;
+        if ($('.loggable-header > span > svg > title')[0]) var GCType = $('.loggable-header > span > svg > title')[0].innerHTML;
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate, GCType];
     }
     function getGCTBInfo(newLogPage) {
@@ -17233,7 +17233,7 @@ var mainGC = function() {
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_log_signature'>&zwnj;" + getValue("settings_log_signature", "") + "</textarea><br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_log_signature_on_fieldnotes', 'Add cache log signature on drafts logs') + show_help('If this option is disabled, the log signature will not be used by logs coming from drafts. You can use it, if you already have an signature in your drafts.') + "<br>";
             html += newParameterOn2;
-            html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescription) + ")<br>";
+            html += checkboxy('settings_add_tb_log_signature', 'Add TB log signature') + show_help("The signature is automatically added to your TB logs. You can also use placeholders for variables that will be replaced in the log.") + " &nbsp; ( Possible placeholders" + show_help("Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : GC or TB name<br>&nbsp; #GCTBLink# : GC or TB link<br>&nbsp; #GCTBNameLink# : GC or TB name as a link<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)") + ")<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += " &nbsp; &nbsp;" + "<textarea class='gclh_form' rows='3' cols='56' id='settings_tb_signature' style='margin-top: 2px;'>&zwnj;" + getValue("settings_tb_signature", "") + "</textarea><br>";
             html += newParameterOn3;
