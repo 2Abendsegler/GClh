@@ -10659,126 +10659,278 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
-            // Map control and display of found caches at corrected coordinates.
+            // Map control.
             if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
-                unsafeWindow.MapSettings = { 'Map': null };
-                // Add proxy to get map instance and cache data.
-                unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
-                    apply: (target, thisArg, argArray) => {
-                        let useState = target.apply(thisArg, argArray);
-                        if (useState && useState[0]) {
-                            getMapInstance(useState);
-                            if (settings_show_found_caches_at_corrected_coords_but) processCaches(useState);
+                // Add React object to global space.
+                try {
+                    unsafeWindow.webpackChunk_N_E.push([
+                        [66666],
+                        { 66667: () => {} },
+                        (n) => { unsafeWindow.React = n(2784); }
+                    ]);
+                } catch(e) {gclh_error("Push to webpackChunk_N_E",e);}
+
+                // Initialize Map object.
+                unsafeWindow.MapSettings = {'Map': null};
+
+                // Add proxy to get (Leaflet) map instance.
+                if (unsafeWindow.React?.useState) {
+                    unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                        apply: (target, thisArg, argArray) => {
+                            let useState = target.apply(thisArg, argArray);
+                            if (useState[0]?.__version) {
+                                getMapInstance(useState);
+                            }
+                            return useState;
                         }
-                        return useState;
+                    });
+                }
+            }
+
+            // Cache data for display at corrected coordinates.
+            if (settings_show_found_caches_at_corrected_coords_but) {
+                // Add proxy to get cache data.
+                if (unsafeWindow.React?.useMemo) {
+                    unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
+                        apply: (target, thisArg, argArray) => {
+                            let useMemo = target.apply(thisArg, argArray);
+                            if (useMemo && useMemo?.props?.searchResults) {
+                                processCaches(useMemo);
+                            }
+                            return useMemo;
+                        }
+                    });
+                }
+            }
+
+            // Check if default filters have to be set.
+            function run_setDefaultFilters() {
+                // Default gclh filters must not be set in the following cases:
+                // 1) bookmark lists (url has special type)
+                // 2) mapping results from new search page or any stored search map url
+                //    -> parameters 'asc=' and 'sort=' are always present
+                // 3) matrix searches (covered by 2)
+                if (document.location.href.match(/\.com\/live\/play\/map\?bmCode=/) ||
+                    window.location.search.match(/asc=|sort=/)) {
+                    return false;
+                } else return true;
+            }
+            if (run_setDefaultFilters()) {
+                // Perform search with default filters:
+                // 1) wait until filters are available (e.g. found status filter)
+                // 2) wait until GS default filters are applied (otherwise ours will be overridden):
+                //    - erase default distance value
+                //    - observe this value until it will be be reset by GS default filters
+                // 3) set default filters (slightly delayed, otherwise we're too fast)
+                // 4) run filtered search
+                const func = () => {
+                    // Ensure that filters are not collapsed (otherwise they cannot be selected).
+                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"] svg[aria-label="Expand"]')) {
+                        document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"]').click();
                     }
-                });
+                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"] svg[aria-label="Expand"]')) {
+                        document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"]').click();
+                    }
+                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"] svg[aria-label="Expand"]')) {
+                        document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"]').click();
+                    }
+                    // Erase default distance value.
+                    document.querySelector('[data-event-label="Filters - Distance From"]').setAttribute('value', '');
+
+                    // Observe distance value for changes, then run filtered search (only once).
+                    const cb = function(_mutationsList, observer) {
+                        setTimeout(() => {
+                            // Set default filters.
+                            setDefaultFilters();
+                            // Run filtered search.
+                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
+                        }, 500);
+
+                        observer.disconnect();
+                        observer = null;
+                    }
+                    const target = document.querySelector('[data-event-label="Filters - Distance From"]');
+                    const config = { attributes: true, attributeFilter: ["value"] };
+                    let observer = new MutationObserver(cb);
+                    observer.observe(target, config);
+                }
+                waitForElementThenRun('[data-event-label="Expand/Collapse Filters - Found Status"]', func, 20000);
+            }
+
+            // Set gclh default filters.
+            function setDefaultFilters() {
+                // "hideFinds": null=All, 0=Found by me, 1=Not found by me; GS default value: 1
+                if (settings_map_hide_found) {
+                    // Show only caches not found by you (GS sets filter by default, but doesn't hurt to set again, in case this changes).
+                    document.querySelector('input[data-event-label="Filters - Found Status - Not Found"]').click();
+                } else {
+                    // Show all caches (unset GS default filter).
+                    document.querySelector('input[data-event-label="Filters - Found Status - All"]').click();
+                }
+                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: null
+                if (settings_map_hide_hidden) {
+                    // Show only caches you don't own.
+                    document.querySelector('input[data-event-label="Filters - Cache Owner - Not Owned"]').click();
+                } else {
+                    // Show all caches.
+                    document.querySelector('input[data-event-label="Filters - Cache Owner - All"]').click();
+                }
+
+                // "geocacheTypes": [2, 9, 3773, 3]=cache types to show; GS default: [] (all)
+                //  Cache types from search map:
+                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6,3653
+                //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
+                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453,1304,3774,4738
+                //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
+                let types_to_show = { 2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event" };
+                const n_types = Object.keys(types_to_show).length;
+                // Remove hidden cache types from types_to_show.
+                for (let key in types_to_show) {
+                    if (window["settings_map_hide_" + key]) {
+                        delete types_to_show[key];
+                    }
+                }
+                // Only set cache type filter if at least one cache type is hidden.
+                if (Object.keys(types_to_show).length < n_types) {
+                    // Set "geocacheTypes" filter.
+                    for (let key in types_to_show) {
+                        document.querySelector('input[data-event-label="Filters - Geocache Type - ' + types_to_show[key] + '"]').click();
+                    }
+                }
             }
 
             // Get map instance.
             const getMapInstance = (state) => {
-                if (unsafeWindow.MapSettings.Map !== null) return;
-                // Leaflet maps.
-                if (state[0]._mapPane) {
-                    unsafeWindow.MapSettings.Map = state[0];
-                }
-                // Google maps.
-                if (state[0].__gm) {
-                    unsafeWindow.MapSettings.Map = state[0];
+                if (unsafeWindow.MapSettings?.Map?._mapPane) return;
+
+                // Leaflet maps only.
+                if (state[0].map) {
+                    unsafeWindow.MapSettings.Map = state[0].map;
                 }
             }
+
             // Refresh map.
             const redrawMap = () => {
-                if (unsafeWindow.MapSettings.Map._mapPane) {
-                    // Leaflet maps.
+                if (unsafeWindow.MapSettings?.Map?._mapPane) {
+                    // Refresh Leaflet maps.
                     unsafeWindow.MapSettings.Map.fitBounds(unsafeWindow.MapSettings.Map.getBounds());
-                    // Clear cache selection.
+                    // Clear possible cache selection.
                     unsafeWindow.MapSettings.Map.fireEvent('click');
-                } else if (unsafeWindow.MapSettings.Map.__gm) {
-                    // Google maps.
-                    // To force a map redraw, select the 1st cache from the list, then trigger a click into the map.
-                    // ("map.fitBounds(map.getBounds())" would do the same but zooms out one level afterwards, reason unknown.)
-                    $('.geocache-item-details-container').first().click();
-                    // Clear cache selection.
-                    google.maps.event.trigger(unsafeWindow.MapSettings.Map, 'click');
+                } else {
+                    gclh_log('unsafeWindow.MapSettings.Map._mapPane not available');
                 }
             }
+
             // Process cache data.
             const processCaches = (state) => {
-                // Ensure that last selected cache marker is reset to original coords.
-                if (!isActive && state[0].postedCoordinatesSave) {
-                    state[0].postedCoordinates = state[0].postedCoordinatesSave;
-                    delete state[0].postedCoordinatesSave;
-                    return;
-                }
                 // Nothing to be done.
-                if (!isActive && !resetToPostedCoords) return;
+                if (!isActive) return;
 
-                // Move caches to corrected position or reset to original coords.
-                if (state[0].results && state[0].results[0]) {
-                    let caches = state[0].results;
+                // Move caches to corrected position.
+                if (state.props.searchResults.results[0]) {
+                    // On initial page load, results array is read-only -> no modifications possible.
+                    // For 'Search this area', results array is (sometimes) writable -> modifications possible.
+                    let caches = state.props.searchResults.results;
+                    // If cache objects are read-only, nothing can be done.
+                    if (Object.getOwnPropertyDescriptor(caches[0], 'name').configurable === false) return;
+
                     let gc = null;
                     for (let i = 0; i < caches.length; i++) {
                         gc = caches[i];
-                        // If cache has corrected coords, process it.
+                        // If corrected coords are available, change cache coords.
                         if (gc.userCorrectedCoordinates) {
-                            // Reset to original coords.
-                            if (resetToPostedCoords) {
-                                gc.postedCoordinates = gc.postedCoordinatesSave;
-                                delete gc.postedCoordinatesSave;
-                                continue;
-                            }
-                            if (gc.postedCoordinatesSave) {
-                                // If coords are already corrected we're finished.
-                                return;
-                            } else {
-                                // Store original coords for reset.
-                                gc.postedCoordinatesSave = gc.postedCoordinates;
-                            }
-                            // Set corrected coords.
                             gc.postedCoordinates = gc.userCorrectedCoordinates;
                         }
                     }
-                    if (resetToPostedCoords) resetToPostedCoords = false;
-                    return;
-                }
-                // Keep selected cache marker at corrected position (otherwise it jumps to original coords).
-                if (state[0].userCorrectedCoordinates && !state[0].postedCoordinatesSave) {
-                    state[0].postedCoordinatesSave = state[0].postedCoordinates;
-                    state[0].postedCoordinates = state[0].userCorrectedCoordinates;
                 }
             }
+
             // Button for corrected coordinates.
             const addCorrectedCoordsButton = () => {
-                waitForElementThenRun(".map-setting-controls", () => {
-                    // Clear current map instance to get a new one automatically.
-                    unsafeWindow.MapSettings.Map = null;
-                    // Add button, but only once.
-                    if ($("#gclh_corrected_coords")[0]) return;
-                    const li =
-                        '<li role="menuitem">' +
-                        '<button id="gclh_corrected_coords" class="map-control" title="Show caches at corrected coordinates">' +
-                        '<svg aria-hidden="true" style="width:20px;height: 20px;"><use xlink:href="#pencil"></use></svg>' +
-                        '</button>' +
-                        '</li>';
-                    $('.map-setting-controls>ul').prepend(li);
-                    // When changing map layers preserve current button state.
-                    if (isActive) {
-                        $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
-                    }
+                waitForElementThenRun("button.map-control", () => {
+                    const button =
+                        '<button id="gclh_corrected_coords" class="map-control" title="Found caches displayed at ' + (isActive ? 'corrected' : 'original') + ' coordinates">' +
+                        '<svg><use href="' + (isActive ? '#solved' : '#solved_disabled') + '"></use></svg>' +
+                        '</button>';
+                    $('button.map-control').first().parent().parent().prepend(button);
+
                     // Toggle button for corrected coordinates.
                     $("#gclh_corrected_coords").bind("click", () => {
+                        // Run 'Search this area' to modify coords.
+                        document.querySelector('[data-testid="search-this-area-button"]').click();
+                        // Clear possible cache selection.
+                        unsafeWindow.MapSettings.Map.fireEvent('click');
                         if (!isActive) {
+                            // Activate.
                             isActive = true;
                             setValue('showCorrectedCoords', isActive);
-                            $('#gclh_corrected_coords').prop('title', 'Show found caches at original coordinates').css('background-color', 'rgb(230, 247, 239)');
+                            $('#gclh_corrected_coords').prop('title', 'Found caches displayed at corrected coordinates');
+                            $('#gclh_corrected_coords use').attr('href', '#solved');
                         } else {
+                            // Deactivate.
                             isActive = false;
                             setValue('showCorrectedCoords', isActive);
-                            resetToPostedCoords = true;
-                            $('#gclh_corrected_coords').prop('title', 'Show found caches at corrected coordinates').css('background-color', 'rgb(255, 255, 255)');
+                            $('#gclh_corrected_coords').prop('title', 'Found caches displayed at original coordinates');
+                            $('#gclh_corrected_coords use').attr('href', '#solved_disabled');
                         }
-                        redrawMap();
+                    });
+                });
+            }
+
+            // Add button to toggle display of found caches between original and corrected coordinates.
+            if (settings_show_found_caches_at_corrected_coords_but) {
+                var isActive = getValue('showCorrectedCoords', false);
+                // Add button with small delay to ensure it is always at the top (necessary for FF).
+                setTimeout(addCorrectedCoordsButton, 0);
+
+                // If show at corrected coords is active, update cache locations.
+                if (isActive) {
+                    // Observe distance filter for changes:
+                    // - unset default distance value
+                    // - wait until value gets reset by GS, then data is ready and a search can be performed
+                    const anchor = '[data-event-label="Filters - Distance From"]';
+                    waitForElementThenRun(anchor, () => {
+                        // Unset default distance value.
+                        document.querySelector(anchor).setAttribute('value', '');
+                        // Wait until data is ready, then update cache locations.
+                        const cb = (_, observer) => {
+                            // Run 'Search this area' to modify coords.
+                            document.querySelector('[data-testid="search-this-area-button"]').click();
+                            observer.disconnect();
+                            observer = null;
+                        }
+                        const target = document.querySelector(anchor);
+                        const config = { attributes: true, attributeName: "value" };
+                        let observer = new MutationObserver(cb);
+                        observer.observe(target, config);
+                    });
+                }
+            }
+
+            // Disable corrected coords button for GM (displaying corrected coords works, but enabling/disabling doesn't work reliably).
+            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol_on_search_map) {
+                const anchor = 'use[href="#map-layers"]';
+                waitForElementThenRun(anchor, () => {
+                    // On click to layer control start observing as long as layer control is open.
+                    const $layer_control = $(anchor).parent().parent().eq(1);
+                    const cb = (_, observer) => {
+                        // As soon as layer control is closed, enable/disable corrected coords button and stop observing.
+                        if ($layer_control.attr('aria-expanded') === 'false') {
+                            if (unsafeWindow.MapSettings?.Map?._mapPane) {
+                                // Leaflet.
+                                document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
+                            } else {
+                                // GM.
+                                document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
+                            }
+                            observer.disconnect();
+                        }
+                    }
+                    const target = $layer_control[0];
+                    const config = { attributes: true, attributeName: 'aria-expanded' };
+                    const observer = new MutationObserver(cb);
+                    $layer_control.bind('click', () => {
+                        observer.observe(target, config);
                     });
                 });
             }
@@ -10786,44 +10938,6 @@ var mainGC = function() {
             // Add layer control.
             if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 addLayersOnMap();
-            }
-            // Add button to toggle display of found caches between original and corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but) {
-                var isActive = getValue('showCorrectedCoords', false);
-                var resetToPostedCoords = false;
-                addCorrectedCoordsButton();
-            }
-            // Re-add corrected coordinates button when necessary.
-            // (For GS layer control, a map layer change between Leaflet maps removes all control buttons whereas GM keeps them.)
-            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol && !settings_use_gclh_layercontrol_on_search_map) {
-                waitForElementThenRun('button.layer-control', () => {
-                    const addClickEventToLayerControl = () => {
-                        // On click to layer control start observing as long as layer control is open.
-                        $('button.layer-control').bind('click', function clickFunc() {
-                            const cb = (_, observer) => {
-                                // As soon as layer control is closed add the button and stop observing.
-                                if (!$('button.layer-control.is-open')[0]) {
-                                    addCorrectedCoordsButton();
-                                    observer.disconnect();
-                                    // Remove click event from (possibly deleted) layer control.
-                                    $('button.layer-control').unbind('click', clickFunc);
-                                    // Re-add click event to (possibly new) layer control.
-                                    setTimeout(() => {
-                                        addClickEventToLayerControl();
-                                    }, 2000);
-                                }
-                            }
-                            const target = $('.map-controls')[0];
-                            const config = {
-                                childList: true,
-                                subtree: true
-                            };
-                            const observer = new MutationObserver(cb);
-                            observer.observe(target, config);
-                        });
-                    }
-                    addClickEventToLayerControl();
-                });
             }
 
             // After go back from cache details to cache list, scroll to last position.
@@ -11181,11 +11295,11 @@ var mainGC = function() {
 
             // Build map control buttons.
             function buildMapControlButtons() {
-                if (!$('.map-setting-controls ul')[0]) return;
+                if (!$('div.zoom-controls')[0]) return;
                 // Relocate browse button to other buttons.
-                if (settings_relocate_other_map_buttons && !$('#gclh_browse_map')[0] && $('#browse-map-cta')[0]) {
-                    $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_browse_map" class="map-control" title="Browse geocaches"><svg><use xlink:href="#globe"></use></svg></button></li>');
-                    $('#gclh_browse_map')[0].addEventListener("click", function() { $('#browse-map-cta')[0].click(); }, false);
+                if (settings_relocate_other_map_buttons && !$('#gclh_browse_map')[0] && $('[data-testid="gc-button-link"]')[0]) {
+                    $('div.zoom-controls').parent().prepend('<div class="hidden tablet:block"><button id="gclh_browse_map" class="map-control"><svg><title>Browse geocaches</title><use href="#globe"></use></svg></button></div>');
+                    $('#gclh_browse_map')[0].addEventListener("click", function() { document.querySelector('[data-testid="gc-button-link"]').click(); }, false);
                 }
                 // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map.
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
@@ -11481,114 +11595,10 @@ var mainGC = function() {
             }
 
             // Hide sidebar.
-            let runHideSidebar = true;
-            function hideSidebar() {
-                // Run only once.
-                if (!settings_map_hide_sidebar || !runHideSidebar) return;
-                runHideSidebar = false;
-                // Close the sidebar.
-                function clickToClose(wc) {
-                    // The sidebar is still closed from the start, so wait.
-                    if (!$('.sidebar-toggle')[0] || $('body').hasClass('sidebar-is-closed')) {
-                        wc++;
-                        if (wc <= 25) setTimeout(function() { clickToClose(wc); }, 200);
-                    // The sidebar is now open.
-                    } else {
-                        $('div#sidebar-group>button.sidebar-toggle').click();
-                    }
-                }
-                clickToClose(0);
-            }
-
-            // Default filters.
-            let runSetFilter = true;
-            let cache_types = [2,3,4,5,6,8,11,137,1858];
-            // Check if filters are to set.
-            var filtersAreToSet = false;
-            if (!settings_map_hide_found || !settings_map_hide_hidden) {
-                filtersAreToSet = true;
-            } else {
-                for (let i=0; i<cache_types.length; i++) {
-                    if (window['settings_map_hide_'+cache_types[i]]) {
-                        filtersAreToSet = true;
-                    }
-                }
-            }
-            if (isGclhMatrix) filtersAreToSet = false;
-            // Set default filters.
-            function setFilter() {
-                // If bookmarklist or no filter is to set.
-                if (document.location.href.match(/\.com\/play\/map(\/BM|\?bm=|\/lists)/) || !filtersAreToSet) {
-                    // Hide sidebar.
-                    window.setTimeout(function(){hideSidebar();}, 500);
-                // If no bookmarklist and filters are to set.
-                } else {
-                    // Run only once.
-                    if (!runSetFilter) return;
-                    runSetFilter = false;
-                    // Check if search URL already has filters set: if not then set default filters otherwise keep current filter.
-                    if (!document.location.href.split('&').length > 7) return;
-                    // Check if there isn't already an input in search field of detail screen.
-                    // (Das betrifft auch eine Umschaltung von My Lists auf Search. Auch hier dürfen keine Defaults gesetzt werden.)
-                    if ($('#gc-search-typeahead-input')[0] && !$('#gc-search-typeahead-input').attr('value') == "") return;
-                    // Don't display the filter screen during the default settings are running.
-                    $('body').addClass('default_settings_running');
-                    // Some filters have to be clicked twice, otherwise the selection isn't reliable.
-                    function doubleClick(sel) {
-                        $(sel).click().click();
-                    }
-                    // Wait for filter screen.
-                    function waitForFilter(waitCount) {
-                        if ($('#gc-search-filters')[0] &&
-                            $('#found-status-filter .gc-radio-control-container:nth-child(1) label')[0] &&
-                            $('#cache-owner-filter .gc-radio-control-container:nth-child(1) label')[0] &&
-                            $('.gc-location-typeahead .inner-wrapper')[0]) {
-                            // Set location "Home Location" to prevent zoom out, if there isn't already a location.
-                            if (!$('.gc-location-typeahead .inner-wrapper button.chip')[0]) {
-                                if ($('.filter-group-header:first').hasClass('collapsed')) {
-                                    var collapsed = true;
-                                    $('.filter-group-header:first').click();
-                                } else var collapsed = false;
-                                $('.gc-location-typeahead .inner-wrapper').click();
-                                $('.gc-autocomplete-menu li').click();
-                                if (collapsed == true) {
-                                    $('.filter-group-header:first').click();
-                                }
-                            }
-                            // Hide found caches.
-                            if (!settings_map_hide_found) {
-                                doubleClick('#found-status-filter .gc-radio-control-container:nth-child(1) label');
-                            }
-                            // Hide owned caches.
-                            if (!settings_map_hide_hidden) {
-                                doubleClick('#cache-owner-filter .gc-radio-control-container:nth-child(1) label');
-                            }
-                            // Hide cache types.
-                            $('input[value="2"][id*="cache-type"]').parents('.filter-container').find('button.gc-selection-toggle').click();
-                            for (let i=0; i<cache_types.length; i++) {
-                                if (window['settings_map_hide_'+cache_types[i]]) {
-                                    $('input[value="'+cache_types[i]+'"][id*="cache-type"]').click();
-                                }
-                            }
-                            // Apply filters to map and close.
-                            window.setTimeout(function(){
-                                doubleClick('#gc-search-filters .last-filter-control');
-                                // Display the filter screen again after the default settings.
-                                $('body').removeClass('default_settings_running');
-                            }, 90);
-                            // Hide sidebar.
-                            window.setTimeout(function(){hideSidebar();}, 100);
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilter(waitCount);}, 50);}
-                    }
-                    // Wait for filter button and open filter.
-                    function waitForFilterButton(waitCount) {
-                        if ($('button.gc-filter-toggle')[0]) {
-                            $('button.gc-filter-toggle').click();
-                            waitForFilter(0);
-                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilterButton(waitCount);}, 100);}
-                    }
-                    waitForFilterButton(0);
-                }
+            if (settings_map_hide_sidebar) {
+                waitForElementThenRun('button[data-testid="sidebar-toggle"]', () => {
+                    document.querySelector('button[data-testid="sidebar-toggle"]').click();
+                }, 20000);
             }
 
             // Improve add to list pop up.
@@ -11689,7 +11699,6 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
-                setFilter();
                 scrollInCacheList();
                 improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
@@ -11700,7 +11709,6 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-                setFilter();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 and Ctrl+s in filter screen.
                 prepareKeydownF2InFilterScreen();
@@ -11913,8 +11921,7 @@ var mainGC = function() {
             css += '.map-control {margin-bottom: 10px !important;}';
             css += '.map-control svg {vertical-align: middle;}';
             css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
-            css += '#browse-map-cta {right: 10px;}';
-            if (settings_relocate_other_map_buttons) css += '#browse-map-cta {display: none !important;}';
+            if (settings_relocate_other_map_buttons) css += '[data-testid="gc-button-link"] {display: none !important;}';
             else css += '#gclh_layers {top: 52px;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
@@ -12107,12 +12114,12 @@ var mainGC = function() {
                                     }
                                 } catch(e) {};
                             }
-                            if (document.location.pathname.match(/^\/play\/map/)) {
+                            if (document.location.pathname.match(/^\/live\/play\/map/)) {
                                 setTimeout(() => {
                                     // Remove default GS map tiles.
                                     document.querySelector('.mapboxgl-canvas').remove();
                                     // Adapt layout of gclh map layer control to GS controls.
-                                    document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width: 39px; height: 39px;');
+                                    document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width: 40px; height: 40px;');
                                     document.querySelector('#gclh_layers').setAttribute('style', 'border: 1px solid rgb(0, 178, 101);');
                                     // Ensure that map selection area is on top of map control buttons.
                                     document.querySelector('.leaflet-top.leaflet-right').setAttribute('style', 'z-index:1020;');
@@ -12143,21 +12150,6 @@ var mainGC = function() {
                                     else labels[i-1].children[0].click();
                                 }
                                 labels[i].children[0].click();
-                                break;
-                            }
-                        }
-                    }
-                    if (is_page("searchmap")) {
-                        // In Search map the list items do have an additional div element as 1st child
-                        // (whereas list items in Browse map don't).
-                        for (var i=0; i<labels.length; i++) {
-                            if (labels[i].children[0].children[1].innerHTML.match(defaultLayer)) {
-                                // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
-                                if (labels[i].children[0].children[0].checked && labels.length > 1) {
-                                    if (i == 0) labels[i+1].children[0].children[0].click();
-                                    else labels[i-1].children[0].children[0].click();
-                                }
-                                labels[i].children[0].children[0].click();
                                 break;
                             }
                         }
@@ -12203,13 +12195,9 @@ var mainGC = function() {
             if (is_page('searchmap')) {
                 setDefaultsInLayer();
                 // Remove default GS layer control.
-                (function removeGSLayerControl(waitCount = 0) {
-                    if ($('.layer-control')[0]) {
-                        $('.layer-control').parent().remove();
-                        return;
-                    }
-                    if (++waitCount <= 200) setTimeout(function() { removeGSLayerControl(waitCount); }, 50);
-                })();
+                waitForElementThenRun('div.md\\:block', () => {
+                    $('div.md\\:block, div.md\\:hidden').remove();
+                });
             }
 
             var css = '';
@@ -16768,9 +16756,9 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_map_hide_2', "<img "+imgStyle+" src='" + imageBaseUrl + "2.png' title='Traditional'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_3', "<img "+imgStyle+" src='"  + imageBaseUrl + "3.png' title='Multi-Cache'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_6', "<img "+imgStyle+" src='" + imageBaseUrl + "6.png' title='Event / Community Celebration Event'>");
-            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>") + onlyBrowseMapBehindIcon;
-            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>") + onlyBrowseMapBehindIcon;
-            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + onlyBrowseMapBehindIcon + "<br>";
+            html += " &nbsp; " + checkboxy('settings_map_hide_13', "<img "+imgStyle+" src='" + imageBaseUrl + "13.png' title='Cache In Trash Out'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_453', "<img "+imgStyle+" src='" + imageBaseUrl + "453.png' title='Mega-Event'>");
+            html += " &nbsp; " + checkboxy('settings_map_hide_7005', "<img "+imgStyle+" src='" + imageBaseUrl + "7005.png' title='Giga-Event'>") + "<br>";
             html += " &nbsp; " + checkboxy('settings_map_hide_137', "<img "+imgStyle+" src='" + imageBaseUrl + "137.png' title='EarthCache'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_4', "<img "+imgStyle+" src='" + imageBaseUrl + "4.png' title='Virtual'>");
             html += " &nbsp; " + checkboxy('settings_map_hide_11', "<img "+imgStyle+" src='" + imageBaseUrl + "11.png' title='Webcam'>") + "<br>";
@@ -20551,7 +20539,7 @@ function is_page(name) {
     } else if (name == "lists") {
         if (url.match(/^\/plan\/lists/)) status = true;
     } else if (name == "searchmap") {
-        if (url.match(/^\/play\/map/)) status = true;
+        if (url.match(/^\/live\/play\/map/)) status = true;
     } else if (name == "map") {
         if (url.match(/^\/map/)) status = true;
     } else if (name == "find_cache") {
