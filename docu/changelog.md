@@ -107,6 +107,15 @@
 		<strong>Fix:</strong> [Friend List] "Reset Counter" button is missing after changing "Send Invitation" button. [<a href="https://github.com/2Abendsegler/GClh/issues/2666" title="Issue 2666">2666</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
+		<strong>Fix:</strong> [Cache Listing] The log totals icons at the top are missing and above the logs the log totals icons are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2693" title="Issue 2693">2693</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [TB Listing] The serial name has no longer been displayed for a travel bug or geocoin. [<a href="https://github.com/2Abendsegler/GClh/issues/2678" title="Issue 2678">2678</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] The log totals icons are displayed incorrectly in the detailed cache information. [<a href="https://github.com/2Abendsegler/GClh/issues/2694" title="Issue 2694">2694</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Log Form] Double TB log actions. [<a href="https://github.com/2Abendsegler/GClh/issues/2659" title="Issue 2659">2659</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
@@ -116,25 +125,16 @@
 		<strong>Fix:</strong> [Edit Log] Larger page width no longer works if calling edit log from log view. [<a href="https://github.com/2Abendsegler/GClh/issues/2658" title="Issue 2658">2658</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Souvenirs] Türkiye is not recognized as a country in the souvenirs. [<a href="https://github.com/2Abendsegler/GClh/issues/2668" title="Issue 2668">2668</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
 		<strong>Fix:</strong> [View Log] Hide "Share log" button is not working. [<a href="https://github.com/2Abendsegler/GClh/issues/2674" title="Issue 2674">2674</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Header] Same width of header search field in all browsers. [<a href="https://github.com/2Abendsegler/GClh/issues/2675" title="Issue 2675">2675</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [TB Listing] The serial name has no longer been displayed for a travel bug or geocoin. [<a href="https://github.com/2Abendsegler/GClh/issues/2678" title="Issue 2678">2678</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Souvenirs] Türkiye is not recognized as a country in the souvenirs. [<a href="https://github.com/2Abendsegler/GClh/issues/2668" title="Issue 2668">2668</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Dashboard] Favorites icon almost completely disappears behind the found icon. [<a href="https://github.com/2Abendsegler/GClh/issues/2681" title="Issue 2681">2681</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] The log totals icons at the top are missing and above the logs the log totals icons are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2693" title="Issue 2693">2693</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Browse Map] The log totals icons are displayed incorrectly in the detailed cache information. [<a href="https://github.com/2Abendsegler/GClh/issues/2694" title="Issue 2694">2694</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Header] Same width of header search field in all browsers. [<a href="https://github.com/2Abendsegler/GClh/issues/2675" title="Issue 2675">2675</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
