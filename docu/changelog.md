@@ -72,7 +72,7 @@
 		<img src="../images/0.16.3/Screen04.jpg" alt="Screen04.jpg"><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Detail] Add event start and end time back to description. [<a href="https://github.com/2Abendsegler/GClh/issues/2664" title="Issue 2664">2664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [Event Listing] Add event start and end time back to description. [<a href="https://github.com/2Abendsegler/GClh/issues/2664" title="Issue 2664">2664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<img src="../images/0.16.3/Screen02.jpg" alt="Screen02.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventinfo_in_desc" title="Link to your GClh II Config">Settings -> Listing - Cache Description:<br>
 		<img src="../images/0.16.3/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
