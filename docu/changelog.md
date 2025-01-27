@@ -1,5 +1,6 @@
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0163" title="GClh II version 0.16.3 (28.01.2025)">v0.16.3</a> &nbsp;
 <a href="#v0162" title="GClh II version 0.16.2 (30.08.2024)">v0.16.2</a> &nbsp;
 <a href="#v0161" title="GClh II version 0.16.1 (13.08.2024)">v0.16.1</a> &nbsp;
 <a href="#v016" title="GClh II version 0.16 (13.08.2024)">v0.16</a> &nbsp;
@@ -48,6 +49,54 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.3:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Note:</strong> [FAQ] 3. The GClh doesn't start.<br>
+		For chrome-based browsers such as Google Chrome, Microsoft Edge, Opera, Vivaldi... for some time now, developer mode has had to be activated in the browser in order to be able to run user scripts. How to activate developer mode in the browser is described in the <a href="https://www.tampermonkey.net/faq.php#Q209" title="Link to FAQ from Tampermonkey">FAQ from Tampermonkey</a>.<br><br>
+	</li>
+	<li>
+		<strong>Note:</strong> [FAQ] 10. What can I do if individual features don't work or don't always work?<br>
+		If the "GeocachingUtils" add-on is installed, the logs are not always displayed in the listing. Changes are made in the add-on that no longer allow GClh to display the logs. We are not planning to make any adjustments to fix the problem.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Statistic] Own scale of graphical monthly found statistics. [<a href="https://github.com/2Abendsegler/GClh/issues/2662" title="Issue 2662">2662</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<img src="../images/0.16.3/Screen03.gif" alt="Screen03.gif"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Added placeholder cache type to signature and log templates. [<a href="https://github.com/2Abendsegler/GClh/issues/2687" title="Issue 2687">2687</a> / <a href="https://www.geocaching.com/profile/?u=bruzie" title="Thanks to bruzie">bruzie</a>]<br>
+		The new placeholder GCType (geocaching type) is now available for the cache signature and the log templates.<br>
+		<img src="../images/0.16.3/Screen04.jpg" alt="Screen04.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Detail] Add event start and end time back to description. [<a href="https://github.com/2Abendsegler/GClh/issues/2664" title="Issue 2664">2664</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16.3/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_eventinfo_in_desc" title="Link to your GClh II Config">Settings -> Listing - Cache Description:<br>
+		<img src="../images/0.16.3/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Log Form] Control of setting of all default log types. [<a href="https://github.com/2Abendsegler/GClh/issues/2673" title="Issue 2673">2673</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_default_logtype_control" title="Link to your GClh II Config">Settings -> Log:<br>
+		<img src="../images/0.16.3/Screen05.jpg" alt="Screen05.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Note:</strong> [Google Chrome, Tampermonkey] Scripts do not start.<br>
+		If scripts no longer start in browser Google Chrome with script manager Tampermonkey, then this could be due to a bug in Tampermonkey. Please install the latest version of Tampermonkey.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Country links to caches you have found do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2648" title="Issue 2648">2648</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search] Alignment of search buttons on filters incorrect. [<a href="https://github.com/2Abendsegler/GClh/issues/2647" title="Issue 2647">2647</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(30.08.2024)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.2:
