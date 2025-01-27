@@ -110,10 +110,10 @@
 		<strong>Fix:</strong> [Cache Listing] The log totals icons at the top are missing and above the logs the log totals icons are displayed incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/2693" title="Issue 2693">2693</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [TB Listing] The serial name has no longer been displayed for a travel bug or geocoin. [<a href="https://github.com/2Abendsegler/GClh/issues/2678" title="Issue 2678">2678</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Browse Map] The log totals icons are displayed incorrectly in the detailed cache information. [<a href="https://github.com/2Abendsegler/GClh/issues/2694" title="Issue 2694">2694</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Browse Map] The log totals icons are displayed incorrectly in the detailed cache information. [<a href="https://github.com/2Abendsegler/GClh/issues/2694" title="Issue 2694">2694</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [TB Listing] The serial name has no longer been displayed for a travel bug or geocoin. [<a href="https://github.com/2Abendsegler/GClh/issues/2678" title="Issue 2678">2678</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Form] Double TB log actions. [<a href="https://github.com/2Abendsegler/GClh/issues/2659" title="Issue 2659">2659</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
