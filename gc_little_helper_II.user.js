@@ -13283,35 +13283,37 @@ var mainGC = function() {
                     appendCssStyle('.ui-resizable-s {left: 50%; background-image: url("https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/images/ui-icons_4A4A4A_256x240.png") !important;}');
                     $chartContainerParent.css('overflow', 'hidden');
 
-                    // Get draw chart script from page.
-                    let drawChartScript_str = $chartContainer.next()[0].text;
+                    // Get draw chart script from page and modify as necessary.
+                    let drawChartScript_str = $chartContainer.next()[0].text.replace('drawChart()','drawChart_gclh(height)')
+                        .replace("'left':50","'left':50,'height':height").replace(/google\.charts\.load[\s\S]*/, '');
+                    // Make draw chart function 'drawChart_gclh(height)' available.
+                    eval(drawChartScript_str);
 
                     // Add resize handler to chart container parent.
                     const height_default = 223.4;
                     const offset = 85;
                     $chartContainerParent.resizable({
                         alsoResize: '#uxFindsPerMonthChartContainer',
-                        classes: { "ui-resizable-s": "ui-icon ui-icon-grip-solid-horizontal" },
+                        classes: {"ui-resizable-s": "ui-icon ui-icon-grip-solid-horizontal"},
                         handles: "s",
                         minHeight: height_default,
-                        create: function(_event, _ui ) {
-                            // For own statistics, restore height from last visit, otherwise use default value.
-                            // Note: In FF, creation of resize handler must be finished before chart is drawn, otherwise chart width is slightly off.
-                            //   Additionally, if a gclh page width is specified, then page resizing must be finished before chart is drawn
-                            //   (otherwise initial chart width isn't correct).
+                        create: function (_event, _ui) {
+                            // Remove initial chart.
+                            waitForElementThenRun('#uxFindsPerMonthChartContainer>div', () => {
+                                unsafeWindow.$('#uxFindsPerMonthChartContainer>div').remove();
+                            });
+                            // At own statistics page, restore height from last visit, on public profiles use default value.
+                            // Note: If global gclh parameter 'settings_new_width' is specified, then page resizing must be finished
+                            // before chart is drawn (otherwise chart width isn't correct).
                             setTimeout(() => {
                                 let height = isOwnStatisticsPage() ? getValue("finds_per_month_chart_statistic", height_default) : height_default;
                                 $chartContainerParent.height(height);
                                 $chartContainer.height(height);
-                                let tmp = drawChartScript_str.replace(/'left':50[^\}]*/, "'left':50,'height':" + (height - offset));
-                                eval(tmp);
+                                drawChart_gclh(height - offset);
                             }, 2000);
                         },
                         resize: function (_event, ui) {
-                            // Change chart area height.
-                            let tmp = drawChartScript_str.replace(/'left':50[^\}]*/, "'left':50,'height':" + (ui.size.height - offset));
-                            // Draw updated chart.
-                            eval(tmp);
+                            drawChart_gclh(ui.size.height - offset);
                         },
                         stop: function (_event, ui) {
                             // For own statistics, store actual height.
