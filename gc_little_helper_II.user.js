@@ -742,6 +742,8 @@ var variablesInit = function(c) {
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
     c.settings_listing_bigger_avatar_with_mouse = getValue("settings_listing_bigger_avatar_with_mouse", true);
     c.settings_listing_ctoc_coords_waypoints = getValue("settings_listing_ctoc_coords_waypoints", true);
+    c.settings_listing_add_county_to_place = getValue("settings_listing_add_county_to_place", false);
+    c.settings_maps_add_county_to_place = getValue("settings_maps_add_county_to_place", false);
 
     tlc('START userToken');
     try {
@@ -1929,7 +1931,13 @@ var mainGC = function() {
                     if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                     if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
                     if (is_page("cache_listing")) {
-                        css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10 - 6) + "px !important;}";
+                        var widthSpan9 = new_width - 300 - 270 - 13 - 13 - 10 - 6.
+                        if (widthSpan9 >= 500) {
+                            css += ".span-9 {width: 500px !important;}";
+                            css += ".span-7 {width: " + (270 + widthSpan9 - 500) + "px !important;}"; // So that the address no longer wraps.
+                        } else {
+                            css += ".span-9 {width: " + widthSpan9 + "px !important;}";
+                        }
                         css += ".container {max-width: " + new_width + "px;}";
                     } else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
@@ -2578,6 +2586,17 @@ var mainGC = function() {
             otherFormats(box, coords, " - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
+    }
+
+// Add county (Landkreis) to cache information.
+    if (settings_listing_add_county_to_place && is_page('cache_listing') && $('#uxLatLon')[0]) {
+        try {
+            let [lat, lon] = toDec($('#uxLatLon')[0].innerHTML);
+            insertCountyInformation(lat, lon, (placeWithCountry, placeWithoutCountry, placeComplete) => {
+                $('#ctl00_ContentBody_Location')[0].innerHTML = placeWithCountry;
+                $('#ctl00_ContentBody_Location')[0].title = placeComplete;
+            });
+        } catch(e) {gclh_error("Add county (Landkreis) to cache information",e);}
     }
 
 // Map this Location.
@@ -12766,8 +12785,8 @@ var mainGC = function() {
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
-                            if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
-                            else new_text += '<span title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
+                            if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span> | ';
+                            else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
@@ -12843,6 +12862,21 @@ var mainGC = function() {
                                 var id = '#popup_additional_info_' + local_gc_code + ' .favi_points';
                                 if ($(id)[0] && $(id)[0].childNodes[1]) $(id)[0].childNodes[1].data = " "+score+"%";
                             });
+
+                            // Add county (Landkreis) to place.
+                            if (settings_maps_add_county_to_place) {
+                                try {
+                                    let [lat, lon] = toDec(coords);
+                                    insertCountyInformation(lat, lon, (placeWithCountry, placeWithoutCountry, placeComplet) => {
+                                        var id = '#popup_additional_info_' + local_gc_code + ' .Place';
+                                        if ($(id)[0]) {
+                                            if (settings_show_country_in_place) $(id)[0].innerHTML = placeWithCountry;
+                                            else $(id)[0].innerHTML = placeWithoutCountry;
+                                            $(id)[0].title = placeComplet;
+                                        }
+                                    });
+                                } catch(e) {gclh_error("Add county (Landkreis) to place",e);}
+                            }
 
                             // Get elevations.
                             if (settings_show_elevation_of_waypoints) {
@@ -16873,7 +16907,10 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a pop up.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the place') + show_help("With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the location') + show_help("With this option the location of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete location is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
+            html += newParameterOn3;
+            html += " &nbsp; " + checkboxy('settings_maps_add_county_to_place', 'Add county to location (only countries de, at)') + show_help("With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br><br>The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += " &nbsp; " + checkboxy('settings_show_enhanced_map_coords', 'Show the cache coordinates') + "<br>";
             html += "</div>";
 
@@ -16992,6 +17029,9 @@ var mainGC = function() {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select><br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_listing_add_county_to_place', 'Add county to location of cache (only countries de, at)') + show_help("With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br><br>The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_show_link_to_browse_map', 'Show link to Browse Map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Disclaimer</b>" + "</div>";
@@ -18627,6 +18667,8 @@ var mainGC = function() {
                 'settings_listing_bigger_avatar_with_mouse',
                 'settings_listing_ctoc_coords_waypoints',
                 'settings_default_logtype_control',
+                'settings_listing_add_county_to_place',
+                'settings_maps_add_county_to_place',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -20400,6 +20442,42 @@ function otherFormats(box, coords, trenn) {
     box.innerHTML += trenn+"Dec: "+lat+" "+lng;
     var dms = DegtoDMS(coords);
     box.innerHTML += trenn+"DMS: "+dms;
+}
+
+/**
+ * Can be used to get and insert county (and other location) informations.
+ * The informations are requested from nominatim.openstreetmap.org
+ * @param {float} lat  The latitude of the cache.
+ * @param {float} lon  The longitude of the cache.
+ * @param {function} func  A function with three arguments, the data of the request. The function can be used to insert the data to the page.
+ */
+const insertCountyInformation = (lat, lon, func) => {
+    try {
+        let url1 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=en&format=json`;
+        fetch(url1).then(res => {
+            if (res.ok) return res.json();
+            else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org language en fails\nHTTP-Status-Code: ${res.status}`);
+        }).then(data1 => {
+            var a1 = data1.address;
+            if (a1 && a1.country_code && a1.country_code.match(/(de|at)/) && a1.country) {
+                let url2 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=de&format=json`;
+                fetch(url2).then(res => {
+                    if (res.ok) return res.json();
+                    else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org language de fails\nHTTP-Status-Code: ${res.status}`);
+                }).then(data2 => {
+                    var a2 = data2.address;
+                    if (a2 && (a2.state || a2.city) && (a2.county || a2.city) && data2.display_name) {
+                        var county = a2.county ? a2.county : a2.city;
+                        var state = a2.state ? a2.state : a2.city;
+                        var placeWithCountry = county + ', ' + state + ', ' + a1.country;
+                        var placeWithoutCountry = county + ', ' + state;
+                        var placeComplete = data2.display_name;
+                        func(placeWithCountry, placeWithoutCountry, placeComplete);
+                    }
+                });
+            }
+        });
+    } catch (e) {gclh_error("insertCountyInformation", e);}
 }
 
 // Decode URI component for non-standard unicode encoding (issue-818).
