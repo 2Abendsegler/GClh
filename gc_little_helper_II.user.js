@@ -11,6 +11,7 @@
 // @namespace    http://www.amshove.net
 // @charset      UTF-8
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
+// @run-at       document-end
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
 // @match        https://www.openstreetmap.org/*
@@ -11105,28 +11106,27 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
 
-            // Preserve zoom parameter in URLs.
-            // (on page load zoom parameter in URL is ignored and zoom level defaults to 14)
-            let use_zoom_from_url = true;
-//xxx deaktiviert
+            // Preserve zoom parameter in URLs on page load, for Leaflet maps (GS ignores zoom levels from URLs).
+            // Function 'setZoom' will be triggered on each URL change, but only executed once.
             function setZoom() {
-                if (use_zoom_from_url && unsafeWindow.MapSettings && unsafeWindow.MapSettings.Map) {
-                    // Only once on page load.
-                    use_zoom_from_url = false;
-                    const urlSearchParams = new URLSearchParams(window.location.search),
-                        zoom = urlSearchParams.has('zoom') ? Number(urlSearchParams.get('zoom')) : 14;
-                    if (zoom !== 14) {
-                        unsafeWindow.MapSettings.Map.setZoom(zoom);
-                    }
+                if (unsafeWindow.MapSettings?.Map?.setZoom) {
+                    // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
+                    const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
+                    if (!isNaN(zoom)) unsafeWindow.MapSettings.Map.setZoom(zoom);
                 }
             }
 
             // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
             // (for reference: https://stackoverflow.com/a/64927639)
+            let use_zoom_from_url = true;
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
+                    if (use_zoom_from_url) {
+                        // Run only once.
+                        use_zoom_from_url = false;
+                        setZoom();
+                    }
 //xxx deaktiviert
-//                    setZoom();
 //                    searchThisArea(0);
                     return target.apply(thisArg, argArray);
                 }
