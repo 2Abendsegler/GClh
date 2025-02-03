@@ -2299,38 +2299,50 @@ var mainGC = function() {
 
 // Improve event date and event time in cache listing.
     if (is_page("cache_listing") && $('h2.CacheDescriptionHeader')[0] && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-|4738$|4738-)/) &&  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents, Block Party
-        $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof eventCacheData !== 'undefined' && typeof eventCacheData.start !== 'undefined') {
+        $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof chromeSettings !== 'undefined' && typeof chromeSettings.locale !== 'undefined') {
         try {
-            var startdate = eventCacheData.start.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',});
-            var weekday = '';
+            var startdate = ''; var weekday = ''; var starttime = ''; var endtime = '';
+            // Determine startdate.
+            var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+            if (match == null) {
+                match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+            }
+            if (match != null) {
+                var date = new Date(match[3], match[1]-1, match[2]);
+                if (date != "Invalid Date") {
+                    startdate = date;
+                }
+            }
+            // Determine starttime and endtime.
             var sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}(\s+AM$|\s+PM$|$))/i);
             var eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}(\s+AM$|\s+PM$|$))/i);
             if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
-                var starttime = sStr[2];
-                var endtime = eStr[2];
+                starttime = sStr[2];
+                endtime = eStr[2];
             }
             // Show eventday beside date.
-            if (settings_show_eventday) {
-                weekday = ' (' + eventCacheData.start.getWeekday() + ')';
-                var elem = document.createTextNode(weekday + ' ');
+            if (settings_show_eventday && !startdate == '') {
+                weekday = startdate.getWeekday();
+                var name = " (" + weekday + ") ";
+                var elem = document.createTextNode(name);
                 var side = $('#ctl00_ContentBody_mcd2')[0];
                 side.insertBefore(elem, side.childNodes[1]);
             }
             // Show eventtime in 24 hours format.
-            if (settings_show_eventtime_with_24_hours) {
+            if (settings_show_eventtime_with_24_hours && !startdate == '') {
                 var sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
                 var eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
                 if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
-                    var starttime = convert12To24Hour(sStr[2]);
+                    starttime = convert12To24Hour(sStr[2]);
                     $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], starttime);
-                    var endtime = convert12To24Hour(eStr[2]);
+                    endtime = convert12To24Hour(eStr[2]);
                     $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], endtime);
                 }
             }
             // Show the start and end of the event again at the beginning of the cache description.
-            if (settings_show_eventinfo_in_desc && starttime && endtime) {
+            if (settings_show_eventinfo_in_desc  && !startdate == '' && !starttime == '' && !endtime == '') {
                 var elem = document.createElement('p');
-                elem.innerHTML = (settings_show_eventinfo_in_desc_bold ? '<strong>':'') + startdate + weekday + ', ' + starttime + ' - ' + endtime + (settings_show_eventinfo_in_desc_bold ? '</strong>':'');
+                elem.innerHTML = (settings_show_eventinfo_in_desc_bold ? '<strong>':'') + startdate.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',}) + (weekday == '' ? '' : ' (' + weekday + ')') + ', ' + starttime + ' - ' + endtime + (settings_show_eventinfo_in_desc_bold ? '</strong>':'');
                 $('h2.CacheDescriptionHeader')[0].after(elem);
             }
         } catch(e) {gclh_error("Improve event date and event time in cache listing",e);}
