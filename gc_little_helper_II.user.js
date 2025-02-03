@@ -13280,8 +13280,7 @@ var mainGC = function() {
     }
 
 // Improve finds per month chart in statistics: change chart height dynamically.
-    if ((document.URL.search("statistics.aspx") >= 0 || document.URL.search("tab=stats#profilepanel") >= 0) &&
-        $('#uxFindsPerMonthChartContainer')[0]) {
+    if ((document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) && $('#uxFindsPerMonthChartContainer')[0]) {
         try {
             (function makeChartResizable(waitCount) {
                 // Use more actual jquery from page, otherwise resize handler stays invisible.
@@ -13337,7 +13336,7 @@ var mainGC = function() {
                     if (++waitCount <= 500) setTimeout(() => {makeChartResizable(waitCount);}, 10);
                 }
             })(0);
-        } catch (e) { gclh_error("Improve finds per month chart in own statistics", e); }
+        } catch (e) { gclh_error("Improve finds per month chart in statistics", e); }
     }
 
 // Post log from listing (inline).
