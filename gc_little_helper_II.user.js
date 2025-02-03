@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.3
+// @version      0.16.4
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -15162,8 +15162,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/7Wbp/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iPe"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/pNV8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iPD"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16494,8 +16494,8 @@ var mainGC = function() {
             html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  false);
             html += thanksLineBuild("Ruko2010",             "",                         false, true,  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
-            html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
+            html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
@@ -16549,7 +16549,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "27.01.2025";
+            var thanksLastUpdate = "03.02.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
