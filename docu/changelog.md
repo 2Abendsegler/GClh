@@ -1,5 +1,6 @@
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0164" title="GClh II version 0.16.4 (04.02.2025)">v0.16.4</a> &nbsp;
 <a href="#v0163" title="GClh II version 0.16.3 (28.01.2025)">v0.16.3</a> &nbsp;
 <a href="#v0162" title="GClh II version 0.16.2 (30.08.2024)">v0.16.2</a> &nbsp;
 <a href="#v0161" title="GClh II version 0.16.1 (13.08.2024)">v0.16.1</a> &nbsp;
@@ -49,6 +50,38 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.4:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing, Maps] Add county (Landkreis) to cache location. [<a href="https://github.com/2Abendsegler/GClh/issues/2419" title="Issue 2419">2419</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br>
+		The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.<br><br>
+		<img src="../images/0.16.4/Screen04.jpg" alt="Screen04.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_add_county_to_place" title="Link to your GClh II Config">Settings -> Listing - Location:<br>
+		<img src="../images/0.16.3/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		If you want to use this feature in cache listing, you have to activate it.<br><br>
+		<img src="../images/0.16.4/Screen02.jpg" alt="Screen02.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_maps_add_county_to_place" title="Link to your GClh II Config">Settings -> Map - Enhanced Cache Data:<br>
+		<img src="../images/0.16.3/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		If you want to use this feature in a map, you have to activate it.<br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Error in Statistics - resize find charts does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2700" title="Issue 2700">2700</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Maps] Repair stamen map layers watercolor, toner and terrain. [<a href="https://github.com/2Abendsegler/GClh/issues/2702" title="Issue 2702">2702</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Event Time wrong on different time zones. [<a href="https://github.com/2Abendsegler/GClh/issues/2709" title="Issue 2709">2709</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+<br>
+(04.02.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.3:
