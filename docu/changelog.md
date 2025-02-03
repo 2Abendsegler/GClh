@@ -59,10 +59,12 @@
 		<strong>New:</strong> [Cache Listing, Maps] Add county (Landkreis) to cache location. [<a href="https://github.com/2Abendsegler/GClh/issues/2419" title="Issue 2419">2419</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 		With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br>
 		The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.<br><br>
+		<strong>Listing:</strong><br>
 		<img src="../images/0.16.4/Screen04.jpg" alt="Screen04.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_add_county_to_place" title="Link to your GClh II Config">Settings -> Listing - Location:<br>
 		<img src="../images/0.16.4/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		If you want to use this feature in cache listing, you have to activate it.<br><br>
+		<strong>Maps:</strong><br>
 		<img src="../images/0.16.4/Screen02.jpg" alt="Screen02.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_maps_add_county_to_place" title="Link to your GClh II Config">Settings -> Map - Enhanced Cache Data:<br>
 		<img src="../images/0.16.4/Screen01.jpg" alt="Screen01.jpg"></a><br>
