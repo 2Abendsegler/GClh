@@ -11133,13 +11133,13 @@ var mainGC = function() {
             });
 
             // Set link to owner.
-//xxx deaktiviert
             function setLinkToOwner() {
-                if ($('.geocache-owner')[0] && $('.cache-metadata-code')[0]) {
+                const $ownerElem = $('[data-testid="placed-by-value"]')
+                if ($ownerElem[0] && $('.cache-metadata-code')[0]) {
                     if ($('#' + $('.cache-metadata-code')[0].innerHTML + '_owner')[0]) return;
-                    var owner = ($('.geocache-owner-name span a')[0] ? $('.geocache-owner-name span a').html() : $('.geocache-owner-name span').html());
+                    var owner = ($ownerElem.text().trim());
                     var html = '<a id="' + $('.cache-metadata-code')[0].innerHTML + '_owner' + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
-                    $('.geocache-owner-name span').html(html);
+                    $ownerElem.html(html);
                 }
             }
 
@@ -11750,7 +11750,7 @@ var mainGC = function() {
 //xxx deaktiviert
 //                scrollInCacheList();
 //                improveAddtolistPopup();
-//                setLinkToOwner(); // Has to be run before compactLayout.
+                setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
 //                addVipVupMailToOwner(); // Has to be run after compactLayout.
 //                setStrikeDisabledInList();
