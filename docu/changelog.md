@@ -79,6 +79,9 @@
 	<li>
 		<strong>Fix:</strong> [Cache Listing] Event Time wrong on different time zones. [<a href="https://github.com/2Abendsegler/GClh/issues/2709" title="Issue 2709">2709</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Set Link to Owner (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2712" title="Issue 2712">2712</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
 </ul>
 <br>
 (04.02.2025)<br>
