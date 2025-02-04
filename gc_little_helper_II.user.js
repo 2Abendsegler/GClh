@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.3
+// @version      0.16.4
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -742,6 +742,8 @@ var variablesInit = function(c) {
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
     c.settings_listing_bigger_avatar_with_mouse = getValue("settings_listing_bigger_avatar_with_mouse", true);
     c.settings_listing_ctoc_coords_waypoints = getValue("settings_listing_ctoc_coords_waypoints", true);
+    c.settings_listing_add_county_to_place = getValue("settings_listing_add_county_to_place", false);
+    c.settings_maps_add_county_to_place = getValue("settings_maps_add_county_to_place", false);
 
     tlc('START userToken');
     try {
@@ -1929,7 +1931,13 @@ var mainGC = function() {
                     if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                     if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
                     if (is_page("cache_listing")) {
-                        css += ".span-9 {width: " + (new_width - 300 - 270 - 13 - 13 - 10 - 6) + "px !important;}";
+                        var widthSpan9 = new_width - 300 - 270 - 13 - 13 - 10 - 6.
+                        if (widthSpan9 >= 500) {
+                            css += ".span-9 {width: 500px !important;}";
+                            css += ".span-7 {width: " + (270 + widthSpan9 - 500) + "px !important;}"; // So that the address no longer wraps.
+                        } else {
+                            css += ".span-9 {width: " + widthSpan9 + "px !important;}";
+                        }
                         css += ".container {max-width: " + new_width + "px;}";
                     } else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
@@ -2291,37 +2299,50 @@ var mainGC = function() {
 
 // Improve event date and event time in cache listing.
     if (is_page("cache_listing") && $('h2.CacheDescriptionHeader')[0] && $('#cacheDetails svg.cache-icon use')[0] && $('#cacheDetails svg.cache-icon use')[0].href.baseVal.match(/\/cache-types.svg\#icon-(6$|6-|453$|453-|13$|13-|7005$|7005-|3653$|3653-|4738$|4738-)/) &&  // Event, MegaEvent, Cito, GigaEvent, CommunityCelebrationEvents, Block Party
-        $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof eventCacheData !== 'undefined' && typeof eventCacheData.start !== 'undefined' && typeof eventCacheData.end !== 'undefined' && typeof chromeSettings !== 'undefined' && typeof chromeSettings.locale !== 'undefined') {
+        $('#ctl00_ContentBody_mcd2')[0] && $('#mcd3')[0] && $('#mcd4')[0] && typeof chromeSettings !== 'undefined' && typeof chromeSettings.locale !== 'undefined') {
         try {
-            var startdate = eventCacheData.start.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',});
-            var weekday = '';
-            var starttime = eventCacheData.start.toLocaleTimeString(chromeSettings.locale, {timeStyle: 'short',});
-            var endtime = eventCacheData.end.toLocaleTimeString(chromeSettings.locale, {timeStyle: 'short',});
+            var startdate = ''; var weekday = ''; var starttime = ''; var endtime = '';
+            // Determine startdate.
+            var match = $('meta[name="og:description"]')[0].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+            if (match == null) {
+                match = $('meta[name="description"]')[1].content.match(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/);
+            }
+            if (match != null) {
+                var date = new Date(match[3], match[1]-1, match[2]);
+                if (date != "Invalid Date") {
+                    startdate = date;
+                }
+            }
+            // Determine starttime and endtime.
+            var sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}(\s+AM$|\s+PM$|$))/i);
+            var eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}(\s+AM$|\s+PM$|$))/i);
+            if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
+                starttime = sStr[2];
+                endtime = eStr[2];
+            }
             // Show eventday beside date.
-            if (settings_show_eventday) {
-                weekday = ' (' + eventCacheData.start.getWeekday() + ')';
-                var elem = document.createTextNode(weekday + ' ');
+            if (settings_show_eventday && !startdate == '') {
+                weekday = startdate.getWeekday();
+                var name = " (" + weekday + ") ";
+                var elem = document.createTextNode(name);
                 var side = $('#ctl00_ContentBody_mcd2')[0];
                 side.insertBefore(elem, side.childNodes[1]);
             }
             // Show eventtime in 24 hours format.
-            if (settings_show_eventtime_with_24_hours) {
-                let sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
-                let eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+            if (settings_show_eventtime_with_24_hours && !startdate == '') {
+                var sStr = $('#mcd3')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
+                var eStr = $('#mcd4')[0].innerHTML.trim().match(/^(\D+):\s+(\d{1,2}:\d{2}\s+(AM|PM))$/i);
                 if (sStr && sStr.length == 4 && eStr && eStr.length == 4) {
-                    starttime = eventCacheData.start.toLocaleTimeString('de-DE', {timeStyle: 'short',})
+                    starttime = convert12To24Hour(sStr[2]);
                     $('#mcd3')[0].innerHTML = $('#mcd3')[0].innerHTML.replace(sStr[2], starttime);
-                    endtime = eventCacheData.end.toLocaleTimeString('de-DE', {timeStyle: 'short',})
+                    endtime = convert12To24Hour(eStr[2]);
                     $('#mcd4')[0].innerHTML = $('#mcd4')[0].innerHTML.replace(eStr[2], endtime);
-                    startdate = eventCacheData.start.toLocaleDateString('de-DE', {year: 'numeric', month: 'long', day: 'numeric',});
                 }
             }
             // Show the start and end of the event again at the beginning of the cache description.
-//var settings_show_eventinfo_in_desc = true;
-//var settings_show_eventinfo_in_desc_bold = true;
-            if (settings_show_eventinfo_in_desc) {
+            if (settings_show_eventinfo_in_desc  && !startdate == '' && !starttime == '' && !endtime == '') {
                 var elem = document.createElement('p');
-                elem.innerHTML = (settings_show_eventinfo_in_desc_bold ? '<strong>':'') + startdate + weekday + ', ' + starttime + ' - ' + endtime + (settings_show_eventinfo_in_desc_bold ? '</strong>':'');
+                elem.innerHTML = (settings_show_eventinfo_in_desc_bold ? '<strong>':'') + startdate.toLocaleDateString(chromeSettings.locale, {year: 'numeric', month: 'long', day: 'numeric',}) + (weekday == '' ? '' : ' (' + weekday + ')') + ', ' + starttime + ' - ' + endtime + (settings_show_eventinfo_in_desc_bold ? '</strong>':'');
                 $('h2.CacheDescriptionHeader')[0].after(elem);
             }
         } catch(e) {gclh_error("Improve event date and event time in cache listing",e);}
@@ -2578,6 +2599,17 @@ var mainGC = function() {
             otherFormats(box, coords, " - ");
             box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
         } catch(e) {gclh_error("Show other coord formats listing",e);}
+    }
+
+// Add county (Landkreis) to cache information.
+    if (settings_listing_add_county_to_place && is_page('cache_listing') && $('#uxLatLon')[0]) {
+        try {
+            let [lat, lon] = toDec($('#uxLatLon')[0].innerHTML);
+            insertCountyInformation(lat, lon, (placeWithCountry, placeWithoutCountry, placeComplete) => {
+                $('#ctl00_ContentBody_Location')[0].innerHTML = placeWithCountry;
+                $('#ctl00_ContentBody_Location')[0].title = placeComplete;
+            });
+        } catch(e) {gclh_error("Add county (Landkreis) to cache information",e);}
     }
 
 // Map this Location.
@@ -11114,13 +11146,13 @@ var mainGC = function() {
             });
 
             // Set link to owner.
-//xxx deaktiviert
             function setLinkToOwner() {
-                if ($('.geocache-owner')[0] && $('.cache-metadata-code')[0]) {
+                const $ownerElem = $('[data-testid="placed-by-value"]')
+                if ($ownerElem[0] && $('.cache-metadata-code')[0]) {
                     if ($('#' + $('.cache-metadata-code')[0].innerHTML + '_owner')[0]) return;
-                    var owner = ($('.geocache-owner-name span a')[0] ? $('.geocache-owner-name span a').html() : $('.geocache-owner-name span').html());
+                    var owner = ($ownerElem.text().trim());
                     var html = '<a id="' + $('.cache-metadata-code')[0].innerHTML + '_owner' + '" href="https://www.geocaching.com/profile/?u=' + urlencode(owner) + '" target="_blank">' + owner + '</a>';
-                    $('.geocache-owner-name span').html(html);
+                    $ownerElem.html(html);
                 }
             }
 
@@ -11731,7 +11763,7 @@ var mainGC = function() {
 //xxx deaktiviert
 //                scrollInCacheList();
 //                improveAddtolistPopup();
-//                setLinkToOwner(); // Has to be run before compactLayout.
+                setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
 //                addVipVupMailToOwner(); // Has to be run after compactLayout.
 //                setStrikeDisabledInList();
@@ -12766,8 +12798,8 @@ var mainGC = function() {
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
-                            if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
-                            else new_text += '<span title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
+                            if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span> | ';
+                            else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
                             if (settings_show_elevation_of_waypoints) {
                                 new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
                             }
@@ -12843,6 +12875,21 @@ var mainGC = function() {
                                 var id = '#popup_additional_info_' + local_gc_code + ' .favi_points';
                                 if ($(id)[0] && $(id)[0].childNodes[1]) $(id)[0].childNodes[1].data = " "+score+"%";
                             });
+
+                            // Add county (Landkreis) to place.
+                            if (settings_maps_add_county_to_place) {
+                                try {
+                                    let [lat, lon] = toDec(coords);
+                                    insertCountyInformation(lat, lon, (placeWithCountry, placeWithoutCountry, placeComplet) => {
+                                        var id = '#popup_additional_info_' + local_gc_code + ' .Place';
+                                        if ($(id)[0]) {
+                                            if (settings_show_country_in_place) $(id)[0].innerHTML = placeWithCountry;
+                                            else $(id)[0].innerHTML = placeWithoutCountry;
+                                            $(id)[0].title = placeComplet;
+                                        }
+                                    });
+                                } catch(e) {gclh_error("Add county (Landkreis) to place",e);}
+                            }
 
                             // Get elevations.
                             if (settings_show_elevation_of_waypoints) {
@@ -13233,53 +13280,63 @@ var mainGC = function() {
     }
 
 // Improve finds per month chart in statistics: change chart height dynamically.
-    if ((document.URL.search("statistics.aspx") >= 0 || document.URL.search("tab=stats#profilepanel") >= 0)
-        && $('#uxFindsPerMonthChartContainer')[0]) {
+    if ((document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) && $('#uxFindsPerMonthChartContainer')[0]) {
         try {
-            // Don't use chart container 'div#uxFindsPerMonthChartContainer' for resizables directly
-            // (otherwise resizable gets invalid after each chart update).
-            // Rather use its parent container and resize both, then everything works.
-            // And use more actual jqueryui from page, otherwise resize handler stays invisible.
-            let $drawChartContainer = unsafeWindow.$('#uxFindsPerMonthChartContainer');
-            let $drawChartContainerParent = $drawChartContainer.parent();
+            (function makeChartResizable(waitCount) {
+                // Use more actual jquery from page, otherwise resize handler stays invisible.
+                if (typeof unsafeWindow.$?.fn?.resizable === 'function') {
+                    // Don't use chart container 'div#uxFindsPerMonthChartContainer' for resizables directly
+                    // (otherwise resizable gets invalid after each chart update).
+                    // Rather use its parent container and resize both, then everything works.
+                    let $chartContainer = unsafeWindow.$('#uxFindsPerMonthChartContainer');
+                    let $chartContainerParent = $chartContainer.parent();
 
-            // Style horizontal resize handle and hide overflow.
-            appendCssStyle('.ui-resizable-s {left: 50%; background-image: url("https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/images/ui-icons_4A4A4A_256x240.png") !important;}');
-            $drawChartContainerParent.css('overflow', 'hidden');
+                    // Style horizontal resize handle and hide overflow.
+                    appendCssStyle('.ui-resizable-s {left: 50%; background-image: url("https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/images/ui-icons_4A4A4A_256x240.png") !important;}');
+                    $chartContainerParent.css('overflow', 'hidden');
 
-            // Get draw chart script from page.
-            let drawChartScript_str = $drawChartContainer.next()[0].text;
+                    // Get draw chart script from page and modify as necessary.
+                    let drawChartScript_str = $chartContainer.next()[0].text.replace('drawChart()','drawChart_gclh(height)')
+                        .replace("'left':50","'left':50,'height':height").replace(/google\.charts\.load[\s\S]*/, '');
+                    // Make draw chart function 'drawChart_gclh(height)' available.
+                    eval(drawChartScript_str);
 
-            // Add resize handler to chart container parent.
-            const height_default = $drawChartContainerParent.height();
-            const offset = 85;
-            $drawChartContainerParent.resizable({
-                alsoResize: '#uxFindsPerMonthChartContainer',
-                classes: { "ui-resizable-s": "ui-icon ui-icon-grip-solid-horizontal" },
-                handles: "s",
-                minHeight: height_default,
-                resize: function (_event, ui) {
-                    // Change chart area height.
-                    let tmp = drawChartScript_str.replace(/'left':50[^\}]*/, "'left':50,'height':" + (ui.size.height - offset));
-                    // Draw updated chart.
-                    eval(tmp);
-                },
-                stop: function (_event, ui) {
-                    // For own statistics, store height of chart container parent.
-                    if (isOwnStatisticsPage()) setValue("finds_per_month_chart_statistic", ui.size.height);
+                    // Add resize handler to chart container parent.
+                    const height_default = 223.4;
+                    const offset = 85;
+                    $chartContainerParent.resizable({
+                        alsoResize: '#uxFindsPerMonthChartContainer',
+                        classes: {"ui-resizable-s": "ui-icon ui-icon-grip-solid-horizontal"},
+                        handles: "s",
+                        minHeight: height_default,
+                        create: function (_event, _ui) {
+                            // Remove initial chart.
+                            waitForElementThenRun('#uxFindsPerMonthChartContainer>div', () => {
+                                unsafeWindow.$('#uxFindsPerMonthChartContainer>div').remove();
+                            });
+                            // At own statistics page, restore height from last visit, on public profiles use default value.
+                            // Note: If global gclh parameter 'settings_new_width' is specified, then page resizing must be finished
+                            // before chart is drawn (otherwise chart width isn't correct).
+                            setTimeout(() => {
+                                let height = isOwnStatisticsPage() ? getValue("finds_per_month_chart_statistic", height_default) : height_default;
+                                $chartContainerParent.height(height);
+                                $chartContainer.height(height);
+                                drawChart_gclh(height - offset);
+                            }, 2000);
+                        },
+                        resize: function (_event, ui) {
+                            drawChart_gclh(ui.size.height - offset);
+                        },
+                        stop: function (_event, ui) {
+                            // For own statistics, store actual height.
+                            if (isOwnStatisticsPage()) setValue("finds_per_month_chart_statistic", ui.size.height);
+                        }
+                    });
+                } else {
+                    if (++waitCount <= 500) setTimeout(() => {makeChartResizable(waitCount);}, 10);
                 }
-            });
-
-            // For own statistics, restore height from last visit, otherwise use default value.
-            // Note: In FF, creation of resize handler must be finished before chart is drawn, otherwise chart width is slightly off.
-            setTimeout(function () {
-                const height = isOwnStatisticsPage() ? getValue("finds_per_month_chart_statistic", height_default) : height_default;
-                $drawChartContainerParent.height(height);
-                $drawChartContainer.height(height);
-                let tmp = drawChartScript_str.replace(/'left':50[^\}]*/, "'left':50,'height':" + (height - offset));
-                eval(tmp);
-            }, 500);
-        } catch (e) { gclh_error("Improve finds per month chart in own statistics", e); }
+            })(0);
+        } catch (e) { gclh_error("Improve finds per month chart in statistics", e); }
     }
 
 // Post log from listing (inline).
@@ -15105,8 +15162,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/7Wbp/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iPe"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/pNV8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iPD"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16437,8 +16494,8 @@ var mainGC = function() {
             html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  false);
             html += thanksLineBuild("Ruko2010",             "",                         false, true,  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
-            html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
+            html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
@@ -16492,7 +16549,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "27.01.2025";
+            var thanksLastUpdate = "03.02.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16873,7 +16930,10 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> latest log icons" + show_help("With this option, the choosen count of the latest logs icons is shown. If you move the mouse over a log icon, the log text is displayed in a pop up.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the place') + show_help("With this option the place of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete place is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_show_country_in_place', 'Show country as part of the location') + show_help("With this option the location of the cache is displayed with state and country separated by a comma or only with state. In the latter case the complete location is displayed if you hover with the mouse over the field.<br><br>You can use this also to prevent the line from being broken.") + "<br>";
+            html += newParameterOn3;
+            html += " &nbsp; " + checkboxy('settings_maps_add_county_to_place', 'Add county to location (only countries de, at)') + show_help("With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br><br>The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += " &nbsp; " + checkboxy('settings_show_enhanced_map_coords', 'Show the cache coordinates') + "<br>";
             html += "</div>";
 
@@ -16992,6 +17052,9 @@ var mainGC = function() {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select><br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_listing_add_county_to_place', 'Add county to location of cache (only countries de, at)') + show_help("With this option, the county is added to the location of the cache if the cache location is in Germany or Austria. If you hover with your mouse over the field, the full address will be displayed.<br><br>The data comes from OpenStreetMap. They are not always completely accurate, which is why the parameter is deactivated by default. Other countries work with different data structures and the quality of the data does not always seem sufficient, which is why we have decided to only provide the named countries for this feature.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_show_link_to_browse_map', 'Show link to Browse Map') + show_help("With this option, a link called \"Map this Location\" is shown under the listing coordinates.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Disclaimer</b>" + "</div>";
@@ -18627,6 +18690,8 @@ var mainGC = function() {
                 'settings_listing_bigger_avatar_with_mouse',
                 'settings_listing_ctoc_coords_waypoints',
                 'settings_default_logtype_control',
+                'settings_listing_add_county_to_place',
+                'settings_maps_add_county_to_place',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
@@ -20400,6 +20465,42 @@ function otherFormats(box, coords, trenn) {
     box.innerHTML += trenn+"Dec: "+lat+" "+lng;
     var dms = DegtoDMS(coords);
     box.innerHTML += trenn+"DMS: "+dms;
+}
+
+/**
+ * Can be used to get and insert county (and other location) informations.
+ * The informations are requested from nominatim.openstreetmap.org
+ * @param {float} lat  The latitude of the cache.
+ * @param {float} lon  The longitude of the cache.
+ * @param {function} func  A function with three arguments, the data of the request. The function can be used to insert the data to the page.
+ */
+const insertCountyInformation = (lat, lon, func) => {
+    try {
+        let url1 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=en&format=json`;
+        fetch(url1).then(res => {
+            if (res.ok) return res.json();
+            else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org language en fails\nHTTP-Status-Code: ${res.status}`);
+        }).then(data1 => {
+            var a1 = data1.address;
+            if (a1 && a1.country_code && a1.country_code.match(/(de|at)/) && a1.country) {
+                let url2 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=de&format=json`;
+                fetch(url2).then(res => {
+                    if (res.ok) return res.json();
+                    else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org language de fails\nHTTP-Status-Code: ${res.status}`);
+                }).then(data2 => {
+                    var a2 = data2.address;
+                    if (a2 && (a2.state || a2.city) && (a2.county || a2.city) && data2.display_name) {
+                        var county = a2.county ? a2.county : a2.city;
+                        var state = a2.state ? a2.state : a2.city;
+                        var placeWithCountry = county + ', ' + state + ', ' + a1.country;
+                        var placeWithoutCountry = county + ', ' + state;
+                        var placeComplete = data2.display_name;
+                        func(placeWithCountry, placeWithoutCountry, placeComplete);
+                    }
+                });
+            }
+        });
+    } catch (e) {gclh_error("insertCountyInformation", e);}
 }
 
 // Decode URI component for non-standard unicode encoding (issue-818).
