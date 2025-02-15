@@ -13949,7 +13949,7 @@ var mainGC = function() {
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
             var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
             if (is_page('profile')) $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0].parentNode.innerHTML += " | <br>" + lnk_config + lnk_sync + lnk_changelog;
-            else $('.bio-meta')[0].innerHTML += lnk_config + lnk_sync + lnk_changelog;
+            else $('.bio-meta')[0].innerHTML += '<span style="display:block;">' + lnk_config + lnk_sync + lnk_changelog + '</span>';
             appendCssStyle(".bio-meta {font-size: 12px;} .bio-meta a:hover {color: #02874d;}");
             $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
             $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
