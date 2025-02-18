@@ -8137,17 +8137,19 @@ var mainGC = function() {
                     }
                     users_found = new Array();
                     // Nach Klick auf ein Log Icon im VIP Bereich, zum Log gehen.
+                    var styleOrigin = '';
                     function gotoLogid(icon, logid, waitCount) {
+                        if (waitCount == 0 && $(icon).attr('style')) styleOrigin = $(icon).attr('style');
                         if ($('#'+logid)[0]) {
                             document.location.href = clearUrlAppendix(document.location.href, false) + logid;
                             window.scrollBy(0, -30);
-                            $(icon).attr('style', 'cursor: pointer;');
+                            $(icon).attr('style', styleOrigin + 'cursor: pointer;');
                         } else {
                             if (waitCount == 0) {
-                                $(icon).attr('style', 'cursor: progress;');
+                                $(icon).attr('style', styleOrigin + 'cursor: progress;');
                                 $('#gclh_load_all_logs')[0].click();
                             } else if (waitCount == 100) {
-                                $(icon).attr('style', 'cursor: pointer;');
+                                $(icon).attr('style', styleOrigin + 'cursor: pointer;');
                             }
                             waitCount++; if (waitCount <= 100) setTimeout(function(){gotoLogid(icon, logid, waitCount);}, 100);
                         }
@@ -8184,6 +8186,7 @@ var mainGC = function() {
                                 }, false);
                                 log_img.setAttribute("src", log_infos_long[i]["icon"]);
                                 log_img.setAttribute("border", "0");
+                                log_img.setAttribute("style", "vertical-align: sub;");
                                 log_link.appendChild(document.createTextNode(log_infos_long[i]["date"]));
                                 log_link.appendChild(log_text);
                                 list.appendChild(log_img);
