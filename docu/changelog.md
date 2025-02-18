@@ -76,10 +76,10 @@
 		- Show cache/TB type in front of log type in Latest Activity list. It is now available in a similar form on the standard website.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] Icons in VIP list are moved by click. [<a href="https://github.com/2Abendsegler/GClh/issues/2720" title="Issue 2720">2720</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Cache Listing] Clicking on log type totals at the top of the listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2719" title="Issue 2719">2719</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] Clicking on log type totals at the top of the listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2719" title="Issue 2719">2719</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Cache Listing] Icons in VIP list are moved by click. [<a href="https://github.com/2Abendsegler/GClh/issues/2720" title="Issue 2720">2720</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
