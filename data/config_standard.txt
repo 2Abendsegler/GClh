@@ -366,7 +366,6 @@
   "settings_listing_links_new_tab": false,
   "settings_show_compact_certitude_information": true,
   "settings_anonymous_on_certitude": false,
-  "settings_show_cache_type_icons_in_dashboard": false,
   "settings_public_profile_avatar_show_thumbnail": true,
   "settings_drafts_download_show_button": true,
   "settings_drafts_download_change_logdate": false,
