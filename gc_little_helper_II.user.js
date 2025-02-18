@@ -10960,43 +10960,45 @@ var mainGC = function() {
                 addLayersOnMap();
             }
 
-            // After go back from cache details to cache list, scroll to last position.
+            // After go back from cache details to cache list or BML, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
-//xxx deaktiviert
             function scrollInCacheList() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
-                if ($('#geocache-list')[0] && global_newScrollTop != 0) {
-                    document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
+                let $cache_list = $('.gc-map-geocache-list-item').parent().parent().parent();
+                if ($cache_list[0] && global_newScrollTop != 0) {
+                    $cache_list[0].scrollTo({top: global_newScrollTop, behavior: 'smooth'})
                     // Das Scrollen funktionierte nicht immer, vermutlich weil es zu lange dauert bis die Caches gelistet sind bzw.
                     // die Platzhalter dafür aufgebaut sind. Durch das verzögerte Zurücksetzen wird das Scrollen nun mehrfach durchgeführt.
+                    // Note: seems not to be an issue anymore after GS tech migration in 2024; anyway, let's keep it (doesn't hurt)
                     setTimeout(function(){global_newScrollTop = 0;}, 250);
                 }
                 // Cache list: Notice scrolling. Only if we are on the first part of the lists of the caches.
-                if ($('#geocache-list')[0] && !$('#geocache-list.gclh-scroll')[0]) {
-                    $('#geocache-list').addClass('gclh-scroll');
-                    $('#geocache-list')[0].addEventListener('scroll', function(e) {
-                        if (!$('#geocache-list-pagination')[0] || $('#geocache-list-pagination .active a')[0].innerHTML == '1') {
-                            global_scrollTop = $('#geocache-list').scrollTop();
+                if ($cache_list[0] && !$cache_list.hasClass('gclh-scroll')) {
+                    $cache_list.addClass('gclh-scroll');
+                    $cache_list[0].addEventListener('scroll', function(e) {
+                        if (!$('ul.pagination')[0] || $('ul.pagination .active a')[0].innerHTML == '1') {
+                            global_scrollTop = $cache_list.scrollTop();
                         } else {
                             global_scrollTop = 0;
                         }
                     });
                 }
                 // Search map: Set click event to "Search this area" button to clear noticed scrolling if caches on map have changed.
-                if ($('#clear-map-control')[0] && !$('#clear-map-control.gclh-scroll')[0]) {
-                    $('#clear-map-control').addClass('gclh-scroll');
-                    $('#clear-map-control')[0].addEventListener('click', function() {global_scrollTop = 0;});
+                let $search_button = $('button[data-event-label="Map - Search This Area"]');
+                if ($search_button[0] && !$search_button.hasClass('gclh-scroll')) {
+                    $search_button.addClass('gclh-scroll');
+                    $search_button[0].addEventListener('click', function() {global_scrollTop = 0;});
                 }
-                // Cache details: Set click event to back button in cache details.
-                if ($('.cache-preview-header')[0] && $('.search-bar-back-cta')[0] && !$('.search-bar-back-cta.gclh-scroll')[0]) {
-                    $('.search-bar-back-cta').addClass('gclh-scroll');
-                    $('.search-bar-back-cta')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                // Cache details: Set click event to back button in cache details (coming from cache list or BML).
+                let $back_button = $('svg use[href="#back"]').parent().parent();
+                if ($('.cache-preview-header')[0] && $back_button[0] && !$back_button.hasClass('gclh-scroll')) {
+                    $back_button.addClass('gclh-scroll');
+                    $back_button[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
                 }
-                // Cache details: Set click event to back button in BML cache details.
-                if ($('.cache-preview-header')[0] && $('.dismiss-list-cache-button')[0] && !$('.dismiss-list-cache-button.gclh-scroll')[0]) {
-                    $('.dismiss-list-cache-button').addClass('gclh-scroll');
-                    $('.dismiss-list-cache-button')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                // BML: Clear noticed scrolling when entering list of BML.
+                if ($('[data-testid="list-hub-item"]')[0]) {
+                    global_newScrollTop = 0;
                 }
             }
 
@@ -11736,7 +11738,7 @@ var mainGC = function() {
             // Processing all steps.
             function processAllSearchMap() {
 //xxx deaktiviert
-//                scrollInCacheList();
+                scrollInCacheList();
 //                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
