@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.4
+// @version      0.16.5
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -11,6 +11,7 @@
 // @namespace    http://www.amshove.net
 // @charset      UTF-8
 // @icon         https://raw.githubusercontent.com/2Abendsegler/GClh/master/images/gclh_logo.png
+// @run-at       document-end
 // @match        https://www.geocaching.com/*
 // @match        https://project-gc.com/Tools/PQSplit*
 // @match        https://www.openstreetmap.org/*
@@ -722,7 +723,6 @@ var variablesInit = function(c) {
     c.settings_after_new_logging_view_log = getValue("settings_after_new_logging_view_log", false);
     c.settings_listing_hide_external_link_warning = getValue("settings_listing_hide_external_link_warning", false);
     c.settings_listing_links_new_tab = getValue("settings_listing_links_new_tab", false);
-    c.settings_show_cache_type_icons_in_dashboard = getValue("settings_show_cache_type_icons_in_dashboard", false);
     c.settings_public_profile_avatar_show_thumbnail = getValue("settings_public_profile_avatar_show_thumbnail", true);
     c.settings_drafts_download_show_button = getValue("settings_drafts_download_show_button", true);
     c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
@@ -8136,17 +8136,19 @@ var mainGC = function() {
                     }
                     users_found = new Array();
                     // Nach Klick auf ein Log Icon im VIP Bereich, zum Log gehen.
+                    var styleOrigin = '';
                     function gotoLogid(icon, logid, waitCount) {
+                        if (waitCount == 0 && $(icon).attr('style')) styleOrigin = $(icon).attr('style');
                         if ($('#'+logid)[0]) {
                             document.location.href = clearUrlAppendix(document.location.href, false) + logid;
                             window.scrollBy(0, -30);
-                            $(icon).attr('style', 'cursor: pointer;');
+                            $(icon).attr('style', styleOrigin + 'cursor: pointer;');
                         } else {
                             if (waitCount == 0) {
-                                $(icon).attr('style', 'cursor: progress;');
+                                $(icon).attr('style', styleOrigin + 'cursor: progress;');
                                 $('#gclh_load_all_logs')[0].click();
                             } else if (waitCount == 100) {
-                                $(icon).attr('style', 'cursor: pointer;');
+                                $(icon).attr('style', styleOrigin + 'cursor: pointer;');
                             }
                             waitCount++; if (waitCount <= 100) setTimeout(function(){gotoLogid(icon, logid, waitCount);}, 100);
                         }
@@ -8183,6 +8185,7 @@ var mainGC = function() {
                                 }, false);
                                 log_img.setAttribute("src", log_infos_long[i]["icon"]);
                                 log_img.setAttribute("border", "0");
+                                log_img.setAttribute("style", "vertical-align: sub;");
                                 log_link.appendChild(document.createTextNode(log_infos_long[i]["date"]));
                                 log_link.appendChild(log_text);
                                 list.appendChild(log_img);
@@ -9161,22 +9164,18 @@ var mainGC = function() {
                     link.appendChild(img);
                     side.appendChild(link);
                 }
-                if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
-                var legend = $('.gclh_LogTotals')[0].childNodes[0];
-                var new_legend = document.createElement('ul');
-                new_legend.className = "LogTotals";
-                for (var i = 0; i < legend.childNodes[0].childNodes.length; i++) {
-                    var li = document.createElement("li");
-                    var link = document.createElement("a");
-                    link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
-                    link.style.textDecoration = 'none';
-                    link.addEventListener("click", gclh_filter_logs, false);
-                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[0].cloneNode(true));
-                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[1].cloneNode(true));
-                    li.appendChild(link);
-                    new_legend.appendChild(li);
+                if (settings_show_log_totals) {
+                    function waitForLogTotalsToSetLinks(waitCount) {
+                        if ($('.gclh_LogTotals')[0] && $('.gclh_LogTotals')[0].childNodes[0]) {
+                            var legend = $('.gclh_LogTotals')[0].childNodes[0];
+                            for (var i = 0; i < legend.childNodes.length; i++) {
+                                legend.childNodes[i].childNodes[0].setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
+                                legend.childNodes[i].childNodes[0].addEventListener("click", gclh_filter_logs, false);
+                            }
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLogTotalsToSetLinks(waitCount);}, 100);}
+                    }
+                    waitForLogTotalsToSetLinks(0);
                 }
-                $('.gclh_LogTotals')[0].replaceChild(new_legend, legend);
             }
 
             // Search logs.
@@ -9796,14 +9795,11 @@ var mainGC = function() {
             var css = '';
             // Compact layout (little bit narrower elements).
             if (settings_compact_layout_new_dashboard) {
-                css += ".action-link a {padding: 5px 20px; height: 29.2px !important;}";
-                css += ".bio-username {color: #02874D; font-size: 1.3em !important; word-break: break-all;}";
-                css += ".bio-background {height: 90px !important; background-size: 100% 140% !important;}";
-                css += ".bio-meta {padding: 16px 0px !important;}";
-                css += ".activity-item, .panel-header {padding: 5px 15px;}";
-                css += ".activity-tray {padding: 5px 40px;}";
+                css += ".action-link a {height: 29.2px !important;}";
+                css += ".activity-item, .panel-header {padding: 5px 15px !important;}";
+                css += ".activity-tray {padding: 5px 40px !important;}";
                 css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
-                css += ".alert {padding: 6px 16px !important; color: blue;}";
+                css += ".alert {padding: 6px 16px !important;}";
             }
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
@@ -9818,7 +9814,7 @@ var mainGC = function() {
                 newsearchbtn.classList.add ("action-link");
                 newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
                 ul.insertBefore(newsearchbtn, ul.childNodes[0]);
-                css += ".action-link a {height: 43.6px;} a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
+                css += ".action-link a {height: 38px;} a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
             }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
@@ -9873,26 +9869,6 @@ var mainGC = function() {
                 var html = '<li><a id="gclh_goto_ignorelist" href="/plan/lists/ignored">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
             }
-            // Show/Hide nearby events.
-            function showHideNearbyEvents(waitCount) {
-                if ($('#EventsWidget')[0] && $('#EventsWidget .panel-header')[0] && $('#EventsWidget .collapsible')[0]) {
-                    function waitForEvent(waitCount) {
-                        if (($('#EventsWidget .isActive')[0] && getValue('show_box_nearby_events', true) == false) ||
-                            (!$('#EventsWidget .isActive')[0] && getValue('show_box_nearby_events', true) == true)    ) {
-                            $('#EventsWidget .panel-header')[0].click();
-                            waitCount++; if (waitCount <= 100) setTimeout(function(){waitForEvent(waitCount);}, 100);
-                        } else {
-                            $('#EventsWidget .collapsible')[0].addEventListener('click', function() {
-                                if ($('#EventsWidget .isActive')[0]) setValue('show_box_nearby_events', true);
-                                else setValue('show_box_nearby_events', false);
-                            });
-                        }
-                    }
-                    waitForEvent(0);
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showHideNearbyEvents(waitCount);}, 100);}
-            }
-            showHideNearbyEvents(0);
-
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
             function buildLinksAF(log) {
@@ -9901,12 +9877,14 @@ var mainGC = function() {
                     $(log).find('.edit-link')[0].innerHTML = 'View log';
                     $(log).find('.edit-link').addClass('gclh_view-link');
                 }
-                if ($(log).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
+                if ($(log).find('.activity-details > div h3 > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
                     if (!$(log).find('.gclh_edit-link')[0] && $(log).find('.edit-link')[0].href.match(/coord.info\/(?:GL|TL)/i)) {
+                        // Build area for the two buttons.
                         var span = document.createElement('span');
                         span.setAttribute('class', 'gclh_buttons');
                         $(log).find('.edit-link')[0].before(span);
-                        let gccode = $(log).find('.meta-data span span')[0].innerHTML.trim();
+                        // Build new button Edit log.
+                        let gccode = $(log).find('.text-xs')[0].innerHTML.trim();
                         var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
                         var href = $(editLink).prop('href');
                         let type = href.match(/GL/) ? 'geocache' : 'trackable';
@@ -9914,8 +9892,11 @@ var mainGC = function() {
                           /coord.info\/((?:GL|TL)\w+)/i,
                           `www.geocaching.com/live/${type}/${gccode}/log/$1/edit`
                         );
-                        $(editLink).prop('href', href).prop('class', 'gclh_edit-link').prop('style', 'margin-top: 12px').text('Edit log');
+                        $(editLink).prop('href', href).text('Edit log');
+                        $(editLink).addClass('gclh_edit-link');
+                        $(editLink).removeClass('edit-link');
                         $(log).find('.gclh_buttons')[0].append(editLink);
+                        // Move standard button in area.
                         var editLink = $( $(log).find('.edit-link')[0] ).clone()[0];
                         $(log).find('.edit-link')[0].remove();
                         $(log).find('.gclh_buttons')[0].append(editLink);
@@ -9925,27 +9906,11 @@ var mainGC = function() {
             }
             if (settings_show_edit_links_for_logs) {
                 css += '.gclh_buttons {display: flex;}';
-                css += '.gclh_edit-link {margin-top: 12px; margin-right: 12px;}';
-            }
-            // Show cache/TB type in front of log type in Latest Activity list.
-            function buildCacheTypeIconAF(log) {
-                if (!settings_show_cache_type_icons_in_dashboard) return;
-                if (!$(log).find('.gclh_cache-type')[0]) {
-                    if ($(log).find('.activity-footer .meta-data span:first .icon')[0] && $(log).find('.activity-label .label-text .icon:first')[0]) {
-                        var ct = $(log).find('.activity-footer .meta-data span:first .icon');
-                        $(log).find('.activity-label .label-text .icon:first').before(ct);
-                        $(log).find('.activity-label .label-text .icon:first').addClass('gclh_cache-type');
-                    }
-                    buildEventMoreAF(log);
-                }
-            }
-            if (settings_show_cache_type_icons_in_dashboard) {
-                css += '.activity-label .icon:nth-child(1) {margin-right: 0px !important;}';
-                css += '.activity-label.has-favorite .icon-favorited {position: relative !important; left: -8px !important; margin-right: -4px !important;}';
-                css += '.activity-label.has-favorite a {margin-left: 0 !important;}';
+                css += '.gclh_edit-link {margin-right: 12px;}';
             }
 
             // Build log texts in Markdown.
+            css += '.markdown-output a {color: #2358a1 !important; text-decoration: underline !important;} .markdown-output a:hover {text-decoration: none !important; border-bottom: none !important;}';
             function buildLogtextMarkdownAF(log) {
                 if (!settings_dashboard_show_logs_in_markdown || $(log).find('.gclh_logText')[0] || !$(log).hasClass('active') || !$(log).attr('logId') || !$(log).find('.note-text')[0]) return;
                 var logText = decode_innerHTML($('#gclh_logId_' + $(log).attr('logId'))[0]);
@@ -9963,7 +9928,7 @@ var mainGC = function() {
             var logId = 0;
             function backupLogtextMarkdownAF(log) {
                 if (!settings_dashboard_show_logs_in_markdown || $(log).attr('logId') || !$(log).find('.note-text')[0]) return;
-                if (!$('#gclh_logs')[0]) $('#ActivityFeed').append('<div id="gclh_logs" style="display: none"><ul></ul></div>');
+                if (!$('#gclh_logs')[0]) $('#_ActivityFeed').append('<div id="gclh_logs" style="display: none"><ul></ul></div>');
                 logId++;
                 var logIdLocal = logId;
                 var logText = decode_innerHTML($(log).find('.note-text')[0]);
@@ -9971,9 +9936,13 @@ var mainGC = function() {
                 $(log).attr('logId', logIdLocal);
             }
             // Copy to clipboard button for log text in Latest Activity list.
+            css += '.gclh_copyLogToClipboard {margin-left: auto; padding-right: 12px;}';
+            css += '.gclh_buttons .ctoc_link img {vertical-align: sub !important;}';
+            css += '.ctoc_link {box-shadow: none !important;} .ctoc_link img {vertical-align: bottom !important;}';
             function buildCopyLogtextToClipboard(log) {
                 if (!$(log).find('.gclh_copyLogToClipboard')[0] && $(log).find('.note-text')[0]) {
-                    $(log).find('.meta-data').after('<span class="gclh_copyLogToClipboard" style="margin-top: 12px;margin-left: auto;padding-right: 12px;"><span class="gclh_copyToClipboard"></span></span>');
+                    var firstLink = $(log).find('.gclh_edit-link')[0] ? '.gclh_edit-link' : '.edit-link';
+                    $(log).find(firstLink).before('<span class="gclh_copyLogToClipboard"><span class="gclh_copyToClipboard"></span></span>');
                     var logText = decode_innerHTML($(log).find('.note-text')[0]).replace(/<br>/g,'\n');
                     addCopyToClipboardLink(logText, $(log).find('.gclh_copyToClipboard')[0], "Log");
                 }
@@ -9981,7 +9950,7 @@ var mainGC = function() {
 
             // Hide TB Activity
             function hideTBActivity(log) {
-                if (settings_dashboard_hide_tb_activity && $(log).find('.label-text a')[0].href.match(/coord.info\/TB\w+/ig)) {
+                if (settings_dashboard_hide_tb_activity && !$(log).hasClass('gclh_hidden_log') && $(log).find('.text-xs')[0] && $(log).find('.text-xs')[0].innerHTML.match(/TB\w+/ig)) {
                     $(log).addClass('gclh_hidden_log');
                     checkDay($(log).parent());
                 }
@@ -10007,7 +9976,6 @@ var mainGC = function() {
             // Common functions for features in Latest Activity list.
             function buildWaitAF(log, waitCount) {
                 buildLinksAF(log);
-                buildCacheTypeIconAF(log);
                 buildLogtextMarkdownAF(log);
                 buildCopyLogtextToClipboard(log);
                 waitCount++; if (waitCount <= 500) setTimeout(function(){buildWaitAF(log, waitCount);}, 10);
@@ -10019,35 +9987,34 @@ var mainGC = function() {
                 }
             }
             function processLogsAF(waitCount) {
-                if ($('#ActivityFeed .activity-item').length > 0) {
-                    for (i=0; i<$('#ActivityFeed .activity-item').length; i++) {
-                        buildCacheTypeIconAF($('#ActivityFeed .activity-item')[i]);
-                        if ($($('#ActivityFeed .activity-item')[i]).find('.activity-type-icon > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
-                            buildEventMoreAF($('#ActivityFeed .activity-item')[i]);
+                if ($('#_ActivityFeed .activity-item').length > 0) {
+                    for (i=0; i<$('#_ActivityFeed .activity-item').length; i++) {
+                        if ($($('#_ActivityFeed .activity-item')[i]).find('.activity-details > div h3 > a')[0].href.match(serverParameters["user:info"].referenceCode)) {
+                            buildEventMoreAF($('#_ActivityFeed .activity-item')[i]);
                         }
-                        backupLogtextMarkdownAF($($('#ActivityFeed .activity-item')[i]));
-                        hideTBActivity($($('#ActivityFeed .activity-item')[i]));
+                        backupLogtextMarkdownAF($($('#_ActivityFeed .activity-item')[i]));
+                        hideTBActivity($($('#_ActivityFeed .activity-item')[i]));
                     }
                 }
                 waitCount++; if (waitCount <= 500) setTimeout(function(){processLogsAF(waitCount);}, 10);
             }
             function buildEventQtipAF(waitCount) {
-                if ($('#ActivityFeed .btn-settings')[0] && $('#ActivityFeed .btn-settings').attr('data-hasqtip') && $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] && !$( $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] ).hasClass('gclh_event')) {
-                    var qtip = $('#qtip-' + $('#ActivityFeed .btn-settings').attr('data-hasqtip') + '-content');
+                if ($('#_ActivityFeed .btn-settings')[0] && $('#_ActivityFeed .btn-settings').attr('data-hasqtip') && $('#qtip-' + $('#_ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] && !$( $('#qtip-' + $('#_ActivityFeed .btn-settings').attr('data-hasqtip') + '-content')[0] ).hasClass('gclh_event')) {
+                    var qtip = $('#qtip-' + $('#_ActivityFeed .btn-settings').attr('data-hasqtip') + '-content');
                     qtip[0].addEventListener("click", function(){startAF();}, false);
                     $(qtip[0]).addClass('gclh_event');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildEventQtipAF(waitCount);}, 50);}
             }
             function buildEventLatestActivityAF(waitCount) {
-                if ($('#ActivityFeed .btn-settings')[0] && !$($('#ActivityFeed .btn-settings')[0]).hasClass('gclh_event')) {
-                    $('#ActivityFeed .btn-settings')[0].addEventListener("click", function(){buildEventQtipAF(0);}, false);
-                    $($('#ActivityFeed .btn-settings')[0]).addClass('gclh_event');
+                if ($('#_ActivityFeed .btn-settings')[0] && !$($('#_ActivityFeed .btn-settings')[0]).hasClass('gclh_event')) {
+                    $('#_ActivityFeed .btn-settings')[0].addEventListener("click", function(){buildEventQtipAF(0);}, false);
+                    $($('#_ActivityFeed .btn-settings')[0]).addClass('gclh_event');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildEventLatestActivityAF(waitCount);}, 50);}
             }
             function buildEventLatestActivityPanelAF(waitCount) {
-                if ($('#ActivityFeed .panel-header')[0] && !$($('#ActivityFeed .panel-header')[0]).hasClass('gclh_event')) {
-                    $('#ActivityFeed .panel-header')[0].addEventListener("click", function(){startAF();}, false);
-                    $($('#ActivityFeed .panel-header')[0]).addClass('gclh_event');
+                if ($('#_ActivityFeed .panel-header')[0] && !$($('#_ActivityFeed .panel-header')[0]).hasClass('gclh_event')) {
+                    $('#_ActivityFeed .panel-header')[0].addEventListener("click", function(){startAF();}, false);
+                    $($('#_ActivityFeed .panel-header')[0]).addClass('gclh_event');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){buildEventLatestActivityPanelAF(waitCount);}, 50);}
             }
             function startAF() {
@@ -10055,170 +10022,175 @@ var mainGC = function() {
                 buildEventLatestActivityAF(0);
                 processLogsAF(0);
             }
-            if (settings_show_edit_links_for_logs || settings_show_cache_type_icons_in_dashboard || settings_dashboard_hide_tb_activity) {
+            if (settings_show_edit_links_for_logs || settings_dashboard_hide_tb_activity) {
                 startAF();
             }
 
             // Show unpublished hides.
             if (settings_showUnpublishedHides) {
-                var panel = '<div id="gclh_unpublishedCaches" class="panel collapsible">';
-                panel += '    <div class="panel-header isActive">';
-                panel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
-                panel += '         <svg height="22" width="22" class="opener">';
-                panel += '            <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>';
-                panel += '         </svg>';
-                panel += '    </div>';
-                panel += '    <div id="gclh_unpublishedCaches_body" class="panel-body activity-feed">';
-                panel += '        <div class="loading">';
-                panel += '        </div>';
-                panel += '    </div>';
-                panel += '</div>';
-                $('.sidebar-right').append(panel);
-                if (!getValue('unpublishedCaches_visible', false)) {
-                    $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
-                    $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
+                function waitForGeocachesNearbyContainer(waitCount) {
+                    if ($('#_GeocachesNearbyContainer')[0] && $('#_GeocachesNearbyContainer svg')[0]) {
+                        var panel = '<div id="gclh_unpublishedCaches" class="panel collapsible">';
+                        panel += '    <div class="panel-header isActive">';
+                        panel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
+                        panel += '    </div>';
+                        panel += '    <div id="gclh_unpublishedCaches_body" class="panel-body activity-feed">';
+                        panel += '        <div class="loading">';
+                        panel += '        </div>';
+                        panel += '    </div>';
+                        panel += '</div>';
+                        $('#_GeocachesNearbyContainer').after(panel);
+                        var button = $( $('#_GeocachesNearbyContainer button')[0] ).clone()[0];
+                        $('#gclh_unpublishedCaches .panel-header')[0].append(button);
+                        if (!getValue('unpublishedCaches_visible', false)) {
+                            $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
+                            $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
+                        }
+                        $('#gclh_unpublishedCaches .panel-header').bind('click', function() {
+                            if (getValue('unpublishedCaches_visible', true)) {
+                                $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
+                                $('#gclh_unpublishedCaches .panel-body').fadeOut(300);
+                                setValue('unpublishedCaches_visible', false);
+                            } else {
+                                $('#gclh_unpublishedCaches .panel-header').addClass('isActive');
+                                $('#gclh_unpublishedCaches .panel-body').fadeIn(300);
+                                setValue('unpublishedCaches_visible', true);
+                            }
+                        });
+                        // If the link to unpublished hides is shown in dashboard, there are some.
+                        if ($('a.bold[href="/account/dashboard/unpublishedcaches"]')[0]) {
+                            // Build the area to list the unpublished caches and events.
+                            function buildListArea() {
+                                if ($('#gclh_unpublishedCaches_list')[0]) return;
+                                var list = '<div id="gclh_unpublishedCaches_list"><ul id="gclh_unpublishedCaches_cachesList"></ul><ul id="gclh_unpublishedCaches_eventsList"></ul></div>';
+                                $('#gclh_unpublishedCaches_body').html(list);
+                            }
+                            // Build the list of unpublished caches.
+                            function buildCachesList(caches) {
+                                buildListArea();
+                                if (settings_set_showUnpublishedHides_sort) {
+                                    if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
+                                    else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
+                                    else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
+                                }
+                                var list = '';
+                                for (let i=0; i<caches.length; i++) {
+                                    let name = caches[i].name.trim();
+                                    let type = caches[i].geocacheTypeId;
+                                    let gccode = caches[i].referenceCode;
+                                    let d = caches[i].difficulty;
+                                    let t = caches[i].terrain;
+                                    let size = cache_sizes[caches[i].containerTypeId];
+                                    list += '<li class="activity-item activity-item-head">';
+                                    list += '    <div class="activity-type-icon">';
+                                    list += '        <svg class="status-icon" role="img" height="22" width="22">';
+                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                    list += '        </svg>';
+                                    list += '        <svg class="icon" height="40" width="40" role="img">';
+                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                    list += '        </svg>';
+                                    list += '    </div>';
+                                    list += '    <div class="activity-data">';
+                                    list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                    list += '            <dl class="activity-meta">';
+                                    list += '                <dt title="Difficulty">';
+                                    list += '                    <svg height="16" width="16" role="img">';
+                                    list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
+                                    list += '                    </svg>';
+                                    list += '                </dt>';
+                                    list += '                <dd title="Difficulty">' + d + '</dd>';
+                                    list += '                <dt title="Terrain">';
+                                    list += '                    <svg height="16" width="16" role="img">';
+                                    list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
+                                    list += '                    </svg>';
+                                    list += '                </dt>';
+                                    list += '                <dd title="Terrain">' + t + '</dd>';
+                                    list += '                <dt title="Size">';
+                                    list += '                    <svg height="16" width="16" role="img">';
+                                    list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
+                                    list += '                    </svg>';
+                                    list += '                </dt>';
+                                    list += '                <dd title="Size">' + size + '</dd>';
+                                    list += '                <dt class="left-separator"></dt>';
+                                    list += '                <dd>' + gccode + '</dd>';
+                                    list += '            </dl>';
+                                    list += '        </div>';
+                                    list += '    </div>';
+                                    list += '</li>';
+                                }
+                                $('#gclh_unpublishedCaches_cachesList').html(list);
+                                if ($('#gclh_unpublishedCaches_eventsList li')[0]) {
+                                    $('#gclh_unpublishedCaches_cachesList li:last')[0].setAttribute('style', 'border-bottom: 1px solid #e4e4e4 !important;');
+                                }
+                            }
+                            // Build the list of unpublished events.
+                            function buildEventsList(events) {
+                                buildListArea();
+                                var list = '';
+                                for (let i=0; i<events.length; i++) {
+                                    let name = events[i].name.trim();
+                                    let type = events[i].geocacheTypeId;
+                                    let gccode = events[i].referenceCode;
+                                    let eventStartTime = events[i].eventStartTime;
+                                    // Date and time format: window.navigator.language: There is the preferred language in the browser for displaying pages.
+                                    let date = new Date(eventStartTime);
+                                    let startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})
+                                    let startTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+                                    list += '<li class="activity-item activity-item-head">';
+                                    list += '    <div class="activity-type-icon">';
+                                    list += '        <svg class="status-icon" role="img" height="22" width="22">';
+                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                    list += '        </svg>';
+                                    list += '        <svg class="icon" height="40" width="40" role="img">';
+                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                    list += '        </svg>';
+                                    list += '    </div>';
+                                    list += '    <div class="activity-data">';
+                                    list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                    list += '            <dl class="activity-meta">';
+                                    list += '                <dd>' + gccode + '</dd>';
+                                    list += '                <dt class="left-separator"></dt>';
+                                    list += '                <dd title="Start date">' + startDate + '</dd>';
+                                    list += '                <dd title="Start time">' + startTime + '</dd>';
+                                    list += '            </dl>';
+                                    list += '        </div>';
+                                    list += '    </div>';
+                                    list += '</li>';
+                                }
+                                $('#gclh_unpublishedCaches_eventsList').html(list);
+                                if ($('#gclh_unpublishedCaches_cachesList li')[0]) {
+                                    $('#gclh_unpublishedCaches_eventsList li:last')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4 !important;');
+                                }
+                            }
+                            // Get a list of unpublished caches via api.
+                            $.ajax({
+                                type: "GET",
+                                cache: false,
+                                url: '/api/proxy/web/v1/cacheowner/geocaches/unpublished?skip=0&take=100',
+                                success: function(response) {
+                                    if (response.data.length > 0) buildCachesList(response.data);
+                                }
+                            });
+                            // Get a list of unpublished events via api.
+                            $.ajax({
+                                type: "GET",
+                                cache: false,
+                                url: '/api/proxy/web/v1/cacheowner/events/unpublished?skip=0&take=100',
+                                success: function(response) {
+                                    if (response.data.length > 0) buildEventsList(response.data);
+                                }
+                            });
+                        } else {
+                            var dnfHtml = '<div class="activity-message">';
+                            dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
+                            dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished hides.</h3>';
+                            dnfHtml += '</div>';
+                            $('#gclh_unpublishedCaches_body').html(dnfHtml);
+                        }
+                    } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForGeocachesNearbyContainer(waitCount);}, 100);}
                 }
-                $('#gclh_unpublishedCaches .panel-header').bind('click', function() {
-                    if (getValue('unpublishedCaches_visible', true)) {
-                        $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
-                        $('#gclh_unpublishedCaches .panel-body').fadeOut(300);
-                        setValue('unpublishedCaches_visible', false);
-                    }else {
-                        $('#gclh_unpublishedCaches .panel-header').addClass('isActive');
-                        $('#gclh_unpublishedCaches .panel-body').fadeIn(300);
-                        setValue('unpublishedCaches_visible', true);
-                    }
-                });
-                // If the link to unpublished hides is shown in dashboard, there are some.
-                if ($('a.bold[href="/account/dashboard/unpublishedcaches"]')[0]) {
-                    // Build the area to list the unpublished caches and events.
-                    function buildListArea() {
-                        if ($('#gclh_unpublishedCaches_list')[0]) return;
-                        var list = '<div id="gclh_unpublishedCaches_list"><ul id="gclh_unpublishedCaches_cachesList"></ul><ul id="gclh_unpublishedCaches_eventsList"></ul></div>';
-                        $('#gclh_unpublishedCaches_body').html(list);
-                    }
-                    // Build the list of unpublished caches.
-                    function buildCachesList(caches) {
-                        buildListArea();
-                        if (settings_set_showUnpublishedHides_sort) {
-                            if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
-                            else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
-                            else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
-                        }
-                        var list = '';
-                        for (let i=0; i<caches.length; i++) {
-                            let name = caches[i].name.trim();
-                            let type = caches[i].geocacheTypeId;
-                            let gccode = caches[i].referenceCode;
-                            let d = caches[i].difficulty;
-                            let t = caches[i].terrain;
-                            let size = cache_sizes[caches[i].containerTypeId];
-                            list += '<li class="activity-item activity-item-head">';
-                            list += '    <div class="activity-type-icon">';
-                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
-                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                            list += '            </svg>';
-                            list += '        <svg class="icon" height="40" width="40" role="img">';
-                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                            list += '        </svg>';
-                            list += '    </div>';
-                            list += '    <div class="activity-data">';
-                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                            list += '            <dl class="activity-meta">';
-                            list += '                <dt title="Difficulty">';
-                            list += '                    <svg height="16" width="16" role="img">';
-                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
-                            list += '                    </svg>';
-                            list += '                </dt>';
-                            list += '                <dd title="Difficulty">' + d + '</dd>';
-                            list += '                <dt title="Terrain">';
-                            list += '                    <svg height="16" width="16" role="img">';
-                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
-                            list += '                    </svg>';
-                            list += '                </dt>';
-                            list += '                <dd title="Terrain">' + t + '</dd>';
-                            list += '                <dt title="Size">';
-                            list += '                    <svg height="16" width="16" role="img">';
-                            list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
-                            list += '                    </svg>';
-                            list += '                </dt>';
-                            list += '                <dd title="Size">' + size + '</dd>';
-                            list += '                <dt class="left-separator"></dt>';
-                            list += '                <dd>' + gccode + '</dd>';
-                            list += '            </dl>';
-                            list += '        </div>';
-                            list += '    </div>';
-                            list += '</li>';
-                        }
-                        $('#gclh_unpublishedCaches_cachesList').html(list);
-                        if ($('#gclh_unpublishedCaches_eventsList li')[0]) {
-                            $('#gclh_unpublishedCaches_cachesList li:last')[0].setAttribute('style', 'border-bottom: 1px solid #e4e4e4 !important;');
-                        }
-                    }
-                    // Build the list of unpublished events.
-                    function buildEventsList(events) {
-                        buildListArea();
-                        var list = '';
-                        for (let i=0; i<events.length; i++) {
-                            let name = events[i].name.trim();
-                            let type = events[i].geocacheTypeId;
-                            let gccode = events[i].referenceCode;
-                            let eventStartTime = events[i].eventStartTime;
-                            // Date and time format: window.navigator.language: There is the preferred language in the browser for displaying pages.
-                            let date = new Date(eventStartTime);
-                            let startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})
-                            let startTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
-                            list += '<li class="activity-item activity-item-head">';
-                            list += '    <div class="activity-type-icon">';
-                            list += '            <svg class="status-icon" role="img" height="22" width="22">';
-                            list += '                    <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                            list += '            </svg>';
-                            list += '        <svg class="icon" height="40" width="40" role="img">';
-                            list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                            list += '        </svg>';
-                            list += '    </div>';
-                            list += '    <div class="activity-data">';
-                            list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                            list += '            <dl class="activity-meta">';
-                            list += '                <dd>' + gccode + '</dd>';
-                            list += '                <dt class="left-separator"></dt>';
-                            list += '                <dd title="Start date">' + startDate + '</dd>';
-                            list += '                <dd title="Start time">' + startTime + '</dd>';
-                            list += '            </dl>';
-                            list += '        </div>';
-                            list += '    </div>';
-                            list += '</li>';
-                        }
-                        $('#gclh_unpublishedCaches_eventsList').html(list);
-                        if ($('#gclh_unpublishedCaches_cachesList li')[0]) {
-                            $('#gclh_unpublishedCaches_eventsList li:last')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4 !important;');
-                        }
-                    }
-                    // Get a list of unpublished caches via api.
-                    $.ajax({
-                        type: "GET",
-                        cache: false,
-                        url: '/api/proxy/web/v1/cacheowner/geocaches/unpublished?skip=0&take=100',
-                        success: function(response) {
-                            if (response.data.length > 0) buildCachesList(response.data);
-                        }
-                    });
-                    // Get a list of unpublished events via api.
-                    $.ajax({
-                        type: "GET",
-                        cache: false,
-                        url: '/api/proxy/web/v1/cacheowner/events/unpublished?skip=0&take=100',
-                        success: function(response) {
-                            if (response.data.length > 0) buildEventsList(response.data);
-                        }
-                    });
-                } else {
-                    var dnfHtml = '<div class="activity-message">';
-                    dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
-                    dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished hides.</h3>';
-                    dnfHtml += '</div>';
-                    $('#gclh_unpublishedCaches_body').html(dnfHtml);
-                }
+                waitForGeocachesNearbyContainer(0);
+                css += '#gclh_unpublishedCaches {margin-bottom: 0;}';
                 css += '#gclh_unpublishedCaches_body {min-height: unset;}';
                 css += '#gclh_unpublishedCaches_body dt {margin: 0 3px 0 0; padding: 0;}';
                 css += '#gclh_unpublishedCaches_body .left-separator {margin: 0 4px 0 -4px; padding: 0;}';
@@ -10226,7 +10198,11 @@ var mainGC = function() {
                 css += '#gclh_unpublishedCaches_body dl dd {margin: 0 8px 0 0; padding: 0;}';
                 css += '#gclh_unpublishedCaches_body dl dd:last-child {margin-right: 0;}';
                 css += '#gclh_unpublishedCaches_cachesList, #gclh_unpublishedCaches_eventsList {padding: 0; margin: 0;}';
-             }
+                css += '#gclh_unpublishedCaches .panel-header.isActive svg {transform: rotate(180deg) !important;}';
+                css += '#gclh_unpublishedCaches .panel-header svg {transform: rotate(0) !important;}';
+            }
+
+            css += '.action-link a {padding-left: 12px !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
@@ -11118,28 +11094,27 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
 
-            // Preserve zoom parameter in URLs.
-            // (on page load zoom parameter in URL is ignored and zoom level defaults to 14)
-            let use_zoom_from_url = true;
-//xxx deaktiviert
+            // Preserve zoom parameter in URLs on page load, for Leaflet maps (GS ignores zoom levels from URLs).
+            // Function 'setZoom' will be triggered on each URL change, but only executed once.
             function setZoom() {
-                if (use_zoom_from_url && unsafeWindow.MapSettings && unsafeWindow.MapSettings.Map) {
-                    // Only once on page load.
-                    use_zoom_from_url = false;
-                    const urlSearchParams = new URLSearchParams(window.location.search),
-                        zoom = urlSearchParams.has('zoom') ? Number(urlSearchParams.get('zoom')) : 14;
-                    if (zoom !== 14) {
-                        unsafeWindow.MapSettings.Map.setZoom(zoom);
-                    }
+                if (unsafeWindow.MapSettings?.Map?.setZoom) {
+                    // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
+                    const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
+                    if (!isNaN(zoom)) unsafeWindow.MapSettings.Map.setZoom(zoom);
                 }
             }
 
             // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
             // (for reference: https://stackoverflow.com/a/64927639)
+            let use_zoom_from_url = true;
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
+                    if (use_zoom_from_url) {
+                        // Run only once.
+                        use_zoom_from_url = false;
+                        setZoom();
+                    }
 //xxx deaktiviert
-//                    setZoom();
 //                    searchThisArea(0);
                     return target.apply(thisArg, argArray);
                 }
@@ -13943,14 +13918,14 @@ var mainGC = function() {
             setTimeout(createFindPlayerForm, 5);
         }
         // Old Dashboard (Profile), Dashboard Seite.
-        if ((is_page('profile') && $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0]) || (is_page("dashboard") && $('.bio-meta'))) {
+        if ((is_page('profile') && $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0]) || (is_page("dashboard") && $('.bio-meta')[0])) {
             // Config, Sync und Changelog Links beim Avatar in Profile, Dashboard.
             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
             var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
             if (is_page('profile')) $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0].parentNode.innerHTML += " | <br>" + lnk_config + lnk_sync + lnk_changelog;
-            else $('.bio-meta')[0].innerHTML += lnk_config + lnk_sync + lnk_changelog;
-            appendCssStyle(".bio-meta {font-size: 12px;} .bio-meta a:hover {color: #02874d;}");
+            else $('.bio-meta')[0].innerHTML += '<span style="display:block;">' + lnk_config + lnk_sync + lnk_changelog + '</span>';
+            appendCssStyle(".bio-meta {font-size: 12px;}");
             $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
             $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
             // Linklist Ablistung rechts im Profile.
@@ -15162,8 +15137,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/pNV8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iPD"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/7W1P/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iP9"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16549,7 +16524,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "03.02.2025";
+            var thanksLastUpdate = "18.02.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17004,7 +16979,6 @@ var mainGC = function() {
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
             html += "</select><br>";
-            html += checkboxy('settings_show_cache_type_icons_in_dashboard', 'Show cache/TB type in front of log type in Latest Activity list') + "<br>";
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterOn2;
@@ -18670,7 +18644,6 @@ var mainGC = function() {
                 'settings_after_new_logging_view_log',
                 'settings_listing_hide_external_link_warning',
                 'settings_listing_links_new_tab',
-                'settings_show_cache_type_icons_in_dashboard',
                 'settings_public_profile_avatar_show_thumbnail',
                 'settings_drafts_download_show_button',
                 'settings_drafts_download_change_logdate',
