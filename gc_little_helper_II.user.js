@@ -9162,22 +9162,18 @@ var mainGC = function() {
                     link.appendChild(img);
                     side.appendChild(link);
                 }
-                if (!$('.gclh_LogTotals')[0] || !$('.gclh_LogTotals')[0].childNodes[0]) return;
-                var legend = $('.gclh_LogTotals')[0].childNodes[0];
-                var new_legend = document.createElement('ul');
-                new_legend.className = "LogTotals";
-                for (var i = 0; i < legend.childNodes[0].childNodes.length; i++) {
-                    var li = document.createElement("li");
-                    var link = document.createElement("a");
-                    link.setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
-                    link.style.textDecoration = 'none';
-                    link.addEventListener("click", gclh_filter_logs, false);
-                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[0].cloneNode(true));
-                    link.appendChild(legend.childNodes[0].childNodes[i].childNodes[1].cloneNode(true));
-                    li.appendChild(link);
-                    new_legend.appendChild(li);
+                if (settings_show_log_totals) {
+                    function waitForLogTotalsToSetLinks(waitCount) {
+                        if ($('.gclh_LogTotals')[0] && $('.gclh_LogTotals')[0].childNodes[0]) {
+                            var legend = $('.gclh_LogTotals')[0].childNodes[0];
+                            for (var i = 0; i < legend.childNodes.length; i++) {
+                                legend.childNodes[i].childNodes[0].setAttribute("href", clearUrlAppendix(document.location.href, false) + 'logs_section');
+                                legend.childNodes[i].childNodes[0].addEventListener("click", gclh_filter_logs, false);
+                            }
+                        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLogTotalsToSetLinks(waitCount);}, 100);}
+                    }
+                    waitForLogTotalsToSetLinks(0);
                 }
-                $('.gclh_LogTotals')[0].replaceChild(new_legend, legend);
             }
 
             // Search logs.
