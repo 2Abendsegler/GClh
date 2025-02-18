@@ -62,18 +62,44 @@
 	<li>
 		<strong>Fix:</strong> [New Dashboard] Adjustments and removes because of the last update of the website. [<a href="https://github.com/2Abendsegler/GClh/issues/2721" title="Issue 2721">2721</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Adjustments:<br>
-		- Set real edit link in logs in area Latest Activity<br>
-		- Copy to clipboard button for log text in Latest Activity list<br>
-		- Build log texts in Markdown<br>
-		- Hide TB Activity<br>
-		- Show unpublished hides<br>
-		- Links to GClh config, sync and changelog<br>
-		- Compact layout<br>
-		- Map and Search button in left sidebar<br>
-		- Remove border in menu<br>
+		<ul>
+			<li>
+				Set real edit link in logs in area Latest Activity<br>
+			</li>
+			<li>
+				Copy to clipboard button for log text in Latest Activity list<br>
+			</li>
+			<li>
+				Build log texts in Markdown<br>
+			</li>
+			<li>
+				Hide TB Activity<br>
+			</li>
+			<li>
+				Show unpublished hides<br>
+			</li>
+			<li>
+				Links to GClh config, sync and changelog<br>
+			</li>
+			<li>
+				Compact layout<br>
+			</li>
+			<li>
+				Map and Search button in left sidebar<br>
+			</li>
+			<li>
+				Remove border in menu<br>
+			</li>
+		</ul>
 		Removes:<br>
-		- Show/Hide nearby events. It is now available on the standard website.<br>
-		- Show cache/TB type in front of log type in Latest Activity list. It is now available in a similar form on the standard website.<br>
+		<ul>
+			<li>
+				Show/Hide nearby events. It is now available on the standard website.<br>
+			</li>
+			<li>
+				Show cache/TB type in front of log type in Latest Activity list. It is now available in a similar form on the standard website.<br>
+			</li>
+		</ul>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] Clicking on log type totals at the top of the listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2719" title="Issue 2719">2719</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
