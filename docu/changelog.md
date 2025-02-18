@@ -1,5 +1,6 @@
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0165" title="GClh II version 0.16.5 (18.02.2025)">v0.16.5</a> &nbsp;
 <a href="#v0164" title="GClh II version 0.16.4 (04.02.2025)">v0.16.4</a> &nbsp;
 <a href="#v0163" title="GClh II version 0.16.3 (28.01.2025)">v0.16.3</a> &nbsp;
 <a href="#v0162" title="GClh II version 0.16.2 (30.08.2024)">v0.16.2</a> &nbsp;
@@ -50,6 +51,41 @@
 <a href="#v011" title="GClh II version 0.11 (09.05.2021)">v0.11</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.5:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Search Map] Enable preserve a specified URL zoom parameter on page load (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2707" title="Issue 2707">2707</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Adjustments and removes because of the last update of the website. [<a href="https://github.com/2Abendsegler/GClh/issues/2721" title="Issue 2721">2721</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Adjustments:<br>
+		- Set real edit link in logs in area Latest Activity<br>
+		- Copy to clipboard button for log text in Latest Activity list<br>
+		- Build log texts in Markdown<br>
+		- Hide TB Activity<br>
+		- Show unpublished hides<br>
+		- Links to GClh config, sync and changelog<br>
+		- Compact layout<br>
+		- Map and Search button in left sidebar<br>
+		- Remove border in menu<br>
+		Removes:<br>
+		- Show/Hide nearby events. It is now available on the standard website.<br>
+		- Show cache/TB type in front of log type in Latest Activity list. It is now available in a similar form on the standard website.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Icons in VIP list are moved by click. [<a href="https://github.com/2Abendsegler/GClh/issues/2720" title="Issue 2720">2720</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Clicking on log type totals at the top of the listing does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/2719" title="Issue 2719">2719</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(18.02.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.4:
