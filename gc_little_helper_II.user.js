@@ -11288,15 +11288,11 @@ var mainGC = function() {
                 }
             }
 
-            // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
-//xxx deaktiviert
+            // Show hint automatically (and scroll up to top after "Description & Hint" was clicked: currently not implemented).
             function showHint() {
                 // Show hint automatically.
                 if (settings_searchmap_show_hint && $('.cache-hint-toggle')[0] && !$('.cache-hint-toggle.gclh-show-hint')[0]) {
-                    // Create a mousedown event because GS uses this and not an onClick event.
-                    var clickEvent = document.createEvent('MouseEvents');
-                    clickEvent.initEvent('mousedown', true, true);
-                    $('.cache-hint-toggle')[0].dispatchEvent(clickEvent);
+                    document.querySelector('.cache-hint-toggle').click();
                     $('.cache-hint-toggle').addClass('gclh-show-hint');
                 }
             }
@@ -11742,7 +11738,7 @@ var mainGC = function() {
 //                compactLayout();
 //                addVipVupMailToOwner(); // Has to be run after compactLayout.
 //                setStrikeDisabledInList();
-//                showHint();
+                showHint();
 //                collapseActivity();
 //                showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
