@@ -11013,19 +11013,23 @@ var mainGC = function() {
             var lngLowG = false;
             var firstRun = true;
             const ONE_MINUTE_MS = 60*1000;
-//xxx deaktiviert
+
             function searchThisArea(waitCount) {
+                let $loading_container = $('svg.loading-spinner').parent().parent();
+                let $search_button = $('[data-testid="search-this-area-button"]');
+                let $bml_selected = $('li.bg-green-500[data-testid="list-mode-item"]');
+                const isLoading = function() {return $loading_container.hasClass('-top-0');};
                 // For the first run.
                 if ($('.leaflet-gl-layer.mapboxgl-map')[0] || $('div.gm-style')[0]) { // Leaflet or GM
-                    if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
+                    if (settings_searchmap_autoupdate_after_dragging && !isLoading() && !$bml_selected[0] && ($search_button[0] || firstRun) && !isGclhMatrix) {
                         // Delay, so that the last values of a movement are used.
                         setTimeout(function() {
-                            if ($('.loading-container.show')[0]) return;
+                            if (isLoading()) return;
                             // Determine whether a new search is necessary, because we have not yet searched of a part of the map area.
                             var pxHeight = window.innerHeight;
                             var pxWidth = window.innerWidth;
-                            var lat = parseFloat(getURLParam('lat'));
-                            var lng = parseFloat(getURLParam('lng'));
+                            var lat = parseFloat(getURLParam('mlat'));
+                            var lng = parseFloat(getURLParam('mlng'));
                             var zoom = parseInt(getURLParam('zoom'));
                             var metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
                             var latMeterDistance = metersPerPx * pxHeight;
@@ -11042,47 +11046,55 @@ var mainGC = function() {
                                 lngHighG = lngHigh;
                                 lngLowG = lngLow;
 
-                                // ensure that no more than 10 searches per minute are performed (enforce GS limit)
+                                // Ensure that no more than 10 searches per minute are performed (enforce GS limit).
                                 if (!firstRun) {
-                                    // make times persistent across reloads or search map in action on multiple tabs
-                                    // (otherwise GS nag message may still occur)
+                                    // Make times persistent across reloads or search map in action on multiple tabs
+                                    // (otherwise GS nag message may still occur).
                                     let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
-                                    // 9 searches max to be on the safe side ...
+                                    // 9 searches max to be on the safe side.
                                     if (times.length < 9) {
-                                        // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
-                                        $('#clear-map-control').click().click();
+                                        $search_button.click();
                                         times.push(Date.now());
                                         GM_setValue("search_this_area_times", JSON.stringify(times));
                                     } else {
                                         let t = Date.now();
-                                        // check 1min limit
+                                        // Check 1min limit.
                                         if ((t - times[0]) > ONE_MINUTE_MS) {
-                                            // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
-                                            $('#clear-map-control').click().click();
-                                            // remove first and append current timestamp
+                                            $search_button.click();
+                                            // Remove first and append current timestamp.
                                             times.splice(0, 1);
                                             times.push(t);
                                             GM_setValue("search_this_area_times", JSON.stringify(times));
                                         } else {
-                                            // search limit reached, add message, but only once
+                                            // Search limit reached, add message, but only once.
                                             if ($('body.gclh-waiting-msg').length === 0) {
-                                                // add marker to body
+                                                // Add marker to body.
                                                 $('body').addClass('gclh-waiting-msg');
-                                                // time to wait for next search
+                                                // Hide GS loading message and spinner.
+                                                $('#loading-msg').hide();
+                                                $('svg.loading-spinner').attr("style", "display: none !important;");
+                                                // Add span for gclh message.
+                                                $('.loading-display').append('<span id="gclh-waiting-msg" role="alert" aria-live="assertive"></span>');
+                                                // Time to wait for next search.
                                                 var wait = Math.ceil((ONE_MINUTE_MS-(t-times[0]))/1000);
-                                                // update message every second
+                                                // Update message every second.
                                                 function countdown(waitTime) {
                                                     if (waitTime < 1) { // waiting time is over
-                                                        // hide message
+                                                        // Rehide loading container.
+                                                        $loading_container.addClass('-top-\[45px\]').removeClass('-top-0');
+                                                        $('.loading-display').css('display', '');
+                                                        // Unhide GS loading message and spinner.
+                                                        $('#loading-msg').show();
+                                                        $('svg.loading-spinner').css('display', '');
+                                                        // Remove gclh message.
                                                         $('#gclh-waiting-msg').remove();
-                                                        $('div.loading-container').css('display', 'none').removeClass('show');
                                                         $('body').removeClass('gclh-waiting-msg');
                                                     } else {
-                                                        // show message (keep next line in countdown, otherwise message gets hidden when switching map source during waiting time)
-                                                        $('div.loading-container').css('display', 'flex').addClass('show');
-                                                        // update message
-                                                        $('#gclh-waiting-msg').remove();
-                                                        $('.loading-display').append('<span id="gclh-waiting-msg" role="alert" aria-live="assertive">Too many searches per minute, please try again in <b>' + waitTime + ' s</b>.</span>');
+                                                        // Unhide loading container (necessary on each update, since toggle of 'display at corrected coords' during waiting time causes top-position to change).
+                                                        $loading_container.addClass('-top-0').removeClass('-top-\[45px\]');
+                                                        $('.loading-display').attr("style", "display: flex !important;");
+                                                        // Update gclh message.
+                                                        $('#gclh-waiting-msg').html('Limit of search requests per minute reached, please try again in <b>' + waitTime + ' s</b>.')
 
                                                         setTimeout(function() {countdown(--waitTime);}, 1000);
                                                     }
@@ -11119,8 +11131,7 @@ var mainGC = function() {
                         use_zoom_from_url = false;
                         setZoom();
                     }
-//xxx deaktiviert
-//                    searchThisArea(0);
+                    searchThisArea(0);
                     return target.apply(thisArg, argArray);
                 }
             });
@@ -11786,16 +11797,15 @@ var mainGC = function() {
             };
             observer_body.observe(target_body, config_body);
             processAllSearchMap();
-//xxx deaktiviert
 //            compactLayoutWait(0);
 
             var css = '';
-//xxx deaktiviert
-/*
             // Hide button search this area and icon loading, if not link from matrix.
             if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
-                css += '#clear-map-control, .loading-container {display: none;}';
+                css += '[data-event-label="Map - Search This Area"], .loading-display {display: none !important;}';
             }
+//xxx deaktiviert
+/*
             // Set link to owner.
             css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
             css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
