@@ -302,6 +302,8 @@ var constInit = function(c) {
     country_idInit(c);
     tlc('START states_idInit');
     states_idInit(c);
+    tlc('START states_shortInit');
+    states_shortInit(c);
     tlc('START collectionInit');
     collectionInit(c);
     // Old header of GS.
@@ -581,6 +583,7 @@ var variablesInit = function(c) {
     c.settings_compact_layout_nearest = getValue("settings_compact_layout_nearest", true);
     c.settings_compact_layout_recviewed = getValue("settings_compact_layout_recviewed", true);
     c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
+    c.settings_map_statistic_set_name_in_map = getValue("settings_map_statistic_set_name_in_map", true);
     c.settings_map_percentage_statistic = getValue("settings_map_percentage_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
@@ -13166,7 +13169,7 @@ var mainGC = function() {
         }
     }
 
-// Improve Finds for Each Day of the Year on own statistics page
+// Improve Finds for Each Day of the Year on own statistics page.
     if (isOwnStatisticsPage()) {
         try {
             // Mark current date
@@ -13175,58 +13178,129 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Finds for Each Day of the Year",e);}
     }
 
-// Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
+// Improve own statistic map page with links to caches for every country and state.
+    if (settings_map_links_statistic && isOwnStatisticsPage()) {
         try {
-            var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
-            for (var j = 0; j < countriesList.length; j++) {
-                var indecator = $(countriesList[j]).find('#StatsFlagLists p span');
-                var tableItems = $(countriesList[j]).find('#StatsFlagLists table.Table tr');
-                for (var i = 0; i < tableItems.length; i++) {
-                    var name = tableItems[i].children[0].childNodes[1].textContent;
-                    if (name) {
-                        var parameter = undefined;
-                        var item = undefined;
-                        var countries = $.grep(country_id, function(e){return e.n == name;});
-                        var states = $.grep(states_id, function(e){return e.n == name;});
-                        // ambiguous matches of state (or country) name are not handled. Known cases:
-                        // Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
-                        // Limburg    - Belgium: Limburg (state) / Netherlands: Limburg (state)
-                        if        (  (countries && countries[0]) && !(states && states[0]) ) {
-                            parameter = "c";
-                            item = countries;
-                        } else if ( !(countries && countries[0]) &&  (states && states[0]) ) {
-                            parameter = "r";
-                            item = states;
-                        // case: country/state
-                        } else if (  (countries && countries[0]) &&  (states && states[0]) ) {
-                            // Known case: Georgia - United States/Georgia (state) and Georgia (country)
-                            if (indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
-                                parameter = "r";
-                                item = states;
-                            } else {
-                                // Main rule: country first.
-                                // Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state).
-                                parameter = "c";
-                                item = countries;
+            function buildLinkForItem(para, item, side) {
+                var a = document.createElement("a");
+                a.setAttribute("title", "Show caches you have found in " + item["n"]);
+                a.setAttribute("href", "/play/search?" + para + item["id"] + "&hf=0&sa=1&f=1&sort=FoundDate&asc=false#myListsLink");
+                a.setAttribute("style", "color: #3d76c5;");
+                a.innerHTML = side.innerHTML;
+                side.innerHTML = "";
+                side.appendChild(a);
+            }
+            var maps = $('#stats_tabs-maps .StatisticsWrapper');
+            for (var j = 0; j < maps.length; j++) {
+                if ($(maps[j]).find('.ProfileStats > div')[0].id && !$(maps[j]).find('.ProfileStats > div')[0].id == '') {
+                    var mapName = $(maps[j]).find('.ProfileStats > div')[0].id;
+                    var items = $(maps[j]).find('table.Table tr');
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].children[0] && items[i].children[0].childNodes[1] && !items[i].children[0].childNodes[1].textContent == '') {
+                            var itemName = items[i].children[0].childNodes[1].textContent;
+                            if (itemName) {
+                                // Maps from US states and Canadian provinces and territories. All other maps are country maps.
+                                if (mapName.match(/(UnitedStatesOfAmerica_Map|Canada_Map)/)) {
+                                    var para = 'ot=region&oid=';
+                                    var state = $.grep(states_id, function(e){return e.n == itemName;});
+                                    if (state && state[0]) {
+                                        buildLinkForItem(para, state[0], items[i].children[0]);
+                                    }
+                                } else {
+                                    var para = 'ot=country&c=';
+                                    var country = $.grep(country_id, function(e){return e.n == itemName;});
+                                    if (country && country[0]) {
+                                        buildLinkForItem(para, country[0], items[i].children[0]);
+                                    }
+                                }
                             }
-                        } else {
-                            gclh_log("Improve own statistic map page: country and state name not found");
-                            continue;
-                        }
-                        if (item && item[0]) {
-                            var a = document.createElement("a");
-                            a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
-                            a.setAttribute("href", "/play/search?ot=country&hf=0&sa=1&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=false#myListsLink");
-                            a.setAttribute("style", "color: #3d76c5;");
-                            a.innerHTML = tableItems[i].children[0].innerHTML;
-                            tableItems[i].children[0].innerHTML = "";
-                            tableItems[i].children[0].appendChild(a);
                         }
                     }
                 }
             }
         } catch(e) {gclh_error("Improve own statistic map page",e);}
+    }
+
+// Improve statistic map page with name of country and state in maps and make it clickable in own maps.
+    if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
+        try {
+            // Expand tooltip of map to make room for the name of country or state.
+            function expandTooltip(bCalc) {
+                var path = $('#stats_tabs-maps g.google-visualization-tooltip path').attr('d').match(/^M(.*?),(.*?)A(.*?)L(.*?),(.*?)A(.*?)L(.*?),(.*?)A/);
+                if (path && path[1] && path[2] && path[7]) {
+                    var x = parseInt(path[1]);
+                    var y = parseInt(path[2]);
+                    var bMin = path[7] - path[1];
+                    var b = bCalc < bMin ? bMin : bCalc;
+                    d = 'M'+x+','+y+' L'+x+','+(y-45)+' L'+(x+b)+','+(y-45)+' L'+(x+b)+','+y+' Z';
+                    $('#stats_tabs-maps g.google-visualization-tooltip path').attr('d',d);
+                }
+            }
+            // Calculate width of tooltip of map for the expanded content. (I couldn't determine the width directly in the tooltip of map.)
+            function calcwidth(itemShortName, itemName) {
+                if (!$('#stats_tabs-maps')[0]) return;
+                if (!$('#calcWidth')[0]) $('#stats_tabs-maps').append('<span id="calcWidth" style="font-family: Arial; font-size: 13px; visibility: hidden; height: 0px; display: block;"></span>');
+                $('#calcWidth')[0].innerHTML = '<span style="font-weight: bold; visibility: hidden; height: 0px; display: inline-block">' + itemShortName + '</span><span style="font-weight: normal; visibility: hidden; height: 0px; display: inline-block"> ' + itemName + '</span>';
+                return $('#calcWidth span')[0].offsetWidth + $('#calcWidth span')[1].offsetWidth + 18;
+            }
+            // Get shortname of country or state from tooltip of map and get the name and link for country or state.
+            function getDataFromTooltip() {
+                var itemName = undefined; var itemLink = undefined; var width = undefined;
+                if ($('#stats_tabs-maps g.google-visualization-tooltip text')[0]) {
+                    var itemShortName = $('#stats_tabs-maps g.google-visualization-tooltip text')[0].childNodes[0].data.trim();
+                    var mapElem = $('#stats_tabs-maps g.google-visualization-tooltip text').closest('.StatisticsWrapper')[0];
+                    if (itemShortName && mapElem) {
+                        var mapName = $(mapElem).find('.ProfileStats > div')[0].id;
+                        // Maps from US states and Canadian provinces and territories. All other maps are country maps.
+                        if (mapName.match(/(UnitedStatesOfAmerica_Map|Canada_Map)/)) {
+                            var state = $.grep(states_short, function(e){return e.sn == itemShortName;});
+                            if (state && state[0]) {
+                                var itemName = state[0]['n'];
+                                var width = calcwidth(itemShortName, itemName);
+                                var links = $(mapElem).find('table.Table a');
+                                for (var i = 0; i < links.length; i++) {
+                                    if (links[i].innerText == itemName) var itemLink = links[i].href;
+                                }
+                            }
+                        } else {
+                            var f = 'table.Table img[src="/images/icons/flags/png/' + itemShortName.toLowerCase() + '.png"]';
+                            if ($(mapElem).find(f)[0] && $(mapElem).find(f).parent()[0]) {
+                                var itemName = $(mapElem).find(f).parent()[0].innerText;
+                                var width = calcwidth(itemShortName, itemName);
+                                var itemLink = $(mapElem).find(f).parent()[0].href;
+                            }
+                        }
+                    }
+                }
+                return [itemName, itemLink, width];
+            }
+            if (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage())) {
+                const config = { childList: true, subtree: true };
+                const tooltipObserver = new MutationObserver(function(_, observer) {
+                    observer.disconnect();
+                    // Set name of country or state in tooltip of map.
+                    if (settings_map_statistic_set_name_in_map) {
+                        var [name1, link1, width1] = getDataFromTooltip();
+                        if (name1 && width1 && !$('#stats_tabs-maps g.google-visualization-tooltip text tspan')[0]) {
+                            expandTooltip(width1);
+                            $('#stats_tabs-maps g.google-visualization-tooltip text')[0].innerHTML += '<tspan font-weight="normal" font-size="13px"> ' + name1 + '</tspan>';
+                        }
+                    }
+                    // Set click event for country or state in tooltip of map for own maps.
+                    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+                        if ($('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0]) {
+                            $('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0].addEventListener('click', function() {
+                                var [name2, link2] = getDataFromTooltip();
+                                if (link2) window.open(link2, '_blank');
+                            }, false);
+                            $('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper').addClass('gclh_click');
+                        }
+                    }
+                    observer.observe($('#stats_tabs-maps')[0], config);
+                });
+                tooltipObserver.observe($('#stats_tabs-maps')[0], config);
+            }
+        } catch(e) {gclh_error("Improve statistic map page in the maps",e);}
     }
 
 // Improve statistic map page with total and percentage.
@@ -16956,8 +17030,11 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br>";
-            html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br>";
-            html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country on statistic map') + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_map_statistic_set_name_in_map', 'Show name of country and state on maps') + show_help("Show additional to the short country and state names also the full country and state names on statistic maps when hover with mouse.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += checkboxy('settings_map_links_statistic', 'Set links to found caches for each country and state on maps') + show_help("You can improve the maps on your own statistic maps page with links to caches you have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories.") + "<br>";
+            html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country and state on maps') + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","db")+"<label for='lnk_gclh_config_db'>Dashboard</label></h4>";
@@ -18527,6 +18604,7 @@ var mainGC = function() {
                 'settings_compact_layout_nearest',
                 'settings_compact_layout_recviewed',
                 'settings_map_links_statistic',
+                'settings_map_statistic_set_name_in_map',
                 'settings_map_percentage_statistic',
                 'settings_improve_add_to_list',
                 'settings_show_flopps_link',
