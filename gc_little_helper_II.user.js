@@ -11288,9 +11288,8 @@ var mainGC = function() {
                 }
             }
 
-            // Show hint automatically (and scroll up to top after "Description & Hint" was clicked: currently not implemented).
+            // Show hint automatically.
             function showHint() {
-                // Show hint automatically.
                 if (settings_searchmap_show_hint && $('.cache-hint-toggle')[0] && !$('.cache-hint-toggle.gclh-show-hint')[0]) {
                     document.querySelector('.cache-hint-toggle').click();
                     $('.cache-hint-toggle').addClass('gclh-show-hint');
