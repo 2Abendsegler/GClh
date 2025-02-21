@@ -11132,6 +11132,7 @@ var mainGC = function() {
             }
 
             // Add VIP, VUP and mail icon to owner.
+//xxxx
 //xxx deaktiviert
             function addVipVupMailToOwner() {
                 if (($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0] && !$('.gclhOwner a[href*="email"]')[0]) || (!$('.gclhOwner a')[0] && $('.geocache-owner-name a')[0] && !$('.geocache-owner-name .gclh_vip')[0] && !$('.geocache-owner a[href*="email"]')[0])) {
@@ -11144,10 +11145,14 @@ var mainGC = function() {
                         }
                         if (settings_show_vip_list) {
                             if ($('.gclhOwner a')[0]) gclh_build_vipvupmail($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]));
-                            else gclh_build_vipvupmail($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]));
+//xxxx ok Wegen Unterstrich zwischen den Icons.
+//                            else gclh_build_vipvupmail($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]));
+                            else gclh_build_vipvupmail($('.geocache-owner-name a').parent()[0], decodeUnicodeURIComponent(user[2]));
                         } else {
                             if ($('.gclhOwner a')[0]) buildSendIcons($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]), "per u");
-                            else buildSendIcons($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]), "per u");
+//xxxx ok Wegen Unterstrich zwischen den Icons.
+//                            else buildSendIcons($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]), "per u");
+                            else buildSendIcons($('.geocache-owner-name a').parent()[0], decodeUnicodeURIComponent(user[2]), "per u");
                         }
                     }
                 }
@@ -11743,7 +11748,8 @@ var mainGC = function() {
 //                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
-//                addVipVupMailToOwner(); // Has to be run after compactLayout.
+//xxxx
+                addVipVupMailToOwner(); // Has to be run after compactLayout.
 //                setStrikeDisabledInList();
                 showHint();
                 scrollUpInDescription();
@@ -11800,9 +11806,15 @@ var mainGC = function() {
             if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
+*/
+//xxxx
             // Set link to owner.
-            css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
-            css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
+//xxxx ok Wegen Unterstrich zwischen den Icons. Ob gclhOwner auch weg kann ist noch unklar
+//            css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
+//            css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
+            css += '.gclhOwner a:hover {color: #02874d !important;}';
+            css += '.gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
+/*
             if (settings_searchmap_compact_layout) {
                 css += '#gc-search-typeahead-form, #gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, #search-term-input {height: 34px !important;}';
                 css += '.search-bar.v3 .gc-filter-toggle {height: 35.5px !important;}';
