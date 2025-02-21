@@ -11296,6 +11296,14 @@ var mainGC = function() {
                 }
             }
 
+            // Scroll up to top in description after "Description & Hint" was clicked.
+            function scrollUpInDescription() {
+                if ($('.cache-preview-description')[0] && !$('.cache-preview-description.gclh_scroll_up')[0]) {
+                    document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
+                    $('.cache-preview-description').addClass('gclh_scroll_up');
+                }
+            }
+
             // Show button to collapse activity.
 //xxx deaktiviert
             function collapseActivity() {
@@ -11738,6 +11746,7 @@ var mainGC = function() {
 //                addVipVupMailToOwner(); // Has to be run after compactLayout.
 //                setStrikeDisabledInList();
                 showHint();
+                scrollUpInDescription();
 //                collapseActivity();
 //                showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
