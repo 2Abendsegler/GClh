@@ -20598,8 +20598,8 @@ function gclh_error(modul, err) {
     if (settings_gclherror_alert) {
         if ($("#gclh-gurumeditation").length == 0) {
             $("body").before('<div id="gclh-gurumeditation"></div>');
-            $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
-            $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC little helper II Error</p>');
+            $("#gclh-gurumeditation").append('<div></div>');
+            $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: large; padding-top: 4px;">GC little helper II Error</p>');
             $("#gclh-gurumeditation > div").append('<div></div>');
             $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">Create a new issue / bug report at GitHub.</a></p>');
         }

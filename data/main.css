@@ -1082,7 +1082,7 @@ svg.search_map_icon {
 /* Error output in header. */
 #gclh-gurumeditation {
     background-color:black;
-    padding: 5px;
+    padding: 2px;
     color: red;
     text-align: center;
 }
@@ -1092,9 +1092,11 @@ svg.search_map_icon {
     color: red;
     text-decoration: underline;
 }
+#gclh-gurumeditation > div {
+    border: 2px solid #ff0000;
+}
 #gclh-gurumeditation > div > p {
     margin: 0;
-    padding: 15px;
     font-family:Arial;
 }
 #gclh-gurumeditation > div > div > p {
