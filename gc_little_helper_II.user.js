@@ -10202,7 +10202,10 @@ var mainGC = function() {
                 css += '#gclh_unpublishedCaches .panel-header svg {transform: rotate(0) !important;}';
             }
 
+            // Sidebar links: Align action links to other areas.
             css += '.action-link a {padding-left: 12px !important;}';
+            // Latest Activity: Do not cut avatar image.
+            css += '.activity-details > div > a {flex-shrink: 0;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
