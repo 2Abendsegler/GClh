@@ -12060,6 +12060,8 @@ var mainGC = function() {
                     }
                     // Improve clickability on list names of add to list pop up.
                     css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
+                    // Enable Linklist, config and sync scrolling on Browse Map.
+                    css += "body {overflow: visible;}";
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
@@ -20010,9 +20012,8 @@ var mainGC = function() {
 
 // Is special processing allowed on the current page?
     function checkTaskAllowed(task, doAlert) {
-        if ((document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) ||
-            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map)/))) {
-            if (doAlert != false) alert("This GC little helper II functionality is not available at this page.\n\nPlease go to the \"Dashboard\" page, there is anyway all of these \nfunctionality available. ( www.geocaching.com/my )");
+        if (document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) {
+            if (doAlert != false) alert("This GC little helper II functionality is not available at this page. Please go to the \"Dashboard\" page, there is anyway all of these functionality available.");
             return false;
         }
         return true;
