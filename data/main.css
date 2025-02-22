@@ -689,6 +689,10 @@ table .markdown-output~tr.AlternatingRow td {
     border-radius: 30px;
     box-sizing: unset;
 }
+.settings_overlay h3,
+.settings_overlay h4 {
+    font-weight: bold;
+}
 .qtip {z-index: 9997 !important;} /* should be behind config */
 .gclh_headline {
     height: 21px;
@@ -739,7 +743,11 @@ table .markdown-output~tr.AlternatingRow td {
     font-size: 14px;
     line-height: 1.5;
 }
-.gclh_content input, 
+.gclh_content h3,
+.gclh_content h4 {
+    font-weight: bold;
+}
+.gclh_content input,
 .gclh_content input:focus, 
 .gclh_content input:active, 
 .gclh_content textarea, 
@@ -1083,7 +1091,7 @@ svg.search_map_icon {
 /* Error output in header. */
 #gclh-gurumeditation {
     background-color:black;
-    padding: 2px;
+    padding: 5px;
     color: red;
     text-align: center;
 }
@@ -1093,11 +1101,9 @@ svg.search_map_icon {
     color: red;
     text-decoration: underline;
 }
-#gclh-gurumeditation > div {
-    border: 2px solid #ff0000;
-}
 #gclh-gurumeditation > div > p {
     margin: 0;
+    padding: 15px;
     font-family:Arial;
 }
 #gclh-gurumeditation > div > div > p {
