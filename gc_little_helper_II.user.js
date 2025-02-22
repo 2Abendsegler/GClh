@@ -16471,7 +16471,7 @@ var mainGC = function() {
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
-            html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("marGEOcus",            "",                         false, false, true,  true,  false); // Changed from "Herr Ma".
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
@@ -16486,8 +16486,8 @@ var mainGC = function() {
             html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Pzi",                  "PetziAt",                  false, false, true,  false, false);
             html += thanksLineBuild("",                     "sdennler",                 false, false, true,  false, false);
-            html += thanksLineBuild("bruzie",               "",                         false, false, true,  false,  false);
-            html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("bruzie",               "",                         false, false, true,  false, false);
+            html += thanksLineBuild("",                     "ztNFny",                   false, false, true,  true,  false); // GC user changed from ztNFny. Could not find new name.
             html += thanksLineBuild("FoxFil",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
@@ -16524,7 +16524,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "18.02.2025";
+            var thanksLastUpdate = "23.02.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
