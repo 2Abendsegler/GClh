@@ -825,6 +825,7 @@ table .markdown-output~tr.AlternatingRow td {
 .gclh_content a:focus {
     text-decoration: underline;
     color: #3d76c5;
+    box-shadow: none !important;
 }
 .gclh_content select:hover,
 .gclh_content select:active,
