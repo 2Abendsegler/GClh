@@ -11701,35 +11701,38 @@ var mainGC = function() {
             // Hide Header.
             let runHideHeader = false;
             function toggelHeader() {
-                let newPx = $('.app-main').css('top') == '80px' ? 0 : '80px';
-                $('.app-main').css('top', newPx);
+                let newPx = $('#map-wrapper').css('top') == '80px' ? '0px' : '80px';
+                document.querySelector('#map-wrapper').style.setProperty('top', newPx, 'important');
                 $('.hideHeaderLink .gclh_toggle-handle').toggleClass('on');
                 $('#ctl00_gcNavigation').toggle();
-                window.dispatchEvent(new Event('resize'));
+                document.querySelector('#map-wrapper').style.setProperty('height', 'calc(100dvh - ' + newPx + ')', 'important');
             }
-//xxx deaktiviert
+
             function addHideHeaderButton() {
-                if ($('.geocache-action-bar.sidebar-control')[0] && !$('#gclh_hideHeader')[0]) {
+                if ($('[data-testid="sidebar-header-container"]')[0] && !$('#gclh_hideHeader')[0]) {
                     let html = '<div id="gclh_hideHeader" class="hideHeaderLink toggle-filter"><span class="label">Hide header </span><div class="gclh_toggle-handle"></div></div>';
                     $('#gclh_action_bar').append(html);
+                    // TODO: handle style in css?
+                    document.querySelector('#gclh_action_bar').style.setProperty('padding', '0px', 'important');
                     $('.hideHeaderLink .gclh_toggle-handle')[0].onclick = function() {toggelHeader();};
-                    if ($('.app-main').css('top') == '0px') {
+                    if ($('#map-wrapper').css('top') == '0px') {
                         $('.hideHeaderLink .gclh_toggle-handle').addClass('on');
                     }
                 }
             }
 
             // Root for "Save as PQ" and "Hide Header".
-//xxx deaktiviert
             function geocacheActionBar() {
                 if ((settings_searchmap_show_btn_save_as_pq || settings_map_show_btn_hide_header)) {
                     if (!$('#gclh_action_bar')[0]) {
-                        $('.geocache-action-bar.sidebar-control').after('<div id="gclh_action_bar" class="geocache-action-bar"></div>');
+                        $('[data-testid="sidebar-header-container"]').append('<hr style="margin: -5px;opacity: 0.2">');
+                        $('[data-testid="sidebar-header-container"]').append('<div id="gclh_action_bar" class="geocache-action-bar"></div>');
                     }
                     if (settings_map_show_btn_hide_header) addHideHeaderButton();
-                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
+//xxx deaktiviert
+//                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
                     // Hide header by default.
-                    if (!runHideHeader && settings_hide_map_header && settings_map_show_btn_hide_header && $('.geocache-action-bar.sidebar-control')[0]) {
+                    if (!runHideHeader && settings_hide_map_header && settings_map_show_btn_hide_header && $('[data-testid="sidebar-header-container"]')[0]) {
                         runHideHeader = true;
                         toggelHeader();
                     }
@@ -11749,7 +11752,7 @@ var mainGC = function() {
 //                collapseActivity();
 //                showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-//                geocacheActionBar(); // "Save as PQ" and "Hide Header".
+                geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 and Ctrl+s in filter screen.
 //                prepareKeydownF2InFilterScreen();
             }
@@ -11997,6 +12000,7 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
             css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
+*/
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
@@ -12010,6 +12014,7 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
+/*
             // Add to List pop up.
             if (settings_searchmap_improve_add_to_list) {
                 css += '.existing-list .gc-button:focus {box-shadow: none;}';
