@@ -5407,7 +5407,7 @@ var mainGC = function() {
             }
             function buildAutoAV(tb) {
                 let tbC = getTbCodeAV(tb);
-                if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
+                if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false) && !document.location.pathname.match(/\/edit/))  {
                     if (getTbActionTypeAV(tb) == '-1') {
                         $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="75"]')[0].click();
                     }
