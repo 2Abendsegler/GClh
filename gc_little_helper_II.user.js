@@ -11712,8 +11712,6 @@ var mainGC = function() {
                 if ($('[data-testid="sidebar-header-container"]')[0] && !$('#gclh_hideHeader')[0]) {
                     let html = '<div id="gclh_hideHeader" class="hideHeaderLink toggle-filter"><span class="label">Hide header </span><div class="gclh_toggle-handle"></div></div>';
                     $('#gclh_action_bar').append(html);
-                    // TODO: handle style in css?
-                    document.querySelector('#gclh_action_bar').style.setProperty('padding', '0px', 'important');
                     $('.hideHeaderLink .gclh_toggle-handle')[0].onclick = function() {toggelHeader();};
                     if ($('#map-wrapper').css('top') == '0px') {
                         $('.hideHeaderLink .gclh_toggle-handle').addClass('on');
@@ -12002,7 +12000,7 @@ var mainGC = function() {
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
 */
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
-            css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
+            css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default; padding: 0px !important;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
             css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 1px !important; height: 40px !important;}';
             css += '.geocache-action-bar {padding: 5px 12px !important;}';
