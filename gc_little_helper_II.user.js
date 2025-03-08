@@ -11638,37 +11638,6 @@ var mainGC = function() {
                 }, 20000);
             }
 
-            // Improve add to list pop up.
-//xxx deaktiviert
-            function improveAddtolistPopup() {
-                function checkAddtolistPopup(waitCount, popoverFound) {
-                    if ($('.Popover')[0]) popoverFound = true;
-                    if (popoverFound) {
-                        if (!$('.Popover')[0]) return;
-                        else {
-                            setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
-                            if ($('.Popover .create-new-list-form')[0] && !$('.Popover .create-new-list-form').hasClass('gclh_set_style')) {
-                                $('.Popover .create-new-list-form')[0].setAttribute('style', 'height: 40.8px !important;');
-                                $('.Popover .create-new-list-form').addClass('gclh_set_style')
-                            }
-                            if ($('.Popover .create-new-list-submit')[0] && !$('.Popover .create-new-list-submit').hasClass('gclh_set_style')) {
-                                $('.Popover .create-new-list-submit')[0].setAttribute('style', 'min-width: 40px !important;');
-                                $('.Popover .create-new-list-submit').addClass('gclh_set_style')
-                            }
-                            if ($('.Popover .add-to-list-view')[0] && $('.Popover .existing-lists')[0] && (!$('.Popover .add-to-list-view').hasClass('gclh_set_style') || !$('.Popover .existing-lists').hasClass('gclh_set_style'))) {
-                                $('.Popover .add-to-list-view')[0].setAttribute('style', 'height: unset !important;');
-                                $('.Popover .add-to-list-view').addClass('gclh_set_style')
-                                var height = ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height));
-                                $('.Popover .existing-lists')[0].setAttribute('style', 'max-height: ' + height + 'px !important;');
-                                $('.Popover .existing-lists').addClass('gclh_set_style')
-                            }
-                            setTimeout(function(){checkAddtolistPopup(waitCount, popoverFound);}, 100);
-                        }
-                    } else {waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount, popoverFound);}, 100);};
-                }
-                if (settings_searchmap_improve_add_to_list) checkAddtolistPopup(0, false);
-            }
-
             // Create Save as PQ Button.
             var set_defaults = getValue('set_switch_searchmap_set_defaults', false);
 //xxx deaktiviert
@@ -11742,7 +11711,6 @@ var mainGC = function() {
             function processAllSearchMap() {
 //xxx deaktiviert
 //                scrollInCacheList();
-//                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
@@ -12021,12 +11989,15 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
+*/
             // Add to List pop up.
             if (settings_searchmap_improve_add_to_list) {
-                css += '.existing-list .gc-button:focus {box-shadow: none;}';
-                css += '.existing-list .gc-button {height: 22px;}';
+                css += '#popover-portal-root .create-new-list-form {height: 41px;}';
+                css += '#popover-portal-root .create-new-list-submit {min-width: 40px;}';
+                css += '#popover-portal-root .existing-lists {max-height: ' + ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height)) + 'px;}';
+                css += '#popover-portal-root .existing-lists li {padding-top: 2px !important; padding-bottom: 2px !important;}';
+                css += '#popover-portal-root .existing-lists button, #popover-portal-root .existing-lists .status-icon {margin: 0px; padding: 0px !important; height: 18px;  line-height: 18px !important;}';
             }
-*/
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
