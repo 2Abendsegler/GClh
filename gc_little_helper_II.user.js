@@ -11720,7 +11720,6 @@ var mainGC = function() {
             function processAllSearchMap() {
 //xxx deaktiviert
                 scrollInCacheList();
-//                improveAddtolistPopup();
                 setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
@@ -11731,8 +11730,8 @@ var mainGC = function() {
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
-                // Prepare keydown F2 and Ctrl+s in filter screen.
-//                prepareKeydownF2InFilterScreen();
+                // Prepare keydown F2 filter screen.
+                prepareKeydownF2InFilterScreen();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -11984,9 +11983,7 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
             css += '#searchmap_sidebar_enhancements img {height: 14px; width: 14px; padding-left: 0px; margin-left: 2px;}';
             css += "#searchmap_sidebar_enhancements ul {display: inline-block; padding-left: 0px; margin: 0px;}";
-/*
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
-*/
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default; padding: 0px !important;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
@@ -12000,9 +11997,7 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
-/*
             // Add to List pop up.
-*/
             if (settings_searchmap_improve_add_to_list) {
                 css += '#popover-portal-root .create-new-list-form {height: 41px;}';
                 css += '#popover-portal-root .create-new-list-submit {min-width: 40px;}';
