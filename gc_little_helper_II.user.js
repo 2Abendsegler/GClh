@@ -11340,7 +11340,7 @@ var mainGC = function() {
                 }
             }
 
-            // Show additional cache data in sidebar.
+            // Show additional cache data in cache details.
             var sidebar_enhancements_buffer = {};
             var sidebar_enhancements_favi_buffer = {};
             var sidebar_enhancements_addToList_buffer = {};
@@ -11753,8 +11753,8 @@ var mainGC = function() {
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
 //                geocacheActionBar(); // "Save as PQ" and "Hide Header".
-                // Prepare keydown F2 and Ctrl+s in filter screen.
-//                prepareKeydownF2InFilterScreen();
+                // Prepare keydown F2 filter screen.
+                prepareKeydownF2InFilterScreen();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -15998,23 +15998,30 @@ var mainGC = function() {
         return tx;
     }
 
-// Prepare keydown F2 and Ctrl+s in filter screens of Search Map and search page.
+// Prepare keydown F2 in filter screens of Search Map and search page.
     function prepareKeydownF2InFilterScreen() {
-        if (settings_submit_log_button && $('button.gc-filter-toggle')[0] && !$('.set_clickevent_to_filter_button')[0]) {
-            $('button.gc-filter-toggle').addClass('set_clickevent_to_filter_button');
+        if (settings_submit_log_button && $('button.gc-filter-toggle')[0] && !$('.clickevent_to_filter_button_set')[0]) {
+            $('button.gc-filter-toggle').addClass('clickevent_to_filter_button_set');
             $('button.gc-filter-toggle')[0].addEventListener('click', function() {
                 function waitForFilterScreen(waitCount) {
-                    if ($('.gc-button-primary')[0]) {
-                        function keydownF2InFilterScreen(e) {
-                            if (e.keyCode == 113 && noSpecialKey(e)) {
-                                $('.gc-button-primary').click();
+                    if ($('.gc-search-filter-header')[0] && $('button[data-event-label="Filters - Apply"]')[0]) {
+                        $('button[data-event-label="Filters - Apply"]').each(function() {
+                            if (!$(this)[0].innerHTML.match(/(F2)/)) {
+                                $(this)[0].innerHTML += " (F2)";
                             }
-                            if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
-                                e.preventDefault();
-                                $('.gc-button-primary').click();
+                        });
+                        if ($('.gc-search-filter-header:not(.keydownF2_to_window_set)')) {
+                            function keydownF2InFilterScreen(e) {
+                                // Remove click event. Otherwise it can be executed multiple times which can lead to an Error (Error: Abort fetching component).
+                                window.removeEventListener('keydown', keydownF2InFilterScreen, true);
+                                $('.gc-search-filter-header').removeClass('keydownF2_to_window_set');
+                                if (e.keyCode == 113 && noSpecialKey(e)) {
+                                    $('button[data-event-label="Filters - Apply"]:first').click();
+                                }
                             }
+                            $('.gc-search-filter-header').addClass('keydownF2_to_window_set');
+                            window.addEventListener('keydown', keydownF2InFilterScreen, true);
                         }
-                        window.addEventListener('keydown', keydownF2InFilterScreen, true);
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilterScreen(waitCount);}, 50);}
                 }
                 waitForFilterScreen(0);
@@ -16295,7 +16302,7 @@ var mainGC = function() {
                             }
                             return false;
                         });
-                        // Prepare keydown F2 and Ctrl+s in filter screen of search page.
+                        // Prepare keydown F2 in filter screen of search page.
                         prepareKeydownF2InFilterScreen();
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForSearchForm(waitCount);}, 100);}
                 }
