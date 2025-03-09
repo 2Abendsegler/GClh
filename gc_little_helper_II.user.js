@@ -10769,8 +10769,7 @@ var mainGC = function() {
                             // Set default filters.
                             setDefaultFilters();
                             // Run filtered search.
-//xxxx Error: Abort fetching
-//                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
+                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
                         }, 500);
 
                         observer.disconnect();
@@ -10922,8 +10921,7 @@ var mainGC = function() {
                         // Wait until data is ready, then update cache locations.
                         const cb = (_, observer) => {
                             // Run 'Search this area' to modify coords.
-//xxxx Error: Abort fetching
-//                            document.querySelector('[data-testid="search-this-area-button"]').click();
+                            document.querySelector('[data-testid="search-this-area-button"]').click();
                             observer.disconnect();
                             observer = null;
                         }
