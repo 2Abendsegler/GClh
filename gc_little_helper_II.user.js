@@ -10910,7 +10910,7 @@ var mainGC = function() {
                 setTimeout(addCorrectedCoordsButton, 0);
 
                 // If show at corrected coords is active, update cache locations.
-                if (isActive) {
+                if (isActive && !run_setDefaultFilters()) {
                     // Observe distance filter for changes:
                     // - unset default distance value
                     // - wait until value gets reset by GS, then data is ready and a search can be performed
