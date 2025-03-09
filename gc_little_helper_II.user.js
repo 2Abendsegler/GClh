@@ -10769,7 +10769,8 @@ var mainGC = function() {
                             // Set default filters.
                             setDefaultFilters();
                             // Run filtered search.
-                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
+//xxxx Error: Abort fetching
+//                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
                         }, 500);
 
                         observer.disconnect();
@@ -10921,7 +10922,8 @@ var mainGC = function() {
                         // Wait until data is ready, then update cache locations.
                         const cb = (_, observer) => {
                             // Run 'Search this area' to modify coords.
-                            document.querySelector('[data-testid="search-this-area-button"]').click();
+//xxxx Error: Abort fetching
+//                            document.querySelector('[data-testid="search-this-area-button"]').click();
                             observer.disconnect();
                             observer = null;
                         }
@@ -11686,9 +11688,9 @@ var mainGC = function() {
                 $('#ctl00_gcNavigation').toggle();
                 document.querySelector('#map-wrapper').style.setProperty('height', 'calc(100dvh - ' + newPx + ')', 'important');
             }
-
             function addHideHeaderButton() {
-                if ($('[data-testid="sidebar-header-container"]')[0] && !$('#gclh_hideHeader')[0]) {
+//xxxx1 ok
+                if ($('[data-testid="sidebar-header-container"]')[0] && $('#gclh_action_bar')[0] && !$('#gclh_hideHeader')[0]) {
                     let html = '<div id="gclh_hideHeader" class="hideHeaderLink toggle-filter"><span class="label">Hide header </span><div class="gclh_toggle-handle"></div></div>';
                     $('#gclh_action_bar').append(html);
                     $('.hideHeaderLink .gclh_toggle-handle')[0].onclick = function() {toggelHeader();};
@@ -11700,10 +11702,18 @@ var mainGC = function() {
 
             // Root for "Save as PQ" and "Hide Header".
             function geocacheActionBar() {
+//xxxx1 ok
+                // The action bar with Hide header button and Save as PQ button should only be displayed when dealing with lists such as
+                // the list of caches or the list of bookmark lists. This can be identified by the sorting option for the list.
+                if (!$('#search-map-sort-toggle')[0]) {
+                    $('.gclh_action_bar').remove();
+                    return;
+                }
                 if ((settings_searchmap_show_btn_save_as_pq || settings_map_show_btn_hide_header)) {
                     if (!$('#gclh_action_bar')[0]) {
-                        $('[data-testid="sidebar-header-container"]').append('<hr style="margin: -5px;opacity: 0.2">');
-                        $('[data-testid="sidebar-header-container"]').append('<div id="gclh_action_bar" class="geocache-action-bar"></div>');
+//xxxx1 ok
+                        $('[data-testid="sidebar-header-container"]').append('<hr class="gclh_action_bar" style="margin: -5px;opacity: 0.2">');
+                        $('[data-testid="sidebar-header-container"]').append('<div id="gclh_action_bar" class="gclh_action_bar"></div>');
                     }
                     if (settings_map_show_btn_hide_header) addHideHeaderButton();
 //xxx deaktiviert
