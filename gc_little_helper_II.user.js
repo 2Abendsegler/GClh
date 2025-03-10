@@ -11573,6 +11573,22 @@ var mainGC = function() {
                     // Just to be sure we are starting from scratch.
                     removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
+                    // Open latest logs and personal cache note slightly late so it doesn't flutter.
+                    function doNotFlutter(pos) {
+                        $(pos).each(function() {
+                            this.addEventListener('mouseover', function() {
+                                var a = this;
+                                setTimeout(function() {$(a).addClass('mouseover');}, 250);
+                            })
+                            this.addEventListener('mouseleave', function() {
+                                $(this).removeClass('mouseover');
+                                var a = this;
+                                setTimeout(function() {$(a).removeClass('mouseover');}, 250);
+                            })
+                        });
+                    }
+                    doNotFlutter('.gclh_latest_log');
+                    doNotFlutter('.gclh_cache_note');
 
                     // Add Copy to Clipboard Links.
                     if (settings_show_enhanced_map_coords) {
@@ -11955,7 +11971,6 @@ var mainGC = function() {
             if (settings_relocate_other_map_buttons) css += '[data-testid="gc-button-link"] {display: none !important;}';
             else css += '#gclh_layers {top: 52px;}';
 //xxx deaktiviert
-///*
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -11970,11 +11985,11 @@ var mainGC = function() {
             css += '#gclh_third_line img, #gclh_third_line svg {vertical-align: middle !important;}';
             css += '#gclh_third_line {position: relative; margin-left: 5px; margin-right: 5px;}';
             css += '#gclh_latest_logs {position: relative;}';
-            css += 'div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 9px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}';
-            css += 'div.gclh_latest_log:hover span {font-size: 13px; display: block; top: 100%; margin-top: -5px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
-            css += 'span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log span, span.gclh_cache_note span {visibility: hidden; display: block; position: absolute; left: 9px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}';
+            css += 'div.gclh_latest_log.mouseover:hover span {visibility: visible; font-size: 13px; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000; margin-top: -5px; }';
+            css += 'span.gclh_cache_note.mouseover:hover span {visibility: visible; font-size: 13px; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log.mouseover:hover span img {opacity: 1;}';
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
-            css += 'div.gclh_latest_log:hover span img {opacity: 1;}';
             css += 'div.gclh_latest_log span img {vertical-align: sub !important;}';
             css += 'ul.LogTotals img {margin-top: -2px; margin-left: 1px !important;}';
             css += '#searchmap_sidebar_enhancements {color: #4a4a4a;}';
