@@ -12653,8 +12653,11 @@ var mainGC = function() {
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
             css += "div.gclh_latest_log, span.gclh_cache_note {margin-top:5px;}";
             css += "div.gclh_latest_log:hover, span.gclh_cache_note:hover {position: relative;}";
-            css += "div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}";
-            css += "div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += "div.gclh_latest_log span, span.gclh_cache_note span {visibility: hidden; display: block; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}";
+            css += "div.gclh_latest_log.mouseover:hover span, span.gclh_cache_note.mouseover:hover span {visibility: visible; font-size: 13px; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += 'div.gclh_latest_log.mouseover:hover span img {opacity: 1;}';
+            css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
+
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
             css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
@@ -12690,8 +12693,6 @@ var mainGC = function() {
                         var indexMapItems = indexMapItems[1] -1;
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
-                            // We need to retriev the gc_code from the loaded page, because in the
-                            // meantime the global variable gc_code could (and will be ;-)) changed.
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                             var premium_only = false;
@@ -12837,6 +12838,22 @@ var mainGC = function() {
                             }
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
+                            // Open latest logs and personal cache note slightly late so it doesn't flutter.
+                            function doNotFlutter(pos) {
+                                $(pos).each(function() {
+                                    this.addEventListener('mouseover', function() {
+                                        var a = this;
+                                        setTimeout(function() {$(a).addClass('mouseover');}, 250);
+                                    })
+                                    this.addEventListener('mouseleave', function() {
+                                        $(this).removeClass('mouseover');
+                                        var a = this;
+                                        setTimeout(function() {$(a).removeClass('mouseover');}, 250);
+                                    })
+                                });
+                            }
+                            doNotFlutter('.gclh_latest_log');
+                            doNotFlutter('.gclh_cache_note');
 
                             // Get count and names of own bookmarklists.
                             if ($('#popup_additional_info_' + local_gc_code).closest('.map-item')[0]) {
