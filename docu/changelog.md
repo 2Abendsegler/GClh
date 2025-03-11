@@ -42,7 +42,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Statistic] Show country and state names on statistic maps when hover with mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/2014" title="Issue 2729">2729</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<img src="../images/0.16.6/Screen01.gif" alt="Screen01.gif"><br><br>
+		<img src="../images/0.16.6/Screen01.gif" alt="Screen01.gif"><br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Form] TB auto visit should not run in edit log mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2741" title="Issue 2741">2741</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -63,11 +63,12 @@
 		<strong>Change:</strong> [Global] Make GClh error in header smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2733" title="Issue 2733">2733</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br><br>
 	</li>
 </ul>
 <br>
-<strong>Maps:</strong> Adjustments to the Search Map as part of the technical migration carried out by GS and other adjustments in the area of ​​the both maps Search Map and Browse Map.<br>
+<strong>Maps:</strong> <br>
+Adjustments to the Search Map as part of the technical migration carried out by GS and other adjustments in the area of ​​the both maps Search Map and Browse Map.<br><br>
 <ul>
 	<li>
 		<strong>Fix:</strong> [Search Map] After go back from cache details to cache list or BML, scroll to last position (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2726" title="Issue 2726">2726</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
