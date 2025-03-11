@@ -11333,12 +11333,11 @@ var mainGC = function() {
             }
 
             // Show button to collapse activity.
-//xxx deaktiviert
             function collapseActivity() {
-                if ($('.cache-preview-activities > header')[0] && $('.cache-preview-activities > ul')[0]) {
+                if ($('.cache-preview-activities > header > div')[0] && $('.cache-preview-activities > header > ul')[0]) {
                     if (!$('.cache-preview-activities .opener')[0]) {
-                        $('.cache-preview-activities > header').append('<svg class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
-                        $('.cache-preview-activities > header')[0].addEventListener('click', function() {
+                        $('.cache-preview-activities > header > div').append('<svg class="opener"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use></svg>');
+                        $('.cache-preview-activities > header > div')[0].addEventListener('click', function() {
                             if (getValue('show_box_searchmap_activity', true)) {
                                 $('.cache-preview-activities').addClass('isHide');
                                 setValue('show_box_searchmap_activity', false);
@@ -11787,7 +11786,7 @@ var mainGC = function() {
 //                setStrikeDisabledInList();
                 showHint();
                 scrollUpInDescription();
-//                collapseActivity();
+                collapseActivity();
                 showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
@@ -11995,12 +11994,12 @@ var mainGC = function() {
             // Adapt the width of the pop up by right mouse click to a cache in the map.
             css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
             css += '.leaflet-popup-content {width: auto !important;}';
+*/
             // Show button to collapse activity.
-            css += '.cache-preview-activities > header {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
+            css += '.cache-preview-activities > header > div {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
             css += '.cache-preview-activities .opener {height: 22px; width: 22px; transition: all .3s ease; transform-origin: 50% 50%;}';
             css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
-            css += '.cache-preview-activities.isHide > ul {display: none;}';
-*/
+            css += '.cache-preview-activities.isHide > header > ul {display: none;}';
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
