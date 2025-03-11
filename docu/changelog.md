@@ -1,5 +1,6 @@
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0166" title="GClh II version 0.16.6 (11.03.2025)">v0.16.6</a> &nbsp;
 <a href="#v0165" title="GClh II version 0.16.5 (18.02.2025)">v0.16.5</a> &nbsp;
 <a href="#v0164" title="GClh II version 0.16.4 (04.02.2025)">v0.16.4</a> &nbsp;
 <a href="#v0163" title="GClh II version 0.16.3 (28.01.2025)">v0.16.3</a> &nbsp;
@@ -28,6 +29,117 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.6:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Statistic] Make countries and states clickable on own statistic maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2014" title="Issue 2014">2014</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<strong>Fix:</strong> [Statistic] Links in own statistic maps for US states and Canadian provinces and territories. [<a href="https://github.com/2Abendsegler/GClh/issues/2728" title="Issue 2728">2728</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.16.6/Screen02.jpg" alt="Screen02.jpg"><br>
+		<img src="../images/0.16.6/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Statistic] Show country and state names on statistic maps when hover with mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/2014" title="Issue 2729">2729</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		<img src="../images/0.16.6/Screen01.gif" alt="Screen01.gif"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] After go back from cache details to cache list or BML, scroll to last position (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2726" title="Issue 2726">2726</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Show hint automatically (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2730" title="Issue 2730">2730</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map, Browse Map] Collection of different things (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2732" title="Issue 2732">2732</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<ul>
+			<li>
+				<strong>Fix:</strong> [Search Map] Show additional cache data in cache details (Tech migration).<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> [Search Map] Add VIP, VUP, Mail to owner in cache details (Tech migration).<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> [Search Map] F2 keydown in filter screens to apply the settings (Tech migration).<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> [Search Map] Improve add to list pop up (Tech migration).<br>
+			</li>
+		</ul>
+		Additional:<br>
+		<ul>
+			<li>
+				<strong>New:</strong> [Search Map] Add county (Landkreis) to place in enhanced cache data.<br>
+			</li>
+			<li>
+				<strong>New:</strong> [Search Map] Scroll up to top in description after "Description & Hint" was clicked.<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> [Browse Map] Number of trackables in cache detail popup only consider 20 trackables.<br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Change:</strong> [Global] Make GClh error in header smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2733" title="Issue 2733">2733</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashbard] Do not cut avatar image in Latest Activity. [<a href="https://github.com/2Abendsegler/GClh/issues/2735" title="Issue 2735">2735</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config, Sync] Remove bold border of all links when calling from dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2736" title="Issue 2736">2736</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Correct changed cacher names in the thanks list. [<a href="https://github.com/2Abendsegler/GClh/issues/2737" title="Issue 2737">2737</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Hide header (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2740" title="Issue 2740">2740</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] TB auto visit should not run in edit log mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2741" title="Issue 2741">2741</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Hide header button should only be displayed when dealing with lists (Tech migration) and show additional cache data on the maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2745" title="Issue 2745">2745</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Additional:<br>
+		<ul>
+			<li>
+				<strong>Fix:</strong> [Search Map] Open latest logs and personal cache note slightly late so it doesn't flutter.<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> [Browse Map] Open latest logs and personal cache note slightly late so it doesn't flutter.<br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Fix error if default filter and show corrected coords both are active (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2747" title="Issue 2747">2747</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Filtering logs by clicking on the log type totals no longer works if language is not English. [<a href="https://github.com/2Abendsegler/GClh/issues/2748" title="Issue 2748">2748</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map, Browse Map] Show additional cache data on the maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2749" title="Issue 2749">2749</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<ul>
+			<li>
+				<strong>Fix:</strong> [Search Map, Browse Map] Open latest logs and personal cache note slightly late so it doesn't flutter.<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> [Search Map, Browse Map] Put favorite percentage, elevation and place further to the right in the line so that the entire line content is not moved as soon as the data has been determined.<br>
+			</li>
+			<li>
+				<strong>Fix:</strong> Fix [Search Map] Elevation in enhancement block is wrong if cache changed between determination of elevation.<br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve position and width of the latest logs and the personal cache note when hovering with the mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/2750" title="Issue 2750">2750</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(11.03.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.5:
