@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.5
+// @version      0.16.6
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -15279,8 +15279,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/7W1P/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iP9"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/AbXg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iQ3"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16653,6 +16653,7 @@ var mainGC = function() {
             html += thanksLineBuild("dennistreysa",         "",                         false, false, false, true,  false);
             html += thanksLineBuild("Die C-SAU Bande",      "UJstr",                    false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Fassenachterin",       "",                         false, false, false, true,  false);
             html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
@@ -16673,7 +16674,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "23.02.2025";
+            var thanksLastUpdate = "11.03.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17673,8 +17674,12 @@ var mainGC = function() {
             html += "&nbsp;" + "<input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' title='Save the configuration data and\nupload it to your own DropBox' style='height: 25px;' value='Save & Upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right; font-size: 9px;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-2021 <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a>, 2019-"+end+" <a href='/profile/?u=capoaira' target='_blank' title='GC profile of capoaira'>capoaira</a></div>";
-            html += "</div></div>";
+            html += '<div align="right" class="gclh_small" style="float: right; font-size: 9px;">Copyright ©';
+            html += ' 2016-'+end+' <a href="/profile/?u=2Abendsegler" target="_blank" title="GC profile of 2Abendsegler">2Abendsegler</a>,';
+            html += ' 2019-'+end+' <a href="/profile/?u=capoaira" target="_blank" title="GC profile of capoaira">capoaira</a>,';
+            html += ' 2017-2021 <a href="/profile/?u=Ruko2010" target="_blank" title="GC profile of Ruko2010">Ruko2010</a>,';
+            html += ' 2010-2016 <a href="/profile/?u=Torsten-" target="_blank" title="GC profile of Torsten-">Torsten Amshove</a>';
+            html += '</div></div></div>';
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
             // ---------------
