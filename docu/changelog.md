@@ -42,7 +42,9 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Statistic] Show country and state names on statistic maps when hover with mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/2014" title="Issue 2729">2729</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
-		<img src="../images/0.16.6/Screen01.gif" alt="Screen01.gif"><br><br><br>
+		<img src="../images/0.16.6/Screen01.gif" alt="Screen01.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_statistic_set_name_in_map" title="Link to your GClh II Config">Settings ->Public Profile - Statistic:<br>
+		<img src="../images/0.16.6/Screen04.jpg" alt="Screen04.jpg"></a><br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Log Form] TB auto visit should not run in edit log mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2741" title="Issue 2741">2741</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
