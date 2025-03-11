@@ -67,7 +67,7 @@
 	</li>
 </ul>
 <strong>Maps:</strong> <br>
-Adjustments to the Search Map as part of the technical migration carried out by GS and other adjustments in the area of ​​the both maps Search Map and Browse Map.<br><br>
+Adjustments to the Search Map as part of the technical migration carried out by the owner and other adjustments in the area of ​​the both maps Search Map and Browse Map.<br><br>
 <ul>
 	<li>
 		<strong>Fix:</strong> [Search Map] After go back from cache details to cache list or BML, scroll to last position (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2726" title="Issue 2726">2726</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
