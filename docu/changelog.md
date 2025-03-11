@@ -45,10 +45,10 @@
 		<img src="../images/0.16.6/Screen01.gif" alt="Screen01.gif"><br><br>
 	</li>
 	<li>
-		<strong>Change:</strong> [Global] Make GClh error in header smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2733" title="Issue 2733">2733</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Log Form] TB auto visit should not run in edit log mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2741" title="Issue 2741">2741</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Cache Listing] Filtering logs by clicking on the log type totals no longer works if language is not English. [<a href="https://github.com/2Abendsegler/GClh/issues/2748" title="Issue 2748">2748</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Dashbard] Do not cut avatar image in Latest Activity. [<a href="https://github.com/2Abendsegler/GClh/issues/2735" title="Issue 2735">2735</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -60,10 +60,10 @@
 		<strong>Fix:</strong> [Config] Correct changed cacher names in the thanks list. [<a href="https://github.com/2Abendsegler/GClh/issues/2737" title="Issue 2737">2737</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log Form] TB auto visit should not run in edit log mode. [<a href="https://github.com/2Abendsegler/GClh/issues/2741" title="Issue 2741">2741</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Change:</strong> [Global] Make GClh error in header smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2733" title="Issue 2733">2733</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] Filtering logs by clicking on the log type totals no longer works if language is not English. [<a href="https://github.com/2Abendsegler/GClh/issues/2748" title="Issue 2748">2748</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] After go back from cache details to cache list or BML, scroll to last position (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2726" title="Issue 2726">2726</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
