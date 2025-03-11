@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.5
+// @version      0.16.6
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -302,6 +302,8 @@ var constInit = function(c) {
     country_idInit(c);
     tlc('START states_idInit');
     states_idInit(c);
+    tlc('START states_shortInit');
+    states_shortInit(c);
     tlc('START collectionInit');
     collectionInit(c);
     // Old header of GS.
@@ -581,6 +583,7 @@ var variablesInit = function(c) {
     c.settings_compact_layout_nearest = getValue("settings_compact_layout_nearest", true);
     c.settings_compact_layout_recviewed = getValue("settings_compact_layout_recviewed", true);
     c.settings_map_links_statistic = getValue("settings_map_links_statistic", true);
+    c.settings_map_statistic_set_name_in_map = getValue("settings_map_statistic_set_name_in_map", true);
     c.settings_map_percentage_statistic = getValue("settings_map_percentage_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
@@ -3950,14 +3953,27 @@ var mainGC = function() {
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
             function addElevationToWaypoints(elevations,context) {
+                // Pass through a special field such as gc_code, until the elevation is determined.
+                // The steps here in code are marked with "Elevation pass through field step (1 to 4)."
+                // Field is available here as context.pass_through_field. Elevation pass through field step 4.
                 try {
                     var text = "";
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
-                        if (is_page("map") || is_page('searchmap')) text = " " + text + " | ";
-                        $("#elevation-waypoint-"+(i+context.additionalListingIndex)).html(text);
-                        $("#elevation-waypoint-"+(i+context.additionalListingIndex)).attr('title','Elevation data from '+context.serviceName);
+                        if (is_page('searchmap')) {
+                            if (typeof context.pass_through_field !== 'undefined' && typeof sidebar_enhancements_buffer !== 'undefined') {
+                                var gc_code = context.pass_through_field;
+                                if (sidebar_enhancements_buffer[gc_code] && $(sidebar_enhancements_buffer[gc_code]).find('#elevation-waypoint-0')[0]) {
+                                    $(sidebar_enhancements_buffer[gc_code]).find('#elevation-waypoint-0')[0].innerHTML = ' ' + text + ' | ';
+                                    $(sidebar_enhancements_buffer[gc_code]).find('#elevation-waypoint-0')[0].title = 'Elevation data from '+context.serviceName;
+                                }
+                            }
+                        } else {
+                            if (is_page("map")) text = " " + text + " | ";
+                            $("#elevation-waypoint-"+(i+context.additionalListingIndex)).html(text);
+                            $("#elevation-waypoint-"+(i+context.additionalListingIndex)).attr('title','Elevation data from '+context.serviceName);
+                        }
                     }
                 } catch(e) {gclh_error("addElevationToWaypoints()",e);}
             }
@@ -4016,7 +4032,7 @@ var mainGC = function() {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
             }
             // This function can be re-entered.
-            function getElevations(serviceIndex,locations) {
+            function getElevations(serviceIndex, locations, pass_through_field = '') { // Elevation pass through field step 2.
                 if (serviceIndex >= elevationServices.length || elevationServices < 0) {
                     $('.waypoint-elevation').each(function (index, value) {
                         $(this).html('<span title="Fail to load elevation data">???</span>');
@@ -4061,7 +4077,8 @@ var mainGC = function() {
                             retries : serviceIndex,
                             serviceName : elevationServices[serviceIndex]['name'],
                             locations : locations,
-                            additionalListingIndex : additionalListingIndex
+                            additionalListingIndex : additionalListingIndex,
+                            pass_through_field : pass_through_field // Elevation pass through field step 3.
                         },
                         onload: elevationServices[serviceIndex]['function'],
                         onerror: function(responseDetails) {
@@ -5404,7 +5421,7 @@ var mainGC = function() {
             }
             function buildAutoAV(tb) {
                 let tbC = getTbCodeAV(tb);
-                if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false))  {
+                if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false) && !document.location.pathname.match(/\/edit/))  {
                     if (getTbActionTypeAV(tb) == '-1') {
                         $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="75"]')[0].click();
                     }
@@ -9070,10 +9087,16 @@ var mainGC = function() {
             function gclh_filter(logs) {
                 function gclh_filter_logs() {
                     if (!this.childNodes[0]) return false;
-                    var log_type = this.childNodes[0].title;
-                    if (!log_type) return false;
-                    if (log_type.match(/VIP/)) log_type = "VIP";
-                    if (log_type.match(/Favorite/)) log_type = "FAV";
+                    var log_type = '';
+                    var title = this.childNodes[0].title;
+                    if (!title) return false;
+                    if (title.match(/VIP/)) log_type = "VIP";
+                    if (title.match(/Favorite/)) log_type = "FAV";
+                    if (log_type == '') {
+                        var logTypeId = this.childNodes[0].src.match(/\/logtypes\/(\d+).png/);
+                        if (logTypeId && logTypeId[1]) log_type = logTypeId[1];
+                    }
+                    if (log_type == '') return false;
                     if (this.name && this.name == "vip_list") {
                         document.getElementById("ctl00_ContentBody_lblFindCounts").scrollIntoView();
                         window.scrollBy(0, -30);
@@ -9085,7 +9108,7 @@ var mainGC = function() {
                     setTimeout(function() { // Force direct display refresh.
                         $(logsTab).find('tbody').children().remove();
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType.toLowerCase() == log_type.toLowerCase() || (logs[i].LogTypeID == 45 && log_type.toLowerCase() == 'owner attention requested') || (logs[i].LogTypeID == 7 && log_type.toLowerCase() == 'reviewer attention requested') || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                            if (logs[i] && (logs[i].LogTypeID == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
@@ -10202,7 +10225,10 @@ var mainGC = function() {
                 css += '#gclh_unpublishedCaches .panel-header svg {transform: rotate(0) !important;}';
             }
 
+            // Sidebar links: Align action links to other areas.
             css += '.action-link a {padding-left: 12px !important;}';
+            // Latest Activity: Do not cut avatar image.
+            css += '.activity-details > div > a {flex-shrink: 0;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
@@ -10904,7 +10930,7 @@ var mainGC = function() {
                 setTimeout(addCorrectedCoordsButton, 0);
 
                 // If show at corrected coords is active, update cache locations.
-                if (isActive) {
+                if (isActive && !run_setDefaultFilters()) {
                     // Observe distance filter for changes:
                     // - unset default distance value
                     // - wait until value gets reset by GS, then data is ready and a search can be performed
@@ -10960,43 +10986,45 @@ var mainGC = function() {
                 addLayersOnMap();
             }
 
-            // After go back from cache details to cache list, scroll to last position.
+            // After go back from cache details to cache list or BML, scroll to last position.
             var global_scrollTop = 0;
             var global_newScrollTop = 0;
-//xxx deaktiviert
             function scrollInCacheList() {
                 // Cache list: Scroll to last position, if we come from back button in cache details.
-                if ($('#geocache-list')[0] && global_newScrollTop != 0) {
-                    document.querySelector('#geocache-list').scrollTo({top: global_newScrollTop, behavior: 'smooth'});
+                let $cache_list = $('.gc-map-geocache-list-item').parent().parent().parent();
+                if ($cache_list[0] && global_newScrollTop != 0) {
+                    $cache_list[0].scrollTo({top: global_newScrollTop, behavior: 'smooth'})
                     // Das Scrollen funktionierte nicht immer, vermutlich weil es zu lange dauert bis die Caches gelistet sind bzw.
                     // die Platzhalter dafür aufgebaut sind. Durch das verzögerte Zurücksetzen wird das Scrollen nun mehrfach durchgeführt.
+                    // Note: seems not to be an issue anymore after GS tech migration in 2024; anyway, let's keep it (doesn't hurt)
                     setTimeout(function(){global_newScrollTop = 0;}, 250);
                 }
                 // Cache list: Notice scrolling. Only if we are on the first part of the lists of the caches.
-                if ($('#geocache-list')[0] && !$('#geocache-list.gclh-scroll')[0]) {
-                    $('#geocache-list').addClass('gclh-scroll');
-                    $('#geocache-list')[0].addEventListener('scroll', function(e) {
-                        if (!$('#geocache-list-pagination')[0] || $('#geocache-list-pagination .active a')[0].innerHTML == '1') {
-                            global_scrollTop = $('#geocache-list').scrollTop();
+                if ($cache_list[0] && !$cache_list.hasClass('gclh-scroll')) {
+                    $cache_list.addClass('gclh-scroll');
+                    $cache_list[0].addEventListener('scroll', function(e) {
+                        if (!$('ul.pagination')[0] || $('ul.pagination .active a')[0].innerHTML == '1') {
+                            global_scrollTop = $cache_list.scrollTop();
                         } else {
                             global_scrollTop = 0;
                         }
                     });
                 }
                 // Search map: Set click event to "Search this area" button to clear noticed scrolling if caches on map have changed.
-                if ($('#clear-map-control')[0] && !$('#clear-map-control.gclh-scroll')[0]) {
-                    $('#clear-map-control').addClass('gclh-scroll');
-                    $('#clear-map-control')[0].addEventListener('click', function() {global_scrollTop = 0;});
+                let $search_button = $('button[data-event-label="Map - Search This Area"]');
+                if ($search_button[0] && !$search_button.hasClass('gclh-scroll')) {
+                    $search_button.addClass('gclh-scroll');
+                    $search_button[0].addEventListener('click', function() {global_scrollTop = 0;});
                 }
-                // Cache details: Set click event to back button in cache details.
-                if ($('.cache-preview-header')[0] && $('.search-bar-back-cta')[0] && !$('.search-bar-back-cta.gclh-scroll')[0]) {
-                    $('.search-bar-back-cta').addClass('gclh-scroll');
-                    $('.search-bar-back-cta')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                // Cache details: Set click event to back button in cache details (coming from cache list or BML).
+                let $back_button = $('svg use[href="#back"]').parent().parent();
+                if ($('.cache-preview-header')[0] && $back_button[0] && !$back_button.hasClass('gclh-scroll')) {
+                    $back_button.addClass('gclh-scroll');
+                    $back_button[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
                 }
-                // Cache details: Set click event to back button in BML cache details.
-                if ($('.cache-preview-header')[0] && $('.dismiss-list-cache-button')[0] && !$('.dismiss-list-cache-button.gclh-scroll')[0]) {
-                    $('.dismiss-list-cache-button').addClass('gclh-scroll');
-                    $('.dismiss-list-cache-button')[0].addEventListener('mousedown', function() {global_newScrollTop = global_scrollTop;});
+                // BML: Clear noticed scrolling when entering list of BML.
+                if ($('[data-testid="list-hub-item"]')[0]) {
+                    global_newScrollTop = 0;
                 }
             }
 
@@ -11132,7 +11160,6 @@ var mainGC = function() {
             }
 
             // Add VIP, VUP and mail icon to owner.
-//xxx deaktiviert
             function addVipVupMailToOwner() {
                 if (($('.gclhOwner a')[0] && !$('.gclhOwner .gclh_vip')[0] && !$('.gclhOwner a[href*="email"]')[0]) || (!$('.gclhOwner a')[0] && $('.geocache-owner-name a')[0] && !$('.geocache-owner-name .gclh_vip')[0] && !$('.geocache-owner a[href*="email"]')[0])) {
                     var user = $('.gclhOwner a, .geocache-owner-name a')[0].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?u=(.*)/);
@@ -11144,10 +11171,10 @@ var mainGC = function() {
                         }
                         if (settings_show_vip_list) {
                             if ($('.gclhOwner a')[0]) gclh_build_vipvupmail($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]));
-                            else gclh_build_vipvupmail($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]));
+                            else gclh_build_vipvupmail($('.geocache-owner-name a').parent()[0], decodeUnicodeURIComponent(user[2]));
                         } else {
                             if ($('.gclhOwner a')[0]) buildSendIcons($('.gclhOwner a')[0], decodeUnicodeURIComponent(user[2]), "per u");
-                            else buildSendIcons($('.geocache-owner-name a')[0], decodeUnicodeURIComponent(user[2]), "per u");
+                            else buildSendIcons($('.geocache-owner-name a').parent()[0], decodeUnicodeURIComponent(user[2]), "per u");
                         }
                     }
                 }
@@ -11156,9 +11183,9 @@ var mainGC = function() {
             // Compact layout on detail screen.
             var global_cache_disabled = false;
             var global_cache_premium = false;
-            var cache_details_premium = '<span><img class="gclh_cache_details_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png"></span>';
+            var cache_details_premium = '<span class="inline-block h-[15px] w-[1px] self-stretch bg-grey-200"></span><span><img class="gclh_cache_details_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png" style="vertical-align: text-top;"></span>';
             var cache_list_premium = '<span><img class="gclh_cache_list_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png"></span>';
-            var enhancement_premium = '<span><img class="gclh_enhancement_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png"></span>';
+            var enhancement_premium = '<span><img class="gclh_enhancement_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png" style="height: 16px; width: 16px;"></span>';
 
 //xxx deaktiviert
             function compactLayoutWait(waitCount) {
@@ -11288,16 +11315,19 @@ var mainGC = function() {
                 }
             }
 
-            // Show hint automatically and scroll up to top after "Description & Hint" was clicked.
-//xxx deaktiviert
+            // Show hint automatically.
             function showHint() {
-                // Show hint automatically.
                 if (settings_searchmap_show_hint && $('.cache-hint-toggle')[0] && !$('.cache-hint-toggle.gclh-show-hint')[0]) {
-                    // Create a mousedown event because GS uses this and not an onClick event.
-                    var clickEvent = document.createEvent('MouseEvents');
-                    clickEvent.initEvent('mousedown', true, true);
-                    $('.cache-hint-toggle')[0].dispatchEvent(clickEvent);
+                    document.querySelector('.cache-hint-toggle').click();
                     $('.cache-hint-toggle').addClass('gclh-show-hint');
+                }
+            }
+
+            // Scroll up to top in description after "Description & Hint" was clicked.
+            function scrollUpInDescription() {
+                if ($('.cache-preview-description')[0] && !$('.cache-preview-description.gclh_scroll_up')[0]) {
+                    document.querySelector('.preview-main-inner').scrollTo({top: 0, left: 0, behavior: "smooth"});
+                    $('.cache-preview-description').addClass('gclh_scroll_up');
                 }
             }
 
@@ -11338,48 +11368,42 @@ var mainGC = function() {
                 }
             }
 
-            var sidebar_enhancements_buffer = {}
-            var sidebar_enhancements_favi_buffer = {}
-            var sidebar_enhancements_addToList_buffer = {}
-            var sidebar_enhancements_date_buffer = {}
-//xxx deaktiviert
-            function showSearchmapSidebarEnhancements(){
+            // Show additional cache data in cache details.
+            var sidebar_enhancements_buffer = {};
+            var sidebar_enhancements_addToList_buffer = {};
+            var sidebar_enhancements_weekday_buffer = {};
+            var sidebar_enhancements_working_buffer = {};
+
+            function showSearchmapSidebarEnhancements() {
                 if (!settings_show_enhanced_map_popup) return true;
-                var locations = []; // Location for the Cache
                 // Check if the sidebar displays a cache.
                 if (!document.querySelector('.cache-preview-attributes')) return true;
-                // Remove all Copy GC Codes (because otherwise they will be duplicated on selecting other cache).
-                $('.cache-preview-header .cache-metadata span.ctoc_link').each(function(){
-                    removeElement(this);
-                });
-                // Add it again.
-                $('.cache-preview-header .cache-metadata .cache-metadata-code').each(function(){
-                    addCopyToClipboardLink(this, null, "GC Code", "margin-right: 3px;");
-                });
-                // Remove old Favi-Score.
-                $('.favi_score_percent').each(function(){
-                    removeElement(this);
-                });
-                $('.add_to_list_count').each(function(){removeElement(this);});
+                // Remove copy to clipboard link for gc code (because otherwise they will be duplicated on selecting other cache).
+                $('.cache-preview-header span.ctoc_link').each(function() {removeElement(this);});
+                // Add copy to clipboard links for gc code again.
+                $('.cache-preview-header .cache-metadata-code').each(function() {addCopyToClipboardLink(this, null, "GC Code", "margin-right: -4px;");});
+                // Remove favoriten score.
+                $('.favi_score_percent').each(function() {removeElement(this);});
+                // Remove add to list count.
+                $('.add_to_list_count').each(function() {removeElement(this);});
                 // Just to be sure we are starting from scratch.
                 removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
-                new_gc_code = document.querySelector('.cache-preview-header .cache-metadata .cache-metadata-code').innerHTML;
+
+                var new_gc_code = document.querySelector('.cache-preview-header .cache-metadata-code').innerHTML;
                 if (sidebar_enhancements_buffer[new_gc_code]) {
-                    // We already have the code in our buffer, no need to reload everything.
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
-                    if ($('.favorites-text')[0] && sidebar_enhancements_favi_buffer[new_gc_code]) {
-                        $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
+                    if ($('.favorites-text')[0] && $('.favorites-text')[0].childNodes[0] && sidebar_enhancements_buffer[new_gc_code] && $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0] && !$(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML == '') {
+                        $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].childNodes[0].data + '<span> (' + $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML + ')</span>';
                     }
                     if ($('.cache-preview-action-menu ul li.add-to-list')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
-                        $('.add_to_list_count').each(function(){removeElement(this);});
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
-                    if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')[0] && sidebar_enhancements_date_buffer[new_gc_code]) {
-                        let root = $('.gclhOwner') || $('.geocache-placed-date');
-                        $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
+                    if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')[0] && sidebar_enhancements_weekday_buffer[new_gc_code]) {
+                        if ($('.gclhOwner')[0]) $('.gclhOwner').after(sidebar_enhancements_weekday_buffer[new_gc_code]);
+                        else if ($('.geocache-placed-date span[data-testid="placed-on-value"]')[0]) $('.geocache-placed-date span[data-testid="placed-on-value"]').after(sidebar_enhancements_weekday_buffer[new_gc_code]);
                     }
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_premium')[0] && !$('.gclh_cache_details_premium')[0]) {
-                        regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
+                        $('.cache-preview-header .cache-metadata-code').after(cache_details_premium);
                     }
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_disabled')[0] &&
                         $('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
@@ -11390,6 +11414,7 @@ var mainGC = function() {
                     addVipVupMailToOwner();
                     return true;
                 }
+
                 var searchmap_sidebar_enhancements_code = document.querySelector('#searchmap_sidebar_enhancements .gccode');
                 if (searchmap_sidebar_enhancements_code) {
                     // Element already present, so compare the two GC Codes, to see if we need to update.
@@ -11413,21 +11438,23 @@ var mainGC = function() {
                 removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                 insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
-                $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text){
+                // Prevent multiple get for a cache.
+                if (typeof sidebar_enhancements_working_buffer[new_gc_code] !== "undefined") return true;
+                sidebar_enhancements_working_buffer[new_gc_code] = '';
+
+                $.get('https://www.geocaching.com/geocache/'+new_gc_code, null, function(text) {
                     var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                     var premium_only = false;
                     if ($(text).find('p.Warning.NoBottomSpacing').html() != null) premium_only = true;
 
-                    // Get the last logs.
+                    // Get latest logs.
                     initalLogs_from_cachepage = text.substr(text.indexOf('initialLogs = {"status')+13, text.indexOf('} };') - text.indexOf('initialLogs = {"status') - 10);
                     var initalLogs = JSON.parse(initalLogs_from_cachepage);
                     var last_logs = document.createElement("div");
-                    last_logs.setAttribute("style", "display: block ruby;");
-                    var last_logs_to_show = settings_show_latest_logs_symbols_count_map;
                     var lateLogs = new Array();
                     for (var i = 0; i < initalLogs['data'].length; i++) {
-                        if (last_logs_to_show == i) break;
+                        if (settings_show_latest_logs_symbols_count_map == i) break;
                         var lateLog = new Object();
                         lateLog['user'] = initalLogs['data'][i].UserName;
                         lateLog['src']  = '/images/logtypes/' + initalLogs['data'][i].LogTypeImage;
@@ -11439,9 +11466,9 @@ var mainGC = function() {
                     if (lateLogs.length > 0) {
                         var div = document.createElement("div");
                         div.id = "gclh_latest_logs";
-                        div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex;");
+                        div.setAttribute("style", "padding-right: 0; padding-top: 5px; padding-bottom: 5px; display: flex; justify-content: center;");
                         var span = document.createElement("span");
-                        span.setAttribute("style", "white-space: nowrap; margin-right: 5px; margin-top: -1px;");
+                        span.setAttribute("style", "white-space: nowrap; margin-left: 5px; margin-right: 5px;");
                         span.appendChild(document.createTextNode('Latest logs:'));
                         div.appendChild(span);
                         var inner_div = document.createElement("div");
@@ -11452,7 +11479,6 @@ var mainGC = function() {
                             div_log_wrapper.className = "gclh_latest_log";
                             var img = document.createElement("img");
                             img.src = lateLogs[i]['src'];
-                            img.setAttribute("style", "padding-left: 2px; float:left; margin-top: 2px;");
                             var log_text = document.createElement("span");
                             log_text.title = "";
                             log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "'> <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>" + lateLogs[i]['log'];
@@ -11463,39 +11489,40 @@ var mainGC = function() {
                         last_logs.appendChild(div);
                     }
 
-                    // Get all type of logs and their count.
-                    var all_logs = $(text).find('.LogTotals')[0].innerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"");
+                    // Get log type totals.
+                    var all_logs = '';
+                    if ($(text).find('#ctl00_ContentBody_lblFindCounts')[0]) {
+                        all_logs += '<span class="title" style="margin-left: 5px; margin-right: 5px;">Logs:</span><ul class="LogTotals">';
+                        var logTypeCounts = $(text).find('#ctl00_ContentBody_lblFindCounts')[0];
+                        $(logTypeCounts).find('li').each(function() {
+                            $(this)[0].className = '';
+                            all_logs += $(this)[0].outerHTML.replace(/alt="(.*?)"/g, "alt=\"...\"").replace(/&nbsp;/g, " ");
+                        });
+                        all_logs += '</ul><br>';
+                    }
 
-                    // Get the number of trackables in the cache.
+                    // Get number of trackables in cache.
                     var trachables = 0;
-                    $(text).find('.CacheDetailNavigationWidget').each(function(){
-                        tb_text = $(this).html();
-                        if (tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1) {
-                            // There are two Container with .CacheDetailNavigationWidget so we are only processing the
-                            // one that contains the TB informations.
-                            trachables = (tb_text.match(/<li>/g)||[]).length;
-                        }
-                    });
+                    if ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0]) {
+                        trachables = $(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0].innerHTML.replace(/\D/g, '');
+                    }
+                    if ((trachables == 0 || trachables == '') && $(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel')[0]) {
+                        trachables = ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget')[0].innerHTML.match(/<li>/g)||[]).length;
+                    }
+
+                    // Set dummy favorite score.
+                    var fav_percent = ' ';
 
                     // Get the place, where the cache was placed.
                     if ($(text).find('#ctl00_ContentBody_Location a')[0]) var place = $(text).find('#ctl00_ContentBody_Location a')[0].innerHTML;
                     else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                     // Put all together.
-                    var new_text = '<span class="title" style="margin-right: 5px;">Logs:</span>' + all_logs.replace(/&nbsp;/g, " ") + '<br>';
+                    var new_text = all_logs;
                     new_text += $(last_logs).prop('outerHTML');
                     new_text += '<div id="gclh_third_line">';
-                    if (settings_show_country_in_place) new_text += '<span title="Place">' + place + '</span> | ';
-                    else new_text += '<span title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
-                    if (settings_show_elevation_of_waypoints) {
-                        new_text += '<span id="elevation-waypoint-0"></span>';
-                    }
-                    if (premium_only) {
-                        new_text += ' ' + enhancement_premium + ' | ';
-                        if (!$('.gclh_cache_details_premium')[0]) {
-                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
-                        }
-                    }
+
+                    // Marker for disabled.
                     if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
                         new_text += '<span class="gclh_enhancement_disabled"></span>';
                         if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
@@ -11503,7 +11530,17 @@ var mainGC = function() {
                             setStrikeDisabledInDetails();
                         }
                     }
-                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
+
+                    // Premium icon.
+                    if (premium_only) {
+                        new_text += enhancement_premium + ' | ';
+                        if (!$('.gclh_cache_details_premium')[0]) {
+                            $('.cache-preview-header .cache-metadata-code').after(cache_details_premium);
+                        }
+                    }
+
+                    // Number of trackables.
+                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm" style="margin-bottom: 1px;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span> | ';
 
                     // Get link to image gallery and image count.
                     var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
@@ -11511,20 +11548,33 @@ var mainGC = function() {
                         var galleryLink = a[0].href;
                         var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                         if (galleryLink && imgCount && imgCount[2]) {
-                            if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a>';
-                            else new_text += ' | <span title="View Image Gallery"><a class="gclh_link" href="' + galleryLink + '">';
-                            new_text += '<img src="/images/icons/16/photo_gallery.png"> ' + imgCount[2] + '</a></span>';
+                            if (imgCount[2] == "0") new_text += '<span title="No Image Gallery"><a>';
+                            else new_text += '<span title="View Image Gallery"><a class="gclh_link" href="' + galleryLink + '">';
+                            new_text += '<img src="/images/icons/16/photo_gallery.png"> ' + imgCount[2] + '</a></span> | ';
                         }
                     }
 
                     // Get personal cache note.
                     if ($(text).find('#srOnlyCacheNote')[0]) {
                         if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
-                            new_text += ' | <span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span>';
+                            new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span> | ';
                         } else {
-                            new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span>';
+                            new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span> | ';
                         }
                     }
+
+                    // Favorite percentage.
+                    new_text += '<span title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> </span><span class="favi_points"></span> | ';
+
+                    // Placeholder for elevation.
+                    if (settings_show_elevation_of_waypoints) {
+                        new_text += '<span id="elevation-waypoint-0"></span>';
+                    }
+
+                    // Place and placeholder for county.
+                    if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span>';
+                    else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span>';
+
                     new_text += '</div>';
 
                     // Get coordinates.
@@ -11555,33 +11605,63 @@ var mainGC = function() {
                     removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
 
+                    // Open latest logs and personal cache note slightly late so it doesn't flutter.
+                    function doNotFlutter(pos) {
+                        $(pos).each(function() {
+                            this.addEventListener('mouseover', function() {
+                                var a = this;
+                                setTimeout(function() {$(a).addClass('mouseover');}, 250);
+                            })
+                            this.addEventListener('mouseleave', function() {
+                                $(this).removeClass('mouseover');
+                                var a = this;
+                                setTimeout(function() {$(a).removeClass('mouseover');}, 250);
+                            })
+                        });
+                    }
+                    doNotFlutter('.gclh_latest_log');
+                    doNotFlutter('.gclh_cache_note');
+
                     // Add Copy to Clipboard Links.
                     if (settings_show_enhanced_map_coords) {
                         if (original_coords != "") {
-                            addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates");
+                            addCopyToClipboardLink(original_coords, $('span.coordinates.original .anker')[0], "original Coordinates", style='vertical-align: sub;');
                         }
-                        addCopyToClipboardLink(coords, $('span.coordinates.current')[0], corrected+"Coordinates");
+                        addCopyToClipboardLink(coords, $('span.coordinates.current')[0], corrected+"Coordinates", style='vertical-align: sub;');
                     }
 
-                    // Get favorite score.
-                    getFavoriteScore(local_gc_code, function(score) {
-                        if ($('.favorites-text')[0]) {
-                           $('.favi_score_percent').each(function(){
-                               removeElement(this);
-                           });
-                           $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
-                           sidebar_enhancements_favi_buffer[local_gc_code] = ' <span class="favi_score_percent">('+score+'%)';
-                       }
-                    });
+                    // Build buffer for the enhancement block.
+                    sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
 
                     // Get elevations.
                     if (settings_show_elevation_of_waypoints) {
                         var coords_for_elevation = toDec(coords);
+                        var locations = [];
                         locations.push(coords_for_elevation[0]+","+coords_for_elevation[1]);
-                        if (locations && locations.length == 1) getElevations(0,locations);
+                        // Pass through a special field such as gc_code, until the elevation is determined.
+                        // The steps here in code are marked with "Elevation pass through field step (1 to 4)."
+                        if (locations && locations.length == 1) getElevations(0, locations, local_gc_code); // Elevation pass through field step 1.
                     }
 
-                    sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
+                    // Get favorite score.
+                    getFavoriteScore(local_gc_code, function(score) {
+                        if (sidebar_enhancements_buffer[local_gc_code] && $(sidebar_enhancements_buffer[local_gc_code]).find('.favi_points')[0]) {
+                            $(sidebar_enhancements_buffer[local_gc_code]).find('.favi_points')[0].innerHTML = score + '%';
+                        }
+                    });
+
+                    // Add county (Landkreis) to place.
+                    if (settings_maps_add_county_to_place) {
+                        try {
+                            let [lat, lon] = toDec(coords);
+                            insertCountyInformation(lat, lon, (placeWithCountry, placeWithoutCountry, placeComplet) => {
+                                if (sidebar_enhancements_buffer[local_gc_code] && $(sidebar_enhancements_buffer[local_gc_code]).find('.Place')[0]) {
+                                    $(sidebar_enhancements_buffer[local_gc_code]).find('.Place')[0].innerHTML = (settings_show_country_in_place ? placeWithCountry : placeWithoutCountry);
+                                    $(sidebar_enhancements_buffer[local_gc_code]).find('.Place')[0].title = placeComplet;
+                                }
+                            });
+                        } catch(e) {gclh_error("Add county (Landkreis) to place",e);}
+                    }
 
                     // Get count and names of own bookmarklists.
                     if ($('.cache-preview-action-menu ul li.add-to-list')[0]) {
@@ -11597,33 +11677,13 @@ var mainGC = function() {
                         if (matchDate != null) {
                             var date = new Date(matchDate[1], matchDate[2]-1, matchDate[3]);
                             if (date != "Invalid Date") {
-                                sidebar_enhancements_date_buffer[new_gc_code] = `<span class="gclh_weekday">&nbsp;(${date.getWeekday()})</span>`;
-                                let root = $('.gclhOwner') || $('.geocache-placed-date');
-                                $(root).append(sidebar_enhancements_date_buffer[new_gc_code]);
+                                sidebar_enhancements_weekday_buffer[new_gc_code] = `<span class="gclh_weekday">(${date.getWeekday()})</span>`;
+                                if ($('.gclhOwner')[0]) $('.gclhOwner').after(sidebar_enhancements_weekday_buffer[new_gc_code]);
+                                else if ($('.geocache-placed-date span[data-testid="placed-on-value"]')[0]) $('.geocache-placed-date span[data-testid="placed-on-value"]').after(sidebar_enhancements_weekday_buffer[new_gc_code]);
                             }
                         }
                     }
                 });
-            }
-            // Get favorite score.
-            function getFavScoreSearchmapSidebarEnhancements(anker_element, userToken, gccode) {
-               $.ajax({
-                   type: "POST",
-                   cache: false,
-                   url: '/datastore/favorites.svc/score?u=' + userToken,
-                   success: function (scoreResult) {
-                       var score = 0;
-                       if (scoreResult) score = scoreResult;
-                       if (score > 100) score = 100;
-                       if ($(anker_element)[0]) {
-                           $('.favi_score_percent').each(function(){
-                               removeElement(this);
-                           });
-                           $(anker_element)[0].innerHTML = $(anker_element)[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
-                           sidebar_enhancements_favi_buffer[gccode] = ' <span class="favi_score_percent">('+score+'%)';
-                       }
-                   }
-               });
             }
 
             // Hide sidebar.
@@ -11631,37 +11691,6 @@ var mainGC = function() {
                 waitForElementThenRun('button[data-testid="sidebar-toggle"]', () => {
                     document.querySelector('button[data-testid="sidebar-toggle"]').click();
                 }, 20000);
-            }
-
-            // Improve add to list pop up.
-//xxx deaktiviert
-            function improveAddtolistPopup() {
-                function checkAddtolistPopup(waitCount, popoverFound) {
-                    if ($('.Popover')[0]) popoverFound = true;
-                    if (popoverFound) {
-                        if (!$('.Popover')[0]) return;
-                        else {
-                            setFocusToField(0, '.add-to-list-view .create-new-list-textfield');
-                            if ($('.Popover .create-new-list-form')[0] && !$('.Popover .create-new-list-form').hasClass('gclh_set_style')) {
-                                $('.Popover .create-new-list-form')[0].setAttribute('style', 'height: 40.8px !important;');
-                                $('.Popover .create-new-list-form').addClass('gclh_set_style')
-                            }
-                            if ($('.Popover .create-new-list-submit')[0] && !$('.Popover .create-new-list-submit').hasClass('gclh_set_style')) {
-                                $('.Popover .create-new-list-submit')[0].setAttribute('style', 'min-width: 40px !important;');
-                                $('.Popover .create-new-list-submit').addClass('gclh_set_style')
-                            }
-                            if ($('.Popover .add-to-list-view')[0] && $('.Popover .existing-lists')[0] && (!$('.Popover .add-to-list-view').hasClass('gclh_set_style') || !$('.Popover .existing-lists').hasClass('gclh_set_style'))) {
-                                $('.Popover .add-to-list-view')[0].setAttribute('style', 'height: unset !important;');
-                                $('.Popover .add-to-list-view').addClass('gclh_set_style')
-                                var height = ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height));
-                                $('.Popover .existing-lists')[0].setAttribute('style', 'max-height: ' + height + 'px !important;');
-                                $('.Popover .existing-lists').addClass('gclh_set_style')
-                            }
-                            setTimeout(function(){checkAddtolistPopup(waitCount, popoverFound);}, 100);
-                        }
-                    } else {waitCount++; if (waitCount <= 20) setTimeout(function(){checkAddtolistPopup(waitCount, popoverFound);}, 100);};
-                }
-                if (settings_searchmap_improve_add_to_list) checkAddtolistPopup(0, false);
             }
 
             // Create Save as PQ Button.
@@ -11698,35 +11727,41 @@ var mainGC = function() {
             // Hide Header.
             let runHideHeader = false;
             function toggelHeader() {
-                let newPx = $('.app-main').css('top') == '80px' ? 0 : '80px';
-                $('.app-main').css('top', newPx);
+                let newPx = $('#map-wrapper').css('top') == '80px' ? '0px' : '80px';
+                document.querySelector('#map-wrapper').style.setProperty('top', newPx, 'important');
                 $('.hideHeaderLink .gclh_toggle-handle').toggleClass('on');
                 $('#ctl00_gcNavigation').toggle();
-                window.dispatchEvent(new Event('resize'));
+                document.querySelector('#map-wrapper').style.setProperty('height', 'calc(100dvh - ' + newPx + ')', 'important');
             }
-//xxx deaktiviert
             function addHideHeaderButton() {
-                if ($('.geocache-action-bar.sidebar-control')[0] && !$('#gclh_hideHeader')[0]) {
+                if ($('[data-testid="sidebar-header-container"]')[0] && $('#gclh_action_bar')[0] && !$('#gclh_hideHeader')[0]) {
                     let html = '<div id="gclh_hideHeader" class="hideHeaderLink toggle-filter"><span class="label">Hide header </span><div class="gclh_toggle-handle"></div></div>';
                     $('#gclh_action_bar').append(html);
                     $('.hideHeaderLink .gclh_toggle-handle')[0].onclick = function() {toggelHeader();};
-                    if ($('.app-main').css('top') == '0px') {
+                    if ($('#map-wrapper').css('top') == '0px') {
                         $('.hideHeaderLink .gclh_toggle-handle').addClass('on');
                     }
                 }
             }
 
             // Root for "Save as PQ" and "Hide Header".
-//xxx deaktiviert
             function geocacheActionBar() {
+                // The action bar with Hide header button and Save as PQ button should only be displayed when dealing with lists such as
+                // the list of caches or the list of bookmark lists. This can be identified by the sorting option for the list.
+                if (!$('#search-map-sort-toggle')[0]) {
+                    $('.gclh_action_bar').remove();
+                    return;
+                }
                 if ((settings_searchmap_show_btn_save_as_pq || settings_map_show_btn_hide_header)) {
                     if (!$('#gclh_action_bar')[0]) {
-                        $('.geocache-action-bar.sidebar-control').after('<div id="gclh_action_bar" class="geocache-action-bar"></div>');
+                        $('[data-testid="sidebar-header-container"]').append('<hr class="gclh_action_bar" style="margin: -5px;opacity: 0.2">');
+                        $('[data-testid="sidebar-header-container"]').append('<div id="gclh_action_bar" class="gclh_action_bar"></div>');
                     }
                     if (settings_map_show_btn_hide_header) addHideHeaderButton();
-                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
+//xxx deaktiviert
+//                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
                     // Hide header by default.
-                    if (!runHideHeader && settings_hide_map_header && settings_map_show_btn_hide_header && $('.geocache-action-bar.sidebar-control')[0]) {
+                    if (!runHideHeader && settings_hide_map_header && settings_map_show_btn_hide_header && $('[data-testid="sidebar-header-container"]')[0]) {
                         runHideHeader = true;
                         toggelHeader();
                     }
@@ -11736,19 +11771,19 @@ var mainGC = function() {
             // Processing all steps.
             function processAllSearchMap() {
 //xxx deaktiviert
-//                scrollInCacheList();
-//                improveAddtolistPopup();
+                scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
 //                compactLayout();
-//                addVipVupMailToOwner(); // Has to be run after compactLayout.
+                addVipVupMailToOwner(); // Has to be run after compactLayout.
 //                setStrikeDisabledInList();
-//                showHint();
+                showHint();
+                scrollUpInDescription();
 //                collapseActivity();
-//                showSearchmapSidebarEnhancements();
+                showSearchmapSidebarEnhancements();
                 buildMapControlButtons();
-//                geocacheActionBar(); // "Save as PQ" and "Hide Header".
-                // Prepare keydown F2 and Ctrl+s in filter screen.
-//                prepareKeydownF2InFilterScreen();
+                geocacheActionBar(); // "Save as PQ" and "Hide Header".
+                // Prepare keydown F2 filter screen.
+                prepareKeydownF2InFilterScreen();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -11796,9 +11831,11 @@ var mainGC = function() {
             if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
                 css += '#clear-map-control, .loading-container {display: none;}';
             }
+*/
             // Set link to owner.
-            css += '.geocache-owner-name a:hover, .gclhOwner a:hover {color: #02874d !important;}';
-            css += '.geocache-owner-name a, .gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
+            css += '.gclhOwner a:hover {color: #02874d !important;}';
+            css += '.gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
+/*
             if (settings_searchmap_compact_layout) {
                 css += '#gc-search-typeahead-form, #gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, #search-term-input {height: 34px !important;}';
                 css += '.search-bar.v3 .gc-filter-toggle {height: 35.5px !important;}';
@@ -11954,10 +11991,10 @@ var mainGC = function() {
             css += '.cache-preview-activities .opener {height: 22px; width: 22px; transition: all .3s ease; transform-origin: 50% 50%;}';
             css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
             css += '.cache-preview-activities.isHide > ul {display: none;}';
+*/
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
-*/
             // Build map control buttons.
             css += '.map-control {margin-bottom: 10px !important;}';
             css += '.map-control svg {vertical-align: middle;}';
@@ -11965,7 +12002,6 @@ var mainGC = function() {
             if (settings_relocate_other_map_buttons) css += '[data-testid="gc-button-link"] {display: none !important;}';
             else css += '#gclh_layers {top: 52px;}';
 //xxx deaktiviert
-/*
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -11978,11 +12014,15 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements .gccode {display: none;}';
             css += '.premium_only img, .icon-sm {width: 14px; height: 14px; opacity: 0.8;}';
             css += '#gclh_third_line img, #gclh_third_line svg {vertical-align: middle !important;}';
-            css += '#gclh_latest_logs, #gclh_third_line {position: relative;}';
-            css += 'div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}';
-            css += 'div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 100%; margin-top: -5px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += '#gclh_third_line {position: relative; margin-left: 5px; margin-right: 5px;}';
+            css += '#gclh_latest_logs {position: relative;}';
+            css += 'div.gclh_latest_log span, span.gclh_cache_note span {visibility: hidden; display: block; position: absolute; left: 9px; width: 95%; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}';
+            css += 'div.gclh_latest_log.mouseover:hover span {visibility: visible; font-size: 13px; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000; margin-top: -5px; }';
+            css += 'span.gclh_cache_note.mouseover:hover span {visibility: visible; font-size: 13px; top: 100%; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}';
+            css += 'div.gclh_latest_log.mouseover:hover span img {opacity: 1;}';
             css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
-            css += 'div.gclh_latest_log:hover span img {opacity: 1;}';
+            css += 'div.gclh_latest_log span img {vertical-align: sub !important;}';
+            css += 'ul.LogTotals img {margin-top: -2px; margin-left: 1px !important;}';
             css += '#searchmap_sidebar_enhancements {color: #4a4a4a;}';
             css += '#searchmap_sidebar_enhancements span.title {color: #9b9b9b;}';
             css += '#searchmap_sidebar_enhancements #gclh_latest_logs span {color: #9b9b9b;}';
@@ -11992,10 +12032,11 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements .ctoc_link img {height: 14px;}';
             css += '#searchmap_sidebar_enhancements .gclh_link:hover {color: #02874d;}';
             css += '#searchmap_sidebar_enhancements a {color: #4a4a4a; text-decoration: none;}';
-            css += '#searchmap_sidebar_enhancements img {vertical-align: bottom; height: 14px;}';
+            css += '#searchmap_sidebar_enhancements img {height: 14px; width: 14px; padding-left: 0px; margin-left: 2px;}';
+            css += "#searchmap_sidebar_enhancements ul {display: inline-block; padding-left: 0px; margin: 0px;}";
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
-            css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default;}'
+            css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default; padding: 0px !important;}'
             css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
             css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 1px !important; height: 40px !important;}';
             css += '.geocache-action-bar {padding: 5px 12px !important;}';
@@ -12009,10 +12050,12 @@ var mainGC = function() {
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
             // Add to List pop up.
             if (settings_searchmap_improve_add_to_list) {
-                css += '.existing-list .gc-button:focus {box-shadow: none;}';
-                css += '.existing-list .gc-button {height: 22px;}';
+                css += '#popover-portal-root .create-new-list-form {height: 41px;}';
+                css += '#popover-portal-root .create-new-list-submit {min-width: 40px;}';
+                css += '#popover-portal-root .existing-lists {max-height: ' + ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height)) + 'px;}';
+                css += '#popover-portal-root .existing-lists li {padding-top: 2px !important; padding-bottom: 2px !important;}';
+                css += '#popover-portal-root .existing-lists button, #popover-portal-root .existing-lists .status-icon {margin: 0px; padding: 0px !important; height: 18px;  line-height: 18px !important;}';
             }
-*/
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
@@ -12060,6 +12103,8 @@ var mainGC = function() {
                     }
                     // Improve clickability on list names of add to list pop up.
                     css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
+                    // Enable Linklist, config and sync scrolling on Browse Map.
+                    css += "body {overflow: visible;}";
                     appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
@@ -12639,8 +12684,11 @@ var mainGC = function() {
             css += ".gclh_ctoc img {width: 14px; padding: 3px 1px 0 0; float: right;}";
             css += "div.gclh_latest_log, span.gclh_cache_note {margin-top:5px;}";
             css += "div.gclh_latest_log:hover, span.gclh_cache_note:hover {position: relative;}";
-            css += "div.gclh_latest_log span, span.gclh_cache_note span {display: none; position: absolute; left: 0px; width: 500px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}";
-            css += "div.gclh_latest_log:hover span, span.gclh_cache_note:hover span {font-size: 13px; display: block; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += "div.gclh_latest_log span, span.gclh_cache_note span {visibility: hidden; display: block; position: absolute; left: 0px; width: 400px; padding: 5px; text-decoration:none; text-align:left; vertical-align:top; color: #000000; word-break: break-word;}";
+            css += "div.gclh_latest_log.mouseover:hover span, span.gclh_cache_note.mouseover:hover span {visibility: visible; font-size: 13px; top: 16px; border: 1px solid #8c9e65; background-color:#dfe1d2; z-index:10000;}";
+            css += 'div.gclh_latest_log.mouseover:hover span img {opacity: 1;}';
+            css += 'div.gclh_latest_log:hover img, span.gclh_cache_note:hover svg {opacity: 0.5;}';
+
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
             css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
@@ -12676,8 +12724,6 @@ var mainGC = function() {
                         var indexMapItems = indexMapItems[1] -1;
 
                         $.get('https://www.geocaching.com/geocache/'+gccode, null, function(text){
-                            // We need to retriev the gc_code from the loaded page, because in the
-                            // meantime the global variable gc_code could (and will be ;-)) changed.
                             var local_gc_code = $(text).find('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode').html();
 
                             var premium_only = false;
@@ -12740,16 +12786,14 @@ var mainGC = function() {
                                 all_logs += '</ul>';
                             }
 
-                            // Get the number of trackables in the cache.
+                            // Get number of trackables in cache.
                             var trachables = 0;
-                            $(text).find('.CacheDetailNavigationWidget').each(function(){
-                                tb_text = $(this).html();
-                                if (tb_text.indexOf('ctl00_ContentBody_uxTravelBugList_uxInventoryLabel') !== -1) {
-                                    // There are two Container with .CacheDetailNavigationWidget so we are only processing the
-                                    // one that contains the TB informations.
-                                    trachables = (tb_text.match(/<li>/g)||[]).length;
-                                }
-                            });
+                            if ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0]) {
+                                trachables = $(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0].innerHTML.replace(/\D/g, '');
+                            }
+                            if ((trachables == 0 || trachables == '') && $(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel')[0]) {
+                                trachables = ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget')[0].innerHTML.match(/<li>/g)||[]).length;
+                            }
 
                             // Get the number of favorite points.
                             var fav_points = $(text).find('.favorite-value').html();
@@ -12773,16 +12817,14 @@ var mainGC = function() {
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
-                            if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span> | ';
-                            else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
-                            if (settings_show_elevation_of_waypoints) {
-                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
-                            }
-                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+
+                            // Premium icon.
                             if (premium_only) {
-                                new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
+                                new_text += '<span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
-                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
+
+                            // Number of trackables.
+                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span> | ';
 
                             // Get link to image gallery and image count.
                             var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
@@ -12790,20 +12832,33 @@ var mainGC = function() {
                                 var galleryLink = a[0].href;
                                 var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                                 if (galleryLink && imgCount && imgCount[2]) {
-                                    if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
-                                    else new_text += ' | <span title="View Image Gallery"><a href="' + galleryLink + '">';
-                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span>';
+                                    if (imgCount[2] == "0") new_text += '<span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
+                                    else new_text += '<span title="View Image Gallery"><a href="' + galleryLink + '">';
+                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span> | ';
                                 }
                             }
 
                             // Get personal cache note.
                             if ($(text).find('#srOnlyCacheNote')[0]) {
                                 if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
-                                    new_text += ' | <span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span>';
+                                    new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span> | ';
                                 } else {
-                                    new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span style="left: -250px; width: 300px;">' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span>';
+                                    new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span> | ';
                                 }
                             }
+
+                            // Favorite percentage.
+                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+
+                            // Placeholder for elevation.
+                            if (settings_show_elevation_of_waypoints) {
+                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
+                            }
+
+                            // Place and placeholder for county.
+                            if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span>';
+                            else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span>';
+
                             new_text += '</div>';
 
                             // Get coordinates.
@@ -12825,6 +12880,22 @@ var mainGC = function() {
                             }
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
+                            // Open latest logs and personal cache note slightly late so it doesn't flutter.
+                            function doNotFlutter(pos) {
+                                $(pos).each(function() {
+                                    this.addEventListener('mouseover', function() {
+                                        var a = this;
+                                        setTimeout(function() {$(a).addClass('mouseover');}, 250);
+                                    })
+                                    this.addEventListener('mouseleave', function() {
+                                        $(this).removeClass('mouseover');
+                                        var a = this;
+                                        setTimeout(function() {$(a).removeClass('mouseover');}, 250);
+                                    })
+                                });
+                            }
+                            doNotFlutter('.gclh_latest_log');
+                            doNotFlutter('.gclh_cache_note');
 
                             // Get count and names of own bookmarklists.
                             if ($('#popup_additional_info_' + local_gc_code).closest('.map-item')[0]) {
@@ -13166,7 +13237,7 @@ var mainGC = function() {
         }
     }
 
-// Improve Finds for Each Day of the Year on own statistics page
+// Improve Finds for Each Day of the Year on own statistics page.
     if (isOwnStatisticsPage()) {
         try {
             // Mark current date
@@ -13175,58 +13246,129 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Finds for Each Day of the Year",e);}
     }
 
-// Improve own statistic map page with links to caches for every country.
-    if (settings_map_links_statistic && isOwnStatisticsPage() ) {
+// Improve own statistic map page with links to caches for every country and state.
+    if (settings_map_links_statistic && isOwnStatisticsPage()) {
         try {
-            var countriesList = $('#stats_tabs-maps .StatisticsWrapper');
-            for (var j = 0; j < countriesList.length; j++) {
-                var indecator = $(countriesList[j]).find('#StatsFlagLists p span');
-                var tableItems = $(countriesList[j]).find('#StatsFlagLists table.Table tr');
-                for (var i = 0; i < tableItems.length; i++) {
-                    var name = tableItems[i].children[0].childNodes[1].textContent;
-                    if (name) {
-                        var parameter = undefined;
-                        var item = undefined;
-                        var countries = $.grep(country_id, function(e){return e.n == name;});
-                        var states = $.grep(states_id, function(e){return e.n == name;});
-                        // ambiguous matches of state (or country) name are not handled. Known cases:
-                        // Distrito Federal - Mexiko: Distrito Federal (state) / Brazil: Distrito Federal (state)
-                        // Limburg    - Belgium: Limburg (state) / Netherlands: Limburg (state)
-                        if        (  (countries && countries[0]) && !(states && states[0]) ) {
-                            parameter = "c";
-                            item = countries;
-                        } else if ( !(countries && countries[0]) &&  (states && states[0]) ) {
-                            parameter = "r";
-                            item = states;
-                        // case: country/state
-                        } else if (  (countries && countries[0]) &&  (states && states[0]) ) {
-                            // Known case: Georgia - United States/Georgia (state) and Georgia (country)
-                            if (indecator[0].getAttribute("id") == "ctl00_ContentBody_ProfilePanel1_USMapControl1_uxTotalCount") {
-                                parameter = "r";
-                                item = states;
-                            } else {
-                                // Main rule: country first.
-                                // Known case: Luxembourg - Luxembourg (country) / Belgium: Luxembourg (state).
-                                parameter = "c";
-                                item = countries;
+            function buildLinkForItem(para, item, side) {
+                var a = document.createElement("a");
+                a.setAttribute("title", "Show caches you have found in " + item["n"]);
+                a.setAttribute("href", "/play/search?" + para + item["id"] + "&hf=0&sa=1&f=1&sort=FoundDate&asc=false#myListsLink");
+                a.setAttribute("style", "color: #3d76c5;");
+                a.innerHTML = side.innerHTML;
+                side.innerHTML = "";
+                side.appendChild(a);
+            }
+            var maps = $('#stats_tabs-maps .StatisticsWrapper');
+            for (var j = 0; j < maps.length; j++) {
+                if ($(maps[j]).find('.ProfileStats > div')[0].id && !$(maps[j]).find('.ProfileStats > div')[0].id == '') {
+                    var mapName = $(maps[j]).find('.ProfileStats > div')[0].id;
+                    var items = $(maps[j]).find('table.Table tr');
+                    for (var i = 0; i < items.length; i++) {
+                        if (items[i].children[0] && items[i].children[0].childNodes[1] && !items[i].children[0].childNodes[1].textContent == '') {
+                            var itemName = items[i].children[0].childNodes[1].textContent;
+                            if (itemName) {
+                                // Maps from US states and Canadian provinces and territories. All other maps are country maps.
+                                if (mapName.match(/(UnitedStatesOfAmerica_Map|Canada_Map)/)) {
+                                    var para = 'ot=region&oid=';
+                                    var state = $.grep(states_id, function(e){return e.n == itemName;});
+                                    if (state && state[0]) {
+                                        buildLinkForItem(para, state[0], items[i].children[0]);
+                                    }
+                                } else {
+                                    var para = 'ot=country&c=';
+                                    var country = $.grep(country_id, function(e){return e.n == itemName;});
+                                    if (country && country[0]) {
+                                        buildLinkForItem(para, country[0], items[i].children[0]);
+                                    }
+                                }
                             }
-                        } else {
-                            gclh_log("Improve own statistic map page: country and state name not found");
-                            continue;
-                        }
-                        if (item && item[0]) {
-                            var a = document.createElement("a");
-                            a.setAttribute("title", "Show caches you have found in " + item[0]["n"]);
-                            a.setAttribute("href", "/play/search?ot=country&hf=0&sa=1&"+parameter+"=" + item[0]["id"] + "&f=1&sort=FoundDate&asc=false#myListsLink");
-                            a.setAttribute("style", "color: #3d76c5;");
-                            a.innerHTML = tableItems[i].children[0].innerHTML;
-                            tableItems[i].children[0].innerHTML = "";
-                            tableItems[i].children[0].appendChild(a);
                         }
                     }
                 }
             }
         } catch(e) {gclh_error("Improve own statistic map page",e);}
+    }
+
+// Improve statistic map page with name of country and state in maps and make it clickable in own maps.
+    if ((document.location.href.match(/\.com\/my\/statistics\.aspx/)) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
+        try {
+            // Expand tooltip of map to make room for the name of country or state.
+            function expandTooltip(bCalc) {
+                var path = $('#stats_tabs-maps g.google-visualization-tooltip path').attr('d').match(/^M(.*?),(.*?)A(.*?)L(.*?),(.*?)A(.*?)L(.*?),(.*?)A/);
+                if (path && path[1] && path[2] && path[7]) {
+                    var x = parseInt(path[1]);
+                    var y = parseInt(path[2]);
+                    var bMin = path[7] - path[1];
+                    var b = bCalc < bMin ? bMin : bCalc;
+                    d = 'M'+x+','+y+' L'+x+','+(y-45)+' L'+(x+b)+','+(y-45)+' L'+(x+b)+','+y+' Z';
+                    $('#stats_tabs-maps g.google-visualization-tooltip path').attr('d',d);
+                }
+            }
+            // Calculate width of tooltip of map for the expanded content. (I couldn't determine the width directly in the tooltip of map.)
+            function calcwidth(itemShortName, itemName) {
+                if (!$('#stats_tabs-maps')[0]) return;
+                if (!$('#calcWidth')[0]) $('#stats_tabs-maps').append('<span id="calcWidth" style="font-family: Arial; font-size: 13px; visibility: hidden; height: 0px; display: block;"></span>');
+                $('#calcWidth')[0].innerHTML = '<span style="font-weight: bold; visibility: hidden; height: 0px; display: inline-block">' + itemShortName + '</span><span style="font-weight: normal; visibility: hidden; height: 0px; display: inline-block"> ' + itemName + '</span>';
+                return $('#calcWidth span')[0].offsetWidth + $('#calcWidth span')[1].offsetWidth + 18;
+            }
+            // Get shortname of country or state from tooltip of map and get the name and link for country or state.
+            function getDataFromTooltip() {
+                var itemName = undefined; var itemLink = undefined; var width = undefined;
+                if ($('#stats_tabs-maps g.google-visualization-tooltip text')[0]) {
+                    var itemShortName = $('#stats_tabs-maps g.google-visualization-tooltip text')[0].childNodes[0].data.trim();
+                    var mapElem = $('#stats_tabs-maps g.google-visualization-tooltip text').closest('.StatisticsWrapper')[0];
+                    if (itemShortName && mapElem) {
+                        var mapName = $(mapElem).find('.ProfileStats > div')[0].id;
+                        // Maps from US states and Canadian provinces and territories. All other maps are country maps.
+                        if (mapName.match(/(UnitedStatesOfAmerica_Map|Canada_Map)/)) {
+                            var state = $.grep(states_short, function(e){return e.sn == itemShortName;});
+                            if (state && state[0]) {
+                                var itemName = state[0]['n'];
+                                var width = calcwidth(itemShortName, itemName);
+                                var links = $(mapElem).find('table.Table a');
+                                for (var i = 0; i < links.length; i++) {
+                                    if (links[i].innerText == itemName) var itemLink = links[i].href;
+                                }
+                            }
+                        } else {
+                            var f = 'table.Table img[src="/images/icons/flags/png/' + itemShortName.toLowerCase() + '.png"]';
+                            if ($(mapElem).find(f)[0] && $(mapElem).find(f).parent()[0]) {
+                                var itemName = $(mapElem).find(f).parent()[0].innerText;
+                                var width = calcwidth(itemShortName, itemName);
+                                var itemLink = $(mapElem).find(f).parent()[0].href;
+                            }
+                        }
+                    }
+                }
+                return [itemName, itemLink, width];
+            }
+            if (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage())) {
+                const config = { childList: true, subtree: true };
+                const tooltipObserver = new MutationObserver(function(_, observer) {
+                    observer.disconnect();
+                    // Set name of country or state in tooltip of map.
+                    if (settings_map_statistic_set_name_in_map) {
+                        var [name1, link1, width1] = getDataFromTooltip();
+                        if (name1 && width1 && !$('#stats_tabs-maps g.google-visualization-tooltip text tspan')[0]) {
+                            expandTooltip(width1);
+                            $('#stats_tabs-maps g.google-visualization-tooltip text')[0].innerHTML += '<tspan font-weight="normal" font-size="13px"> ' + name1 + '</tspan>';
+                        }
+                    }
+                    // Set click event for country or state in tooltip of map for own maps.
+                    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+                        if ($('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0]) {
+                            $('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0].addEventListener('click', function() {
+                                var [name2, link2] = getDataFromTooltip();
+                                if (link2) window.open(link2, '_blank');
+                            }, false);
+                            $('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper').addClass('gclh_click');
+                        }
+                    }
+                    observer.observe($('#stats_tabs-maps')[0], config);
+                });
+                tooltipObserver.observe($('#stats_tabs-maps')[0], config);
+            }
+        } catch(e) {gclh_error("Improve statistic map page in the maps",e);}
     }
 
 // Improve statistic map page with total and percentage.
@@ -15137,8 +15279,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/7W1P/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iP9"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/AbXg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iQ3"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15986,23 +16128,30 @@ var mainGC = function() {
         return tx;
     }
 
-// Prepare keydown F2 and Ctrl+s in filter screens of Search Map and search page.
+// Prepare keydown F2 in filter screens of Search Map and search page.
     function prepareKeydownF2InFilterScreen() {
-        if (settings_submit_log_button && $('button.gc-filter-toggle')[0] && !$('.set_clickevent_to_filter_button')[0]) {
-            $('button.gc-filter-toggle').addClass('set_clickevent_to_filter_button');
+        if (settings_submit_log_button && $('button.gc-filter-toggle')[0] && !$('.clickevent_to_filter_button_set')[0]) {
+            $('button.gc-filter-toggle').addClass('clickevent_to_filter_button_set');
             $('button.gc-filter-toggle')[0].addEventListener('click', function() {
                 function waitForFilterScreen(waitCount) {
-                    if ($('.gc-button-primary')[0]) {
-                        function keydownF2InFilterScreen(e) {
-                            if (e.keyCode == 113 && noSpecialKey(e)) {
-                                $('.gc-button-primary').click();
+                    if ($('.gc-search-filter-header')[0] && $('button[data-event-label="Filters - Apply"]')[0]) {
+                        $('button[data-event-label="Filters - Apply"]').each(function() {
+                            if (!$(this)[0].innerHTML.match(/(F2)/)) {
+                                $(this)[0].innerHTML += " (F2)";
                             }
-                            if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
-                                e.preventDefault();
-                                $('.gc-button-primary').click();
+                        });
+                        if ($('.gc-search-filter-header:not(.keydownF2_to_window_set)')) {
+                            function keydownF2InFilterScreen(e) {
+                                // Remove click event. Otherwise it can be executed multiple times which can lead to an Error (Error: Abort fetching component).
+                                window.removeEventListener('keydown', keydownF2InFilterScreen, true);
+                                $('.gc-search-filter-header').removeClass('keydownF2_to_window_set');
+                                if (e.keyCode == 113 && noSpecialKey(e)) {
+                                    $('button[data-event-label="Filters - Apply"]:first').click();
+                                }
                             }
+                            $('.gc-search-filter-header').addClass('keydownF2_to_window_set');
+                            window.addEventListener('keydown', keydownF2InFilterScreen, true);
                         }
-                        window.addEventListener('keydown', keydownF2InFilterScreen, true);
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForFilterScreen(waitCount);}, 50);}
                 }
                 waitForFilterScreen(0);
@@ -16283,7 +16432,7 @@ var mainGC = function() {
                             }
                             return false;
                         });
-                        // Prepare keydown F2 and Ctrl+s in filter screen of search page.
+                        // Prepare keydown F2 in filter screen of search page.
                         prepareKeydownF2InFilterScreen();
                     } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForSearchForm(waitCount);}, 100);}
                 }
@@ -16471,7 +16620,7 @@ var mainGC = function() {
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
-            html += thanksLineBuild("Herr Ma",              "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("marGEOcus",            "",                         false, false, true,  true,  false); // Changed from "Herr Ma".
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
             html += thanksLineBuild("ChristianGK",          "ChristianGK-GC",           false, false, true,  true,  false);
             html += thanksLineBuild("DrakMrak",             "",                         false, false, true,  false, false);
@@ -16486,8 +16635,8 @@ var mainGC = function() {
             html += thanksLineBuild("ColleIsarco",          "",                         false, false, true,  true,  false);
             html += thanksLineBuild("Pzi",                  "PetziAt",                  false, false, true,  false, false);
             html += thanksLineBuild("",                     "sdennler",                 false, false, true,  false, false);
-            html += thanksLineBuild("bruzie",               "",                         false, false, true,  false,  false);
-            html += thanksLineBuild("ztNFny",               "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("bruzie",               "",                         false, false, true,  false, false);
+            html += thanksLineBuild("",                     "ztNFny",                   false, false, true,  true,  false); // GC user changed from ztNFny. Could not find new name.
             html += thanksLineBuild("FoxFil",               "",                         false, false, true,  true,  true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
@@ -16504,6 +16653,7 @@ var mainGC = function() {
             html += thanksLineBuild("dennistreysa",         "",                         false, false, false, true,  false);
             html += thanksLineBuild("Die C-SAU Bande",      "UJstr",                    false, false, false, true,  false);
             html += thanksLineBuild("Donnerknispel",        "",                         false, false, false, true,  false);
+            html += thanksLineBuild("Fassenachterin",       "",                         false, false, false, true,  false);
             html += thanksLineBuild("",                     "gboye",                    false, false, false, true,  false);
             html += thanksLineBuild("",                     "jet2mike",                 false, false, false, true,  false);
             html += thanksLineBuild("Jipem",                "",                         false, false, false, true,  false);
@@ -16524,7 +16674,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "18.02.2025";
+            var thanksLastUpdate = "11.03.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16956,8 +17106,11 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> hours" + show_help("Choose no hours, if you want to load/reload only manual.") + "<br>";
-            html += checkboxy('settings_map_links_statistic', 'Show links to found caches for every country on statistic map') + show_help("With this option, you can improve your own statistic maps page for you with links to caches you have found for every country.") + "<br>";
-            html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country on statistic map') + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_map_statistic_set_name_in_map', 'Show name of country and state on maps') + show_help("Show additional to the short country and state names also the full country and state names on statistic maps when hover with mouse.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += checkboxy('settings_map_links_statistic', 'Set links to found caches for each country and state on maps') + show_help("You can improve the maps on your own statistic maps page with links to caches you have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories.") + "<br>";
+            html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country and state on maps') + "<br>";
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","db")+"<label for='lnk_gclh_config_db'>Dashboard</label></h4>";
@@ -17521,8 +17674,12 @@ var mainGC = function() {
             html += "&nbsp;" + "<input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInSaveButton() + "' id='btn_save'> <input class='gclh_form' type='button' title='Save the configuration data and\nupload it to your own DropBox' style='height: 25px;' value='Save & Upload' id='btn_saveAndUpload'> <input class='gclh_form' type='button' style='height: 25px;' value='" + setValueInCloseButton() + "' id='btn_close2'>";
             html += "<br><div align='right' class='gclh_small' style='float: right; padding-top: 5px;'>License: <a href='"+urlDocu+"license.md#readme' target='_blank' title='GNU General Public License Version 2'>GPLv2</a> | Warranty: <a href='"+urlDocu+"warranty.md#readme' target='_blank' title='GC little helper II comes with ABSOLUTELY NO WARRANTY'>NO</a></div><br>";
             var end = (new Date()).getFullYear();
-            html += "<div align='right' class='gclh_small' style='float: right; font-size: 9px;'>Copyright © 2010-2016 <a href='/profile/?u=Torsten-' target='_blank' title='GC profile of Torsten-'>Torsten Amshove</a>, 2016-"+end+" <a href='/profile/?u=2Abendsegler' target='_blank' title='GC profile of 2Abendsegler'>2Abendsegler</a>, 2017-2021 <a href='/profile/?u=Ruko2010' target='_blank' title='GC profile of Ruko2010'>Ruko2010</a>, 2019-"+end+" <a href='/profile/?u=capoaira' target='_blank' title='GC profile of capoaira'>capoaira</a></div>";
-            html += "</div></div>";
+            html += '<div align="right" class="gclh_small" style="float: right; font-size: 9px;">Copyright ©';
+            html += ' 2016-'+end+' <a href="/profile/?u=2Abendsegler" target="_blank" title="GC profile of 2Abendsegler">2Abendsegler</a>,';
+            html += ' 2019-'+end+' <a href="/profile/?u=capoaira" target="_blank" title="GC profile of capoaira">capoaira</a>,';
+            html += ' 2017-2021 <a href="/profile/?u=Ruko2010" target="_blank" title="GC profile of Ruko2010">Ruko2010</a>,';
+            html += ' 2010-2016 <a href="/profile/?u=Torsten-" target="_blank" title="GC profile of Torsten-">Torsten Amshove</a>';
+            html += '</div></div></div>';
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
             // ---------------
@@ -18527,6 +18684,7 @@ var mainGC = function() {
                 'settings_compact_layout_nearest',
                 'settings_compact_layout_recviewed',
                 'settings_map_links_statistic',
+                'settings_map_statistic_set_name_in_map',
                 'settings_map_percentage_statistic',
                 'settings_improve_add_to_list',
                 'settings_show_flopps_link',
@@ -20010,9 +20168,8 @@ var mainGC = function() {
 
 // Is special processing allowed on the current page?
     function checkTaskAllowed(task, doAlert) {
-        if ((document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) ||
-            (task != "Find Player" &&  document.location.href.match(/(\.com\/map\/|\.com\/play\/map)/))) {
-            if (doAlert != false) alert("This GC little helper II functionality is not available at this page.\n\nPlease go to the \"Dashboard\" page, there is anyway all of these \nfunctionality available. ( www.geocaching.com/my )");
+        if (document.location.href.match(/^https?:\/\/(www\.wherigo|www\.waymarking|labs\.geocaching)\.com/) || isMemberInPmoCache()) {
+            if (doAlert != false) alert("This GC little helper II functionality is not available at this page. Please go to the \"Dashboard\" page, there is anyway all of these functionality available.");
             return false;
         }
         return true;
@@ -20452,25 +20609,35 @@ const insertCountyInformation = (lat, lon, func) => {
         let url1 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=en&format=json`;
         fetch(url1).then(res => {
             if (res.ok) return res.json();
-            else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org language en fails\nHTTP-Status-Code: ${res.status}`);
+            else {
+                console.error("GClh_ERROR (no header alert) - insertCountyInformation - " + `Request to nominatim.openstreetmap.org language en fails\nHTTP-Status-Code: ${res.status}\nResponse details:`);
+                console.log(res);
+            }
         }).then(data1 => {
-            var a1 = data1.address;
-            if (a1 && a1.country_code && a1.country_code.match(/(de|at)/) && a1.country) {
-                let url2 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=de&format=json`;
-                fetch(url2).then(res => {
-                    if (res.ok) return res.json();
-                    else gclh_error('insertCountyInformation', `Request to nominatim.openstreetmap.org language de fails\nHTTP-Status-Code: ${res.status}`);
-                }).then(data2 => {
-                    var a2 = data2.address;
-                    if (a2 && (a2.state || a2.city) && (a2.county || a2.city) && data2.display_name) {
-                        var county = a2.county ? a2.county : a2.city;
-                        var state = a2.state ? a2.state : a2.city;
-                        var placeWithCountry = county + ', ' + state + ', ' + a1.country;
-                        var placeWithoutCountry = county + ', ' + state;
-                        var placeComplete = data2.display_name;
-                        func(placeWithCountry, placeWithoutCountry, placeComplete);
-                    }
-                });
+            if (data1 && data1.address) {
+                var a1 = data1.address;
+                if (a1 && a1.country_code && a1.country_code.match(/(de|at)/) && a1.country) {
+                    let url2 = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&accept-language=de&format=json`;
+                    fetch(url2).then(res => {
+                        if (res.ok) return res.json();
+                        else {
+                            console.error("GClh_ERROR (no header alert) - insertCountyInformation - " + `Request to nominatim.openstreetmap.org language de fails\nHTTP-Status-Code: ${res.status}\nResponse details:`);
+                            console.log(res);
+                        }
+                    }).then(data2 => {
+                        if (data2 && data2.address) {
+                            var a2 = data2.address;
+                            if (a2 && (a2.state || a2.city) && (a2.county || a2.city) && data2.display_name) {
+                                var county = a2.county ? a2.county : a2.city;
+                                var state = a2.state ? a2.state : a2.city;
+                                var placeWithCountry = county + ', ' + state + ', ' + a1.country;
+                                var placeWithoutCountry = county + ', ' + state;
+                                var placeComplete = data2.display_name;
+                                func(placeWithCountry, placeWithoutCountry, placeComplete);
+                            }
+                        }
+                    });
+                }
             }
         });
     } catch (e) {gclh_error("insertCountyInformation", e);}
@@ -20601,8 +20768,8 @@ function gclh_error(modul, err) {
     if (settings_gclherror_alert) {
         if ($("#gclh-gurumeditation").length == 0) {
             $("body").before('<div id="gclh-gurumeditation"></div>');
-            $("#gclh-gurumeditation").append('<div style="border: 5px solid #ff0000;"></div>');
-            $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: x-large;">GC little helper II Error</p>');
+            $("#gclh-gurumeditation").append('<div></div>');
+            $("#gclh-gurumeditation > div").append('<p style="font-weight: bold; font-size: large; padding-top: 4px;">GC little helper II Error</p>');
             $("#gclh-gurumeditation > div").append('<div></div>');
             $("#gclh-gurumeditation > div").append('<p style="font-size: smaller;">For more information see the console. <a href="https://github.com/2Abendsegler/GClh/issues" target="_blank">Create a new issue / bug report at GitHub.</a></p>');
         }

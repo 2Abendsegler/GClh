@@ -1,6 +1,6 @@
 /* Make GC header invisible. */
-#gc-header, 
-#GCHeader, 
+#gc-header,
+#GCHeader,
 #gc-mobile-nav {
     display: none;
 }
@@ -435,7 +435,7 @@ gclh_nav .profile-panel ul::after {
 }
 .gclh_toggle-handle.on::after {
     border: 1px solid #02874d;
-    left: auto; 
+    left: auto;
     right: 0;
 }
 
@@ -608,20 +608,20 @@ table .markdown-output~tr.AlternatingRow td {
 #gclh_dd-caret-down path {
     stroke-width: 1 !important;
 }
-#gclh_dd, 
+#gclh_dd,
 .gclh_dd-menu {
     margin: 0;
     padding: 0 !important;
 }
-#gclh_dd a, 
-.gclh_dd-icon, 
-.gclh_dd-menu ul, 
-.gclh_dd-menu ul li, 
+#gclh_dd a,
+.gclh_dd-icon,
+.gclh_dd-menu ul,
+.gclh_dd-menu ul li,
 .gclh_dd-menu ul li a {
     margin: 0 !important;
     padding: 0 !important;
 }
-#gclh_dd, 
+#gclh_dd,
 #gclh_dd li {
     display: block !important;
     text-align: unset !important;
@@ -659,7 +659,7 @@ table .markdown-output~tr.AlternatingRow td {
 .gclh_dd-menu ul {
     list-style: none !important;
 }
-.gclh_dd-menu ul li.disabled, 
+.gclh_dd-menu ul li.disabled,
 .gclh_dd-menu ul li.disabled a {
     color: rgba(155, 155, 155, 0.5) !important;
     pointer-events: none !important;
@@ -688,6 +688,10 @@ table .markdown-output~tr.AlternatingRow td {
     z-index: 10000;
     border-radius: 30px;
     box-sizing: unset;
+}
+.settings_overlay h3,
+.settings_overlay h4 {
+    font-weight: bold;
 }
 .qtip {z-index: 9997 !important;} /* should be behind config */
 .gclh_headline {
@@ -739,12 +743,16 @@ table .markdown-output~tr.AlternatingRow td {
     font-size: 14px;
     line-height: 1.5;
 }
-.gclh_content input, 
-.gclh_content input:focus, 
-.gclh_content input:active, 
-.gclh_content textarea, 
-.gclh_content select, 
-.gclh_content button, 
+.gclh_content h3,
+.gclh_content h4 {
+    font-weight: bold;
+}
+.gclh_content input,
+.gclh_content input:focus,
+.gclh_content input:active,
+.gclh_content textarea,
+.gclh_content select,
+.gclh_content button,
 .gclh_content pre {
     display: inline;
     width: unset;
@@ -754,27 +762,27 @@ table .markdown-output~tr.AlternatingRow td {
     background-image: none;
     margin: 0;
 }
-.gclh_content input, 
-.gclh_content textarea, 
-.gclh_content button, 
+.gclh_content input,
+.gclh_content textarea,
+.gclh_content button,
 .gclh_content pre {
     padding: 1px 5px;
 }
-.gclh_content input[type='text'], 
-.gclh_content textarea, 
-.gclh_content select, 
+.gclh_content input[type='text'],
+.gclh_content textarea,
+.gclh_content select,
 .gclh_content pre {
     color: rgb(0, 0, 0) !important;
 }
-.gclh_content input[type='button'], 
+.gclh_content input[type='button'],
 .gclh_content button {
     color: #4A4A4A !important;
 }
-.gclh_content input[type='checkbox'], 
-.gclh_content input:focus[type='checkbox'], 
-.gclh_content input:active[type='checkbox'], 
-.gclh_content input[type='radio'], 
-.gclh_content input:focus[type='radio'], 
+.gclh_content input[type='checkbox'],
+.gclh_content input:focus[type='checkbox'],
+.gclh_content input:active[type='checkbox'],
+.gclh_content input[type='radio'],
+.gclh_content input:focus[type='radio'],
 .gclh_content input:active[type='radio'] {
     margin-left: 4px;
     margin-right: 4px;
@@ -787,14 +795,14 @@ table .markdown-output~tr.AlternatingRow td {
 .gclh_content span::before {
     display: none !important;
 }
-.gclh_content button, 
+.gclh_content button,
 .gclh_content input[type='button'] {
     cursor: pointer;
 }
 .gclh_content .shadowBig {
     box-shadow: 1px 1px 2px 2px rgb(119, 133, 85);
 }
-.gclh_content textarea, 
+.gclh_content textarea,
 .gclh_content pre {
     resize: vertical;
 }
@@ -802,7 +810,7 @@ table .markdown-output~tr.AlternatingRow td {
 /* Firefox */
     -moz-appearance: button;
 /* Chrome */
-    -webkit-appearance: menulist-button; 
+    -webkit-appearance: menulist-button;
     cursor: default;
     padding: 0;
 }
@@ -820,11 +828,12 @@ table .markdown-output~tr.AlternatingRow td {
     text-decoration: none;
     color: #3d76c5;
 }
-.gclh_content a:hover, 
-.gclh_content a:active, 
+.gclh_content a:hover,
+.gclh_content a:active,
 .gclh_content a:focus {
     text-decoration: underline;
     color: #3d76c5;
+    box-shadow: none !important;
 }
 .gclh_content select:hover,
 .gclh_content select:active,
@@ -842,16 +851,16 @@ table .markdown-output~tr.AlternatingRow td {
 .gclh_content th {
     font-weight: bold;
 }
-.gclh_content td, 
+.gclh_content td,
 .gclh_content th {
     padding: 0px 0px 0px 4px;
     vertical-align: middle;
 }
-.gclh_content table, 
-.gclh_content thead, 
-.gclh_content tbody, 
-.gclh_content tr, 
-.gclh_content td, 
+.gclh_content table,
+.gclh_content thead,
+.gclh_content tbody,
+.gclh_content tr,
+.gclh_content td,
 .gclh_content th {
     box-sizing: unset;
 }
@@ -945,7 +954,7 @@ table.multi_homezone_settings {
 .multi_homezone_settings .addentry {
     margin-top: 2px;
 }
-.gclh_rc_area, 
+.gclh_rc_area,
 .gclh_thanks_area {
     z-index: 100001;
     border: 1px solid #778555;
@@ -956,7 +965,7 @@ table.multi_homezone_settings {
 .gclh_rc_area_button {
     margin-left: 185px;
 }
-.gclh_rc_form, 
+.gclh_rc_form,
 .gclh_thanks_form {
     margin-bottom: 15px !important;
     margin-left: 15px !important;
@@ -1027,12 +1036,12 @@ table.multi_homezone_settings {
     margin-bottom: 3px;
     margin-left: 5px;
 }
-span.browse_map_icon, 
+span.browse_map_icon,
 span.search_map_icon {
     position: absolute;
     margin-top: 8px;
 }
-svg.browse_map_icon, 
+svg.browse_map_icon,
 svg.search_map_icon {
     vertical-align: middle;
     margin-bottom: 1px;
@@ -1082,19 +1091,21 @@ svg.search_map_icon {
 /* Error output in header. */
 #gclh-gurumeditation {
     background-color:black;
-    padding: 5px;
+    padding: 2px;
     color: red;
     text-align: center;
 }
-#gclh-gurumeditation a:link, 
-#gclh-gurumeditation a:visited, 
+#gclh-gurumeditation a:link,
+#gclh-gurumeditation a:visited,
 #gclh-gurumeditation a:hover {
     color: red;
     text-decoration: underline;
 }
+#gclh-gurumeditation > div {
+    border: 2px solid #ff0000;
+}
 #gclh-gurumeditation > div > p {
     margin: 0;
-    padding: 15px;
     font-family:Arial;
 }
 #gclh-gurumeditation > div > div > p {
