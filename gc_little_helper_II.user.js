@@ -9087,10 +9087,16 @@ var mainGC = function() {
             function gclh_filter(logs) {
                 function gclh_filter_logs() {
                     if (!this.childNodes[0]) return false;
-                    var log_type = this.childNodes[0].title;
-                    if (!log_type) return false;
-                    if (log_type.match(/VIP/)) log_type = "VIP";
-                    if (log_type.match(/Favorite/)) log_type = "FAV";
+                    var log_type = '';
+                    var title = this.childNodes[0].title;
+                    if (!title) return false;
+                    if (title.match(/VIP/)) log_type = "VIP";
+                    if (title.match(/Favorite/)) log_type = "FAV";
+                    if (log_type == '') {
+                        var logTypeId = this.childNodes[0].src.match(/\/logtypes\/(\d+).png/);
+                        if (logTypeId && logTypeId[1]) log_type = logTypeId[1];
+                    }
+                    if (log_type == '') return false;
                     if (this.name && this.name == "vip_list") {
                         document.getElementById("ctl00_ContentBody_lblFindCounts").scrollIntoView();
                         window.scrollBy(0, -30);
@@ -9102,7 +9108,7 @@ var mainGC = function() {
                     setTimeout(function() { // Force direct display refresh.
                         $(logsTab).find('tbody').children().remove();
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogType.toLowerCase() == log_type.toLowerCase() || (logs[i].LogTypeID == 45 && log_type.toLowerCase() == 'owner attention requested') || (logs[i].LogTypeID == 7 && log_type.toLowerCase() == 'reviewer attention requested') || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                            if (logs[i] && (logs[i].LogTypeID == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
