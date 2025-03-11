@@ -3953,14 +3953,27 @@ var mainGC = function() {
                 } catch(e) {gclh_error("addElevationToWaypoints_GeonamesElevation()",e);}
             }
             function addElevationToWaypoints(elevations,context) {
+                // Pass through a special field such as gc_code, until the elevation is determined.
+                // The steps here in code are marked with "Elevation pass through field step (1 to 4)."
+                // Field is available here as context.pass_through_field. Elevation pass through field step 4.
                 try {
                     var text = "";
                     for (var i=0; i<elevations.length; i++) {
                         text = "n/a";
                         if (elevations[i] != undefined) text = formatElevation(elevations[i]);
-                        if (is_page("map") || is_page('searchmap')) text = " " + text + " | ";
-                        $("#elevation-waypoint-"+(i+context.additionalListingIndex)).html(text);
-                        $("#elevation-waypoint-"+(i+context.additionalListingIndex)).attr('title','Elevation data from '+context.serviceName);
+                        if (is_page('searchmap')) {
+                            if (typeof context.pass_through_field !== 'undefined' && typeof sidebar_enhancements_buffer !== 'undefined') {
+                                var gc_code = context.pass_through_field;
+                                if (sidebar_enhancements_buffer[gc_code] && $(sidebar_enhancements_buffer[gc_code]).find('#elevation-waypoint-0')[0]) {
+                                    $(sidebar_enhancements_buffer[gc_code]).find('#elevation-waypoint-0')[0].innerHTML = ' ' + text + ' | ';
+                                    $(sidebar_enhancements_buffer[gc_code]).find('#elevation-waypoint-0')[0].title = 'Elevation data from '+context.serviceName;
+                                }
+                            }
+                        } else {
+                            if (is_page("map")) text = " " + text + " | ";
+                            $("#elevation-waypoint-"+(i+context.additionalListingIndex)).html(text);
+                            $("#elevation-waypoint-"+(i+context.additionalListingIndex)).attr('title','Elevation data from '+context.serviceName);
+                        }
                     }
                 } catch(e) {gclh_error("addElevationToWaypoints()",e);}
             }
@@ -4019,7 +4032,7 @@ var mainGC = function() {
                 elevationServices.push(elevationServicesData[settings_secondary_elevation_service]);
             }
             // This function can be re-entered.
-            function getElevations(serviceIndex,locations) {
+            function getElevations(serviceIndex, locations, pass_through_field = '') { // Elevation pass through field step 2.
                 if (serviceIndex >= elevationServices.length || elevationServices < 0) {
                     $('.waypoint-elevation').each(function (index, value) {
                         $(this).html('<span title="Fail to load elevation data">???</span>');
@@ -4064,7 +4077,8 @@ var mainGC = function() {
                             retries : serviceIndex,
                             serviceName : elevationServices[serviceIndex]['name'],
                             locations : locations,
-                            additionalListingIndex : additionalListingIndex
+                            additionalListingIndex : additionalListingIndex,
+                            pass_through_field : pass_through_field // Elevation pass through field step 3.
                         },
                         onload: elevationServices[serviceIndex]['function'],
                         onerror: function(responseDetails) {
@@ -11350,10 +11364,8 @@ var mainGC = function() {
 
             // Show additional cache data in cache details.
             var sidebar_enhancements_buffer = {};
-            var sidebar_enhancements_favi_buffer = {};
             var sidebar_enhancements_addToList_buffer = {};
             var sidebar_enhancements_weekday_buffer = {};
-            var sidebar_enhancements_countyToPlace_buffer = {};
             var sidebar_enhancements_working_buffer = {};
 
             function showSearchmapSidebarEnhancements() {
@@ -11374,11 +11386,8 @@ var mainGC = function() {
                 var new_gc_code = document.querySelector('.cache-preview-header .cache-metadata-code').innerHTML;
                 if (sidebar_enhancements_buffer[new_gc_code]) {
                     insertAfter(sidebar_enhancements_buffer[new_gc_code], (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
-                    if (settings_maps_add_county_to_place && $('#searchmap_sidebar_enhancements .Place')[0] && sidebar_enhancements_countyToPlace_buffer[new_gc_code]) {
-                        $('#searchmap_sidebar_enhancements .Place')[0].outerHTML = sidebar_enhancements_countyToPlace_buffer[new_gc_code];
-                    }
-                    if ($('.favorites-text')[0] && sidebar_enhancements_favi_buffer[new_gc_code]) {
-                        $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + sidebar_enhancements_favi_buffer[new_gc_code];
+                    if ($('.favorites-text')[0] && $('.favorites-text')[0].childNodes[0] && sidebar_enhancements_buffer[new_gc_code] && $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0] && !$(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML == '') {
+                        $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].childNodes[0].data + '<span> (' + $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML + ')</span>';
                     }
                     if ($('.cache-preview-action-menu ul li.add-to-list')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
                         $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
@@ -11495,6 +11504,9 @@ var mainGC = function() {
                         trachables = ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget')[0].innerHTML.match(/<li>/g)||[]).length;
                     }
 
+                    // Set dummy favorite score.
+                    var fav_percent = ' ';
+
                     // Get the place, where the cache was placed.
                     if ($(text).find('#ctl00_ContentBody_Location a')[0]) var place = $(text).find('#ctl00_ContentBody_Location a')[0].innerHTML;
                     else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
@@ -11503,18 +11515,8 @@ var mainGC = function() {
                     var new_text = all_logs;
                     new_text += $(last_logs).prop('outerHTML');
                     new_text += '<div id="gclh_third_line">';
-                    if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span> | ';
-                    else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
 
-                    if (settings_show_elevation_of_waypoints) {
-                        new_text += '<span id="elevation-waypoint-0"></span>';
-                    }
-                    if (premium_only) {
-                        new_text += ' ' + enhancement_premium + ' | ';
-                        if (!$('.gclh_cache_details_premium')[0]) {
-                            $('.cache-preview-header .cache-metadata-code').after(cache_details_premium);
-                        }
-                    }
+                    // Marker for disabled.
                     if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
                         new_text += '<span class="gclh_enhancement_disabled"></span>';
                         if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
@@ -11522,7 +11524,17 @@ var mainGC = function() {
                             setStrikeDisabledInDetails();
                         }
                     }
-                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm" style="margin-bottom: 1px;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
+
+                    // Premium icon.
+                    if (premium_only) {
+                        new_text += enhancement_premium + ' | ';
+                        if (!$('.gclh_cache_details_premium')[0]) {
+                            $('.cache-preview-header .cache-metadata-code').after(cache_details_premium);
+                        }
+                    }
+
+                    // Number of trackables.
+                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm" style="margin-bottom: 1px;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span> | ';
 
                     // Get link to image gallery and image count.
                     var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
@@ -11530,20 +11542,33 @@ var mainGC = function() {
                         var galleryLink = a[0].href;
                         var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                         if (galleryLink && imgCount && imgCount[2]) {
-                            if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a>';
-                            else new_text += ' | <span title="View Image Gallery"><a class="gclh_link" href="' + galleryLink + '">';
-                            new_text += '<img src="/images/icons/16/photo_gallery.png"> ' + imgCount[2] + '</a></span>';
+                            if (imgCount[2] == "0") new_text += '<span title="No Image Gallery"><a>';
+                            else new_text += '<span title="View Image Gallery"><a class="gclh_link" href="' + galleryLink + '">';
+                            new_text += '<img src="/images/icons/16/photo_gallery.png"> ' + imgCount[2] + '</a></span> | ';
                         }
                     }
 
                     // Get personal cache note.
                     if ($(text).find('#srOnlyCacheNote')[0]) {
                         if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
-                            new_text += ' | <span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span>';
+                            new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span> | ';
                         } else {
-                            new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span>';
+                            new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span> | ';
                         }
                     }
+
+                    // Favorite percentage.
+                    new_text += '<span title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> </span><span class="favi_points"></span> | ';
+
+                    // Placeholder for elevation.
+                    if (settings_show_elevation_of_waypoints) {
+                        new_text += '<span id="elevation-waypoint-0"></span>';
+                    }
+
+                    // Place and placeholder for county.
+                    if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span>';
+                    else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span>';
+
                     new_text += '</div>';
 
                     // Get coordinates.
@@ -11573,6 +11598,7 @@ var mainGC = function() {
                     // Just to be sure we are starting from scratch.
                     removeElement(document.querySelector('#searchmap_sidebar_enhancements'));
                     insertAfter(searchmap_sidebar_enhancements, (document.getElementsByClassName("geocache-owner")[0] || document.getElementsByClassName("gclhOwner")[0]));
+
                     // Open latest logs and personal cache note slightly late so it doesn't flutter.
                     function doNotFlutter(pos) {
                         $(pos).each(function() {
@@ -11598,15 +11624,24 @@ var mainGC = function() {
                         addCopyToClipboardLink(coords, $('span.coordinates.current')[0], corrected+"Coordinates", style='vertical-align: sub;');
                     }
 
+                    // Build buffer for the enhancement block.
+                    sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
+
+                    // Get elevations.
+                    if (settings_show_elevation_of_waypoints) {
+                        var coords_for_elevation = toDec(coords);
+                        var locations = [];
+                        locations.push(coords_for_elevation[0]+","+coords_for_elevation[1]);
+                        // Pass through a special field such as gc_code, until the elevation is determined.
+                        // The steps here in code are marked with "Elevation pass through field step (1 to 4)."
+                        if (locations && locations.length == 1) getElevations(0, locations, local_gc_code); // Elevation pass through field step 1.
+                    }
+
                     // Get favorite score.
                     getFavoriteScore(local_gc_code, function(score) {
-                        if ($('.favorites-text')[0]) {
-                           $('.favi_score_percent').each(function(){
-                               removeElement(this);
-                           });
-                           $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].innerHTML + ' <span class="favi_score_percent">('+score+'%)';
-                           sidebar_enhancements_favi_buffer[local_gc_code] = ' <span class="favi_score_percent">('+score+'%)';
-                       }
+                        if (sidebar_enhancements_buffer[local_gc_code] && $(sidebar_enhancements_buffer[local_gc_code]).find('.favi_points')[0]) {
+                            $(sidebar_enhancements_buffer[local_gc_code]).find('.favi_points')[0].innerHTML = score + '%';
+                        }
                     });
 
                     // Add county (Landkreis) to place.
@@ -11614,23 +11649,13 @@ var mainGC = function() {
                         try {
                             let [lat, lon] = toDec(coords);
                             insertCountyInformation(lat, lon, (placeWithCountry, placeWithoutCountry, placeComplet) => {
-                                if ($('#searchmap_sidebar_enhancements .Place')[0]) {
-                                    sidebar_enhancements_countyToPlace_buffer[local_gc_code] = '<span class="Place" title="' + placeComplet + '">' + (settings_show_country_in_place ? placeWithCountry : placeWithoutCountry) + '</span>';
-                                    $('#searchmap_sidebar_enhancements .Place')[0].outerHTML = sidebar_enhancements_countyToPlace_buffer[local_gc_code];
+                                if (sidebar_enhancements_buffer[local_gc_code] && $(sidebar_enhancements_buffer[local_gc_code]).find('.Place')[0]) {
+                                    $(sidebar_enhancements_buffer[local_gc_code]).find('.Place')[0].innerHTML = (settings_show_country_in_place ? placeWithCountry : placeWithoutCountry);
+                                    $(sidebar_enhancements_buffer[local_gc_code]).find('.Place')[0].title = placeComplet;
                                 }
                             });
                         } catch(e) {gclh_error("Add county (Landkreis) to place",e);}
                     }
-
-                    // Get elevations.
-                    if (settings_show_elevation_of_waypoints) {
-                        var coords_for_elevation = toDec(coords);
-                        var locations = [];
-                        locations.push(coords_for_elevation[0]+","+coords_for_elevation[1]);
-                        if (locations && locations.length == 1) getElevations(0,locations);
-                    }
-
-                    sidebar_enhancements_buffer[local_gc_code] = searchmap_sidebar_enhancements;
 
                     // Get count and names of own bookmarklists.
                     if ($('.cache-preview-action-menu ul li.add-to-list')[0]) {
@@ -12786,16 +12811,14 @@ var mainGC = function() {
                             var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
-                            if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span> | ';
-                            else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span> | ';
-                            if (settings_show_elevation_of_waypoints) {
-                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
-                            }
-                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+
+                            // Premium icon.
                             if (premium_only) {
-                                new_text += ' <span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
+                                new_text += '<span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
-                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span>';
+
+                            // Number of trackables.
+                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span> | ';
 
                             // Get link to image gallery and image count.
                             var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
@@ -12803,20 +12826,33 @@ var mainGC = function() {
                                 var galleryLink = a[0].href;
                                 var imgCount = a[0].innerHTML.match(/(\s*)\((\d+)\)/);
                                 if (galleryLink && imgCount && imgCount[2]) {
-                                    if (imgCount[2] == "0") new_text += ' | <span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
-                                    else new_text += ' | <span title="View Image Gallery"><a href="' + galleryLink + '">';
-                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span>';
+                                    if (imgCount[2] == "0") new_text += '<span title="No Image Gallery"><a style="color: #939597; text-decoration: none;">';
+                                    else new_text += '<span title="View Image Gallery"><a href="' + galleryLink + '">';
+                                    new_text += '<img src="/images/icons/16/photo_gallery.png" style="height: 14px; vertical-align: text-bottom;">' + imgCount[2] + '</a></span> | ';
                                 }
                             }
 
                             // Get personal cache note.
                             if ($(text).find('#srOnlyCacheNote')[0]) {
                                 if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
-                                    new_text += ' | <span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span>';
+                                    new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span> | ';
                                 } else {
-                                    new_text += ' | <span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span style="left: -250px; width: 300px;">' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span>';
+                                    new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span style="left: -250px; width: 300px;">' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span> | ';
                                 }
                             }
+
+                            // Favorite percentage.
+                            new_text += '<span class="favi_points" title="Favorites in percent"><svg height="16.5" width="16.5"><image xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/images/icons/fave_fill_16.svg" src="/images/icons/fave_fill_16.png" width="16" height="16" alt="Favorite points"></image></svg> ' + fav_percent + '</span> | ';
+
+                            // Placeholder for elevation.
+                            if (settings_show_elevation_of_waypoints) {
+                                new_text += '<span id="elevation-waypoint-'+indexMapItems+'"></span>';
+                            }
+
+                            // Place and placeholder for county.
+                            if (settings_show_country_in_place) new_text += '<span class="Place" title="Place">' + place + '</span>';
+                            else new_text += '<span class="Place" title="' + place + '">' + place.replace(/(,.*)/,'') + '</span>';
+
                             new_text += '</div>';
 
                             // Get coordinates.
