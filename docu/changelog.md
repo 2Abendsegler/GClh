@@ -67,13 +67,19 @@
 	</li>
 </ul>
 <br>
-<strong>Maps:</strong> <br>
+<strong>Maps:</strong> Adjustments to the Search Map as part of the technical migration carried out by GS and other adjustments in the area of ​​the both maps Search Map and Browse Map.<br>
 <ul>
 	<li>
 		<strong>Fix:</strong> [Search Map] After go back from cache details to cache list or BML, scroll to last position (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2726" title="Issue 2726">2726</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Show hint automatically (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2730" title="Issue 2730">2730</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Hide header (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2740" title="Issue 2740">2740</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Fix error if default filter and show corrected coords both are active (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2747" title="Issue 2747">2747</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map, Browse Map] Collection of different things (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2732" title="Issue 2732">2732</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -105,9 +111,6 @@
 		</ul>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Hide header (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2740" title="Issue 2740">2740</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-	</li>
-	<li>
 		<strong>Fix:</strong> [Search Map] Hide header button should only be displayed when dealing with lists (Tech migration) and show additional cache data on the maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2745" title="Issue 2745">2745</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Additional:<br>
 		<ul>
@@ -118,9 +121,6 @@
 				<strong>Fix:</strong> [Browse Map] Open latest logs and personal cache note slightly late so it doesn't flutter.<br>
 			</li>
 		</ul>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Search Map] Fix error if default filter and show corrected coords both are active (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2747" title="Issue 2747">2747</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map, Browse Map] Show additional cache data on the maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2749" title="Issue 2749">2749</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
