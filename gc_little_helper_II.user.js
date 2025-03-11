@@ -6638,7 +6638,6 @@ var mainGC = function() {
                 // Attributes
                 if (attr !== false) {
                     attr.forEach(function(elem) {
-console.log('att drin');
                         $('#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="'+elem+'"]').parent().find('.btn-attribute img').click();
                     });
                 }
@@ -10943,7 +10942,7 @@ console.log('att drin');
                         // Wait until data is ready, then update cache locations.
                         const cb = (_, observer) => {
                             // Run 'Search this area' to modify coords.
-                             document.querySelector('[data-testid="search-this-area-button"]').click();
+                            document.querySelector('[data-testid="search-this-area-button"]').click();
                             observer.disconnect();
                             observer = null;
                         }
