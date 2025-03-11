@@ -16622,7 +16622,7 @@ var mainGC = function() {
             // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
             html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  true,  true,  false);
             html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  false);
-            html += thanksLineBuild("Ruko2010",             "",                         false, true,  true,  true,  true );
+            html += thanksLineBuild("Ruko2010",             "",                         false, 'grey',  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
             html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
@@ -19466,7 +19466,7 @@ var mainGC = function() {
                "<td>" + (gcname != "" ? "<a href='/profile/?u="+urlencode(gcname)+"' target='_blank' title='GC profile for "+gcname+"'>"+gcname+"</a>" : "<span title='"+ghname+"'>"+ghname+"</span>") + "</td>" +
                thanksFlagBuild(proj) + thanksFlagBuild(devl) + thanksFlagBuild(dev) + thanksFlagBuild(err) + "</tr>";
     }
-    function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : "") + "'></td>";}
+    function thanksFlagBuild(flag) {return "<td><img src='" + (flag == true ? global_green_tick : (flag == false ? '' : global_grey_tick)) + "' title='" + (flag == 'grey' ? 'on sabbatical' : '') + "'></td>";}
 
 // Functions to provide cff (checkbox, input field and textarea field).
     function openCff(ident, header, titleName, titleValue, depId) {
