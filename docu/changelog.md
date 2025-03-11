@@ -63,10 +63,9 @@
 		<strong>Change:</strong> [Global] Make GClh error in header smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2733" title="Issue 2733">2733</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br><br>
+		<strong>Change:</strong> [Documentation] Make changelog smaller. [<a href="https://github.com/2Abendsegler/GClh/issues/2734" title="Issue 2734">2734</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 </ul>
-<br>
 <strong>Maps:</strong> <br>
 Adjustments to the Search Map as part of the technical migration carried out by GS and other adjustments in the area of ​​the both maps Search Map and Browse Map.<br><br>
 <ul>
