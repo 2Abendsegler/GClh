@@ -6476,6 +6476,7 @@ var mainGC = function() {
                 metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
                 return Number(Math.ceil((metersPerPx*px/2/1000)+'e'+3)+'e-'+3);
             }
+            // From Origin - By Coordinates: Is automatically set from the url parameters lat and lng.
             // Radius.
             let lat = getURLParam('lat');
             let zoom = getURLParam('zoom');
@@ -6637,6 +6638,7 @@ var mainGC = function() {
                 // Attributes
                 if (attr !== false) {
                     attr.forEach(function(elem) {
+console.log('att drin');
                         $('#ctl00_ContentBody_ctlAttrInclude_dtlAttributeIcons input[attid="'+elem+'"]').parent().find('.btn-attribute img').click();
                     });
                 }
@@ -10941,7 +10943,7 @@ var mainGC = function() {
                         // Wait until data is ready, then update cache locations.
                         const cb = (_, observer) => {
                             // Run 'Search this area' to modify coords.
-                            document.querySelector('[data-testid="search-this-area-button"]').click();
+                             document.querySelector('[data-testid="search-this-area-button"]').click();
                             observer.disconnect();
                             observer = null;
                         }
@@ -11695,18 +11697,22 @@ var mainGC = function() {
 
             // Create Save as PQ Button.
             var set_defaults = getValue('set_switch_searchmap_set_defaults', false);
-//xxx deaktiviert
             function addCreatePQButton() {
-                if ($('.list-hub')[0] || document.location.href.match(/\.com\/play\/map\/lists\/BM/)) {
-                    if ($('#gclh_saveAsPQ')[0]) $('.gclh_PQHead').remove();
+                if ($('.bg-green-500[data-testid="list-mode-item"]')[0]) {
+                    $('.gclh_PQHead').remove();
                 } else {
-                    if ($('#geocache-list')[0] && !$('.gclh_PQHead')[0]) {
+                    if ($('[data-testid="sidebar-header-container"]')[0] && $('#gclh_action_bar')[0] && !$('.gclh_PQHead')[0]) {
                         let html = '<div class="gclh_PQHead"><a id="gclh_saveAsPQ" href="javascript:void(0)" title="Save as Pocket Query"><img src="/images/icons/16/pocket_query.png" height="12px">Save as PQ</a><div class="set_defaults toggle-filter"><span class="label" title="Set GClh defaults for new PQs.\nThe Map Filters overwrite the GClh defaults.">&nbsp;|&nbsp;Set defaults</span><div class="gclh_toggle-handle"></div></div></div>';
                         $('#gclh_action_bar').append(html);
                         $('#gclh_saveAsPQ').bind('click', function() {
                             let px = document.querySelector('.leaflet-gl-layer.mapboxgl-map').offsetWidth;
                             let url = 'https://www.geocaching.com/pocket/gcquery.aspx';
                             url += document.location.search.replace(/&asc=(true|false)&sort=\w+/, '');
+                            // If a BML was previously active and no new search was performed afterwards, the url parameters lat and lng are not available and
+                            // generating pocket query is not possible. But there are the url parameters mlat and mlng that can be used.
+                            if (!getURLParam('lat') && getURLParam('mlat') && getURLParam('mlng')) {
+                                url += '&lat=' + getURLParam('mlat') + '&lng=' + getURLParam('mlng');
+                            }
                             url += '&gclh_px='+px;
                             url += '&gclh_saveAsPQ=true';
                             url += '&gclh_setDefaults=' + ($('.set_defaults .gclh_toggle-handle.on')[0] ? true:false);
@@ -11747,7 +11753,7 @@ var mainGC = function() {
             // Root for "Save as PQ" and "Hide Header".
             function geocacheActionBar() {
                 // The action bar with Hide header button and Save as PQ button should only be displayed when dealing with lists such as
-                // the list of caches or the list of bookmark lists. This can be identified by the sorting option for the list.
+                // the list of caches. This can be identified by the sorting option for the list.
                 if (!$('#search-map-sort-toggle')[0]) {
                     $('.gclh_action_bar').remove();
                     return;
@@ -11758,8 +11764,12 @@ var mainGC = function() {
                         $('[data-testid="sidebar-header-container"]').append('<div id="gclh_action_bar" class="gclh_action_bar"></div>');
                     }
                     if (settings_map_show_btn_hide_header) addHideHeaderButton();
-//xxx deaktiviert
-//                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
+                    if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
+                    // If there are no buttons, remove the area.
+                    if ($('.gclh_action_bar').children().length == 0) {
+                        $('.gclh_action_bar').remove();
+                        return;
+                    }
                     // Hide header by default.
                     if (!runHideHeader && settings_hide_map_header && settings_map_show_btn_hide_header && $('[data-testid="sidebar-header-container"]')[0]) {
                         runHideHeader = true;
@@ -12036,10 +12046,7 @@ var mainGC = function() {
             css += "#searchmap_sidebar_enhancements ul {display: inline-block; padding-left: 0px; margin: 0px;}";
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
-            css += '#gclh_action_bar {display: flex; color: #4a4a4a; cursor: default; padding: 0px !important;}'
-            css += '.geocache-action-bar.sidebar-control {padding-top: 0px !important;}';
-            css += 'div.sidebar-control:nth-child(3) .search-bar {padding-top: 1px !important; height: 40px !important;}';
-            css += '.geocache-action-bar {padding: 5px 12px !important;}';
+            css += '#gclh_action_bar {display: flex; gap: 0.5em; color: #4a4a4a; cursor: default; padding: 0px !important;}'
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
             // Save as PQ.
             css += '.gclh_PQHead {display: flex;}';
