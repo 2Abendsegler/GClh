@@ -11363,8 +11363,7 @@ var mainGC = function() {
                 }
                 // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map.
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
-//xxx deaktiviert
-//                    initGeoServiceControl();
+                    initGeoServiceControl();
                 }
             }
 
@@ -12419,7 +12418,8 @@ var mainGC = function() {
         if (is_page('map')) {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
-            $('.map-setting-controls ul li:first').before('<li role="menuitem"><button id="gclh_geoservices_control" class="gclh-leaflet-control map-control searchmap"></button></li>');
+            $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>');
+            appendCssStyle('.leaflet-top.leaflet-right {display: flex;}', null, 'gclh_geoservices_css2'); // Horizontale Orientierung.
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
@@ -12435,9 +12435,11 @@ var mainGC = function() {
         $("#gclh_geoservice_geohack").click(function() {callGeoService(urlGeoHack, settings_switch_to_geohack_in_same_tab);});
         $("#gclh_geoservice_komoot").click(function() {callGeoService(urlKomoot, settings_switch_to_komoot_in_same_tab);});
         var css = '';
+        css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
+        css += '.searchmap .gclh-leaflet-list {right: 0px; top: 0px; }';
         css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: unset; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
-        css += '.gclh-leaflet-control {z-index: 1019; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; color: #00b265; display: flex; height: 40px; justify-content: center; outline: none; overflow: hidden; padding: 4px; width: 40px;}';
-        css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 18px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
+        css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; overflow: hidden; padding: 4px;}';
+        css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
         css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 68px; top: 16px;}';
         css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
@@ -12465,6 +12467,9 @@ var mainGC = function() {
             }
         } else {
             var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)&zoom=([0-9.]*)/);
+            if (matchesMarker == null) {
+                var matchesMarker = document.location.href.match(/\\?mlat=(-?[0-9.]*)&mlng=(-?[0-9.]*)&zoom=([0-9.]*)/);
+            }
             var matches = [];
             matches = matchesMarker;
         }
