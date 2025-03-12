@@ -12439,10 +12439,9 @@ var mainGC = function() {
         css += '.searchmap .gclh-leaflet-list {right: 0px; top: 0px; }';
         css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: unset; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
         css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; overflow: hidden; padding: 4px;}';
-        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 68px; top: 16px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
+        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 68px; top: 16px;}';
         css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
-        css += '.gclh-leaflet-list {right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
         css += '.gclh-leaflet-control:hover .gclh-leaflet-list {display: block;}';
@@ -12468,6 +12467,9 @@ var mainGC = function() {
             }
         } else {
             var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)&zoom=([0-9.]*)/);
+            if (matchesMarker == null) {
+                var matchesMarker = document.location.href.match(/\\?mlat=(-?[0-9.]*)&mlng=(-?[0-9.]*)&zoom=([0-9.]*)/);
+            }
             var matches = [];
             matches = matchesMarker;
         }
