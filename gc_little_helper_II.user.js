@@ -11353,15 +11353,16 @@ var mainGC = function() {
                 }
             }
 
-            // Build map control buttons.
-            function buildMapControlButtons() {
-                if (!$('div.zoom-controls')[0]) return;
-                // Relocate browse button to other buttons.
-                if (settings_relocate_other_map_buttons && !$('#gclh_browse_map')[0] && $('[data-testid="gc-button-link"]')[0]) {
-                    $('div.zoom-controls').parent().prepend('<div class="hidden tablet:block"><button id="gclh_browse_map" class="map-control"><svg><title>Browse geocaches</title><use href="#globe"></use></svg></button></div>');
-                    $('#gclh_browse_map')[0].addEventListener("click", function() { document.querySelector('[data-testid="gc-button-link"]').click(); }, false);
+            // Build map buttons above.
+            function buildMapButtonsAbove() {
+                if (!$('.leaflet-top.leaflet-right')[0]) return;
+                // Relocate browse button to other buttons above.
+                if (!$('#gclh_browse_map')[0] && settings_relocate_other_map_buttons && $('[data-testid="gc-button-link"]')[0] && $('[data-testid="gc-button-link"]')[0].childNodes[1]) {
+                    $('.leaflet-top.leaflet-right').append('<div id="gclh_browse_map" title="Browse geocaches"></div>');
+                    $('#gclh_browse_map').append($('[data-testid="gc-button-link"]').remove().get().reverse());
+                    $('#gclh_browse_map a')[0].childNodes[1].remove();
                 }
-                // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map.
+                // Add button with links to Google, OSM, Flopp's, GeoHack and Komoot Map.
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
                     initGeoServiceControl();
                 }
@@ -11787,7 +11788,7 @@ var mainGC = function() {
                 scrollUpInDescription();
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
-                buildMapControlButtons();
+                buildMapButtonsAbove();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
@@ -12002,13 +12003,22 @@ var mainGC = function() {
             // Show name of disabled caches strike through in special color.
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
-            // Build map control buttons.
-            css += '.map-control {margin-bottom: 10px !important;}';
-            css += '.map-control svg {vertical-align: middle;}';
-            css += '.map-controls section button, .map-controls .zoom-controls {margin-bottom: 10px; margin-top: 0px !important;}';
-            if (settings_relocate_other_map_buttons) css += '[data-testid="gc-button-link"] {display: none !important;}';
-            else css += '#gclh_layers {top: 52px;}';
-//xxx deaktiviert
+            // Map buttons above.
+            // - Ensure that map selection area is on top of map control buttons.
+            css += '.leaflet-top.leaflet-right {z-index: 2010;}';
+            // - All top buttons next to each other.
+            css += '.leaflet-top.leaflet-right {display: flex;}';
+            // - Standardize button spacing.
+            css += '.leaflet-top.leaflet-right > div {margin-right: 8px; margin-top: 8px;}';
+            // - Adjust browse map button when we use it. Or leave enough space for our buttons.
+            if (settings_relocate_other_map_buttons) {
+                css += '#gclh_browse_map a {height: 40px !important; width: 40px !important; padding: 7px;}';
+            } else {
+                var mr = 0;
+                if (settings_use_gclh_layercontrol_on_search_map) mr += 48;
+                if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map) mr += 48;
+                css += '[data-testid="gc-button-link"] {margin-right: ' + mr + 'px;}';
+            }
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -12078,11 +12088,9 @@ var mainGC = function() {
                     } else {
                         // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
                         css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
-                        if (is_page('map')) {
-                            // Damit auch mehr als 2 Buttons handlebar.
-                            css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
-                        }
                     }
+                    // Damit auch mehr als 2 Buttons handlebar.
+                    css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
                     // Hide Map Header.
                     hideHeaderOnBrowseMap();
                     // Change map parameter and add homezone to map.
@@ -12191,33 +12199,28 @@ var mainGC = function() {
                             if (settings_show_hillshadow) $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
                             document.querySelector('.leaflet-control-layers.gclh_layers').id = "gclh_layers";
                             var side = document.querySelector('.leaflet-control-layers');
-                            var div = document.createElement("div");
-                            div.setAttribute("class", "gclh_dummy gclh_used");
-                            var aTag = document.createElement("a");
-                            aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
-                            div.appendChild(aTag);
-                            side.parentNode.insertBefore(div, side);
                             if (document.location.pathname.match(/^\/map/)) {
-                                // Defekte Layer entfernen. (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
-                                try {
-                                    for (layerId in window.MapSettings.Map._layers) {
-                                        if (window.MapSettings.Map._layers[layerId]._url !== -1) {
-                                            window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                                var div = document.createElement("div");
+                                div.setAttribute("class", "gclh_dummy gclh_used");
+                                var aTag = document.createElement("a");
+                                aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
+                                div.appendChild(aTag);
+                                side.parentNode.insertBefore(div, side);
+                                if (document.location.pathname.match(/^\/map/)) {
+                                    // Defekte Layer entfernen. (GCVote verursacht hier gelegentlich einen Abbruch, weil der dort verwendete localStorageCache scheinbar unvollständige Layer belebt.)
+                                    try {
+                                        for (layerId in window.MapSettings.Map._layers) {
+                                            if (window.MapSettings.Map._layers[layerId]._url !== -1) {
+                                                window.MapSettings.Map.removeLayer(window.MapSettings.Map._layers[layerId]);
+                                            }
                                         }
-                                    }
-                                } catch(e) {};
+                                    } catch(e) {};
+                                }
                             }
                             if (document.location.pathname.match(/^\/live\/play\/map/)) {
                                 setTimeout(() => {
                                     // Remove default GS map tiles.
                                     document.querySelector('.mapboxgl-canvas').remove();
-                                    // Adapt layout of gclh map layer control to GS controls.
-                                    document.querySelector('.leaflet-control-layers-toggle').setAttribute('style', 'width: 40px; height: 40px;');
-                                    document.querySelector('#gclh_layers').setAttribute('style', 'border: 1px solid rgb(0, 178, 101);');
-                                    // Ensure that map selection area is on top of map control buttons.
-                                    document.querySelector('.leaflet-top.leaflet-right').setAttribute('style', 'z-index:1020;');
-                                    // Hide GME dummy.
-                                    document.querySelector('.dummy_for_gme').setAttribute('style', 'display:none');
                                 }, 0);
                             }
                         }
@@ -12256,7 +12259,7 @@ var mainGC = function() {
                     }
                 }
             }
-            // Layer Controls überwachen.
+            // Layer Controls überwachen für Browse Map.
             function loopAtLayerControls(waitCount) {
                 if ($('.leaflet-control-layers').length != 0) {
                     var somethingDone = 0;
@@ -12302,9 +12305,12 @@ var mainGC = function() {
             // Prevent the buttons from flashing.
             css += '.leaflet-control-layers.gclh_used:not(#gclh_geoservices_control) {display: inherit;}';
             css += '.leaflet-control-layers:not(.gclh_used) {display: none;}';
-            if (is_page('map')) {
-                // Damit auch mehr als 2 Buttons handlebar.
-                css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+            if (is_page('searchmap')) {
+                // '#gclh_layers' bzw. '.leaflet-control-layers' darf nicht mit width und height versehen werden, weil das Aufklappen der Layer Liste
+                // dann nicht mehr funktioniert. Die folgenden Zeilen sind dazu da, width und height trotzdem zu fixieren auch im Hinblick auf Zooms
+                // über den Browser.
+                css += '#gclh_layers {border: none;}';
+                css += '#gclh_layers > a {width: 40px; height: 40px; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Add layers, control to map and set default layers",e);}
@@ -12419,7 +12425,6 @@ var mainGC = function() {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>');
-            appendCssStyle('.leaflet-top.leaflet-right {display: flex;}', null, 'gclh_geoservices_css2'); // Horizontale Orientierung.
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
@@ -12436,7 +12441,7 @@ var mainGC = function() {
         $("#gclh_geoservice_komoot").click(function() {callGeoService(urlKomoot, settings_switch_to_komoot_in_same_tab);});
         var css = '';
         css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
-        css += '.searchmap .gclh-leaflet-list {right: 0px; top: 0px; }';
+        css += '.searchmap .gclh-leaflet-list {right: -1px; top: -1px; }';
         css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: unset; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
         css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; overflow: hidden; padding: 4px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
@@ -16917,7 +16922,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
-            html += checkboxy('settings_relocate_other_map_buttons', 'Relocate the buttons \"Search\" and \"Browse geocaches\" to the other buttons') + "<br>";
+            html += checkboxy('settings_relocate_other_map_buttons', 'Relocate the buttons \"Search\" and \"Browse geocaches\" to other buttons above') + "<br>";
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on cache detail screen') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
