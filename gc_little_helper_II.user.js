@@ -12470,19 +12470,21 @@ var mainGC = function() {
                     var matchesMarker = matches;                                                     // Beispiel 3.
                 }
             }
+            if (matches != null) var zoom = matches[3];
         } else {
-            var matchesMarker = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)&zoom=([0-9.]*)/);
-            if (matchesMarker == null) {
-                var matchesMarker = document.location.href.match(/\\?mlat=(-?[0-9.]*)&mlng=(-?[0-9.]*)&zoom=([0-9.]*)/);
+            var matches = document.location.href.match(/\\?mlat=(-?[0-9.]*)&mlng=(-?[0-9.]*)/);
+            if (matches == null) {
+                var matches = document.location.href.match(/\\?lat=(-?[0-9.]*)&lng=(-?[0-9.]*)/);
             }
-            var matches = [];
-            matches = matchesMarker;
+            if (matches != null) var matchesMarker = matches;
+            var matchzoom = document.location.href.match(/\\?zoom=([0-9.]*)/);
+            if (matchzoom != null) var zoom = matchzoom[1];
         }
         var coords = null;
-        if (matches != null && matchesMarker != null) {
+        if (matches != null && matchesMarker != null && zoom) {
             coords = new Object();
-            coords.zoom = matches[3];
-            coords.zoomMinus1 = matches[3]-1;
+            coords.zoom = zoom;
+            coords.zoomMinus1 = zoom-1;
             coords.lat = matches[1];
             coords.lon = matches[2];
             coords.markerLat = matchesMarker[1];
