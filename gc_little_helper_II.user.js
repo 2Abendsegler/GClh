@@ -11044,7 +11044,11 @@ var mainGC = function() {
                 }
             }
 
-            // Virtually hit "Search this area" after dragging the map or zooming, if not BML and not link from matrix.
+            // Virtually hit "Search this area" after dragging the map or zooming. Exceptions:
+            // - BML section is active
+            // - link from matrix
+            // - filters changed
+            // - all search results for visible map area are already available
             // TODO: #GClhMatrix gets removed from URL before gclh starts and therefore doesn't work anymore.
             //       But this is maybe not necessary anymore and could be removed completely (since filter settings are kept).
             var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
@@ -11084,8 +11088,8 @@ var mainGC = function() {
                 if (target) observer.observe(target, config);
             }
             function searchThisArea(waitCount) {
-                // Don't run on link from matrix or on BML.
-                if (isGclhMatrix || document.querySelector('li.bg-green-500[data-testid="list-mode-item"]')) return;
+                // Don't run on link from matrix, BML or after filters have changed.
+                if (isGclhMatrix || document.querySelector('li.bg-green-500[data-testid="list-mode-item"]') || !getURLParam('mlat')) return;
 
                 // Move or zoom map -> URL changes 1 time; click searchThisArea -> URL changes once again
                 // and therefore history.pushState is triggered, which would trigger another searchThisArea call;
@@ -11122,7 +11126,12 @@ var mainGC = function() {
                             var latLow = (lat - latHalfDezDistance).toFixed(4)*1;
                             var lngHigh = (lng + lngHalfDezDistance).toFixed(4)*1;
                             var lngLow = (lng - lngHalfDezDistance).toFixed(4)*1;
-                            if (latHighG == false || latHigh > latHighG || latLow < latLowG || lngHigh > lngHighG || lngLow < lngLowG) {
+                            // If number of caches found > max. caches to show, and you zoom in, then a search should be performed.
+                            const node = document.querySelector('#__next>div');
+                            const reactFiberKey = Object.keys(node).find(o => o.includes('__reactFiber'));
+                            const total = reactFiberKey ? node[reactFiberKey]?.memoizedProps?.children[1]?.props?.searchResults?.total : 0;
+                            const take  = reactFiberKey ? node[reactFiberKey]?.memoizedProps?.children[1]?.props?.take : 0;
+                            if (latHighG == false || latHigh > latHighG || latLow < latLowG || lngHigh > lngHighG || lngLow < lngLowG || total > take) {
                                 latHighG = latHigh;
                                 latLowG = latLow;
                                 lngHighG = lngHigh;
