@@ -1,5 +1,6 @@
 <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
 <br>
+<a href="#v0167" title="GClh II version 0.16.7 (20.03.2025)">v0.16.7</a> &nbsp;
 <a href="#v0166" title="GClh II version 0.16.6 (11.03.2025)">v0.16.6</a> &nbsp;
 <a href="#v0165" title="GClh II version 0.16.5 (18.02.2025)">v0.16.5</a> &nbsp;
 <a href="#v0164" title="GClh II version 0.16.4 (04.02.2025)">v0.16.4</a> &nbsp;
@@ -29,6 +30,34 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.7:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Treasures] Navigation menu not reachable on new page Treasures. [<a href="https://github.com/2Abendsegler/GClh/issues/2769" title="Issue 2769">2769</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Geoservice does not have correct coordinates if you comes from browse map. [<a href="https://github.com/2Abendsegler/GClh/issues/2768" title="Issue 2768">2768</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Improve buttons above (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2767" title="Issue 2767">2767</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Build geoservices map feature (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2765" title="Issue 2765">2765</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Button to collapse activity (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2764" title="Issue 2764">2764</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Create "save as Pocket Query" button (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2759" title="Issue 2759">2759</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(20.03.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.6:
