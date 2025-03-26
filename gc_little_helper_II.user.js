@@ -10754,11 +10754,11 @@ var mainGC = function() {
             function handleSearchIsFinished() {
                 let count = 0;
                 let intervalZoomInEnabled = setInterval(() => {
-                    if (document.querySelector('[data-event-label="Map - Zoom In"]').disabled === true || ++count > 40) {
+                    if (document.querySelector('[data-event-label="Map - Zoom In"]').disabled === true || ++count > 80) {
                         clearInterval(intervalZoomInEnabled);
                         count = 0;
                         let intervalZoomInDisabled = setInterval(() => {
-                            if (document.querySelector('[data-event-label="Map - Zoom In"]').disabled === false || ++count > 40) {
+                            if (document.querySelector('[data-event-label="Map - Zoom In"]').disabled === false || ++count > 80) {
                                 initialFilterSearchIsFinished = true;
                                 searchThisAreaIsRunning = 0;
                                 clearInterval(intervalZoomInDisabled);
@@ -10768,94 +10768,108 @@ var mainGC = function() {
                 }, 250);
             }
 
-            // Default gclh filters must not be set in the following cases:
-            // 1) bookmark lists (url has special type)
-            // 2) mapping results from new search page (parameters 'asc=' and 'sort=' are always present)
-            // 3) mapping results from any stored search map url
-            // 4) matrix searches (covered by 2)
-            // Still, an initial filter search always needs to run (to update cache count), except for bookmark lists.
-            if (!document.location.href.match(/\.com\/live\/play\/map\?bmCode=/)) {
+            // Set gclh default filters once, but only in the following cases (no filters set from user):
+            // 1) https://www.geocaching.com/live/play/map: {hf:"1", nfb:"username"}
+            const isMapLink = Object.keys(unsafeWindow.__NEXT_DATA__.query).length === 2 && unsafeWindow.__NEXT_DATA__.query.hf === '1' &&
+                unsafeWindow.__NEXT_DATA__.query.nfb === unsafeWindow.__NEXT_DATA__.props.pageProps.gcUser.username;
+            // 2) https://www.geocaching.com/live/play/map?zoom=15: {zoom:"15", lat:"49.123", lng:"7.456"}
+            const isMapZoomLink = Object.keys(unsafeWindow.__NEXT_DATA__.query).length === 3 && unsafeWindow.__NEXT_DATA__.query.hasOwnProperty('zoom') &&
+                unsafeWindow.__NEXT_DATA__.query.hasOwnProperty('lat') && unsafeWindow.__NEXT_DATA__.query.hasOwnProperty('lng');
+            let run_setDefaultFilters = (isMapLink || isMapZoomLink);
+            const setDefaultFilters = () => {
+                if (!run_setDefaultFilters) return;
+                run_setDefaultFilters = false;
+
+                // "hideFinds": undefined=All, 0=Found by me, 1=Not found by me; GS default value: 1
+                if (settings_map_hide_found) {
+                    // Show only caches not found by me (GS sets filter by default, but doesn't hurt to set again, in case this changes).
+                    unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.hideFinds = 1;
+                } else {
+                    // Show all caches (unset GS default filter).
+                    delete unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.hideFinds;
+                    // Unset "notFoundBy" filter (set by default by GS).
+                    delete unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.notFoundBy;
+                }
+                // "hideOwned": undefined=All, 0=Caches I own, 1=Caches I don't own; GS default value: undefined
+                if (settings_map_hide_hidden) {
+                    // Show only caches I don't own.
+                    unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.hideOwned = 1;
+                } else {
+                    // Show all caches (GS default, but doesn't hurt to set again, in case this changes).
+                    delete unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.hideOwned;
+                }
+
+                // Hide cache types.
+                // "geocacheTypes": undefined=All, [2,3]=array of cache types to show; GS default value: undefined
+                //  Cache types from search map:
+                //  Tradi:     ct=2,9,3773    Multi:   ct=3                        Virtual: ct=4
+                //  Letterbox: ct=5           Event:   ct=6,1304,3653,3774,4738    Mystery: ct=8
+                //  Webcam:    ct=11          Cito:    ct=13                       Earth:   ct=137
+                //  Mega:      ct=453         Wherigo: ct=1858                     Giga:    ct=7005
+                let types_to_show = [2, 9, 3773, 3, 4, 5, 6, 1304, 3653, 3774, 4738, 8, 11, 13, 137, 453, 1858, 7005];
+                const gclh_cache_types = [2, 3, 4, 5, 6, 8, 9, 11, 13, 137, 453, 1304, 1858, 7005];
+                let types_filtered = [];
+                for (let i = 0; i < gclh_cache_types.length; i++) {
+                    // If cache type isn't filtered, there's nothing to do for this type.
+                    if (!window["settings_map_hide_" + gclh_cache_types[i]]) continue;
+
+                    // Add cache type(s) to array of filtered cache types.
+                    switch (gclh_cache_types[i]) {
+                        case 3: case 4: case 5: case 8: case 11: case 13: case 137: case 453: case 1858: case 7005:
+                            types_filtered.push(gclh_cache_types[i]);
+                            break;
+                        case 2:
+                            types_filtered.push(2, 9, 3773);
+                            break;
+                        case 6:
+                            types_filtered.push(6, 1304, 3653, 3774, 4738);
+                            break;
+                        default:
+                            gclh_log(`No instruction found for cache type ${gclh_cache_types[i]}.`);
+                    }
+                }
+                // Only set cache type filter if at least one cache type is hidden.
+                if (types_filtered[0]) {
+                    // Remove the filtered cache types from the array of all cache types to show.
+                    types_to_show = types_to_show.filter(val => !types_filtered.includes(val));
+                    // Set "geocacheTypes" filter.
+                    unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.geocacheTypes = types_to_show;
+                }
+            }
+
+            // Run initial filter search (to update cache count for the given zoom level and/or show caches at corrected coordinates on page load),
+            // except for bookmark lists: {bmCode:'BMxxxxx'} ...
+            const isBML = unsafeWindow.__NEXT_DATA__.query.hasOwnProperty('bmCode');
+            // ... and matrix searches: {asc:"true", d:"4.5", hf:"1", lat:"49.123", lng:"7.456", nfb:"username", ot:"coords", r:"50", sort:"distance", t:"5", zoom:"8"}
+            const isMatrixSearch = ['asc','d','hf','lat','lng','nfb','ot','r','sort','t','zoom'].every(key => key in unsafeWindow.__NEXT_DATA__.query);
+            if (!isBML && !isMatrixSearch) {
                 // Perform filter search:
-                // 1) wait until filters are available (e.g. found status filter)
+                // 1) wait until filters are available
                 // 2) wait until GS default filters are applied (otherwise ours will be overridden):
                 //    - erase default distance value
                 //    - observe this value until it will be be reset by GS default filters
-                // 3) set default filters, if necessary (slightly delayed, otherwise we're too fast)
-                // 4) run filter search
-                waitForElementThenRun('[data-event-label="Expand/Collapse Filters - Found Status"]', () => {
-                    // Ensure that filters are not collapsed (otherwise they cannot be selected).
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"]').click();
-                    }
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"]').click();
-                    }
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"]').click();
-                    }
+                // 3) run filter search
+                const filters_distance_from = '[data-event-label="Filters - Distance From"]';
+                waitForElementThenRun(filters_distance_from, () => {
                     // Erase default distance value.
-                    document.querySelector('[data-event-label="Filters - Distance From"]').setAttribute('value', '');
+                    document.querySelector(filters_distance_from).setAttribute('value', '');
 
                     // Observe distance value for changes, then run filter search (only once).
                     const cb = function(_mutationsList, observer) {
                         setTimeout(() => {
-                            // Set default filters (if necessary).
-                            if (!window.location.search.match(/asc=|sort=|fb=|nfb=|hb=|ho|ct=/)) setDefaultFilters();
-                            // Run filter search to apply default filters and/or update cache count.
-                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
+                            // Run filter search (slightly delayed to ensure that filters are ready) to apply default filters and/or update cache count.
+                            $('button[data-event-label="Filters - Apply"]').first().click();
                             handleSearchIsFinished();
                         }, 500);
 
                         observer.disconnect();
                         observer = null;
                     }
-                    const target = document.querySelector('[data-event-label="Filters - Distance From"]');
+                    const target = document.querySelector(filters_distance_from);
                     const config = { attributes: true, attributeFilter: ["value"] };
                     let observer = new MutationObserver(cb);
                     observer.observe(target, config);
                 },  20000);
-            }
-
-            // Set gclh default filters.
-            function setDefaultFilters() {
-                // "hideFinds": null=All, 0=Found by me, 1=Not found by me; GS default value: 1
-                if (settings_map_hide_found) {
-                    // Show only caches not found by you (GS sets filter by default, but doesn't hurt to set again, in case this changes).
-                    document.querySelector('input[data-event-label="Filters - Found Status - Not Found"]').click();
-                } else {
-                    // Show all caches (unset GS default filter).
-                    document.querySelector('input[data-event-label="Filters - Found Status - All"]').click();
-                }
-                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: null
-                if (settings_map_hide_hidden) {
-                    // Show only caches you don't own.
-                    document.querySelector('input[data-event-label="Filters - Cache Owner - Not Owned"]').click();
-                } else {
-                    // Show all caches.
-                    document.querySelector('input[data-event-label="Filters - Cache Owner - All"]').click();
-                }
-
-                // "geocacheTypes": [2, 9, 3773, 3]=cache types to show; GS default: [] (all)
-                //  Cache types from search map:
-                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6,3653
-                //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
-                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453,1304,3774,4738
-                //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
-                let types_to_show = { 2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event" };
-                const n_types = Object.keys(types_to_show).length;
-                // Remove hidden cache types from types_to_show.
-                for (let key in types_to_show) {
-                    if (window["settings_map_hide_" + key]) {
-                        delete types_to_show[key];
-                    }
-                }
-                // Only set cache type filter if at least one cache type is hidden.
-                if (Object.keys(types_to_show).length < n_types) {
-                    // Set "geocacheTypes" filter.
-                    for (let key in types_to_show) {
-                        document.querySelector('input[data-event-label="Filters - Geocache Type - ' + types_to_show[key] + '"]').click();
-                    }
-                }
             }
 
             // Get map instance.
@@ -10917,7 +10931,8 @@ var mainGC = function() {
                     $("#gclh_corrected_coords").bind("click", () => {
                         // Run 'Search this area' to modify coords.
                         if (!document.querySelector('[data-testid="search-this-area-button"]')) return;
-                        document.querySelector('[data-testid="search-this-area-button"]').click();
+                        $('[data-testid="search-this-area-button"]').first().click();
+                        handleSearchIsFinished();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings.Map.fireEvent('click');
                         if (!isActive) {
@@ -11027,7 +11042,7 @@ var mainGC = function() {
 
             // Issue: #GClhMatrix now gets removed from URL before gclh starts and therefore doesn't work anymore.
             // Possible solution: detect by filter parameters instead
-            //   var isGclhMatrix = (getURLParam('d') && getURLParam('t') && getURLParam('r') && getURLParam('nfb')) ? true : false;
+            //   var isGclhMatrix = ['asc','d','hf','lat','lng','nfb','ot','r','sort','t','zoom'].every(key => key in unsafeWindow.__NEXT_DATA__.query);
             var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
             var latHighG = latHigh = false;
             var latLowG = latLow = false;
@@ -11100,10 +11115,10 @@ var mainGC = function() {
                 // Block further calls to searchThisArea until actual search is finished.
                 ++searchThisAreaIsRunning;
 
-                let search_button = document.querySelector('[data-testid="search-this-area-button"]');
+                let $search_button = $('[data-testid="search-this-area-button"]').first();
                 let $loading_container = $('svg.loading-spinner').parent().parent();
                 if ($('.leaflet-gl-layer.mapboxgl-map')[0] || $('div.gm-style')[0]) { // Leaflet or GM
-                    if (search_button) {
+                    if ($search_button[0]) {
                         // Delay 1s, such that the last values of a movement are used.
                         setTimeout(function() {
                             // Determine whether a new search is necessary, because we have not yet searched of a part of the map area.
@@ -11124,7 +11139,7 @@ var mainGC = function() {
                                 let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
                                 // 9 searches max to be on the safe side.
                                 if (times.length < 9) {
-                                    document.querySelector('[data-testid="search-this-area-button"]').click();
+                                    $search_button.click();
                                     handleSearchIsFinished();
                                     times.push(Date.now());
                                     GM_setValue("search_this_area_times", JSON.stringify(times));
@@ -11132,7 +11147,7 @@ var mainGC = function() {
                                     let t = Date.now();
                                     // Check 1min limit.
                                     if ((t - times[0]) > ONE_MINUTE_MS) {
-                                        document.querySelector('[data-testid="search-this-area-button"]').click();
+                                        $search_button.click();
                                         handleSearchIsFinished();
                                         // Remove first and append current timestamp.
                                         times.splice(0, 1);
@@ -11189,49 +11204,47 @@ var mainGC = function() {
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
             }
 
-            // Preserve zoom parameter in URLs on page load, for Leaflet maps (GS ignores zoom levels from URLs).
-            // Function 'setZoom' will be triggered on each URL change, but only executed once.
-            function setZoom() {
-                if (unsafeWindow.MapSettings?.Map?.setZoom) {
-                    // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
-                    const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
-                    if (!isNaN(zoom)) unsafeWindow.MapSettings.Map.setZoom(zoom);
-                }
-            }
-            // Set default radius for filter search, if none is given.
-            function setRadius() {
+            // Set filter search radius to get proper cache count (as soon as filter search is performed).
+            // Necessary if zoom parameter in URL is present.
+            const setFilterRadius = () => {
+                // If radius is already set, do nothing.
                 if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps?.filterData?.distanceInKM) {
                     const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
                     const lat = unsafeWindow.__NEXT_DATA__?.props?.pageProps?.searchOrigin?.latitude;
                     // https://gis.stackexchange.com/questions/7430/what-ratio-scales-do-google-maps-zoom-levels-correspond-to#answer-127949
                     const metersPerPx = 156543.03392*Math.cos(lat/180*Math.PI)/Math.pow(2, zoom);
-                    let $map = $('div.leaflet-container');  // leaflet
-                    if ($map.length === 0) $map = $('div.gm-style'); // GM
-                    const diamPx = ($map.width() + $map.height())/2;
+                    const diamPx = (window.innerWidth + window.innerHeight)/2;
                     radius = (metersPerPx*diamPx/2/1000).toFixed(2)*1; // km
+                    // "distanceInKM": undefined=none, value=radius in km; GS default value: 16
                     unsafeWindow.__NEXT_DATA__.props.pageProps.filterData.distanceInKM = radius;
+                }
+            }
+            // Preserve zoom parameter in URLs on page load, for Leaflet maps (GS ignores zoom levels from URLs).
+            // Function 'setZoom' will be triggered on each URL change, but only executed once.
+            let run_setZoom = true;
+            function setZoom() {
+                if (run_setZoom && unsafeWindow.MapSettings?.Map?.setZoom) {
+                    run_setZoom = false;
+
+                    // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
+                    // Moreover, if zoom is present but not lat and lng, then do nothing
+                    // (reason: for proper zoom handling, always zoom together with lat and lng is necessary).
+                    const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
+                    const lat = unsafeWindow.__NEXT_DATA__?.query?.lat*1;
+                    if (!isNaN(zoom) && !isNaN(lat)) unsafeWindow.MapSettings.Map.setZoom(zoom);
+                    // Set filter search radius (must be set here!).
+                    setFilterRadius();
                 }
             }
 
             // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
             // (for reference: https://stackoverflow.com/a/64927639)
-            let use_zoom_from_url = true;
-            let run_set_radius = true;
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
-                    if (use_zoom_from_url) {
-                        // Run only once.
-                        use_zoom_from_url = false;
-                        setZoom();
-                    }
-                    if (run_set_radius) {
-                        // Run only once.
-                        run_set_radius = false;
-                        setRadius();
-                    }
+                    setZoom();
+                    setDefaultFilters();
                     let output = target.apply(thisArg, argArray);
                     if (settings_searchmap_autoupdate_after_dragging) searchThisArea(0);
-
                     return output;
                 }
             });
