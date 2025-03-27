@@ -13358,7 +13358,7 @@ var mainGC = function() {
                 }
                 return [itemName, itemLink, width];
             }
-            if (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage())) {
+            if ($('#stats_tabs-maps')[0] && (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage()))) {
                 const config = { childList: true, subtree: true };
                 const tooltipObserver = new MutationObserver(function(_, observer) {
                     observer.disconnect();
