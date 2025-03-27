@@ -1946,8 +1946,12 @@ var mainGC = function() {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                         css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
                         if (is_page("publicProfile")) {
+                            // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
+                            css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth {width: 751px;}";
                             css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
                         } else {
+                            // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
+                            css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 790px;}";
                             css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
                         }
                         css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
