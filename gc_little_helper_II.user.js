@@ -12004,8 +12004,6 @@ var mainGC = function() {
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
             // Map buttons above.
-            // - Ensure that map selection area is on top of map control buttons.
-            css += '.leaflet-top.leaflet-right {z-index: 2010;}';
             // - All top buttons next to each other.
             css += '.leaflet-top.leaflet-right {display: flex;}';
             // - Standardize button spacing.
