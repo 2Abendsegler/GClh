@@ -212,6 +212,7 @@ gclh_nav .profile-panel,
 gclh_nav .profile-panel a {
     color: #fff;
     text-decoration: none;
+    box-shadow: none;
 }
 .profile-panel>li {
     height: 40px;
