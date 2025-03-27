@@ -12079,18 +12079,12 @@ var mainGC = function() {
         try {
             function checkBrowseMap(waitCount) {
                 if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
-                    var css = '';
                     // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
                     if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_browse_map && getValue("gclhLeafletMapActive")) {
                         addLayersOnMap();
-                    } else {
-                        // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
-                        css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
                     }
-                    // Damit auch mehr als 2 Buttons handlebar.
-                    css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
                     // Hide Map Header.
                     hideHeaderOnBrowseMap();
                     // Change map parameter and add homezone to map.
@@ -12113,14 +12107,17 @@ var mainGC = function() {
                     if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
                         cachePopupOnBrowseMap();
                     }
-                    // Improve clickability on list names of add to list pop up.
-                    css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
-                    // Enable Linklist, config and sync scrolling on Browse Map.
-                    css += "body {overflow: visible;}";
-                    appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
             checkBrowseMap(0);
+            var css = '';
+            // Damit auch mehr als 2 Buttons handlebar.
+            css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+            // Improve clickability on list names of add to list pop up.
+            css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
+            // Enable Linklist, config and sync scrolling on Browse Map.
+            css += "body {overflow: visible;}";
+            appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
 
@@ -12442,10 +12439,10 @@ var mainGC = function() {
         var css = '';
         css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
         css += '.searchmap .gclh-leaflet-list {right: -1px; top: -1px; }';
-        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: unset; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
-        css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; overflow: hidden; padding: 4px;}';
+        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: relative; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
+        css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; padding: 4px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
-        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 68px; top: 16px;}';
+        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 0px; top: 0px;}';
         css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
