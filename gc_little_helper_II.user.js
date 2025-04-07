@@ -11090,10 +11090,7 @@ var mainGC = function() {
             // - link from matrix
             // - filters changed
             // - all search results for visible map area are already available
-
-            // Issue: #GClhMatrix now gets removed from URL before gclh starts and therefore doesn't work anymore.
-            // Possible solution: &GClhMatrix=1 instead of #GClhMatrix
-            var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
+            var isGclhMatrix = getURLParam('gclhmatrix');
             var latHighG = latHigh = false;
             var latLowG = latLow = false;
             var lngHighG = lngHigh = false;
@@ -13202,14 +13199,14 @@ var mainGC = function() {
                                 cell.children[0].href +=
                                     "&origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng")) +
                                     "&radius=" + settings_count_own_matrix_links_radius + "km" +
-                                    "&nfb[0]=" + global_me + "&o=2#GClhMatrix";
+                                    "&nfb[0]=" + global_me + "&o=2&gclhmatrix=1";
                                 if (settings_count_own_matrix_links == "map") {
                                     var zoom = Math.round(24 - Math.log2(settings_count_own_matrix_links_radius * 1000));
                                     var dt = cell.children[0].href.match(/d=(.*?)&t=(.*?)&/i);
                                     cell.children[0].href = 'https://www.geocaching.com/play/map?lat=' + (getValue("home_lat") / 10000000)
                                                           + '&lng=' + (getValue("home_lng") / 10000000) + '&zoom=' + zoom
                                                           + '&asc=true&sort=distance&ot=coords&r=' + settings_count_own_matrix_links_radius
-                                                          + '&d=' + dt[1] + '&t=' + dt[2] + '&hf=1&nfb=' + global_me + '#GClhMatrix';
+                                                          + '&d=' + dt[1] + '&t=' + dt[2] + '&hf=1&nfb=' + global_me + '&gclhmatrix=1';
                                     cell.children[0].title += ", on map";
                                 } else {
                                     cell.children[0].href += "#searchResultsTable";
