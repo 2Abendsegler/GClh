@@ -15149,7 +15149,9 @@ var mainGC = function() {
                         else {
                             if (lines[i+j].getAttribute("class") == (undefined|null|"")) var oldClass = "";
                             else var oldClass = " " + lines[i+j].getAttribute("class");
-                            lines[i+j].setAttribute("class", setSpec + oldClass);
+                            if (!$(lines[i+j]).hasClass('UserOwned')) {
+                                lines[i+j].setAttribute("class", setSpec + oldClass);
+                            }
                         }
                     }
                 }
