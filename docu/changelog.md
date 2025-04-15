@@ -1,5 +1,4 @@
-<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
-<br>
+<a href="#v0168" title="GClh II version 0.16.8 (16.04.2025)">v0.16.8</a> &nbsp;
 <a href="#v0167" title="GClh II version 0.16.7 (20.03.2025)">v0.16.7</a> &nbsp;
 <a href="#v0166" title="GClh II version 0.16.6 (11.03.2025)">v0.16.6</a> &nbsp;
 <a href="#v0165" title="GClh II version 0.16.5 (18.02.2025)">v0.16.5</a> &nbsp;
@@ -30,6 +29,43 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.8:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve buttons with GClh layers and without. [<a href="https://github.com/2Abendsegler/GClh/issues/2773" title="Issue 2773">2773</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Move add to list count in new add to list area. [<a href="https://github.com/2Abendsegler/GClh/issues/2774" title="Issue 2774">2774</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Move buttons behind user menu. [<a href="https://github.com/2Abendsegler/GClh/issues/2775" title="Issue 2775">2775</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths. [<a href="https://github.com/2Abendsegler/GClh/issues/2776" title="Issue 2776">2776</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistik] Error in statistic map, if statistic is not available. [<a href="https://github.com/2Abendsegler/GClh/issues/2777" title="Issue 2777">2777</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Remove border in GClh header. [<a href="https://github.com/2Abendsegler/GClh/issues/2778" title="Issue 2778">2778</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Recently Viewed Caches] Alternate color for lines overwrite user owned color. [<a href="https://github.com/2Abendsegler/GClh/issues/2779" title="Issue 2779">2779</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Account Settings] Integrate new page "Experimental Features". [<a href="https://github.com/2Abendsegler/GClh/issues/2780" title="Issue 2780">2780</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Account Settings] Integrate new page "Experimental Features", align menu. [<a href="https://github.com/2Abendsegler/GClh/issues/2781" title="Issue 2781">2781</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(16.04.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.7:

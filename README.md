@@ -1,5 +1,4 @@
-<a href="//"><img src="https://img.shields.io/github/last-commit/2Abendsegler/gclh"></a>
-<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/README.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a> &nbsp; <a href="//"><img src="https://img.shields.io/github/stars/2Abendsegler/gclh?style=social"></a><br>
+<a href="//"><img src="https://img.shields.io/github/last-commit/2Abendsegler/gclh"></a>&nbsp; <a href="//"><img src="https://img.shields.io/github/stars/2Abendsegler/gclh?style=social"></a><br>
 <br>
 <a href="#user-content-en" title=""><img src="/images/flag_en.png"></a>
 <a href="#user-content-de" title=""><img src="/images/flag_de.png"></a>

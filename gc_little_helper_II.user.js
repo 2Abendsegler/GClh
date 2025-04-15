@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.7
+// @version      0.16.8
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -1820,7 +1820,7 @@ var mainGC = function() {
                     css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                     // Vertikales Menü ausrichten.
                     if (settings_bookmarks_top_menu) {
-                        if (is_page("find_cache")) {
+                        if (is_page("find_cache") || (is_page("settings") && document.location.pathname.match(/^\/live\//))) {
                             css += ".#m li:not(.attention-link-parent) ul.#sm {margin-top: 17px;}";
                         }
                         css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
@@ -1946,8 +1946,12 @@ var mainGC = function() {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                         css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
                         if (is_page("publicProfile")) {
+                            // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
+                            css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth {width: 751px;}";
                             css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
                         } else {
+                            // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
+                            css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 790px;}";
                             css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
                         }
                         css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
@@ -11395,8 +11399,8 @@ var mainGC = function() {
                     if ($('.favorites-text')[0] && $('.favorites-text')[0].childNodes[0] && sidebar_enhancements_buffer[new_gc_code] && $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0] && !$(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML == '') {
                         $('.favorites-text')[0].innerHTML = $('.favorites-text')[0].childNodes[0].data + '<span> (' + $(sidebar_enhancements_buffer[new_gc_code]).find('.favi_points')[0].innerHTML + ')</span>';
                     }
-                    if ($('.cache-preview-action-menu ul li.add-to-list')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
-                        $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
+                    if ($('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0] && sidebar_enhancements_addToList_buffer[new_gc_code]) {
+                        $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[new_gc_code]);
                     }
                     if (($('.gclhOwner') || $('.geocache-placed-date')) && !$('.gclh_weekday')[0] && sidebar_enhancements_weekday_buffer[new_gc_code]) {
                         if ($('.gclhOwner')[0]) $('.gclhOwner').after(sidebar_enhancements_weekday_buffer[new_gc_code]);
@@ -11664,11 +11668,11 @@ var mainGC = function() {
                     }
 
                     // Get count and names of own bookmarklists.
-                    if ($('.cache-preview-action-menu ul li.add-to-list')[0]) {
+                    if ($('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0]) {
                         var [ownBMLsCount, ownBMLsText, ownBMLsList] = getOwnBMLs(text);
-                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '">(' + ownBMLsCount + ')</span>')[0];
+                        sidebar_enhancements_addToList_buffer[local_gc_code] = $('<span class="add_to_list_count" title="' + ownBMLsList + '"> (' + ownBMLsCount + ')</span>')[0];
                         $('.add_to_list_count').each(function(){removeElement(this);});
-                        $('.cache-preview-action-menu ul li.add-to-list')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
+                        $('.cache-preview-action-menu ul li.add-to-list button[aria-haspopup="dialog"] span')[0].append(sidebar_enhancements_addToList_buffer[local_gc_code]);
                     }
 
                     // Show Weekday for Events.
@@ -12004,8 +12008,6 @@ var mainGC = function() {
             css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
             css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
             // Map buttons above.
-            // - Ensure that map selection area is on top of map control buttons.
-            css += '.leaflet-top.leaflet-right {z-index: 2010;}';
             // - All top buttons next to each other.
             css += '.leaflet-top.leaflet-right {display: flex;}';
             // - Standardize button spacing.
@@ -12079,18 +12081,12 @@ var mainGC = function() {
         try {
             function checkBrowseMap(waitCount) {
                 if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
-                    var css = '';
                     // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
                     if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_browse_map && getValue("gclhLeafletMapActive")) {
                         addLayersOnMap();
-                    } else {
-                        // Buttons auch ohne GClh halbwegs ausrichten. (GC Layer sind ok, GME ist etwas verrutscht, geht aber.)
-                        css += '.leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
                     }
-                    // Damit auch mehr als 2 Buttons handlebar.
-                    css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
                     // Hide Map Header.
                     hideHeaderOnBrowseMap();
                     // Change map parameter and add homezone to map.
@@ -12113,14 +12109,17 @@ var mainGC = function() {
                     if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
                         cachePopupOnBrowseMap();
                     }
-                    // Improve clickability on list names of add to list pop up.
-                    css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
-                    // Enable Linklist, config and sync scrolling on Browse Map.
-                    css += "body {overflow: visible;}";
-                    appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
             checkBrowseMap(0);
+            var css = '';
+            // Damit auch mehr als 2 Buttons handlebar.
+            css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+            // Improve clickability on list names of add to list pop up.
+            css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
+            // Enable Linklist, config and sync scrolling on Browse Map.
+            css += "body {overflow: visible;}";
+            appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
 
@@ -12442,10 +12441,10 @@ var mainGC = function() {
         var css = '';
         css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
         css += '.searchmap .gclh-leaflet-list {right: -1px; top: -1px; }';
-        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: unset; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
-        css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; overflow: hidden; padding: 4px;}';
+        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: relative; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
+        css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; padding: 4px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
-        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 68px; top: 16px;}';
+        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 0px; top: 0px;}';
         css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
@@ -13359,7 +13358,7 @@ var mainGC = function() {
                 }
                 return [itemName, itemLink, width];
             }
-            if (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage())) {
+            if ($('#stats_tabs-maps')[0] && (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage()))) {
                 const config = { childList: true, subtree: true };
                 const tooltipObserver = new MutationObserver(function(_, observer) {
                     observer.disconnect();
@@ -15150,7 +15149,9 @@ var mainGC = function() {
                         else {
                             if (lines[i+j].getAttribute("class") == (undefined|null|"")) var oldClass = "";
                             else var oldClass = " " + lines[i+j].getAttribute("class");
-                            lines[i+j].setAttribute("class", setSpec + oldClass);
+                            if (!$(lines[i+j]).hasClass('UserOwned')) {
+                                lines[i+j].setAttribute("class", setSpec + oldClass);
+                            }
                         }
                     }
                 }
@@ -15296,8 +15297,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/DQWi/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iRw"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/sMgr/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iR8"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16691,7 +16692,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "20.03.2025";
+            var thanksLastUpdate = "15.04.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -20859,7 +20860,7 @@ function is_page(name) {
     } else if (name == "drafts") {
         if (url.match(/^\/account\/drafts/)) status = true;
     } else if (name == "settings") {
-        if (url.match(/^\/account\/(settings|lists|drafts|documents)/)) status = true;
+        if (url.match(/^\/(account|live\/account)\/(settings|lists|drafts|documents)/)) status = true;
     } else if (name == "messagecenter") {
         if (url.match(/^\/account\/messagecenter/)) status = true;
     } else if (name == "dashboard") {

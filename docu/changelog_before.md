@@ -1,5 +1,3 @@
-<a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/changelog_before.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a><br>
-<br>
 <a href="changelog.md" title="Go to later changelog">Later changelog</a> &nbsp;
 <a href="#v01120" title="GClh II version 0.11.20 (03.10.2022)">v0.11.20</a> &nbsp;
 <a href="#v01119" title="GClh II version 0.11.19 (26.07.2022)">v0.11.19</a> &nbsp;
