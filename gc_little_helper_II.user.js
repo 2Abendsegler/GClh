@@ -1820,7 +1820,7 @@ var mainGC = function() {
                     css += "nav .wrapper {padding-right: " + new_padding_right + "px !important; width: unset;}";
                     // Vertikales Menü ausrichten.
                     if (settings_bookmarks_top_menu) {
-                        if (is_page("find_cache")) {
+                        if (is_page("find_cache") || (is_page("settings") && document.location.pathname.match(/^\/live\//))) {
                             css += ".#m li:not(.attention-link-parent) ul.#sm {margin-top: 17px;}";
                         }
                         css += ".#m ul.#sm {margin-top: 0px; margin-left: 32px !important;} .#m .submenu::after {left: 4px; width: 26px;}";
