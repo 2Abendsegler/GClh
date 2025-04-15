@@ -1,4 +1,4 @@
-# FAQ &nbsp;  &nbsp; <a href="//"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/2Abendsegler/GClh/master/docu/faq.md&count_bg=%2349c91b&title_bg=%23555555&icon=&title=hits&edge_flat=false" title="hits day / total"></a>
+# FAQ
 
 <a href="#en" title=""><img src="../images/flag_en.png"></a> | <a href="#de" title=""><img src="../images/flag_de.png"></a>
 --- | --- 
