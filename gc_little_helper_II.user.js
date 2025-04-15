@@ -20860,7 +20860,7 @@ function is_page(name) {
     } else if (name == "drafts") {
         if (url.match(/^\/account\/drafts/)) status = true;
     } else if (name == "settings") {
-        if (url.match(/^\/account\/(settings|lists|drafts|documents)/)) status = true;
+        if (url.match(/^\/(account|live\/account)\/(settings|lists|drafts|documents)/)) status = true;
     } else if (name == "messagecenter") {
         if (url.match(/^\/account\/messagecenter/)) status = true;
     } else if (name == "dashboard") {
