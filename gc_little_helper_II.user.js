@@ -10710,49 +10710,64 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
-            // Map control.
-            if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
-                // Add React object to global space.
-                try {
-                    unsafeWindow.webpackChunk_N_E.push([
-                        [66666],
-                        { 66667: () => {} },
-                        (n) => { unsafeWindow.React = n(2784); }
-                    ]);
-                } catch(e) {gclh_error("Push to webpackChunk_N_E",e);}
+            // Proxies for map control and corrected coordinates:
+            //   observe html until unsafeWindow.webpackChunk_N_E is available and non-empty.
+            const t0 = Date.now();
+            const timeout = 10000;
+            const observer = new MutationObserver(() => {
+                if (unsafeWindow.webpackChunk_N_E?.length > 0 ) {
+                    observer.disconnect();
 
-                // Initialize Map object.
-                unsafeWindow.MapSettings = {'Map': null};
-
-                // Add proxy to get (Leaflet) map instance.
-                if (unsafeWindow.React?.useState) {
-                    unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
-                        apply: (target, thisArg, argArray) => {
-                            let useState = target.apply(thisArg, argArray);
-                            if (useState[0]?.__version) {
-                                getMapInstance(useState);
-                            }
-                            return useState;
+                    // Add React object to global space.
+                    try {
+                        if (!unsafeWindow.React) {
+                            unsafeWindow.webpackChunk_N_E.push([
+                                [66666],
+                                { 66667: () => {} },
+                                (n) => { unsafeWindow.React = n(2784); }
+                            ]);
                         }
-                    });
-                }
-            }
+                    } catch { gclh_log('push to webpackChunk_N_E failed'); }
 
-            // Cache data for display at corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but) {
-                // Add proxy to get cache data.
-                if (unsafeWindow.React?.useMemo) {
-                    unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
-                        apply: (target, thisArg, argArray) => {
-                            let useMemo = target.apply(thisArg, argArray);
-                            if (useMemo && useMemo?.props?.searchResults) {
-                                processCaches(useMemo);
+                    // Add proxy to get (Leaflet) map instance.
+                    if (unsafeWindow.React?.useState) {
+                        unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                            apply: (target, thisArg, argArray) => {
+                                let useState = target.apply(thisArg, argArray);
+                                if (useState[0]?.__version) {
+                                    getMapInstance(useState);
+                                }
+                                return useState;
                             }
-                            return useMemo;
+                        });
+                    }
+
+                    // Cache data for displaying at corrected coordinates.
+                    if (settings_show_found_caches_at_corrected_coords_but) {
+                        if (unsafeWindow.React?.useMemo) {
+                            unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
+                                apply: (target, thisArg, argArray) => {
+                                    let useMemo = target.apply(thisArg, argArray);
+                                    if (useMemo && useMemo?.props?.searchResults) {
+                                        processCaches(useMemo);
+                                    }
+                                    return useMemo;
+                                }
+                            });
                         }
-                    });
+                    }
+                    return;
                 }
-            }
+                // Timeout.
+                if (Date.now() - t0 > timeout) {
+                    observer.disconnect();
+                    gclh_log('unsafeWindow.webpackChunk_N_E not found for ' + timeout/1000 + 's');
+                }
+            });
+            observer.observe(document.documentElement, { childList: true, subtree: true });
+
+            // Initialize Map object.
+            unsafeWindow.MapSettings = {'Map': null};
 
             // Check if default filters have to be set.
             function run_setDefaultFilters() {
@@ -10852,6 +10867,7 @@ var mainGC = function() {
 
             // Get map instance.
             const getMapInstance = (state) => {
+                // Only once.
                 if (unsafeWindow.MapSettings?.Map?._mapPane) return;
 
                 // Leaflet maps only.
@@ -10910,7 +10926,7 @@ var mainGC = function() {
                         // Run 'Search this area' to modify coords.
                         document.querySelector('[data-testid="search-this-area-button"]').click();
                         // Clear possible cache selection.
-                        unsafeWindow.MapSettings.Map.fireEvent('click');
+                        unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         if (!isActive) {
                             // Activate.
                             isActive = true;
