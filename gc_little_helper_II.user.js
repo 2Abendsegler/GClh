@@ -8745,11 +8745,11 @@ var mainGC = function() {
                 '         <strong>' +
                 '           <img title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' +
                 '           {{if FavoritePointUsed }}' +
-                '             <svg class="favoritePoint" aria-hidden="true" role="img" height="16" width="16" alt="">' +
+                '             <svg class="favoritePoint" aria-hidden="true" role="img" alt="">' +
                 '               <use href="#heart_cache_favorited--inline" />' +
                 '             </svg>' +
                 '           {{/if}}' +
-                '           &nbsp;${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
+                '           ${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
                 '      <div class="HalfRight AlignRight">' +
                 '        <span class="minorDetails LogDate">${Visited}</span></div>' +
                 '      <div class="Clear LogContent markdown-output">' +
@@ -8855,8 +8855,8 @@ var mainGC = function() {
 
             var css = "";
             // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
-            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: sub; z-index: 1; position: relative;}";
-            css += ".favoritePoint {color: rgb(0 125 70); margin-right: 0px; margin-left: -7px; vertical-align: sub;}";
+            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: sub; height: 16px; width: 16px; z-index: 1; position: relative;}";
+            css += ".favoritePoint {color: rgb(0 125 70); margin-right: 0px; margin-left: -7px; vertical-align: sub; height: 16px; width: 16px;}";
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats img {vertical-align: sub;}";
             css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
