@@ -8743,9 +8743,9 @@ var mainGC = function() {
                 '    <div class="FloatLeft LogDisplayRight">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
-                '           <img title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' +
+                '           <img height="17" width="17" title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' +
                 '           {{if FavoritePointUsed }}' +
-                '             <svg class="favoritePoint" aria-hidden="true" role="img" alt="">' +
+                '             <svg class="favoritePoint" height="16" width="16" aria-hidden="true" role="img" alt="">' +
                 '               <use href="#heart_cache_favorited--inline" />' +
                 '             </svg>' +
                 '           {{/if}}' +
@@ -8855,8 +8855,8 @@ var mainGC = function() {
 
             var css = "";
             // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
-            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: sub; height: 16px; width: 16px; z-index: 1; position: relative;}";
-            css += ".favoritePoint {color: rgb(0 125 70); margin-right: 0px; margin-left: -7px; vertical-align: sub; height: 16px; width: 16px;}";
+            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: top; z-index: 1; position: relative;}";
+            css += ".favoritePoint {color: rgb(0 125 70); margin-right: 0px; margin-left: -7px; vertical-align: top;}";
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats img {vertical-align: sub;}";
             css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
