@@ -9114,7 +9114,7 @@ var mainGC = function() {
                     setTimeout(function() { // Force direct display refresh.
                         $(logsTab).find('tbody').children().remove();
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogTypeID == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                            if (logs[i] && (logs[i].LogTypeID == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && logs[i].FavoritePointUsed === true))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
@@ -9142,6 +9142,29 @@ var mainGC = function() {
                     link.addEventListener("click", gclh_filter_logs, false);
                     link.appendChild(legend.childNodes[i].childNodes[0].cloneNode(true));
                     link.appendChild(legend.childNodes[i].childNodes[1].cloneNode(true));
+                    li.appendChild(link);
+                    new_legend.appendChild(li);
+                }
+
+                var favAvailable = false;
+                for (var i = 0; i < logs.length; i++) {
+                    if (logs[i].FavoritePointUsed == true) {
+                        favAvailable = true;
+                        break;
+                    }
+                }
+                if (favAvailable) {
+                    let li = document.createElement("li");
+                    let link = document.createElement("a");
+                    link.setAttribute("href", "javascript:void(0);");
+                    link.setAttribute("style", "text-decoration: none;");
+                    link.id = "gclh_show_favorite_logs";
+                    link.addEventListener("click", gclh_filter_logs, false);
+                    let img = document.createElement("img");
+                    img.setAttribute("src", "/images/icons/fave_fill_16.svg");
+                    img.setAttribute("title", "Favorite logs");
+                    link.appendChild(img);
+                    link.innerHTML += ' ' + $('.favorite-value').text().trim();
                     li.appendChild(link);
                     new_legend.appendChild(li);
                 }
