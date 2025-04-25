@@ -37,6 +37,7 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Cache Listing] Show favorite points in logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2787" title="Issue 2787">2787</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The display of favorite points in the cache listing is a new standard feature. This feature is now also available in the GClh.<br>
 		<img src="../images/0.16.9/Screen01.jpg" alt="Screen02.jpg"><br><br>
 	</li>
 	<li>
