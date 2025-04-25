@@ -612,7 +612,6 @@ var variablesInit = function(c) {
     c.settings_show_log_counter_but = getValue("settings_show_log_counter_but", true);
     c.settings_show_log_counter = getValue("settings_show_log_counter", false);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
-    c.settings_show_who_gave_favorite_but = getValue("settings_show_who_gave_favorite_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
@@ -8683,8 +8682,6 @@ var mainGC = function() {
             if (settings_mail_icon_new_win) mailNewWin = 'target="_blank" ';
             var messageNewWin = "";
             if (settings_message_icon_new_win) messageNewWin = 'target="_blank" ';
-            let fav_img = '';
-            if (settings_show_who_gave_favorite_but) fav_img = '<img title="Favorited" src="/images/icons/fave_fill_16.svg" style="padding-left:2px;display:none;">';
 
             var new_tmpl = "";
             new_tmpl +=
@@ -8746,7 +8743,13 @@ var mainGC = function() {
                 '    <div class="FloatLeft LogDisplayRight">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
-                '           <img title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' + fav_img + '&nbsp;${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
+                '           <img height="17" width="17" title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' +
+                '           {{if FavoritePointUsed }}' +
+                '             <svg class="favoritePoint" height="16" width="16" aria-hidden="true" role="img" alt="">' +
+                '               <use href="#heart_cache_favorited--inline" />' +
+                '             </svg>' +
+                '           {{/if}}' +
+                '           ${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
                 '      <div class="HalfRight AlignRight">' +
                 '        <span class="minorDetails LogDate">${Visited}</span></div>' +
                 '      <div class="Clear LogContent markdown-output">' +
@@ -8852,7 +8855,8 @@ var mainGC = function() {
 
             var css = "";
             // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
-            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: sub;}";
+            css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: top; z-index: 1; position: relative;}";
+            css += ".favoritePoint {color: rgb(0 125 70); margin-right: 0px; margin-left: -7px; vertical-align: top;}";
             css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats img {vertical-align: sub;}";
             css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
@@ -9023,7 +9027,6 @@ var mainGC = function() {
                             buildEventShowBiggerAvatar();
                             setLinesColorInCacheListing();
                             if (isUpvoteActive) updateUpvoteEvents(logs);
-                            showFavIcons();
                             // Display log counters for dynamically loaded logs, if the display of the log counters is active.
                             if ($('.gclh_logCounter')[0] && !$('.gclh_logCounter')[0].innerHTML == "") showLogCounter();
                             if (!settings_hide_top_button) $("#topScroll").fadeIn();
@@ -9046,7 +9049,6 @@ var mainGC = function() {
                 if (isUpvoteActive && settings_show_hide_upvotes_but) showHideUpvotesLink();
                 if (settings_show_bigger_avatars_but && !settings_hide_avatar && !isMemberInPmoCache() && settings_show_thumbnails) showBiggerAvatarsLink();
                 if (settings_show_log_counter_but) showLogCounterLink();
-                if (settings_show_who_gave_favorite_but) addShowWhoGaveFavoriteButton();
                 if (isUpvoteActive) {
                     $('#new_sort_element_upvote').prop( "disabled", false );
                     $('#new_sort_element_upvote').removeClass("isDisabled");
@@ -9078,7 +9080,6 @@ var mainGC = function() {
                         if (countLogs === logs.length) setMarkerDisableDynamicLogLoad(); // all logs loaded
                         else removeMarkerDisableDynamicLogLoad();
                         global_num = countLogs; // set dynamic log counter to current number of logs
-                        showFavIcons();
                     }
                     activateLoadAndSearch();
                     $('#gclh_show_log_counter').removeClass("working");
@@ -9113,7 +9114,7 @@ var mainGC = function() {
                     setTimeout(function() { // Force direct display refresh.
                         $(logsTab).find('tbody').children().remove();
                         for (var i = 0; i < logs.length; i++) {
-                            if (logs[i] && (logs[i].LogTypeID == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && in_array(logs[i].AccountGuid, fav_guids)))) {
+                            if (logs[i] && (logs[i].LogTypeID == log_type || (log_type == "VIP" && (in_array(logs[i].UserName, global_vips) || logs[i].UserName == vip_owner)) || (log_type === "FAV" && logs[i].LogTypeID === 2 && logs[i].FavoritePointUsed === true))) {
                                 var newBody = unsafeWindow.$(document.createElement("TBODY"));
                                 unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(logs[i]).appendTo(newBody);
                                 unsafeWindow.$(document.getElementById("cache_logs_table2") || document.getElementById("cache_logs_table")).append(newBody.children());
@@ -9125,7 +9126,6 @@ var mainGC = function() {
                         setLinesColorInCacheListing();
                         if (isUpvoteActive) updateUpvoteEvents(logs);
                         setMarkerDisableDynamicLogLoad();
-                        showFavIcons();
                         activateLoadAndSearch();
                     }, 0);
                 }
@@ -9146,10 +9146,15 @@ var mainGC = function() {
                     new_legend.appendChild(li);
                 }
 
-                if (settings_show_who_gave_favorite_but) {
-                    // Add filter link for favorite logs (hidden until favorites are available).
+                var favAvailable = false;
+                for (var i = 0; i < logs.length; i++) {
+                    if (logs[i].FavoritePointUsed == true) {
+                        favAvailable = true;
+                        break;
+                    }
+                }
+                if (favAvailable) {
                     let li = document.createElement("li");
-                    li.setAttribute("style", "display: none;");
                     let link = document.createElement("a");
                     link.setAttribute("href", "javascript:void(0);");
                     link.setAttribute("style", "text-decoration: none;");
@@ -9274,7 +9279,6 @@ var mainGC = function() {
                     });
 
                     $('#search_logs_number_of_hits')[0].innerHTML = numberOfHits + ' / ' + $('#cache_logs_table2 .log-row').length;
-                    showFavIcons();
                     activateLoadAndSearch();
                 }
 
@@ -9403,7 +9407,6 @@ var mainGC = function() {
                                 gclh_add_vip_icon();
                                 buildEventShowBiggerAvatar();
                                 setLinesColorInCacheListing();
-                                showFavIcons();
                                 updateUpvoteEvents(logs);
                             }
                             // Activate buttons "Show log counter" and "Hide upvotes".
@@ -10710,49 +10713,64 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
-            // Map control.
-            if ((settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) || settings_show_found_caches_at_corrected_coords_but) {
-                // Add React object to global space.
-                try {
-                    unsafeWindow.webpackChunk_N_E.push([
-                        [66666],
-                        { 66667: () => {} },
-                        (n) => { unsafeWindow.React = n(2784); }
-                    ]);
-                } catch(e) {gclh_error("Push to webpackChunk_N_E",e);}
+            // Proxies for map control and corrected coordinates:
+            //   observe html until unsafeWindow.webpackChunk_N_E is available and non-empty.
+            const t0 = Date.now();
+            const timeout = 10000;
+            const observer = new MutationObserver(() => {
+                if (unsafeWindow.webpackChunk_N_E?.length > 0 ) {
+                    observer.disconnect();
 
-                // Initialize Map object.
-                unsafeWindow.MapSettings = {'Map': null};
-
-                // Add proxy to get (Leaflet) map instance.
-                if (unsafeWindow.React?.useState) {
-                    unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
-                        apply: (target, thisArg, argArray) => {
-                            let useState = target.apply(thisArg, argArray);
-                            if (useState[0]?.__version) {
-                                getMapInstance(useState);
-                            }
-                            return useState;
+                    // Add React object to global space.
+                    try {
+                        if (!unsafeWindow.React) {
+                            unsafeWindow.webpackChunk_N_E.push([
+                                [66666],
+                                { 66667: () => {} },
+                                (n) => { unsafeWindow.React = n(2784); }
+                            ]);
                         }
-                    });
-                }
-            }
+                    } catch { gclh_log('push to webpackChunk_N_E failed'); }
 
-            // Cache data for display at corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but) {
-                // Add proxy to get cache data.
-                if (unsafeWindow.React?.useMemo) {
-                    unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
-                        apply: (target, thisArg, argArray) => {
-                            let useMemo = target.apply(thisArg, argArray);
-                            if (useMemo && useMemo?.props?.searchResults) {
-                                processCaches(useMemo);
+                    // Add proxy to get (Leaflet) map instance.
+                    if (unsafeWindow.React?.useState) {
+                        unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                            apply: (target, thisArg, argArray) => {
+                                let useState = target.apply(thisArg, argArray);
+                                if (useState[0]?.__version) {
+                                    getMapInstance(useState);
+                                }
+                                return useState;
                             }
-                            return useMemo;
+                        });
+                    }
+
+                    // Cache data for displaying at corrected coordinates.
+                    if (settings_show_found_caches_at_corrected_coords_but) {
+                        if (unsafeWindow.React?.useMemo) {
+                            unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
+                                apply: (target, thisArg, argArray) => {
+                                    let useMemo = target.apply(thisArg, argArray);
+                                    if (useMemo && useMemo?.props?.searchResults) {
+                                        processCaches(useMemo);
+                                    }
+                                    return useMemo;
+                                }
+                            });
                         }
-                    });
+                    }
+                    return;
                 }
-            }
+                // Timeout.
+                if (Date.now() - t0 > timeout) {
+                    observer.disconnect();
+                    gclh_log('unsafeWindow.webpackChunk_N_E not found for ' + timeout/1000 + 's');
+                }
+            });
+            observer.observe(document.documentElement, { childList: true, subtree: true });
+
+            // Initialize Map object.
+            unsafeWindow.MapSettings = {'Map': null};
 
             // Check if default filters have to be set.
             function run_setDefaultFilters() {
@@ -10852,6 +10870,7 @@ var mainGC = function() {
 
             // Get map instance.
             const getMapInstance = (state) => {
+                // Only once.
                 if (unsafeWindow.MapSettings?.Map?._mapPane) return;
 
                 // Leaflet maps only.
@@ -10910,7 +10929,7 @@ var mainGC = function() {
                         // Run 'Search this area' to modify coords.
                         document.querySelector('[data-testid="search-this-area-button"]').click();
                         // Clear possible cache selection.
-                        unsafeWindow.MapSettings.Map.fireEvent('click');
+                        unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         if (!isActive) {
                             // Activate.
                             isActive = true;
@@ -15565,161 +15584,6 @@ var mainGC = function() {
         }
     }
 
-// Show who gave the cache a favorite.
-    if (is_page("cache_listing") && settings_show_who_gave_favorite_but) var fav_guids = [];
-    function addShowWhoGaveFavoriteButton() {
-        addButtonOverLogs(showWhoGaveFavorite, "gclh_show_who_gave_favorite", true, "Show who favorited", "", "Show in logs who gave a favorite");
-        // disable button for caches with >500 favorites and add an explanation to the title
-        const favs = Number($('.favorite-value').text().trim());
-        const maxFav = 500;
-        if (favs > maxFav) {
-            $('#gclh_show_who_gave_favorite').prop("title", "Unfortunately not available for caches\nwith more than " + maxFav + " favorites").addClass('working');
-            $('#gclh_show_who_gave_favorite input').prop("disabled", true);
-        }
-        // disable button for events and caches without favorites and add an explanation to the title
-        if (isEventInCacheListing() || Number($('.favorite-value').text().trim()) === 0) {
-            $('#gclh_show_who_gave_favorite').prop("title", "Cache doesn't have any favorites").addClass('working');
-            $('#gclh_show_who_gave_favorite input').prop("disabled", true);
-        }
-
-    }
-    async function showWhoGaveFavorite() {
-        // disable button (data only needs to be fetched once)
-        $('#gclh_show_who_gave_favorite').addClass("working");
-        $('#gclh_show_who_gave_favorite input').prop("disabled", true).prop('value', 'Loading ...');
-
-        try {
-            const t0 = Date.now();
-            // url of "Users Who Favorited This Cache"
-            const url = 'https://www.geocaching.com/seek/cache_favorited.aspx?guid=' + unsafeWindow.guid;
-
-            // get 1st page
-            let dataForward = '';
-            let pageForward = await $.post(url, dataForward);
-            storeGuidsOfUsersWhoFavorited(pageForward);
-
-            // calculate number of forward/backward cycles
-            const favs = Number($('.favorite-value').text().trim());
-            const nPages = Math.ceil(favs / 10);
-            let numForwardBackward;
-            if (nPages % 2 === 1) {
-                numForwardBackward = (nPages - 1) / 2;
-            }
-            else {
-                numForwardBackward = (nPages - 2) / 2;
-            }
-
-            // for numForwardBackward cycles, get 2 pages at the same time - one in forward and one in backward direction
-            let dataBackward, pageBackward, promises;
-            for (let i = 1; i <= numForwardBackward; i++) {
-                if (i === 1) { // 2nd and last page in parallel
-                    // get form data of first page to retrieve next page
-                    dataForward = getFormData(pageForward, 'next');
-                    // get form data of first page to retrieve last page
-                    dataBackward = getFormData(pageForward, 'last');
-
-                    promises = [];
-                    promises.push($.post(url, dataForward));
-                    promises.push($.post(url, dataBackward));
-                    [pageForward, pageBackward] = await Promise.all(promises);
-
-                    storeGuidsOfUsersWhoFavorited(pageForward);
-                    storeGuidsOfUsersWhoFavorited(pageBackward);
-                }
-                else { // next(forward) and previous(backward) pages in parallel
-                    // get form data of forward page to retrieve next page
-                    dataForward = getFormData(pageForward, 'next');
-                    // get form data of backward page to retrieve previous page
-                    dataBackward = getFormData(pageBackward, 'previous');
-
-                    promises = [];
-                    promises.push($.post(url, dataForward));
-                    promises.push($.post(url, dataBackward));
-                    [pageForward, pageBackward] = await Promise.all(promises);
-
-                    storeGuidsOfUsersWhoFavorited(pageForward);
-                    storeGuidsOfUsersWhoFavorited(pageBackward);
-                }
-            }
-
-            // for an even number of total pages, one page remains to get in next(forward) mode
-            if (nPages % 2 === 0) {
-                // get form data of forward page to retrieve next page
-                dataForward = getFormData(pageForward, 'next');
-                pageForward = await $.post(url, dataForward);
-                storeGuidsOfUsersWhoFavorited(pageForward);
-            }
-
-            let t1 = (Date.now() - t0) / 1000;
-            $("#gclh_show_who_gave_favorite input").prop('value', 'Show who favorited');
-            $("#gclh_show_who_gave_favorite").prop('title', $("#gclh_show_who_gave_favorite").prop('title') + ' (took ' + t1.toFixed(1) + 's)');
-
-            // we're finished, now show filter link
-            $('a#gclh_show_favorite_logs').parent().show();
-
-            showFavIcons();
-        } catch (e) {
-            fav_guids = [];
-            $("#gclh_show_who_gave_favorite input").prop('value', 'Show who favorited (error)');
-            gclh_error("showWhoGaveFavorite", e);
-        }
-
-        // Get form data of current page to retrieve following page.
-        function getFormData(page, mode) {
-            switch (mode) {
-                case 'previous':
-                    mode = '03';
-                    break;
-                case 'next':
-                    mode = '04';
-                    break;
-                case 'last':
-                    mode = '05';
-                    break;
-                default:
-                    mode = '04';
-            }
-            let aspNetHidden = $('div.aspNetHidden', page).first().find('input'),
-                input;
-            data = '__EVENTTARGET=' + encodeURIComponent('ctl00$ContentBody$pgrTop$ctl' + mode);
-            data += '&__EVENTARGUMENT=';
-            for (let i = 2; i < aspNetHidden.length; i++) {
-                input = aspNetHidden[i];
-                data += '&' + input.name + '=' + encodeURIComponent(input.value);
-            }
-            data += '&navi_search=';
-            return data;
-        }
-
-        // Store guids of users who gave a favorite.
-        function storeGuidsOfUsersWhoFavorited(page) {
-            let userInfo = $('table.Table>tbody>tr>td>a:nth-child(2)', page);
-            for (let i = 0; i < userInfo.length; i++) {
-                fav_guids.push(userInfo[i].search.split('=')[1]);
-            }
-        }
-    }
-    // Show fav icon in logs for users who gave a favorite.
-    function showFavIcons() {
-        // only if activated
-        if (!settings_show_who_gave_favorite_but || !$('#gclh_show_who_gave_favorite.working')[0]) return;
-
-        try {
-            $('.logOwnerAvatar>a').each(function() {
-                let guid = this.search.split('=')[1];
-                let hasFavorited = in_array(guid, fav_guids);
-                if (hasFavorited) {
-                    let logImg = $(this).parent().parent().next().find('.LogType img');
-                    if (logImg[0].src.split('/').pop() === '2.png') { // only show for finds, no other log types
-                        logImg.next().show();
-                    }
-                }
-            });
-        } catch(e) {
-            gclh_error("showFavIcons", e);
-        }
-    }
-
 // Show log counter.
     function showLogCounterLink() {
         addButtonOverLogs(showLogCounter, "gclh_show_log_counter", true, "Show log counter", "Log counter", "Show log counter for log type and total");
@@ -15784,7 +15648,7 @@ var mainGC = function() {
         var span = document.createElement("span");
         span.id = id;
         if (title != "") span.title = title;
-        if (txtshort != "" && settings_new_width < 1040 && settings_show_all_logs_but && settings_show_compact_logbook_but && settings_show_who_gave_favorite_but && settings_show_log_counter_but && settings_show_bigger_avatars_but && settings_show_hide_upvotes_but) {
+        if (txtshort != "" && settings_new_width < 1040 && settings_show_all_logs_but && settings_show_compact_logbook_but && settings_show_log_counter_but && settings_show_bigger_avatars_but && settings_show_hide_upvotes_but) {
             var text = txtshort;
         } else {
             var text = txt;
@@ -17363,7 +17227,6 @@ var mainGC = function() {
             html += checkboxy('settings_add_search_in_logs_func', 'Add "Search in logs" feature') + "<br>";
             html += checkboxy('settings_show_all_logs_but', 'Show button \"Show all logs\" above the logs') + "<br>";
             html += checkboxy('settings_show_compact_logbook_but', 'Show button \"Show compact logs\" above the logs') + "<br>";
-            html += checkboxy('settings_show_who_gave_favorite_but', 'Show button \"Show who favorited\" above the logs') + show_help("With this option you can choose to show a button \"Show who favorited\" above the logs. Pressing this button will add a favorite icon to the logs of users who gave a favorite. Additionally, a filter for those logs will be added above the logs.<br><br>For performance reasons this functionality must be restricted to caches with 500 favorites or less.") + "<br>";
             html += checkboxy('settings_show_log_counter_but', 'Show button \"Show log counter\" above the logs') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_log_counter', 'Show log counter when opening cache listing') + "<br>";
             html += checkboxy('settings_show_bigger_avatars_but', 'Show button \"Show bigger avatars\" above the logs') + "<br>";
@@ -18731,7 +18594,6 @@ var mainGC = function() {
                 'settings_show_log_counter_but',
                 'settings_show_log_counter',
                 'settings_show_bigger_avatars_but',
-                'settings_show_who_gave_favorite_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
                 'settings_show_draft_indicator',

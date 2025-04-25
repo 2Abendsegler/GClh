@@ -1,3 +1,4 @@
+<a href="#v0169" title="GClh II version 0.16.9 (25.04.2025)">v0.16.9</a> &nbsp;
 <a href="#v0168" title="GClh II version 0.16.8 (16.04.2025)">v0.16.8</a> &nbsp;
 <a href="#v0167" title="GClh II version 0.16.7 (20.03.2025)">v0.16.7</a> &nbsp;
 <a href="#v0166" title="GClh II version 0.16.6 (11.03.2025)">v0.16.6</a> &nbsp;
@@ -29,6 +30,24 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.9:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Show favorite points in logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2787" title="Issue 2787">2787</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The display of favorite points in the cache listing is a new standard feature. This feature is now also available in the GClh.<br>
+		<img src="../images/0.16.9/Screen01.jpg" alt="Screen02.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Fix map handle error in Linux. [<a href="https://github.com/2Abendsegler/GClh/issues/2786" title="Issue 2786">2786</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+</ul>
+<br>
+(25.04.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.8:
