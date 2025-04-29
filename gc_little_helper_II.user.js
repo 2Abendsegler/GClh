@@ -10775,102 +10775,6 @@ var mainGC = function() {
             // Initialize Map object.
             unsafeWindow.MapSettings = {'Map': null};
 
-            // Check if default filters have to be set.
-            function run_setDefaultFilters() {
-                // Default gclh filters must not be set in the following cases:
-                // 1) bookmark lists (url has special type)
-                // 2) mapping results from new search page or any stored search map url
-                //    -> parameters 'asc=' and 'sort=' are always present
-                // 3) matrix searches (covered by 2)
-                if (document.location.href.match(/\.com\/live\/play\/map\?bmCode=/) ||
-                    window.location.search.match(/asc=|sort=/)) {
-                    return false;
-                } else return true;
-            }
-            if (run_setDefaultFilters()) {
-                // Perform search with default filters:
-                // 1) wait until filters are available (e.g. found status filter)
-                // 2) wait until GS default filters are applied (otherwise ours will be overridden):
-                //    - erase default distance value
-                //    - observe this value until it will be be reset by GS default filters
-                // 3) set default filters (slightly delayed, otherwise we're too fast)
-                // 4) run filtered search
-                const func = () => {
-                    // Ensure that filters are not collapsed (otherwise they cannot be selected).
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"]').click();
-                    }
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"]').click();
-                    }
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"]').click();
-                    }
-                    // Erase default distance value.
-                    document.querySelector('[data-event-label="Filters - Distance From"]').setAttribute('value', '');
-
-                    // Observe distance value for changes, then run filtered search (only once).
-                    const cb = function(_mutationsList, observer) {
-                        setTimeout(() => {
-                            // Set default filters.
-                            setDefaultFilters();
-                            // Run filtered search.
-                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
-                        }, 500);
-
-                        observer.disconnect();
-                        observer = null;
-                    }
-                    const target = document.querySelector('[data-event-label="Filters - Distance From"]');
-                    const config = { attributes: true, attributeFilter: ["value"] };
-                    let observer = new MutationObserver(cb);
-                    observer.observe(target, config);
-                }
-                waitForElementThenRun('[data-event-label="Expand/Collapse Filters - Found Status"]', func, 20000);
-            }
-
-            // Set gclh default filters.
-            function setDefaultFilters() {
-                // "hideFinds": null=All, 0=Found by me, 1=Not found by me; GS default value: 1
-                if (settings_map_hide_found) {
-                    // Show only caches not found by you (GS sets filter by default, but doesn't hurt to set again, in case this changes).
-                    document.querySelector('input[data-event-label="Filters - Found Status - Not Found"]').click();
-                } else {
-                    // Show all caches (unset GS default filter).
-                    document.querySelector('input[data-event-label="Filters - Found Status - All"]').click();
-                }
-                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: null
-                if (settings_map_hide_hidden) {
-                    // Show only caches you don't own.
-                    document.querySelector('input[data-event-label="Filters - Cache Owner - Not Owned"]').click();
-                } else {
-                    // Show all caches.
-                    document.querySelector('input[data-event-label="Filters - Cache Owner - All"]').click();
-                }
-
-                // "geocacheTypes": [2, 9, 3773, 3]=cache types to show; GS default: [] (all)
-                //  Cache types from search map:
-                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6,3653
-                //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
-                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453,1304,3774,4738
-                //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
-                let types_to_show = { 2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event" };
-                const n_types = Object.keys(types_to_show).length;
-                // Remove hidden cache types from types_to_show.
-                for (let key in types_to_show) {
-                    if (window["settings_map_hide_" + key]) {
-                        delete types_to_show[key];
-                    }
-                }
-                // Only set cache type filter if at least one cache type is hidden.
-                if (Object.keys(types_to_show).length < n_types) {
-                    // Set "geocacheTypes" filter.
-                    for (let key in types_to_show) {
-                        document.querySelector('input[data-event-label="Filters - Geocache Type - ' + types_to_show[key] + '"]').click();
-                    }
-                }
-            }
-
             // Get map instance.
             const getMapInstance = (state) => {
                 // Only once.
@@ -10957,7 +10861,7 @@ var mainGC = function() {
                 setTimeout(addCorrectedCoordsButton, 0);
 
                 // If show at corrected coords is active, update cache locations.
-                if (isActive && !run_setDefaultFilters()) {
+                if (isActive) {
                     // Observe distance filter for changes:
                     // - unset default distance value
                     // - wait until value gets reset by GS, then data is ready and a search can be performed
@@ -16861,10 +16765,10 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + "<br>";
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("Note that you can only hide the header by default if you have activated the setting <a class='gclh_ref_ht_int' href='#settings_map_show_btn_hide_header' title='Link to setting \"Show button \"Hide Header\"\"'>Show button \"Hide Header\"</a>.") + "<br>";
-            html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
-            html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
+            html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + onlyBrowseMap + prem + "<br>";
+            html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + onlyBrowseMap + prem + "<br>";
             html += checkboxy('settings_map_hide_dnfs', 'Hide DNF smileys by default') + onlyBrowseMap + prem + "<br>";
-            html += "&nbsp;" + "Hide cache types by default " + prem + "<br>";
+            html += "&nbsp;" + "Hide cache types by default " + onlyBrowseMap + prem + "<br>";
 
             var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'";
             var imageBaseUrl = "/map/images/mapicons/";
