@@ -14197,6 +14197,8 @@ var mainGC = function() {
             css += '.gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}';
             css += '.ProfileSouvenirsList div {margin-left: 0 !important;}';
             css += '.souvenir-gallery-list li {width: 175px !important;}';
+            // Display "Sort by" selection in full width.
+            css += '#sortSouvenirsSelect {padding-right: 34px !important;}';
             appendCssStyle(css);
             var Souvenirs = $("#souvenirsList li");
             var htmlFragment = "&nbsp;<span id='gclhNumberSouvenirs' title='Number of souvenirs'>("+Souvenirs.length+")</span>";
