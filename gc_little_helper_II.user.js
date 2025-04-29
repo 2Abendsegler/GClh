@@ -13286,13 +13286,22 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Finds for Each Day of the Year",e);}
     }
 
-// Improve own statistic map page with links to caches for every country and state.
-    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+// Improve statistic map page with links to caches for every country and state.
+    if (settings_map_links_statistic) {
         try {
             function buildLinkForItem(para, item, side) {
                 var a = document.createElement("a");
-                a.setAttribute("title", "Show caches you have found in " + item["n"]);
-                a.setAttribute("href", "/play/search?" + para + item["id"] + "&hf=0&sa=1&f=1&sort=FoundDate&asc=false#myListsLink");
+                if (isOwnStatisticsPage()) {
+                    a.setAttribute("title", "Show caches you have found in " + item["n"]);
+                    a.setAttribute("href", "/play/search?" + para + item["id"] + "&hf=0&sa=1&f=1&sort=FoundDate&asc=false#myListsLink");
+                } else {
+                    if ($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
+                        a.setAttribute("title", "Show caches " + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + " has found in " + item["n"]);
+                        // Important: If the user does not allow the display of found caches, all caches will be displayed. The user in the url
+                        // will then not be taken into account.
+                        a.setAttribute("href", "/play/search?" + para + item["id"] + "&fb=" + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + "&sa=1&sort=FoundDate&asc=false#myListsLink");
+                    }
+                }
                 a.setAttribute("style", "color: #3d76c5;");
                 a.innerHTML = side.innerHTML;
                 side.innerHTML = "";
@@ -13326,7 +13335,7 @@ var mainGC = function() {
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page",e);}
+        } catch(e) {gclh_error("Improve statistic map page with links to caches for every country and state",e);}
     }
 
 // Improve statistic map page with name of country and state in maps and make it clickable in own maps.
@@ -13382,7 +13391,7 @@ var mainGC = function() {
                 }
                 return [itemName, itemLink, width];
             }
-            if ($('#stats_tabs-maps')[0] && (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage()))) {
+            if ($('#stats_tabs-maps')[0] && (settings_map_statistic_set_name_in_map || settings_map_links_statistic)) {
                 const config = { childList: true, subtree: true };
                 const tooltipObserver = new MutationObserver(function(_, observer) {
                     observer.disconnect();
@@ -13394,8 +13403,8 @@ var mainGC = function() {
                             $('#stats_tabs-maps g.google-visualization-tooltip text')[0].innerHTML += '<tspan font-weight="normal" font-size="13px"> ' + name1 + '</tspan>';
                         }
                     }
-                    // Set click event for country or state in tooltip of map for own maps.
-                    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+                    // Set click event for country or state in tooltip of map.
+                    if (settings_map_links_statistic) {
                         if ($('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0]) {
                             $('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0].addEventListener('click', function() {
                                 var [name2, link2] = getDataFromTooltip();
