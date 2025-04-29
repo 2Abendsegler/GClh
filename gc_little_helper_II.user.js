@@ -2642,6 +2642,9 @@ var mainGC = function() {
         try {
             // Set Ignore.
             changeIgnoreButton('Ignore');
+            // -> #2796: Deactivate feature "One click ignoring".
+            settings_use_one_click_ignoring = false;
+            // <- #2796
             // Prepare one click Ignore, Stop Ignoring.
             if (settings_use_one_click_ignoring) {
                 var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
