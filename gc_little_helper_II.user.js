@@ -5633,6 +5633,8 @@ var mainGC = function() {
                 }
             }
             let css = '';
+            // Log display in full width.
+            css += '.log-view-body .log > div {max-width: none !important;}';
 
             // Build own edit button with real link. Is required for complete pageData on the edit log page.
             function buildOwnEditButton(waitCount) {
