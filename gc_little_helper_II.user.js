@@ -614,7 +614,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_show_who_gave_favorite_but = getValue("settings_show_who_gave_favorite_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
-    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
+    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_enhanced_map_coords = getValue("settings_show_enhanced_map_coords", true);
@@ -9821,28 +9821,55 @@ var mainGC = function() {
     if (is_page("dashboard")) {
         try {
             var css = '';
-            // Compact layout (little bit narrower elements).
+            // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-                css += ".action-link a {height: 29.2px !important;}";
+                // Link at the top to the old dashboard.
+                css += ".alert {padding-top: 6px; padding-bottom: 0px; margin-bottom: -2px;}";
+                // User block in the first block in the left column.
+                css += ".user-bio .bio-username {margin-top: 4px !important;}";
+                css += ".user-bio .bio-userrole {margin-bottom: 12px !important;}";
+                css += ".user-bio .gc-button {margin-top: 12px !important; padding: 8px 14px !important;}";
+                css += ".user-bio {padding-bottom: 12px !important;}";
+                // Primary navigation links in the second block in the left column.
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) {padding: 7px 16px 7px 16px !important; margin: 0px !important;}";
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) li {padding: 1px 0 1px 0 !important; margin: 0px !important;}";
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) a {padding: 4px !important; margin: 0 !important}";
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) a span {padding: 0 4px 0 4px !important; margin: 0 0 0 8px !important;}";
+                // Secondary navigation links in further blocks in the left column.
+                css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
+                css += ".sidebar-links ul.link-block:not(.gclh) a {padding-top: 2px !important; padding-bottom: 2px !important;}";
+                // In the middle and in the right column.
                 css += ".activity-item, .panel-header {padding: 5px 15px !important;}";
                 css += ".activity-tray {padding: 5px 40px !important;}";
-                css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
-                css += ".alert {padding: 6px 16px !important;}";
+                // Latest Acitivity item images in the middle column.
+                css += ".activity-image-summary {margin-top: 2px !important;}";
+                // Events block in the right column.
+                css += ".event-list-item {padding: 6px 0 6px 0 !important;}";
+                css += ".event-list-item-details {gap: 0px !important;}";
+                css += "#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}";
+                // Hide tips and instruction container in the right column.
+                css += "#_Geocaching101Container {display: none;}";
             }
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
-                var target = (settings_but_search_map_new_tab ? "_blank" : "");
-                var nav = document.querySelector('.sidebar-links');
-                var ul = nav.querySelector('ul');
-                var newmapbtn = document.createElement('li');
-                newmapbtn.classList.add("action-link");
-                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
-                ul.insertBefore(newmapbtn, ul.childNodes[0]);
-                var newsearchbtn = document.createElement('li');
-                newsearchbtn.classList.add ("action-link");
-                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
-                ul.insertBefore(newsearchbtn, ul.childNodes[0]);
-                css += ".action-link a {height: 38px;} a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
+                if ($('.sidebar-links ul li')[0]) {
+                    var searchButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+                    var mapButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+                    if ($(searchButt).find('a')[0] && $(searchButt).find('a')[0].childNodes[2] && $(searchButt).find('svg')[0]) {
+                        $(searchButt).find('a')[0].href = '/play/search';
+                        $(searchButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
+                        $(searchButt).find('a')[0].childNodes[2].data = 'Search';
+                        $(searchButt).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
+                        css += "#search--inline path {stroke-width: 1.0; stroke: currentColor;}";
+                        $(mapButt).find('a')[0].href = '/map';
+                        $(mapButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
+                        $(mapButt).find('a')[0].childNodes[2].data = 'Browse Map';
+                        $(mapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                        css += "#map--inline path {stroke-width: 2.0;}";
+                        $('.sidebar-links ul li')[0].before(mapButt);
+                        $('.sidebar-links ul li')[0].before(searchButt);
+                    }
+                }
             }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
@@ -9888,8 +9915,9 @@ var mainGC = function() {
                         }
                      }
                  });
-                 css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {text-decoration: underline; color: #02874d;}";
-                 css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 220px;}";
+                 css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {color: #02874d;}";
+                 css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 212px;}";
+                 css += ".link-block .gclh img {vertical-align: sub;}";
             }
             // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
@@ -10230,8 +10258,6 @@ var mainGC = function() {
                 css += '#gclh_unpublishedCaches .panel-header svg {transform: rotate(0) !important;}';
             }
 
-            // Sidebar links: Align action links to other areas.
-            css += '.action-link a {padding-left: 12px !important;}';
             // Latest Activity: Do not cut avatar image.
             css += '.activity-details > div > a {flex-shrink: 0;}';
             appendCssStyle(css);
@@ -15483,10 +15509,10 @@ var mainGC = function() {
     function buildDashboardCss() {
         var css = "";
         css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
-        css += ".link-header.gclh svg {height: 22px; width: 22px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
+        css += ".link-header.gclh svg {height: 23px; width: 22px; fill: #777; float: right; margin-top: -3px; margin-right: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
         css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
-        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
+        css += ".link-block.gclh a:hover {color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
         css += ".link-block.isHide {display: none !important} .link-block {border-bottom: unset;}";
         appendCssStyle(css);
     }
