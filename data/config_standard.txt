@@ -253,7 +253,7 @@
   "settings_show_log_counter": false,
   "settings_show_bigger_avatars_but": true,
   "settings_hide_feedback_icon": false,
-  "settings_compact_layout_new_dashboard": false,
+  "settings_compact_layout_new_dashboard": true,
   "settings_show_draft_indicator": true,
   "settings_show_latest_logs_symbols_count_map": "16",
   "settings_show_enhanced_map_popup": true,

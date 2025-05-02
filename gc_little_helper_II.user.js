@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.9
+// @version      0.16.10
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -613,7 +613,7 @@ var variablesInit = function(c) {
     c.settings_show_log_counter = getValue("settings_show_log_counter", false);
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
-    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", false);
+    c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_enhanced_map_coords = getValue("settings_show_enhanced_map_coords", true);
@@ -2642,6 +2642,9 @@ var mainGC = function() {
         try {
             // Set Ignore.
             changeIgnoreButton('Ignore');
+            // -> #2796: Deactivate feature "One click ignoring".
+            settings_use_one_click_ignoring = false;
+            // <- #2796
             // Prepare one click Ignore, Stop Ignoring.
             if (settings_use_one_click_ignoring) {
                 var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
@@ -5630,6 +5633,8 @@ var mainGC = function() {
                 }
             }
             let css = '';
+            // Log display in full width.
+            css += '.log-view-body .log > div {max-width: none !important;}';
 
             // Build own edit button with real link. Is required for complete pageData on the edit log page.
             function buildOwnEditButton(waitCount) {
@@ -9824,28 +9829,55 @@ var mainGC = function() {
     if (is_page("dashboard")) {
         try {
             var css = '';
-            // Compact layout (little bit narrower elements).
+            // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-                css += ".action-link a {height: 29.2px !important;}";
+                // Link at the top to the old dashboard.
+                css += ".alert {padding-top: 6px; padding-bottom: 0px; margin-bottom: -2px;}";
+                // User block in the first block in the left column.
+                css += ".user-bio .bio-username {margin-top: 4px !important;}";
+                css += ".user-bio .bio-userrole {margin-bottom: 12px !important;}";
+                css += ".user-bio .gc-button {margin-top: 12px !important; padding: 8px 14px !important;}";
+                css += ".user-bio {padding-bottom: 12px !important;}";
+                // Primary navigation links in the second block in the left column.
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) {padding: 7px 16px 7px 16px !important; margin: 0px !important;}";
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) li {padding: 1px 0 1px 0 !important; margin: 0px !important;}";
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) a {padding: 4px !important; margin: 0 !important}";
+                css += ".sidebar-links ul:not(.link-block):not(.gclh) a span {padding: 0 4px 0 4px !important; margin: 0 0 0 8px !important;}";
+                // Secondary navigation links in further blocks in the left column.
+                css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
+                css += ".sidebar-links ul.link-block:not(.gclh) a {padding-top: 2px !important; padding-bottom: 2px !important;}";
+                // In the middle and in the right column.
                 css += ".activity-item, .panel-header {padding: 5px 15px !important;}";
                 css += ".activity-tray {padding: 5px 40px !important;}";
-                css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
-                css += ".alert {padding: 6px 16px !important;}";
+                // Latest Acitivity item images in the middle column.
+                css += ".activity-image-summary {margin-top: 2px !important;}";
+                // Events block in the right column.
+                css += ".event-list-item {padding: 6px 0 6px 0 !important;}";
+                css += ".event-list-item-details {gap: 0px !important;}";
+                css += "#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}";
+                // Hide tips and instruction container in the right column.
+                css += "#_Geocaching101Container {display: none;}";
             }
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
-                var target = (settings_but_search_map_new_tab ? "_blank" : "");
-                var nav = document.querySelector('.sidebar-links');
-                var ul = nav.querySelector('ul');
-                var newmapbtn = document.createElement('li');
-                newmapbtn.classList.add("action-link");
-                newmapbtn.innerHTML = '<a class="gclh_svg_fill" href="/map/" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-map-no-border"></use></svg>Map</a>';
-                ul.insertBefore(newmapbtn, ul.childNodes[0]);
-                var newsearchbtn = document.createElement('li');
-                newsearchbtn.classList.add ("action-link");
-                newsearchbtn.innerHTML = '<a class="gclh_svg_fill" href="/play/search" target="'+target+'"><svg class="icon"><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-spyglass-svg-fill"></use></svg>Search</a>';
-                ul.insertBefore(newsearchbtn, ul.childNodes[0]);
-                css += ".action-link a {height: 38px;} a.gclh_svg_fill {fill: #4a4a4a;} a.gclh_svg_fill:hover {fill: #02874d;}";
+                if ($('.sidebar-links ul li')[0]) {
+                    var searchButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+                    var mapButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+                    if ($(searchButt).find('a')[0] && $(searchButt).find('a')[0].childNodes[2] && $(searchButt).find('svg')[0]) {
+                        $(searchButt).find('a')[0].href = '/play/search';
+                        $(searchButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
+                        $(searchButt).find('a')[0].childNodes[2].data = 'Search';
+                        $(searchButt).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
+                        css += "#search--inline path {stroke-width: 1.0; stroke: currentColor;}";
+                        $(mapButt).find('a')[0].href = '/map';
+                        $(mapButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
+                        $(mapButt).find('a')[0].childNodes[2].data = 'Browse Map';
+                        $(mapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                        css += "#map--inline path {stroke-width: 2.0;}";
+                        $('.sidebar-links ul li')[0].before(mapButt);
+                        $('.sidebar-links ul li')[0].before(searchButt);
+                    }
+                }
             }
             // Show/Hide einbauen in linker Spalte.
             var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
@@ -9891,8 +9923,9 @@ var mainGC = function() {
                         }
                      }
                  });
-                 css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {text-decoration: underline; color: #02874d;}";
-                 css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 220px;}";
+                 css += ".link-block .gclh a {font-size: 14px; margin-left: 16px;} .link-block .gclh span:hover {color: #02874d;}";
+                 css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 212px;}";
+                 css += ".link-block .gclh img {vertical-align: sub;}";
             }
             // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
@@ -10233,8 +10266,6 @@ var mainGC = function() {
                 css += '#gclh_unpublishedCaches .panel-header svg {transform: rotate(0) !important;}';
             }
 
-            // Sidebar links: Align action links to other areas.
-            css += '.action-link a {padding-left: 12px !important;}';
             // Latest Activity: Do not cut avatar image.
             css += '.activity-details > div > a {flex-shrink: 0;}';
             appendCssStyle(css);
@@ -10772,102 +10803,6 @@ var mainGC = function() {
             // Initialize Map object.
             unsafeWindow.MapSettings = {'Map': null};
 
-            // Check if default filters have to be set.
-            function run_setDefaultFilters() {
-                // Default gclh filters must not be set in the following cases:
-                // 1) bookmark lists (url has special type)
-                // 2) mapping results from new search page or any stored search map url
-                //    -> parameters 'asc=' and 'sort=' are always present
-                // 3) matrix searches (covered by 2)
-                if (document.location.href.match(/\.com\/live\/play\/map\?bmCode=/) ||
-                    window.location.search.match(/asc=|sort=/)) {
-                    return false;
-                } else return true;
-            }
-            if (run_setDefaultFilters()) {
-                // Perform search with default filters:
-                // 1) wait until filters are available (e.g. found status filter)
-                // 2) wait until GS default filters are applied (otherwise ours will be overridden):
-                //    - erase default distance value
-                //    - observe this value until it will be be reset by GS default filters
-                // 3) set default filters (slightly delayed, otherwise we're too fast)
-                // 4) run filtered search
-                const func = () => {
-                    // Ensure that filters are not collapsed (otherwise they cannot be selected).
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Found Status"]').click();
-                    }
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Cache Owner"]').click();
-                    }
-                    if (document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"] svg[aria-label="Expand"]')) {
-                        document.querySelector('[data-event-label="Expand/Collapse Filters - Geocache Types"]').click();
-                    }
-                    // Erase default distance value.
-                    document.querySelector('[data-event-label="Filters - Distance From"]').setAttribute('value', '');
-
-                    // Observe distance value for changes, then run filtered search (only once).
-                    const cb = function(_mutationsList, observer) {
-                        setTimeout(() => {
-                            // Set default filters.
-                            setDefaultFilters();
-                            // Run filtered search.
-                            document.querySelector('button[data-event-label="Filters - Apply"]').click();
-                        }, 500);
-
-                        observer.disconnect();
-                        observer = null;
-                    }
-                    const target = document.querySelector('[data-event-label="Filters - Distance From"]');
-                    const config = { attributes: true, attributeFilter: ["value"] };
-                    let observer = new MutationObserver(cb);
-                    observer.observe(target, config);
-                }
-                waitForElementThenRun('[data-event-label="Expand/Collapse Filters - Found Status"]', func, 20000);
-            }
-
-            // Set gclh default filters.
-            function setDefaultFilters() {
-                // "hideFinds": null=All, 0=Found by me, 1=Not found by me; GS default value: 1
-                if (settings_map_hide_found) {
-                    // Show only caches not found by you (GS sets filter by default, but doesn't hurt to set again, in case this changes).
-                    document.querySelector('input[data-event-label="Filters - Found Status - Not Found"]').click();
-                } else {
-                    // Show all caches (unset GS default filter).
-                    document.querySelector('input[data-event-label="Filters - Found Status - All"]').click();
-                }
-                // "hideOwned": null=All, 0=Caches I own, 1=Caches I don't own; GS default value: null
-                if (settings_map_hide_hidden) {
-                    // Show only caches you don't own.
-                    document.querySelector('input[data-event-label="Filters - Cache Owner - Not Owned"]').click();
-                } else {
-                    // Show all caches.
-                    document.querySelector('input[data-event-label="Filters - Cache Owner - All"]').click();
-                }
-
-                // "geocacheTypes": [2, 9, 3773, 3]=cache types to show; GS default: [] (all)
-                //  Cache types from search map:
-                //  Tradi:   ct=2,9,3773     Letterbox:  ct=5        Event:  ct=6,3653
-                //  Multi:   ct=3            Webcam:     ct=11       Cito:   ct=13
-                //  Mystery: ct=8            Wherigo:    ct=1858     Mega:   ct=453,1304,3774,4738
-                //  Earth:   ct=137          Virtual:    ct=4        Giga:   ct=7005
-                let types_to_show = { 2: "Traditional", 3: "Multi-Cache", 4: "Virtual", 5: "Letterbox", 6: "Regular Event", 8: "Mystery", 11: "Webcam", 13: "CITO Event", 137: "EarthCache", 453: "Mega Event", 1858: "Wherigo", 7005: "Giga Event" };
-                const n_types = Object.keys(types_to_show).length;
-                // Remove hidden cache types from types_to_show.
-                for (let key in types_to_show) {
-                    if (window["settings_map_hide_" + key]) {
-                        delete types_to_show[key];
-                    }
-                }
-                // Only set cache type filter if at least one cache type is hidden.
-                if (Object.keys(types_to_show).length < n_types) {
-                    // Set "geocacheTypes" filter.
-                    for (let key in types_to_show) {
-                        document.querySelector('input[data-event-label="Filters - Geocache Type - ' + types_to_show[key] + '"]').click();
-                    }
-                }
-            }
-
             // Get map instance.
             const getMapInstance = (state) => {
                 // Only once.
@@ -10954,7 +10889,7 @@ var mainGC = function() {
                 setTimeout(addCorrectedCoordsButton, 0);
 
                 // If show at corrected coords is active, update cache locations.
-                if (isActive && !run_setDefaultFilters()) {
+                if (isActive) {
                     // Observe distance filter for changes:
                     // - unset default distance value
                     // - wait until value gets reset by GS, then data is ready and a search can be performed
@@ -13281,13 +13216,22 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve Finds for Each Day of the Year",e);}
     }
 
-// Improve own statistic map page with links to caches for every country and state.
-    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+// Improve statistic map page with links to caches for every country and state.
+    if (settings_map_links_statistic) {
         try {
             function buildLinkForItem(para, item, side) {
                 var a = document.createElement("a");
-                a.setAttribute("title", "Show caches you have found in " + item["n"]);
-                a.setAttribute("href", "/play/search?" + para + item["id"] + "&hf=0&sa=1&f=1&sort=FoundDate&asc=false#myListsLink");
+                if (isOwnStatisticsPage()) {
+                    a.setAttribute("title", "Show caches you have found in " + item["n"]);
+                    a.setAttribute("href", "/play/search?" + para + item["id"] + "&hf=0&sa=1&f=1&sort=FoundDate&asc=false#myListsLink");
+                } else {
+                    if ($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0]) {
+                        a.setAttribute("title", "Show caches " + $('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML + " has found in " + item["n"]);
+                        // Important: If the user does not allow the display of found caches, all caches will be displayed. The user in the url
+                        // will then not be taken into account.
+                        a.setAttribute("href", "/play/search?" + para + item["id"] + "&fb=" + urlencode($('#ctl00_ProfileHead_ProfileHeader_lblMemberName')[0].innerHTML) + "&sa=1&sort=FoundDate&asc=false#myListsLink");
+                    }
+                }
                 a.setAttribute("style", "color: #3d76c5;");
                 a.innerHTML = side.innerHTML;
                 side.innerHTML = "";
@@ -13321,7 +13265,7 @@ var mainGC = function() {
                     }
                 }
             }
-        } catch(e) {gclh_error("Improve own statistic map page",e);}
+        } catch(e) {gclh_error("Improve statistic map page with links to caches for every country and state",e);}
     }
 
 // Improve statistic map page with name of country and state in maps and make it clickable in own maps.
@@ -13377,7 +13321,7 @@ var mainGC = function() {
                 }
                 return [itemName, itemLink, width];
             }
-            if ($('#stats_tabs-maps')[0] && (settings_map_statistic_set_name_in_map || (settings_map_links_statistic && isOwnStatisticsPage()))) {
+            if ($('#stats_tabs-maps')[0] && (settings_map_statistic_set_name_in_map || settings_map_links_statistic)) {
                 const config = { childList: true, subtree: true };
                 const tooltipObserver = new MutationObserver(function(_, observer) {
                     observer.disconnect();
@@ -13389,8 +13333,8 @@ var mainGC = function() {
                             $('#stats_tabs-maps g.google-visualization-tooltip text')[0].innerHTML += '<tspan font-weight="normal" font-size="13px"> ' + name1 + '</tspan>';
                         }
                     }
-                    // Set click event for country or state in tooltip of map for own maps.
-                    if (settings_map_links_statistic && isOwnStatisticsPage()) {
+                    // Set click event for country or state in tooltip of map.
+                    if (settings_map_links_statistic) {
                         if ($('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0]) {
                             $('#stats_tabs-maps g.google-visualization-tooltip').closest('.StatisticsWrapper:not(.gclh_click) svg')[0].addEventListener('click', function() {
                                 var [name2, link2] = getDataFromTooltip();
@@ -14192,6 +14136,8 @@ var mainGC = function() {
             css += '.gclhShowCountry:not(.active), .gclhShowState:not(.active), .gclhShowOther:not(.active) {display: none;}';
             css += '.ProfileSouvenirsList div {margin-left: 0 !important;}';
             css += '.souvenir-gallery-list li {width: 175px !important;}';
+            // Display "Sort by" selection in full width.
+            css += '#sortSouvenirsSelect {padding-right: 34px !important;}';
             appendCssStyle(css);
             var Souvenirs = $("#souvenirsList li");
             var htmlFragment = "&nbsp;<span id='gclhNumberSouvenirs' title='Number of souvenirs'>("+Souvenirs.length+")</span>";
@@ -15316,8 +15262,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/9wG7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iSo"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/stF7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iSs"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15486,10 +15432,10 @@ var mainGC = function() {
     function buildDashboardCss() {
         var css = "";
         css += ".link-header.gclh {padding: 12px 20px !important; cursor: pointer; border-top: 1px solid #e4e4e4;}";
-        css += ".link-header.gclh svg {height: 22px; width: 22px; fill: #777; float: right; padding-right: 1px; margin-top: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
+        css += ".link-header.gclh svg {height: 23px; width: 22px; fill: #777; float: right; margin-top: -3px; margin-right: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
         css += ".link-header.gclh.isHide svg {transform: rotate(90deg);}";
         css += ".link-block.gclh {padding-top: 0px; border-bottom: unset; display: block;}";
-        css += ".link-block.gclh a:hover {text-decoration: underline; color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
+        css += ".link-block.gclh a:hover {color: #02874d;} .link-block.gclh a {padding: 0 4px 0 0; font-size: 14px;}";
         css += ".link-block.isHide {display: none !important} .link-block {border-bottom: unset;}";
         appendCssStyle(css);
     }
@@ -16556,7 +16502,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "25.04.2025";
+            var thanksLastUpdate = "01.05.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16858,10 +16804,10 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hide Map Elements</b></div>";
             html += checkboxy('settings_map_hide_sidebar', 'Hide sidebar by default') + "<br>";
             html += checkboxy('settings_hide_map_header', 'Hide header by default') + show_help("Note that you can only hide the header by default if you have activated the setting <a class='gclh_ref_ht_int' href='#settings_map_show_btn_hide_header' title='Link to setting \"Show button \"Hide Header\"\"'>Show button \"Hide Header\"</a>.") + "<br>";
-            html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + prem + "<br>";
-            html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + prem + "<br>";
+            html += checkboxy('settings_map_hide_found', 'Hide found caches by default') + onlyBrowseMap + prem + "<br>";
+            html += checkboxy('settings_map_hide_hidden', 'Hide own caches by default') + onlyBrowseMap + prem + "<br>";
             html += checkboxy('settings_map_hide_dnfs', 'Hide DNF smileys by default') + onlyBrowseMap + prem + "<br>";
-            html += "&nbsp;" + "Hide cache types by default " + prem + "<br>";
+            html += "&nbsp;" + "Hide cache types by default " + onlyBrowseMap + prem + "<br>";
 
             var imgStyle = "style='padding-top: 4px; vertical-align: bottom;'";
             var imageBaseUrl = "/map/images/mapicons/";
@@ -16991,7 +16937,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_map_statistic_set_name_in_map', 'Show name of country and state on maps') + show_help("Show additional to the short country and state names also the full country and state names on statistic maps when hover with mouse.") + "<br>";
             html += newParameterVersionSetzen('0.16') + newParameterOff;
-            html += checkboxy('settings_map_links_statistic', 'Set links to found caches for each country and state on maps') + show_help("You can improve the maps on your own statistic maps page with links to caches you have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories.") + "<br>";
+            html += checkboxy('settings_map_links_statistic', 'Set links to found caches for each country and state on maps') + show_help("You can improve the maps on statistic maps page with links to caches which have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories. Please note: If the user does not allow the display of found caches, all caches in the area will be displayed. The user will not be considered.") + "<br>";
             html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country and state on maps') + "<br>";
             html += "</div>";
 
