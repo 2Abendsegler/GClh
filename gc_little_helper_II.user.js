@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.9
+// @version      0.16.10
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -15262,8 +15262,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/9wG7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iSo"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/stF7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iSs"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16502,7 +16502,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "25.04.2025";
+            var thanksLastUpdate = "01.05.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16937,7 +16937,7 @@ var mainGC = function() {
             html += newParameterOn3;
             html += checkboxy('settings_map_statistic_set_name_in_map', 'Show name of country and state on maps') + show_help("Show additional to the short country and state names also the full country and state names on statistic maps when hover with mouse.") + "<br>";
             html += newParameterVersionSetzen('0.16') + newParameterOff;
-            html += checkboxy('settings_map_links_statistic', 'Set links to found caches for each country and state on maps') + show_help("You can improve the maps on your own statistic maps page with links to caches you have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories.") + "<br>";
+            html += checkboxy('settings_map_links_statistic', 'Set links to found caches for each country and state on maps') + show_help("You can improve the maps on statistic maps page with links to caches which have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories. Please note: If the user does not allow the display of found caches, all caches in the area will be displayed. The user will not be considered.") + "<br>";
             html += checkboxy('settings_map_percentage_statistic', 'Show percentage of found caches for every country and state on maps') + "<br>";
             html += "</div>";
 
