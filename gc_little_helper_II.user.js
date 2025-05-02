@@ -614,6 +614,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
+    c.settings_row_hide_new_dashboard = getValue("settings_row_hide_new_dashboard", false);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_enhanced_map_coords = getValue("settings_show_enhanced_map_coords", true);
@@ -9846,6 +9847,18 @@ var mainGC = function() {
                 // Secondary navigation links in further blocks in the left column.
                 css += ".sidebar-links .link-header {padding: 6px 5px 6px 20px !important;}";
                 css += ".sidebar-links ul.link-block:not(.gclh) a {padding-top: 2px !important; padding-bottom: 2px !important;}";
+                // Button to display or hide the configuration to hide rows in left column.
+                css += ".clickSum {position: absolute; margin-top: -13px; margin-left: 2px; cursor: pointer;}";
+                css += ".clickSum svg {height: 23px; width: 22px; fill: #777; transition: all .3s ease; transform-origin: 50% 50%;}";
+                css += ".clickSumHide .clickSum svg {transform: rotate(90deg);}";
+                // Buttons to mark rows for display or hide in left column.
+                css += "ul:not(.link-block) .clickPoint {position: absolute; margin-left: -16px; padding: 4px; cursor: pointer;}";
+                css += "ul.link-block .clickPoint {position: absolute; margin-left: -20px; padding: 3px 4px 1px 4px; cursor: pointer;}";
+                css += ".clickPoint:hover {background-color: rgb(245 245 245);}";
+                css += ".clickPoint svg {height: 12px !important; width: 12px !important; opacity: 0.4;}";
+                css += ".clickPointHide svg {opacity: 1;}";
+                // Hide rows which are marked for hide in left column.
+                css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none;}";
                 // In the middle and in the right column.
                 css += ".activity-item, .panel-header {padding: 5px 15px !important;}";
                 css += ".activity-tray {padding: 5px 40px !important;}";
@@ -9858,6 +9871,7 @@ var mainGC = function() {
                 // Hide tips and instruction container in the right column.
                 css += "#_Geocaching101Container {display: none;}";
             }
+
             // Map and Search button in left sidebar.
             if (settings_but_search_map) {
                 if ($('.sidebar-links ul li')[0]) {
@@ -9879,17 +9893,7 @@ var mainGC = function() {
                     }
                 }
             }
-            // Show/Hide einbauen in linker Spalte.
-            var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
-            var ident = 0;
-            for (var i = 0; i < list.length; i=i+2) {
-                ident++;
-                $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide");
-                $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide");
-                list[i].setAttribute("name", "head_" + ident);
-                list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill' title=''></use></svg>";
-                list[i].addEventListener("click", showHideBoxDashboard, false);
-            }
+
             // Show trackables inventory.
             if (settings_show_tb_inv) {
                 var side = $('.sidebar-links').last().find('ul.link-block li a[href*="/my/inventory.aspx"]').closest('li');
@@ -9899,7 +9903,6 @@ var mainGC = function() {
                     onload: function(response) {
                         if (response.responseText) {
                             var anzTbs = 0;
-                            var li = document.createElement('li');
                             var ul = document.createElement('ul');
                             ul.setAttribute('class', 'gclh');
                             $(response.responseText).find('table.Table tbody tr').each(function() {
@@ -9917,8 +9920,7 @@ var mainGC = function() {
                                 }
                             });
                             if (anzTbs != 0) {
-                                li.append(ul);
-                                side[0].parentNode.insertBefore(li, side[0].nextSibling);
+                                side[0].append(ul);
                             }
                         }
                      }
@@ -9927,12 +9929,80 @@ var mainGC = function() {
                  css += ".link-block .gclh span {overflow: hidden; vertical-align: top; white-space: nowrap; text-overflow: ellipsis; display: inline-block; margin-left: 2px; max-width: 212px;}";
                  css += ".link-block .gclh img {vertical-align: sub;}";
             }
+
             // Add link to Ignore List into dashboard sidebar.
             if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
                 var sidebarLists = $($('ul.link-block:not(".gclh") a[href*="/my/watchlist.aspx"]'));
                 var html = '<li><a id="gclh_goto_ignorelist" href="/plan/lists/ignored">Ignore List</a></li>';
                 sidebarLists.parent().after(html);
             }
+
+            // Build Show/Hide buttons for areas in left column.
+            var list = $('.sidebar-links .link-header:not(.gclh), .sidebar-links .link-block:not(.gclh)');
+            var ident = 0;
+            for (var i = 0; i < list.length; i=i+2) {
+                ident++;
+                $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide");
+                $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide");
+                list[i].setAttribute("name", "head_" + ident);
+                list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill' title=''></use></svg>";
+                list[i].addEventListener("click", showHideBoxDashboard, false);
+            }
+
+            // Build configuration to Show/Hide rows in left column.
+            function setClickSumDashboard() {
+                if (getValue('show_box_dashboard_0', false) == true) {
+                    $('.clickSum').closest('#DashboardSidebar').addClass('clickSumHide');
+                    $('.clickSum')[0].title = 'Click here to view the configuration for hiding rows';
+                } else {
+                    $('.clickSum').closest('#DashboardSidebar').removeClass('clickSumHide');
+                    $('.clickSum')[0].title = 'Click here to hide the configuration for hiding rows';
+                }
+            }
+            function saveClickSumDashboard() {
+                if ($('.clickSumHide')[0]) setValue('show_box_dashboard_0', false);
+                else setValue('show_box_dashboard_0', true);
+                setClickSumDashboard();
+            }
+            function setClickPointDashboard(row) {
+                var name = $(row).attr('name')
+                if (getValue(name, false) == true) {
+                    $(row).closest('li').addClass('clickPointHide');
+                    $(row)[0].title = 'Click to mark the row for display\nAfter the configuration is complete, click the icon at the top of the column';
+                } else {
+                    $(row).closest('li').removeClass('clickPointHide');
+                    $(row)[0].title = 'Click to mark the row for hide\nAfter the configuration is complete, click the icon at the top of the column';
+                }
+            }
+            function saveClickPointDashboard() {
+                if ($(this).closest('li').hasClass('clickPointHide')) setValue($(this).attr('name'), false);
+                else setValue($(this).attr('name'), true);
+                setClickPointDashboard(this);
+            }
+            if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.sidebar-links')[0] && $('.user-bio')[0] && $('#DashboardSidebar')[0]) {
+                // Build button to display or hide the configuration to hide rows.
+                if ($('.user-bio')[0]) {
+                    $($('.user-bio')[0]).append('<span class="clickSum"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill" title=""</use></svg></span>');
+                    $('.clickSum')[0].addEventListener("click", saveClickSumDashboard, false);
+                    setClickSumDashboard();
+                    // Build buttons to mark rows for display or hide.
+                    var links = $('.sidebar-links ul:not(.gclh) li');
+                    for (var i = 0; i < links.length; i++) {
+                        var name = '';
+                        if ($(links[i]).find('a')[0]) {
+                            name = 'set_switch_db_' + $(links[i]).find('a')[0].href.replace(/(https:\/\/(www|payments)\.geocaching\.com|\/|\.)/ig, '');
+                        } else if ($(links[i]).hasClass('favorites-points') && $(links[i]).find('span')[0]) {
+                            name = 'set_switch_db_favorites-points';
+                        }
+                        if (name != '') {
+                            $(links[i]).prepend('<span name="' + name + '" class="clickPoint"><svg><use href="#close--inline"></use></svg></span>');
+                            $(links[i]).find('.clickPoint')[0].addEventListener("click", saveClickPointDashboard, false);
+                            setClickPointDashboard($(links[i]).find('.clickPoint')[0]);
+                        }
+                    }
+                }
+            }
+
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
             function buildLinksAF(log) {
@@ -16952,6 +17022,7 @@ var mainGC = function() {
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the navigation column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to ignore list in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
@@ -18131,6 +18202,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventinfo_in_desc_bold");
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventdayX1");
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_row_hide_new_dashboard");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -18542,6 +18614,7 @@ var mainGC = function() {
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
+                'settings_row_hide_new_dashboard',
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
                 'settings_show_enhanced_map_coords',
