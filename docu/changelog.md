@@ -47,7 +47,23 @@
 		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Fix map handle error in Linux. [<a href="https://github.com/2Abendsegler/GClh/issues/2786" title="Issue 2786">2786</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Change:</strong> [New Dashboard] Renew and improve compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/2803" title="Issue 2803">2803</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_new_dashboard" title="Link to your GClh II Config">Settings ->Dashboard:<br>
+		<img src="../images/0.16.10/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Remove:</strong> [Search Map] Withdraw support for setting default filters. [<a href="https://github.com/2Abendsegler/GClh/issues/2802" title="Issue 2802">2802</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		We've removed the extension for setting default filters during the Search Map startup phase. We haven't been able to make this stable across all browsers and operating systems. The removed default filters are <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_hide_found" title="Link to your GClh II Config">Hide found caches by default</a>, <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_hide_hidden" title="Link to your GClh II Config">Hide own caches by default</a> and <a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_hide_2" title="Link to your GClh II Config">Hide cache types by default</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "One click ignoring" no longer works (implement workaround). [<a href="https://github.com/2Abendsegler/GClh/issues/2797" title="Issue 2797">2797</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Souvenirs] Display "Sort by" selection in full width. [<a href="https://github.com/2Abendsegler/GClh/issues/2799" title="Issue 2799">2799</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [View Log] Log display in full width. [<a href="https://github.com/2Abendsegler/GClh/issues/2798" title="Issue 2798">2798</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
