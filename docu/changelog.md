@@ -1,3 +1,4 @@
+<a href="#v01610" title="GClh II version 0.16.10 (02.05.2025)">v0.16.10</a> &nbsp;
 <a href="#v0169" title="GClh II version 0.16.9 (25.04.2025)">v0.16.9</a> &nbsp;
 <a href="#v0168" title="GClh II version 0.16.8 (16.04.2025)">v0.16.8</a> &nbsp;
 <a href="#v0167" title="GClh II version 0.16.7 (20.03.2025)">v0.16.7</a> &nbsp;
@@ -30,6 +31,29 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.10:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Statistic] Make countries and states clickable on other users statistic maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2800" title="Issue 2800">2800</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		You can improve the maps on statistic maps page with links to caches which have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories. Please note: If the user does not allow the display of found caches, all caches in the area will be displayed. The user will not be considered.<br>
+		Previously, this feature was only available for your own statistics.<br><br>
+		<img src="../images/0.16.10/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		<img src="../images/0.16.10/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_links_statistic" title="Link to your GClh II Config">Settings ->Public Profile - Statistic:<br>
+		<img src="../images/0.16.10/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Fix map handle error in Linux. [<a href="https://github.com/2Abendsegler/GClh/issues/2786" title="Issue 2786">2786</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+</ul>
+<br>
+(02.05.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.9:
