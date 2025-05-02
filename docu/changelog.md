@@ -38,8 +38,8 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Statistic] Make countries and states clickable on other users statistic maps. [<a href="https://github.com/2Abendsegler/GClh/issues/2800" title="Issue 2800">2800</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		You can improve the maps on statistic maps page with links to caches which have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories. Please note: If the user does not allow the display of found caches, all caches in the area will be displayed. The user will not be considered.<br>
 		Previously, this feature was only available for your own statistics.<br>
+		You can improve the maps on statistic maps page with links to caches which have found in each country and in each state. Links are available on the lists on country and state names on the right side and on the maps on countries and states. For states there are only statistic maps for the US states and Canadian provinces and territories. Please note: If the user does not allow the display of found caches, all caches in the area will be displayed. The user will not be considered.<br>
 		<img src="../images/0.16.10/Screen01.jpg" alt="Screen01.jpg"><br>
 		<img src="../images/0.16.10/Screen02.jpg" alt="Screen02.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_map_links_statistic" title="Link to your GClh II Config">Settings ->Public Profile - Statistic:<br>
