@@ -9378,7 +9378,7 @@ var mainGC = function() {
                     new_sort_element.classList.add("isDisabled");;
                     new_sort_element.disabled = true;
                     new_sort_element.onchange = function() {
-                        if (!$('#search_logs_number_of_hits')[0].innerHTML == '') searchLogsReset(logs);
+                        searchLogsReset(logs);
                         var sorting_key = this.value;
                         // Deactivate buttons "Show log counter" and "Hide upvotes".
                         if (sorting_key != 'newest') {
