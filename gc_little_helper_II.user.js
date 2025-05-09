@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.10
+// @version      0.16.11
 //<-- $$000
 // @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
@@ -14894,8 +14894,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/stF7/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iSs"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/fBqJ/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iSw"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16125,7 +16125,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "01.05.2025";
+            var thanksLastUpdate = "10.05.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16574,7 +16574,9 @@ var mainGC = function() {
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
+            html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the navigation column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to ignore list in sidebar section Lists') + show_help("Embedded a link in the section Lists to your Ignore List into the sidebar of the new dashboard.") + "<br>";
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
