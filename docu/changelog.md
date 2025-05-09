@@ -1,3 +1,4 @@
+<a href="#v01611" title="GClh II version 0.16.11 (10.05.2025)">v0.16.11</a> &nbsp;
 <a href="#v01610" title="GClh II version 0.16.10 (02.05.2025)">v0.16.10</a> &nbsp;
 <a href="#v0169" title="GClh II version 0.16.9 (25.04.2025)">v0.16.9</a> &nbsp;
 <a href="#v0168" title="GClh II version 0.16.8 (16.04.2025)">v0.16.8</a> &nbsp;
@@ -31,6 +32,35 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.16.11:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [New Dashboard] Hide individual rows in the navigation column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2807" title="Issue 2807">2807</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
+		<img src="../images/0.16.11/Screen02.gif" alt="Screen02.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings ->Dashboard:<br>
+		<img src="../images/0.16.11/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Note:</strong> [Old Log Form] Error message: "Your log could not be submitted. Please refresh the page and try again." [<a href="https://github.com/2Abendsegler/GClh/issues/2795" title="Issue 2795">2795</a>]<br>
+		When logging with the old log form, it seems no longer possible to set a favorite point. Setting this point results in an error when sending the log. We can't fix this bug on our side.<br>
+Workaround: Send the log in the old log form without a favorite point, and then set the favorite point via the cache listing or the new log form. Or switch to the new log form.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Order by ..." does not work if a fixed number of logs were previously displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/2809" title="Issue 2809">2809</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Remove:</strong> [New Log Form] Remove older code for the new log form before redesign. [<a href="https://github.com/2Abendsegler/GClh/issues/2810" title="Issue 2810">2810</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+</ul>
+<br>
+(10.05.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.10:
