@@ -46,7 +46,7 @@
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
-		<strong>Note:</strong> [Old Log Form] "Your log could not be submitted. Please refresh the page and try again." [<a href="https://github.com/2Abendsegler/GClh/issues/2795" title="Issue 2795">2795</a>]<br>
+		<strong>Note:</strong> [Old Log Form] Error message: "Your log could not be submitted. Please refresh the page and try again." [<a href="https://github.com/2Abendsegler/GClh/issues/2795" title="Issue 2795">2795</a>]<br>
 		When logging with the old log form, it seems no longer possible to set a favorite point. Setting this point results in an error when sending the log. We can't fix this bug on our side.<br>
 Workaround: Send the log in the old log form without a favorite point, and then set the favorite point via the cache listing or the new log form. Or switch to the new log form.<br><br>
 	</li>
