@@ -935,24 +935,24 @@ a.gclh_info span {
     color: #343434 !important;
     border-radius: 7px;
 }
-table.multi_homezone_settings {
+table.multi_homezone_settings, table.individual_links {
     margin: -2px 0 5px 10px;
-    width: 550px;
+    width: 556px;
     text-align: left;
     vertical-align: baseline;
     white-space: nowrap;
 }
-.multi_homezone_settings .remove {
+.multi_homezone_settings .remove, .individual_links .remove {
     height: 20px;
     margin-left: 0px;
     vertical-align: top;
     cursor: pointer;
 }
-.multi_homezone_settings .disabled {
+.multi_homezone_settings .disabled, .individual_links .disabled {
     cursor: unset !important;
     opacity: 0.5;
 }
-.multi_homezone_settings .addentry {
+.multi_homezone_settings .addentry, .individual_links .addentry {
     margin-top: 2px;
 }
 .gclh_rc_area,
