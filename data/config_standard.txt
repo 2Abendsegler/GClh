@@ -241,6 +241,8 @@
   "settings_show_tb_inv": true,
   "settings_but_search_map": true,
   "settings_but_search_map_new_tab": false,
+  "settings_but_searchmap": false,
+  "settings_but_searchmap_new_tab": false,
   "settings_show_pseudo_as_owner": true,
   "settings_fav_proz_nearest": true,
   "settings_open_tabs_nearest": true,
