@@ -35,6 +35,7 @@ function iconsInit(c) {
     c.map_marker_shadow = ' data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAQAAAACach9AAACMUlEQVR4Ae3ShY7jQBAE0Aoz/f9/HTMzhg1zrdKUrJbdx+Kd2nD8VNudfsL/Th///dyQN2TH6f3y/BGpC379rV+S+qqetBOxImNQXL8JCAr2V4iMQXHGNJxeCfZXhSRBcQMfvkOWUdtfzlLgAENmZDcmo2TVmt8OSM2eXxBp3DjHSMFutqS7SbmemzBiR+xpKCNUIRkdkkYxhAkyGoBvyQFEJEefwSmmvBfJuJ6aKqKWnAkvGZOaZXTUgFqYULWNSHUckZuR1HIIimUExutRxwzOLROIG4vKmCKQt364mIlhSyzAf1m9lHZHJZrlAOMMztRRiKimp/rpdJDc9Awry5xTZCte7FHtuS8wJgeYGrex28xNTd086Dik7vUMscQOa8y4DoGtCCSkAKlNwpgNtphjrC6MIHUkR6YWxxs6Sc5xqn222mmCRFzIt8lEdKx+ikCtg91qS2WpwVfBelJCiQJwvzixfI9cxZQWgiSJelKnwBElKYtDOb2MFbhmUigbReQBV0Cg4+qMXSxXSyGUn4UbF8l+7qdSGnTC0XLCmahIgUHLhLOhpVCtw4CzYXvLQWQbJNmxoCsOKAxSgBJno75avolkRw8iIAFcsdc02e9iyCd8tHwmeSSoKTowIgvscSGZUOA7PuCN5b2BX9mQM7S0wYhMNU74zgsPBj3HU7wguAfnxxjFQGBE6pwN+GjME9zHY7zGp8wVxMShYX9NXvEWD3HbwJf4giO4CFIQxXScH1/TM+04kkBiAAAAAElFTkSuQmCC';
     c.plus_icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAIAAADY27xgAAAABnRSTlMA/wD/AP83WBt9AAAACXBIWXMAABYlAAAWJQFJUiTwAAADCklEQVRYhdWY0f2iMAzH633uvWxAN6AbtEygG8AIOoFsgBvABuAE4gTFCXSDwgTcQ7jYUyhF/av3e0Np+m2aliSLruvId+jXpwGu+j13QNM0+/2+qqrL5VLXddM0+JfneZxzxpiUcrlcep43z3TnrDzPpZTulqWUeZ6721+4xEpVVZvNpq5reKSUSik555xzc+lN09R1Xdd1VVVt28KPnPM0TZ3WYCfVWptWoigqisJliUVRRFFkekhrbR9iQ1FKMcbAlhBCKeUCcWNBCAEWGGN2C6MoRVGA8ymljp6wmKKUEkI8z7OYGkYpigKW4vv+A864l1LK932wOUYzgKKUAn8EQTC5we7SWgdBAL4ZXN4titYa4sP3/RdyoHHwDWPs3vgtCpwXSqn7vmy32yRJHF9WSkHcSCltKIfDwb6dg4Ih5/PZ8X0MxMPhMIoCWyOEcOdAlBu7dsEJ55wPo2RZBkbnHpkHUJRSMCrLsgEUII2iaBbHYyhd18FdbO5Aj6K1fiBKnkHBiMGj1KPA7lBK53I8jIIDcY/61KmqKjhgIx/NH9FyucSpCWZxl8uFEMI5fycKTAdTX1FOp9OnUGDqKwrkhbNTwOcE02FKOp1mJ0mysApeC8PQ8k6e55MT/VcZf5IkcRxjcN0rDENCSJqmY6HGGMNscBqFUtq2rVlJzLXFOZ97F8B08KEmuEGwIMzp3yOYDn3Zo8CiP4KC/u5RwLfH4/GdKPv9nphXPNz/3/A57L3ieR4kCWVZvsclMJEQ4nqvIuYXpU5d10FxcJ8AvxwF4iMIgn/smA9flGZ3f9PKsappUFmWmX62C+u9+2R+oCSzVE1Pyl7vDReqcBlzzl9bqMLFOlbvTZTvk50IR5n9kRnlO9K4dCJc5NgfmWj1YCdCSvlYqwfv9cn+yHQDDNtGhJA4jsuydIEoyzKOYxwohJgMO9e24Hq9xnyYELJarSxtQfPrEQTBbrd7QVvQVJZlpocmJYRwv29cvWKqaZqyLLGFjE1RQgilFFvIq9Vqbv0wG+Xn9EUZ/x8M1j2t6vvpAwAAAABJRU5ErkJggg==';
     c.blackPixel = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAkACQAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJUAB//Z';
+    c.externalLink = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAABnRSTlMAogClAFowTOwGAAAACXBIWXMAABYlAAAWJQFJUiTwAAABF0lEQVQokZVR7WrCQBDc3Ee+VU6FUEkbWlor9I36eIU+VKlQEUGKJE2j0SRn7vpDuaSYhHbYP7s7w8yy2svrM/wHpHu9Xjm7LVWt2+cEAJJvPY5MKTW18IMEYwkApl1+rntSnudCaij+MhZzhrE0jFKVkrJh5gfJr0jhxvImO+8qbYxUHlG4seoTJASiVLSx529sn1LTOvpBommdR9fZD7OIUEGISFPaLLhkAwAbZWyUoT+yqxsuBctFv43dfMPkeisF3NwmJ/Zq6dp2ORwfWgWGUd5NY9UWOdb1ygdhJIqiIZgC5/j09bPD2Nt/vLMiJ6g2VcgPmBd4wLLKoT8o7mcRJs2/c3r88SkkpOYAAI7LHZd3pKrjB8UXg0vqOs1yAAAAAElFTkSuQmCC';
     c.browse_map_icon =
         '<svg class="browse_map_icon">' +
         '  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">' +
@@ -98,6 +99,27 @@ function collectionInit(c) {
         {name: 'Summer Forest', bg: 'A5C79B', ht: 'B3A382', if: 'C3DBBC', bh: 'A0D191', bu: '92BF84', bo: '15520F', nv: '86C27F'}
     ];
     c.cache_sizes = {'1' : 'unknown', '2' : 'micro', '3' : 'regular', '4' : 'large', '5' : 'virtual', '6' : 'others', '8' : 'small'};
+    c.cache_types = [
+        {name: 'EarthCache', icon: '137'},
+        {name: 'Geocaching HQ Cache', icon: '3773'},
+        {name: 'Letterbox Hybrid', icon: '5'},
+        {name: 'Locationless Cache', icon: '12'},
+        {name: 'Multi-Cache', icon: '3'},
+        {name: 'Mystery Cache', icon: '8'},
+        {name: 'Traditional Cache', icon: '2'},
+        {name: 'Virtual Cache', icon: '4'},
+        {name: 'Webcam Cache', icon: '11'},
+        {name: 'Wherigo Cache', icon: '1858'},
+        {name: 'Cache In Trash Out Event', icon: '13', isEvent: true},
+        {name: 'Community Celebration Event', icon: '3653', isEvent: true},
+        {name: 'Event Cache', icon: '6', isEvent: true},
+        {name: 'Geocaching HQ Block Party', icon: '4738', isEvent: true},
+        {name: 'Geocaching HQ Celebration', icon: '3774', isEvent: true},
+        {name: 'Giga-Event Cache', icon: '7005', isEvent: true},
+        {name: 'GPS Adventures Maze Exhibit', icon: '1304', isEvent: true},
+        {name: 'Mega-Event Cache', icon: '453', isEvent: true},
+        {name: 'Project A.P.E. Cache', icon: '9', isEvent: true}
+    ];    
 }
 
 function layersInit(c) {
