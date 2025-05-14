@@ -941,6 +941,7 @@ table.multi_homezone_settings, table.individual_links {
     text-align: left;
     vertical-align: baseline;
     white-space: nowrap;
+    border-spacing: 0;
 }
 .multi_homezone_settings .remove, .individual_links .remove {
     height: 20px;
