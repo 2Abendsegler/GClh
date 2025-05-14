@@ -601,6 +601,8 @@ var variablesInit = function(c) {
     c.settings_show_tb_inv = getValue("settings_show_tb_inv", true);
     c.settings_but_search_map = getValue("settings_but_search_map", true);
     c.settings_but_search_map_new_tab = getValue("settings_but_search_map_new_tab", false);
+    c.settings_but_searchmap = getValue("settings_but_searchmap", false);
+    c.settings_but_searchmap_new_tab = getValue("settings_but_searchmap_new_tab", false);
     c.settings_show_pseudo_as_owner = getValue("settings_show_pseudo_as_owner", true);
     c.settings_fav_proz_nearest = getValue("settings_fav_proz_nearest", true);
     c.settings_open_tabs_nearest = getValue("settings_open_tabs_nearest", true);
@@ -9434,25 +9436,38 @@ var mainGC = function() {
                 css += "#_Geocaching101Container {display: none;}";
             }
 
-            // Map and Search button in left sidebar.
-            if (settings_but_search_map) {
-                if ($('.sidebar-links ul li')[0]) {
-                    var searchButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+            // Search / Browse Map buttons and Search Map button in left sidebar.
+            if ($('.sidebar-links ul li')[0]) {
+                if (settings_but_searchmap) { // Search Map
+                    var searchmapButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+                }
+                if (settings_but_search_map) { // Search and Browse Map
                     var mapButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
-                    if ($(searchButt).find('a')[0] && $(searchButt).find('a')[0].childNodes[2] && $(searchButt).find('svg')[0]) {
-                        $(searchButt).find('a')[0].href = '/play/search';
-                        $(searchButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
-                        $(searchButt).find('a')[0].childNodes[2].data = 'Search';
-                        $(searchButt).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
-                        css += "#search--inline path {stroke-width: 1.0; stroke: currentColor;}";
-                        $(mapButt).find('a')[0].href = '/map';
-                        $(mapButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
-                        $(mapButt).find('a')[0].childNodes[2].data = 'Browse Map';
-                        $(mapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
-                        css += "#map--inline path {stroke-width: 2.0;}";
-                        $('.sidebar-links ul li')[0].before(mapButt);
-                        $('.sidebar-links ul li')[0].before(searchButt);
-                    }
+                    var searchButt = $( $('.sidebar-links ul li')[0] ).clone()[0];
+                }
+                if (searchmapButt && $(searchmapButt).find('a')[0] && $(searchmapButt).find('a')[0].childNodes[2] && $(searchmapButt).find('svg')[0]) {
+                    $(searchmapButt).find('a')[0].href = '/play/map';
+                    $(searchmapButt).find('a')[0].target = settings_but_searchmap_new_tab ? "_blank" : "";
+                    $(searchmapButt).find('a')[0].childNodes[2].data = 'Search Map';
+                    $(searchmapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                    $('.sidebar-links ul li')[0].before(searchmapButt);
+                    css += "#map--inline path {stroke-width: 2.0;}";
+                }
+                if (mapButt && $(mapButt).find('a')[0] && $(mapButt).find('a')[0].childNodes[2] && $(mapButt).find('svg')[0]) {
+                    $(mapButt).find('a')[0].href = '/map';
+                    $(mapButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
+                    $(mapButt).find('a')[0].childNodes[2].data = 'Browse Map';
+                    $(mapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                    $('.sidebar-links ul li')[0].before(mapButt);
+                    css += "#map--inline path {stroke-width: 2.0;}";
+                }
+                if (searchButt && $(searchButt).find('a')[0] && $(searchButt).find('a')[0].childNodes[2] && $(searchButt).find('svg')[0]) {
+                    $(searchButt).find('a')[0].href = '/play/search';
+                    $(searchButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
+                    $(searchButt).find('a')[0].childNodes[2].data = 'Search';
+                    $(searchButt).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
+                    $('.sidebar-links ul li')[0].before(searchButt);
+                    css += "#search--inline path {stroke-width: 1.0; stroke: currentColor;}";
                 }
             }
 
@@ -16571,8 +16586,12 @@ var mainGC = function() {
             html += "<div class='gclh_old_new_line'>New Dashboard Only</div>";
             html += checkboxy('settings_show_default_links', 'Show all default links on your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar on your dashboard.") + "<br>";
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
-            html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Map" on your dashboard') + "<br>";
+            html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Browse Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
+            html += newParameterOn3;
+            html += checkboxy('settings_but_searchmap', 'Show button "Search Map" on your dashboard') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_but_searchmap_new_tab', 'Open links in new browser tab') + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the navigation column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
@@ -17658,6 +17677,7 @@ var mainGC = function() {
             setEvForDepPara("settings_strike_archived", "settings_highlight_usercoords_bb");
             setEvForDepPara("settings_strike_archived", "settings_highlight_usercoords_it");
             setEvForDepPara("settings_but_search_map", "settings_but_search_map_new_tab");
+            setEvForDepPara("settings_but_searchmap", "settings_but_searchmap_new_tab");
             setEvForDepPara("settings_compact_layout_nearest", "settings_fav_proz_nearest");
             setEvForDepPara("settings_compact_layout_nearest", "settings_open_tabs_nearest");
             setEvForDepPara("settings_compact_layout_pqs", "settings_fav_proz_pqs");
@@ -18154,6 +18174,8 @@ var mainGC = function() {
                 'settings_show_tb_inv',
                 'settings_but_search_map',
                 'settings_but_search_map_new_tab',
+                'settings_but_searchmap',
+                'settings_but_searchmap_new_tab',
                 'settings_show_pseudo_as_owner',
                 'settings_fav_proz_nearest',
                 'settings_open_tabs_nearest',
