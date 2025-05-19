@@ -334,7 +334,6 @@ var variablesInit = function(c) {
     c.global_avatarUrl = false;
     c.global_findCount = false;
     c.global_locale = false;
-    c.global_running = false;
     c.global_open_popup_count = 0;
     c.global_open_popups = new Array();
     c.map_url = "https://www.geocaching.com/map/default.aspx";
@@ -9962,48 +9961,23 @@ var mainGC = function() {
             }
 
             // Build VIP, Mail, Message icons.
-            function waitForLatestActivityList(waitCount) {
-                if (global_running) return;
-                if (waitCount > 0 && $('ul.latest-activity-list li')[0]) {
-                    if (global_running) return;
-                    global_running = true;
-                    if (settings_show_vip_list) buildVipVupMailMessage();
-                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLatestActivityList(waitCount);}, 100);}
-            }
             function buildVipVupMailMessage() {
-                // Add Event Listener for "Load more" button.
-                if ($('.latest-activity-load')[0] && !$('.gclh_eventListener')[0]) {
-                    $('.latest-activity-load')[0].addEventListener('click', function() {
-                        function waitForLatestActivityPart2(waitCount) {
-                            if ($('.latest-activity-loaded')[0]) {
-                                waitForLatestActivityList(0);
-                            } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForLatestActivityPart2(waitCount);}, 100);}
-                        }
-                        waitForLatestActivityPart2(0);
-                    });
-                    $('.latest-activity-load').addClass('gclh_eventListener');
-                }
                 // Build Vip, Vup, Mail.
-                var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="] span.finder-username').closest('a');
+                var links = $('a[href*="https://www.geocaching.com/p/default.aspx?u="]');
                 for (var i = 0; i < links.length; i++) {
-                    if ($(links[i]).closest('.activity-item').find('.gclh_name')[0]) continue;
-                    var user = $(links[i]).find('.finder-username')[0];
-                    if ($('.mobile-log-item')[0]) {
-                        $(user).after('<span class="gclh_name"></span>');
-                        $(user).appendTo($(links[i]).find('.gclh_name'));
-                    } else {
-                        $(links[i]).after('<span class="gclh_name"></span>');
-                    }
+                    var user = links[i]
+                    if ($(user).closest('.activity-item').find('.gclh_name')[0]) continue;
+                    $(user).after('<span class="gclh_name"></span>');
+                    var target = $(user).closest('.finder-data').find('.gclh_name')[0]
+                    $(user).appendTo(target);
                     var item = $(user).closest('.activity-item');
                     var GCTBName = $(item).find('h3 a').html().trim();
                     var GCTBCode = $(item).find('.log-meta li')[0].childNodes[1].data;
                     global_name = GCTBName;
                     global_code = '('+GCTBCode+')';
                     global_link = '(https://coord.info/'+GCTBCode+')';
-                    var iconPlace = $(links[i]).closest('.activity-item').find('.gclh_name')[0];
-                    gclh_build_vipvupmail(iconPlace, user.innerHTML);
+                    gclh_build_vipvupmail(target, user.innerHTML);
                 }
-                global_running = false;
             }
 
             // Show favorites percentage
@@ -10075,6 +10049,7 @@ var mainGC = function() {
             }
 
             function processAllCODashboard() {
+                console.log('processAllCODashboard');
                 // Published and archivied caches excluding events.
                 if (document.location.pathname.match(/play\/owner\/(archived|published)\/?$/)) {
                     favPercent(0);
@@ -10082,25 +10057,26 @@ var mainGC = function() {
                 } else if (document.location.pathname.match(/play\/owner\/?$/)) {
                     setLinksToCacheTypes(0);
                     setLinkToOwnProfil(0);
-                    waitForLatestActivityList(0);
+                    buildVipVupMailMessage();
                 }
             }
             // Build mutation observer.
             function buildObserverCODashboard() {
                 var observerCODashboard = new MutationObserver(function(mutations) {
+                    console.log('mutation');
                     mutations.forEach(function(mutation) {
                         processAllCODashboard();
                     });
                 });
-                var target = document.querySelector('#app-root div');
+                var target = document.querySelector('body');
                 var config = {attributes: true, childList: true, characterData: true};
                 observerCODashboard.observe(target, config);
             }
             // Check if mutation observer can be build.
             function checkForBuildObserverCODashboard(waitCount) {
-                if ($('#app-root div div')[0]) {
+                if ($('body')[0]) {
                     if ($('.gclh_buildObserverCODashboard')[0]) return;
-                    $('#app-root').addClass('gclh_buildObserverCODashboard');
+                    $('body').addClass('gclh_buildObserverCODashboard');
                     buildObserverCODashboard();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverCODashboard(waitCount);}, 50);}
             }
@@ -10122,26 +10098,20 @@ var mainGC = function() {
             if (settings_show_vip_list) {
                 css += '.gclh_name {white-space: nowrap; display: flex; align-items: center;}';
                 css += '.gclh_name a {margin-right: 5px;}';
-                css += '.mobile-log-item-wrapper .gclh_name span {margin-right: 5px;}';
                 css += '.log-item .gclh_name {margin-left: 5px; margin-top: -3px; padding-bottom: 2px; line-height: 1;}';
                 css += '.log-item .finder-username, .log-item .finder-type, .log-item .finder-find-count {line-height: 1.3 !important;}';
-                css += '.mobile-log-item-wrapper .gclh_name a:focus:not(:nth-child(1)), .log-item .gclh_name a:focus {box-shadow: none;}';
-                css += '.latest-activity .mobile-log-item-wrapper {margin-top: -8px !important; padding: 0 8px !important;}';
+                css += '.log-item .gclh_name a:focus {box-shadow: none;}';
             }
             // Compact Layout
             if (settings_compact_layout_cod) {
                 css += '.widget {z-index: 1;}';
-                css += '.widget > div, .widget > ul, .widget > ul > li, .widget > ul span, .widget > div span, .mobile-log-item-wrapper .log-item-meta {padding: 0 !important; margin: 0 !important;}';
                 css += '.widget .widget-title a, .widget ul a, .widget > span {padding: 5px 10px !important;}';
                 css += '.widget li, .widget li a {height: 30.8px; line-height: 1.3;}';
                 css += '.widget ul a svg {padding: 0 5px 0 0 !important; margin: 0 !important; height: 24px !important; width: 29px !important;}';
-                css += '.page-header.cod {margin-bottom: 12px !important; font-size: 20px !important;}';
-                css += '.quick-filters .quick-filters-header {padding: 0 12px !important;}';
+                css += '.quick-filters .quick-filters-header {padding: 5px 10px !important;}';
                 css += '.latest-activity {margin-top: 12px !important;}';
                 css += '.latest-activity h2 {padding: 5px 10px !important;}';
                 css += '.quick-filters .quick-filters-header button {height:36px !important; width:36px !important;}';
-                css += '.quick-filters .quick-filters-header .scroll-left span,';
-                css += '.quick-filters .quick-filters-header .scroll-right span {height:24px !important; width:24px !important;}';
                 css += '.quick-filters .quick-filters-header button svg {height:12px !important; width:12p !important;}';
             }
 
