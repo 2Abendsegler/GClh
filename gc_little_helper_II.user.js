@@ -10408,97 +10408,94 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
-            // Proxies for map control and corrected coordinates:
-            //   observe html until unsafeWindow.webpackChunk_N_E is available and non-empty.
-            const t0 = Date.now();
-            const timeout = 10000;
+            // Initialize Map object.
+            unsafeWindow.MapSettings = {'Map': null};
+            // Helper to check if a specific key is present in the webpackChunk_N_E modules.
+            const isKeyInWebpackChunk_N_E = (key) => {
+                return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
+            }
+            // Add proxy for corrected coordinates and get map handle: observe html until webpackChunk_N_E and map are available.
+            let webpackChunk = false;
+            let mapHandle = false;
+            let observerCalls = 0;
             const observer = new MutationObserver(() => {
-                if (unsafeWindow.webpackChunk_N_E?.length > 0 ) {
-                    observer.disconnect();
-
-                    // Add React object to global space.
+                if (!webpackChunk && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('77601') && isKeyInWebpackChunk_N_E('2784')) {
+                    webpackChunk = true;
+                    // Add React and Layout object to global space.
                     try {
-                        if (!unsafeWindow.React) {
+                        if (!unsafeWindow.React || !unsafeWindow.React?.gclhLayout) {
                             unsafeWindow.webpackChunk_N_E.push([
                                 [66666],
                                 { 66667: () => {} },
-                                (n) => { unsafeWindow.React = n(2784); }
+                                (n) => { unsafeWindow.React = n(2784); if (settings_show_found_caches_at_corrected_coords_but) unsafeWindow.React.getLayout = n(77601); }
                             ]);
                         }
-                    } catch { gclh_log('push to webpackChunk_N_E failed'); }
+                    } catch(e) {gclh_error('push to unsafeWindow.webpackChunk_N_E failed',e);}
 
-                    // Add proxy to get (Leaflet) map instance.
-                    if (unsafeWindow.React?.useState) {
-                        unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
+                    // Add proxy for displaying caches at corrected coordinates.
+                    if (settings_show_found_caches_at_corrected_coords_but) {
+                        unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
                             apply: (target, thisArg, argArray) => {
-                                let useState = target.apply(thisArg, argArray);
-                                if (useState[0]?.__version) {
-                                    getMapInstance(useState);
+                                if (isActive) {
+                                    processCaches(argArray[0]);
                                 }
-                                return useState;
+                                return target.apply(thisArg, argArray);
                             }
                         });
                     }
+                }
 
-                    // Cache data for displaying at corrected coordinates.
-                    if (settings_show_found_caches_at_corrected_coords_but) {
-                        if (unsafeWindow.React?.useMemo) {
-                            unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
-                                apply: (target, thisArg, argArray) => {
-                                    let useMemo = target.apply(thisArg, argArray);
-                                    if (useMemo && useMemo?.props?.searchResults) {
-                                        processCaches(useMemo);
-                                    }
-                                    return useMemo;
-                                }
-                            });
-                        }
-                    }
+                // Get map handle.
+                if (!mapHandle && unsafeWindow.L?.Map) {
+                    mapHandle = true;
+                    // Temporary override map creation.
+                    let originalFunction = unsafeWindow.L.Map;
+                    unsafeWindow.L.Map = function (...args) {
+                        // Create and store map instance.
+                        unsafeWindow.MapSettings.Map = new originalFunction(...args);
+                        // Restore original function.
+                        unsafeWindow.L.Map = originalFunction;
+                        return unsafeWindow.MapSettings.Map;
+                    };
+                }
+
+                // Finished, stop observing.
+                if (webpackChunk && mapHandle) {
+                    observer.disconnect();
                     return;
                 }
-                // Timeout.
-                if (Date.now() - t0 > timeout) {
+
+                // Safeguard.
+                if (++observerCalls > 99) {
                     observer.disconnect();
-                    gclh_log('unsafeWindow.webpackChunk_N_E not found for ' + timeout/1000 + 's');
+                    if (!webpackChunk) gclh_error("Add proxy for corrected coordinates", new Error('unsafeWindow.webpackChunk_N_E not found for ' + observerCalls + ' MutationObserver calls'));
+                    if (!mapHandle) gclh_error("Get map handle", new Error('unsafeWindow.L.Map not found for ' + observerCalls + ' MutationObserver calls'));
+                    return;
                 }
             });
             observer.observe(document.documentElement, { childList: true, subtree: true });
 
-            // Initialize Map object.
-            unsafeWindow.MapSettings = {'Map': null};
+            // Handle corrected coordinates.
+            let compensateCenterOffset = true;
+            const processCaches = (layout) => {
+                // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
+                // Otherwise corrected coords cannot be set.
+                layout.props.searchResults = structuredClone(layout.props.searchResults);
 
-            // Get map instance.
-            const getMapInstance = (state) => {
-                // Only once.
-                if (unsafeWindow.MapSettings?.Map?._mapPane) return;
-
-                // Leaflet maps only.
-                if (state[0].map) {
-                    unsafeWindow.MapSettings.Map = state[0].map;
-                }
-            }
-
-            // Process cache data.
-            const processCaches = (state) => {
-                // Nothing to be done.
-                if (!isActive) return;
-
-                // Move caches to corrected position.
-                if (state.props.searchResults.results[0]) {
-                    // On initial page load, results array is read-only -> no modifications possible.
-                    // For 'Search this area', results array is (sometimes) writable -> modifications possible.
-                    let caches = state.props.searchResults.results;
-                    // If cache objects are read-only, nothing can be done.
-                    if (Object.getOwnPropertyDescriptor(caches[0], 'name').configurable === false) return;
-
-                    let gc = null;
-                    for (let i = 0; i < caches.length; i++) {
-                        gc = caches[i];
-                        // If corrected coords are available, change cache coords.
-                        if (gc.userCorrectedCoordinates) {
-                            gc.postedCoordinates = gc.userCorrectedCoordinates;
-                        }
+                // If corrected coords are available, change cache coords.
+                let caches = layout.props.searchResults.results;
+                let gc = null;
+                for (let i = 0; i < caches.length; i++) {
+                    gc = caches[i];
+                    if (gc.userCorrectedCoordinates) {
+                        gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
+                }
+
+                // Once on page load, compensate unwanted offset to desired map center (only happens in Chrome).
+                if (compensateCenterOffset && unsafeWindow.MapSettings?.Map?.panTo) {
+                    compensateCenterOffset = false;
+                    unsafeWindow.MapSettings.Map.panTo(Object.values(layout.props.mapCenter));
                 }
             }
 
@@ -10516,8 +10513,8 @@ var mainGC = function() {
 
                     // Toggle button for corrected coordinates.
                     $("#gclh_corrected_coords").bind("click", () => {
-                        // Run 'Search this area' to modify coords.
-                        document.querySelector('[data-testid="search-this-area-button"]').click();
+                        // Update view to update coords.
+                        unsafeWindow.MapSettings?.Map?.fitBounds(unsafeWindow.MapSettings?.Map?.getBounds());
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         if (!isActive) {
@@ -10542,25 +10539,6 @@ var mainGC = function() {
                 var isActive = getValue('showCorrectedCoords', false);
                 // Add button with small delay to ensure it is always at the top (necessary for FF).
                 setTimeout(addCorrectedCoordsButton, 0);
-
-                // If show at corrected coords is active, update cache locations.
-                if (isActive) {
-                    // Observe distance filter for changes:
-                    // - unset default distance value
-                    // - wait until value gets reset by GS, then data is ready and a search can be performed
-                    const anchor = '[data-event-label="Filters - Distance From"]';
-                    waitForElementThenRun(anchor, () => {
-                        // Unset default distance value.
-                        document.querySelector(anchor).setAttribute('value', '');
-                        // Wait until data is ready, then update cache locations.
-                        const observer = new MutationObserver(() => {
-                            observer.disconnect();
-                            // Run 'Search this area' to modify coords.
-                            if (run_searchThisArea()) searchThisArea();
-                        });
-                        observer.observe(document.querySelector(anchor), {attributes: true, attributeName: "value"});
-                    });
-                }
             }
 
             // Set click events to 'Search' and 'My Lists' that will handle enabling/disabling corrected coords button.
@@ -10718,9 +10696,6 @@ var mainGC = function() {
             function run_searchThisArea() {
                 // Don't run on matrix links or BML section.
                 if (isGclhMatrix || document.querySelector('li.bg-green-500[data-testid="list-mode-item"]')) return false;
-
-                // Don't run if map bounds aren't initialized.
-                if (!latHighG) return false;
 
                 // Don't run more than once at the same time.
                 if (searchThisAreaIsRunning) return false;
