@@ -10561,17 +10561,24 @@ var mainGC = function() {
                         observer.observe(document.querySelector(anchor), {attributes: true, attributeName: "value"});
                     });
                 }
+            }
 
-                // Disable button for BML.
+            // Set click events to 'Search' and 'My Lists' that will handle enabling/disabling corrected coords button.
+            function addEnableDisableCorrectedCoordsHandler() {
                 waitForElementThenRun('button[data-testid="list-mode-toggle"]', () => {
-                    $('button[data-testid="list-mode-toggle"]').click(() => {
-                        document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
-                    });
-                    $('button[data-testid="search-mode-toggle"]').click(() => {
-                        document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
-                        // Reinitialize map bounds.
-                        [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
-                    });
+                    if (!$('ul[data-testid="mode-toggles"]').hasClass('gclh-mode-toggles')) {
+                        $('ul[data-testid="mode-toggles"]').addClass('gclh-mode-toggles');
+                        // Disable button for BML.
+                        $('button[data-testid="list-mode-toggle"]').click(() => {
+                            document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
+                        });
+                        // Enable button for search lists.
+                        $('button[data-testid="search-mode-toggle"]').click(() => {
+                            document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
+                            // Reinitialize map bounds.
+                            [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
+                        });
+                    }
                 });
             }
 
@@ -11468,6 +11475,7 @@ var mainGC = function() {
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
+                if (settings_show_found_caches_at_corrected_coords_but) addEnableDisableCorrectedCoordsHandler();
             }
 
             // Observer callback for body and checking existence of sidebar.
