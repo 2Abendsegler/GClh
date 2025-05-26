@@ -14675,7 +14675,9 @@ var mainGC = function() {
             mess_img.setAttribute("src", global_message_icon);
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
-            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template_message);
+            var mess_link_href = "/account/messagecenter?recipientId=" + guid + "&text=" + template_message;
+            if (global_code) mess_link_href += "&gcCode=" + global_code.replace('(', '').replace(')', '');
+            mess_link.setAttribute("href", mess_link_href);
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             // "Message this owner" und Icon entfernen.
