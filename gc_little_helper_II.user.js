@@ -8288,7 +8288,7 @@ var mainGC = function() {
                 '          {{/if}}';
             if (settings_show_message) new_tmpl +=
                 '          {{if UserName !== "' + global_activ_username + '" }}' +
-                '          <a ' + messageNewWin + 'href="/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                '          <a ' + messageNewWin + 'href="' + buildMessageCenterHref("${AccountGuid}", global_MailTemplate) + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
                 '          {{/if}}';
             new_tmpl +=
                 '          &nbsp;&nbsp;' +
@@ -14677,9 +14677,7 @@ var mainGC = function() {
             mess_img.setAttribute("src", global_message_icon);
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
-            var mess_link_href = "/account/messagecenter?recipientId=" + guid + "&text=" + template_message;
-            if (global_code_no_brackets && !template_message && settings_message_add_gc_code) mess_link_href += "&gcCode=" + global_code_no_brackets;
-            mess_link.setAttribute("href", mess_link_href);
+            mess_link.setAttribute("href", buildMessageCenterHref(guid, template_message));
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             // "Message this owner" und Icon entfernen.
@@ -14718,6 +14716,12 @@ var mainGC = function() {
         tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code_no_brackets);
         if (trimIt) tpl = tpl.trim();
         return tpl;
+    }
+    // Message Center Href containing gcCode
+    function buildMessageCenterHref(guid, text) {
+        var mess_link_href = "/account/messagecenter?recipientId=" + guid + "&text=" + text;
+        if (global_code_no_brackets && !text && settings_message_add_gc_code) mess_link_href += "&gcCode=" + global_code_no_brackets;
+        return mess_link_href;
     }
 
 // Zebra look: colorize or remove.
