@@ -527,6 +527,7 @@ var variablesInit = function(c) {
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
+    c.settings_message_add_gc_code = getValue("settings_message_add_gc_code", true);
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
@@ -14677,7 +14678,7 @@ var mainGC = function() {
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
             var mess_link_href = "/account/messagecenter?recipientId=" + guid + "&text=" + template_message;
-            if (global_code && !template_message) mess_link_href += "&gcCode=" + global_code_no_brackets;
+            if (global_code_no_brackets && !template_message && settings_message_add_gc_code) mess_link_href += "&gcCode=" + global_code_no_brackets;
             mess_link.setAttribute("href", mess_link_href);
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
@@ -16185,6 +16186,9 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new browser tab') + "<br>";
             html += checkboxy('settings_show_message', 'Show message link beside user') + "<br>";
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new browser tab') + "<br>";
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_message_add_gc_code', 'Mention GC Code in message') + show_help("If this option is enabled, the message to the user will include the GC code of the page it was sent from. Disable this to have an empty message box. This setting will be ignored if a <a class='gclh_ref_ht_int' href='#gclh_config_mail' title='Link to topic \"Message Form Template\"'>Message Form Template</a> is specified.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hiding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
@@ -18114,6 +18118,7 @@ var mainGC = function() {
                 'settings_hide_map_header',
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
+                'settings_message_add_gc_code',
                 'settings_hide_archived_in_owned',
                 'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
