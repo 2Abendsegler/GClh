@@ -3471,7 +3471,7 @@ var mainGC = function() {
     show_mail_and_message_icon:
     try {
         // Cache, TB, Aktiv User Infos ermitteln.
-        var [global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
+        var [global_gc, global_tb, global_code, global_code_no_brackets, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
         // Nicht auf Mail, Message Seite ausführen.
         if ($('#ctl00_ContentBody_SendMessagePanel1_SendEmailPanel')[0] || $('#messageArea')[0]) break show_mail_and_message_icon;
         if ((settings_show_mail || settings_show_message)) {
@@ -14582,7 +14582,7 @@ var mainGC = function() {
     // Cache, TB, Aktiv User Infos ermitteln.
     function getGcTbUserInfo() {
         var g_gc = false; var g_tb = false;
-        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
+        var g_code = ""; var g_code_no_brackets = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
         if ((settings_show_mail || settings_show_message)) {
             // Cache Listing.
             if ($('#ctl00_ContentBody_CacheName')[0]) {
@@ -14629,13 +14629,14 @@ var mainGC = function() {
             }
             if (g_code != "") {
                 g_link = "(https://coord.info/" + g_code + ")";
+                g_code_no_brackets = g_code;
                 g_code = "(" + g_code + ")";
             }
             g_founds = global_findCount;
             [g_date, g_time, g_dateTime] = getDateTime();
             g_activ_username = global_me;
         }
-        return [g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime];
+        return [g_gc, g_tb, g_code, g_code_no_brackets, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime];
     }
     // Message Icon, Mail Icon aufbauen.
     function buildSendIcons(b_side, b_username, b_art, guidSpecial) {
@@ -14676,7 +14677,7 @@ var mainGC = function() {
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
             var mess_link_href = "/account/messagecenter?recipientId=" + guid + "&text=" + template_message;
-            if (global_code) mess_link_href += "&gcCode=" + global_code.replace('(', '').replace(')', '');
+            if (global_code && !template_message) mess_link_href += "&gcCode=" + global_code_no_brackets;
             mess_link.setAttribute("href", mess_link_href);
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
@@ -14713,7 +14714,7 @@ var mainGC = function() {
         tpl = tpl.replace(/#Found-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds+1 - p1 : global_founds+1).replace(/#Found_no-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds - p1 : global_founds)
         tpl = tpl.replace(/#Me#/ig, global_activ_username).replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
         tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
-        tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code.replace('(','').replace(')',''));
+        tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code_no_brackets);
         if (trimIt) tpl = tpl.trim();
         return tpl;
     }
