@@ -106,6 +106,7 @@ function collectionInit(c) {
         {name: 'Locationless Cache', icon: '12'},
         {name: 'Multi-Cache', icon: '3'},
         {name: 'Mystery Cache', icon: '8'},
+        {name: 'Project A.P.E. Cache', icon: '9'},
         {name: 'Traditional Cache', icon: '2'},
         {name: 'Virtual Cache', icon: '4'},
         {name: 'Webcam Cache', icon: '11'},
@@ -117,9 +118,8 @@ function collectionInit(c) {
         {name: 'Geocaching HQ Celebration', icon: '3774', isEvent: true},
         {name: 'Giga-Event Cache', icon: '7005', isEvent: true},
         {name: 'GPS Adventures Maze Exhibit', icon: '1304', isEvent: true},
-        {name: 'Mega-Event Cache', icon: '453', isEvent: true},
-        {name: 'Project A.P.E. Cache', icon: '9', isEvent: true}
-    ];    
+        {name: 'Mega-Event Cache', icon: '453', isEvent: true}
+    ];
 }
 
 function layersInit(c) {
