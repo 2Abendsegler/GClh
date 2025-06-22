@@ -650,7 +650,7 @@ var variablesInit = function(c) {
     c.settings_lists_found_column_bml = getValue("settings_lists_found_column_bml", false);
     c.settings_lists_show_log_it = getValue("settings_lists_show_log_it", false);
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
-    c.settings_searchmap_autoupdate_after_dragging = c.settings_use_gclh_layercontrol_on_search_map ? getValue("settings_searchmap_autoupdate_after_dragging", true) : false;
+    c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
@@ -693,7 +693,7 @@ var variablesInit = function(c) {
     c.settings_color_nv = getValue("settings_color_nv", "F0DFC6");
     c.settings_color_navi_search = getValue("settings_color_navi_search", false);
     c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
-    c.settings_show_found_caches_at_corrected_coords_but = c.settings_use_gclh_layercontrol_on_search_map ? getValue("settings_show_found_caches_at_corrected_coords_but", true) : false;
+    c.settings_show_found_caches_at_corrected_coords_but = getValue("settings_show_found_caches_at_corrected_coords_but", true);
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
@@ -10427,13 +10427,13 @@ var mainGC = function() {
                             unsafeWindow.webpackChunk_N_E.push([
                                 [66666],
                                 { 66667: () => {} },
-                                (n) => { unsafeWindow.React = n(2784); if (settings_show_found_caches_at_corrected_coords_but) unsafeWindow.React.getLayout = n(77601); }
+                                (n) => { unsafeWindow.React = n(2784); if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) unsafeWindow.React.getLayout = n(77601); }
                             ]);
                         }
                     } catch(e) {gclh_error('push to unsafeWindow.webpackChunk_N_E failed',e);}
 
                     // Add proxy for displaying caches at corrected coordinates.
-                    if (settings_show_found_caches_at_corrected_coords_but) {
+                    if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) {
                         unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
                             apply: (target, thisArg, argArray) => {
                                 if (isActive) {
@@ -10535,7 +10535,7 @@ var mainGC = function() {
             }
 
             // Add button to toggle display of found caches between original and corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but) {
+            if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) {
                 var isActive = getValue('showCorrectedCoords', false);
                 // Add button with small delay to ensure it is always at the top (necessary for FF).
                 setTimeout(addCorrectedCoordsButton, 0);
@@ -10688,10 +10688,8 @@ var mainGC = function() {
 
             // Run searchThisArea only when necessary.
             let isGclhMatrix = getURLParam('gclhmatrix');
-            let latHighG = latHigh = false;
-            let latLowG = latLow = false;
-            let lngHighG = lngHigh = false;
-            let lngLowG = lngLow = false;
+            let latHighG = false, latHigh = false, latLowG = false, latLow = false;
+            let lngHighG = false, lngHigh = false, lngLowG = false, lngLow = false;
             let filterSearchWasRunning = false;
             function run_searchThisArea() {
                 // Don't run on matrix links or BML section.
@@ -10723,7 +10721,7 @@ var mainGC = function() {
                 return true;
             }
 
-            if (settings_searchmap_autoupdate_after_dragging) {
+            if (settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol_on_search_map) {
                 // Set event listeners for dragging/zooming map and initialize map bounds, as soon as unsafeWindow.MapSettings.Map is ready.
                 const timeout_search = 1000;
                 let count = 0;
@@ -11450,7 +11448,7 @@ var mainGC = function() {
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
-                if (settings_show_found_caches_at_corrected_coords_but) addEnableDisableCorrectedCoordsHandler();
+                if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) addEnableDisableCorrectedCoordsHandler();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -11493,7 +11491,7 @@ var mainGC = function() {
 
             var css = '';
             // Hide button search this area and icon loading, if not link from matrix.
-            if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
+            if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol_on_search_map) {
                 css += '[data-event-label="Map - Search This Area"], .loading-display {display: none !important;}';
             }
 
