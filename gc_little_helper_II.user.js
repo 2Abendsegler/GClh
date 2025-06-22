@@ -586,6 +586,8 @@ var variablesInit = function(c) {
     c.settings_map_percentage_statistic = getValue("settings_map_percentage_statistic", true);
     c.settings_improve_add_to_list_height = getValue("settings_improve_add_to_list_height", 205);
     c.settings_improve_add_to_list = getValue("settings_improve_add_to_list", true);
+    c.settings_show_individual_links = getValue("settings_show_individual_links", true);
+    c.settings_individual_links = JSON.parse(getValue("settings_individual_links", "{}"));
     c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
     c.settings_show_gpsvisualizer_link = getValue("settings_show_gpsvisualizer_link", true);
@@ -2774,6 +2776,39 @@ var mainGC = function() {
             css += '.CacheDetailNavigation a[href*="#logs_section"]{background-image:url(' + global_logs_icon + ');}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Add link to waypoint list and cache logs",e);}
+    }
+
+// Add custom links to right sidebar.
+    if (is_page("cache_listing") && settings_show_individual_links) {
+        try {
+            for (var i in settings_individual_links) {
+                if (!settings_individual_links[i].display || settings_individual_links[i].href == '' || settings_individual_links[i].name == '') continue;
+                if ((settings_individual_links[i].listing == 'All') ||
+                    (settings_individual_links[i].listing == 'Caches' && isEventInCacheListing() == false) ||
+                    (settings_individual_links[i].listing == 'Events' && isEventInCacheListing() == true)     ) {
+                    if ($('.cacheImage use')[0] && $('.cacheImage use').attr('xlink:href')) {
+                        var icon = $('.cacheImage use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
+                    }
+                    if (icon && icon[1] && (settings_individual_links[i].cachetype == 'All' || settings_individual_links[i].cachetype == icon[1])) {
+                        $(".CacheDetailNavigation:first > ul:first").append('<li><a class="individualLink working" style="background-image: url(' + externalLink + ')" href="' + convertForHTML(settings_individual_links[i].href) + '"' + (settings_individual_links[i].newtab ? ' target="_blank"' : '') + '>' + settings_individual_links[i].name + '</a></li>');
+                    }
+                }
+            }
+            function checkForIndividualLinks(waitCount) {
+                if ( typeof unsafeWindow.mapLatLng !== "undefined" && unsafeWindow.mapLatLng !== null &&
+                    (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache") )) {
+                    $('.individualLink').each(function(){
+                        if ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
+                            $(this)[0].href = $(this)[0].href.replace(/#GCCode#/ig, $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].innerHTML);
+                        }
+                        $(this)[0].href = $(this)[0].href.replace(/#CoordsLat#/ig, unsafeWindow.mapLatLng.lat);
+                        $(this)[0].href = $(this)[0].href.replace(/#CoordsLng#/ig, unsafeWindow.mapLatLng.lng);
+                        $(this).removeClass('working');
+                    });
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkForIndividualLinks(waitCount);}, 100);}
+            }
+            checkForIndividualLinks(0);
+        } catch(e) {gclh_error("Add custom links to right sidebar",e);}
     }
 
 // Button to copy data to clipboard at right sidebar.
@@ -16057,7 +16092,7 @@ var mainGC = function() {
 
             html += "<div id='gclh_config_content2'>";
             html += "<div id='rc_area' class='gclh_rc_area'>";
-            html += "<input type='radio' name='rc' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home coordinates; homezone circle and multi homezone circles; date format; log templates; cache log, trackable log and other signatures; friends data; links in Linklist and differing description and custom links. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"Close\" and go to GClh II Config to skim over the set of data.") + "<br>";
+            html += "<input type='radio' name='rc' id='rc_standard' class='gclh_rc'><label for='rc_standard'>Reset to standard configuration</label>" + show_help("This option should help you to come back to an efficient configuration set, after some experimental or other motivated changes. This option load a reasonable standard configuration and overwrite your configuration data in parts. <br><br>The following data are not overwrited: Home coordinates; homezone circle and multi homezone circles; custom links for listing; own \"copy data to clipboard\" entries; date format; log templates; cache log, trackable log and other signatures; friends data; links in Linklist and differing description and custom links in Linklist. <br>Dynamic data, like for example autovisits for named trackables, are not overwrited too.<br><br>After reset, choose button \"Close\" and go to GClh II Config to skim over the set of data.") + "<br>";
             html += "<input type='radio' name='rc' checked='checked' id='rc_temp' class='gclh_rc'><label for='rc_temp'>Reset dynamic and unused data</label>" + show_help("This option reorganize the configuration set. Unused parameters of older script versions are deleted. And the dynamic data like the autovisit settings for every trackable, the seen friends data of founds and hides, the DropBox token and the hidden banners are deleted too. Especially the VIPs, VUPs and Linklist settings are not deleted of course.<br><br>After reset, choose button \"Close\".") + "<br><br>";
             html += "<input type='radio' name='rc' id='rc_homecoords' class='gclh_rc'><label for='rc_homecoords'>Reset your own home coordinates</label>" + show_help("This option could help you with problems around your home coordinates, like for example with your main homezone, with nearest lists or with your home coordinates itself. Your home coordinates are not deleted at GC, but only in GClh II Config. <br><br>After reset, you have to go to the account settings page of GC to the area \"Home Location\", so that GC little helper II can save your home coordinates again automatically. You have only to go to this page, you have nothing to do at this page, GC little helper II save your home coordinates automatically. <br>Or you enter your home coordinates manually in GClh II Config. <br><br>At last, choose button \"Close\".");
             html += "<font class='gclh_small'> (After reset, go to <a href='/account/settings/homelocation' target='_blank'>Home Location</a> )</font>" + "<br>";
@@ -16681,6 +16716,32 @@ var mainGC = function() {
             html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
+            html += newParameterOn3;
+            var placeholder_ilinks = "Possible placeholders for custom links:<br>&nbsp; #GCCode# : GC code<br>&nbsp; #CoordsLat# : Coordinates latitude in decimal format (DD.DDDDD)<br>&nbsp; #CoordsLng# : Coordinates longitude in decimal format (DD.DDDDD)<br>(Upper and lower case is not required in the placeholders name.)";
+            var nameHelp = "The name of a custom link is displayed in listings in the right navigation sidebar. Ideally, a name should not be too long so that the display of it does not wrap.";
+            var listingHelp = "The display of a custom link can be restricted for cache listings or event listings.";
+            var cachetypeHelp = "The display of a custom link can also be restricted for a cache type.";
+            var linkHelp = "A custom link is usually an URL. For a custom link, there is no check to see if the link actually leads to an existing address. If it doesn't, you'll likely end up on a DNF page. A custom link can contain various placeholders, such as the GC code or coordinates. These placeholders are then replaced by the values in the listing when displayed in the listing. For details see \"Possible placeholders\" above. A custom link can be opened in a new browser tab.<br><br>Under certain conditions, local files and directories on the computer can also be used as a custom link. For security purposes, all browser block links to local files and directories. If you still want to use local links and you are willing to accept the possible risk of linking to local content, you can override the security policy in your browser settings. Please see there, how you can do that.";
+            var completeHelp = "This feature allows you to create custom links that are displayed in listings in the right navigation sidebar. Custom links can be deactivated for display in listings using the checkboxes.<br><br>" + nameHelp + "<br><br>" + listingHelp + " " + cachetypeHelp + "<br><br>" + linkHelp;
+            html += checkboxy('settings_show_individual_links', 'Show custom links in sidebar') + show_help(completeHelp);
+            html += " &nbsp; ( Possible placeholders" + show_help(placeholder_ilinks) + ")" + "<br>";
+            html += "<div id='settings_show_individual_links_block' style='display: " + (settings_show_individual_links ? "block":"none") + ";'>";
+            html += "<table class='individual_links'>";
+            html += "  <thead><tr>";
+            html += "      <th></th>";
+            html += "      <th><span>Name</span>" + show_help(nameHelp) + "<span> / Link</span>" + show_help(linkHelp) + "</th>";
+            html += "      <th><span>Listing</span>" + show_help(listingHelp) + "</th>";
+            html += "      <th><span>Cache Type</span>" + show_help(cachetypeHelp) + "</th>";
+            html += "      <th><span></span></th>";
+            html += "  </tr></thead>";
+            html += "  <tbody>";
+            for (var i in settings_individual_links) {
+                html += buildBothTableRows_ilinks(settings_individual_links[i], i);
+            }
+            html += "</tbody></table>";
+            html += "<div><button id='ilinks_create' class='gclh_form' style='height: 25px; margin-left: 18px; margin-bottom: 4px;' type='button' title='Create new custom link'>Create</button></div>";
+            html += "</div>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show radius around caches on Flopp\'s Map') + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + "<br>";
@@ -17165,8 +17226,8 @@ var mainGC = function() {
 //<-- #2170 #2055
             $('#gclh_config_content2').hide();
             $('#gclh_config_content_thanks').hide();
-            $('label[for="settings_use_gclh_layercontrol"], label[for="settings_show_homezone"]').addClass('gclh_ref');
-            $('#settings_show_homezone,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
+            $('label[for="settings_use_gclh_layercontrol"], label[for="settings_show_homezone"], label[for="settings_show_individual_links"]').addClass('gclh_ref');
+            $('#settings_show_homezone,#settings_show_individual_links,#settings_use_gclh_layercontrol,#settings_bookmarks_top_menu,#settings_bookmarks_top_menu_h').addClass('shadowBig');
             setSpecialLinks();
             $(".gclh_content svg.browse_map_icon, .gclh_content svg.search_map_icon").each(function(){$(this)[0].setAttribute("viewBox", "0 0 25 25");});
 
@@ -17406,6 +17467,117 @@ var mainGC = function() {
                 $("#ShowHomezoneCircles").toggle();
             });
 
+            // Custom links for cache listing:
+            // -------------------------------
+            // Fill options for select field of cache type.
+            function createOptionsForCachetype_ilinks(listing, cachetype) {
+                var selectedIsSet = false;
+                var options = '';
+                for (var i = 0; i < cache_types.length; i++) {
+                    if (listing == 'Events' && !cache_types[i].isEvent) continue;
+                    if (listing == 'Caches' && cache_types[i].isEvent) continue;
+                    if (cachetype == cache_types[i].icon) {
+                        selectedIsSet = true;
+                        var selected = " selected=\"selected\"";
+                    } else var selected = "";
+                    options += "<option value='" + cache_types[i].icon + "'" + selected + ">" + cache_types[i].name + "</option>";
+                }
+                if (cachetype == 'All' || !selectedIsSet) var selected = "selected=\"selected\"";
+                else var selected = "";
+                options = "<option value='All'" + selected + ">All</option>" + options;
+                return options;
+            }
+            // Prepare both table rows for a custom link.
+            function buildBothTableRows_ilinks(ilink, idnr) {
+                var html = '';
+                html += "<tr id='ilinks_element_" + idnr + "' class='ilinks_element_first'>";
+                html += "  <td><input id='ilinks_display_" + idnr + "' class='ilinks_display' type='checkbox' " + (ilink.display ? "checked='checked'" : "" ) + "' title='Should the link be displayed?'></td>";
+                html += "  <td><input id='ilinks_name_" + idnr + "' class='gclh_form ilinks_name ilinks_dep' type='text' title='Name' value='" + convertForHTML(ilink.name) + "' placeholder='Name' style='width: 198px; margin: 1px 0; padding-top: 1px; padding-bottom: 1px;'></td>";
+                html += "  <td><select id='ilinks_listing_" + idnr + "' class='gclh_form ilinks_listing ilinks_dep' title='Listing' style='width: 75px; padding-top: 1px; padding-bottom: 1px;'>";
+                html += "    <option " + (ilink.listing == "All" ? "selected=\"selected\"" : "") + ">All</option>";
+                html += "    <option " + (ilink.listing == "Caches" ? "selected=\"selected\"" : "") + ">Caches</option>";
+                html += "    <option " + (ilink.listing == "Events" ? "selected=\"selected\"" : "") + ">Events</option>";
+                html += "  </select></td>";
+                html += "  <td colspan='2'><select id='ilinks_cachetype_" + idnr + "' class='gclh_form ilinks_cachetype ilinks_dep' title='Cache Type' style='width: 225px; padding-top: 1px; padding-bottom: 1px;'>";
+                html += createOptionsForCachetype_ilinks(ilink.listing, ilink.cachetype);
+                html += "  </select></td>";
+                html += "  <td><a class='remove ilinks_delete' href='javascript:void(0);'><img class='' title ='Delete custom link' src='" + global_del_it_icon + "' style='margin-left: 2px; height: 22px; cursor: pointer; vertical-align: top;' / ></a></td>";;
+                html += "</tr>";
+                html += "<tr class='ilinks_element_second'>";
+                html += "  <td></td>";
+                html += "  <td colspan='3'><input id='ilinks_href_" + idnr + "' class='gclh_form ilinks_href ilinks_dep' type='text' title='Link' value='" + convertForHTML(ilink.href) + "' placeholder='Link' style='width: 100%;'></td>";
+                html += "  <td title='Open in new browser tab'><span>new tab</span><input id='ilinks_newtab_" + idnr + "' class='ilinks_newtab ilinks_dep' type='checkbox' " + (ilink.newtab ? "checked='checked'" : "" ) + "'></td>";
+                html += "</tr>";
+                return html;
+            }
+            // Build change event for select of listing, so the options for select field of cache type can be changed.
+            function buildChangeEventForListing_ilinks(lines) {
+                for (var i = 0; i < lines.length; i++) {
+                    $(lines[i]).find('.ilinks_listing').each(function() {
+                        $(this)[0].addEventListener('change', function() {
+                            var listing = $(this).find('option')[$(this)[0].selectedIndex].innerText;
+                            var cachetype = $(this).closest('.ilinks_element_first').find('.ilinks_cachetype option')[$(this).closest('.ilinks_element_first').find('.ilinks_cachetype')[0].selectedIndex].value;
+                            var options = createOptionsForCachetype_ilinks(listing, cachetype);
+                            $(this).closest('.ilinks_element_first').find('.ilinks_cachetype').children().remove();
+                            $(this).closest('.ilinks_element_first').find('.ilinks_cachetype').append(options);
+                        }, false);
+                    });
+                }
+            }
+            var lines = $('.ilinks_element_first');
+            buildChangeEventForListing_ilinks(lines);
+            // Build click event for delete button with deleting the custom link.
+            function buildDeleteEventForRows_ilinks(lines) {
+                for (var i = 0; i < lines.length; i++) {
+                    $(lines[i]).find('.ilinks_delete').each(function() {
+                        $(this)[0].addEventListener("click", function() {
+                            $(this).closest('tr')[0].nextElementSibling.remove();
+                            $(this).closest('tr').remove();
+                        }, false);
+                    });
+                }
+            }
+            buildDeleteEventForRows_ilinks($('.ilinks_element_first'));
+            // Build dependencies.
+            function setEvForDepPara_ilinks(lines) {
+                for (var i = 0; i < lines.length; i=i+2) {
+                    $(lines[i]).find('.ilinks_dep').each(function() {
+                        setEvForDepPara($(lines[i]).find('.ilinks_display')[0].id, $(this)[0].id);
+                    });
+                    $(lines[i+1]).find('.ilinks_dep').each(function() {
+                        setEvForDepPara($(lines[i]).find('.ilinks_display')[0].id, $(this)[0].id);
+                    });
+                }
+            }
+            var lines = $('table.individual_links tbody tr');
+            setEvForDepPara_ilinks(lines);
+            // Build click event for create button with creating a new custom link.
+            var ilinks_idnr = $('.ilinks_element_first').length;
+            $('#ilinks_create')[0].addEventListener("click", function() {
+                ilinks_idnr++;
+                var ilink = {};
+                ilink.display = true;
+                ilink.name = '';
+                ilink.listing = 'All';
+                ilink.cachetype = 'All';
+                ilink.href = '';
+                ilink.newtab = true;
+                var html = buildBothTableRows_ilinks(ilink, ilinks_idnr);
+                $('table.individual_links tbody').append(html);
+                // Build change event for select of listing, so the options for select field of cache type can be changed.
+                buildChangeEventForListing_ilinks($('.ilinks_element_first:last'));
+                // Build click event for delete button with deleting the custom link.
+                buildDeleteEventForRows_ilinks($('.ilinks_element_first:last'));
+                // Build dependencies.
+                var lines = $('.ilinks_element_first:last');
+                lines[1] = $('.ilinks_element_first:last')[0].nextElementSibling;
+                setEvForDepPara_ilinks(lines);
+            });
+            // Build click event to Show/Hide custom links block.
+            $("#settings_show_individual_links").click(function() { $("#settings_show_individual_links_block").toggle(); });
+            // Scroll to the first place in the fields name and href. Without this, the content of the fields remains displayed as it was previously left.
+            $('.ilinks_name, .ilinks_href').each(function() { this.scrollTo(0,0); });
+
             // Own entries in copy data to clipboard menu:
             // -------------------------------------------
             $('#cdos_main .cff_element').each(function() {buildAroundCff('cdos', this);});
@@ -17453,7 +17625,7 @@ var mainGC = function() {
                 }
             }
 
-            $('#create_homezone, #cff_create, #btn_close2, #btn_saveAndUpload, #btn_save, #thanks_close_button, #rc_close_button, #rc_reset_button').click(function() {if ($(this)[0]) animateClick(this);});
+            $('#create_homezone, #cff_create, #ilinks_create, #btn_close2, #btn_saveAndUpload, #btn_save, #thanks_close_button, #rc_close_button, #rc_reset_button').click(function() {if ($(this)[0]) animateClick(this);});
             $('#check_for_update')[0].addEventListener("click", function() {checkForUpdate(true);}, false);
             $('#rc_link')[0].addEventListener("click", rcPrepare, false);
             $('#rc_reset_button')[0].addEventListener("click", rcReset, false);
@@ -17888,6 +18060,22 @@ var mainGC = function() {
             }
             setValue("settings_multi_homezone", JSON.stringify(settings_multi_homezone));
 
+            // Custom links for cache listing.
+            var settings_individual_links = {};
+            var lines = $('table.individual_links tbody tr');
+            var nr = 0;
+            for (var i = 0; i < lines.length; i=i+2) {
+                settings_individual_links[nr] = {};
+                settings_individual_links[nr].display = $(lines[i]).find('.ilinks_display')[0].checked;
+                settings_individual_links[nr].name = $(lines[i]).find('.ilinks_name')[0].value.trim();
+                settings_individual_links[nr].listing = $(lines[i]).find('.ilinks_listing option')[$(lines[i]).find('.ilinks_listing')[0].selectedIndex].innerText;
+                settings_individual_links[nr].cachetype = $(lines[i]).find('.ilinks_cachetype option')[$(lines[i]).find('.ilinks_cachetype')[0].selectedIndex].value;
+                settings_individual_links[nr].href = $(lines[i+1]).find('.ilinks_href')[0].value.trim();
+                settings_individual_links[nr].newtab = $(lines[i+1]).find('.ilinks_newtab')[0].checked;
+                nr++;
+            }
+            setValue("settings_individual_links", JSON.stringify(settings_individual_links));
+
             // Own entries in copy data to clipboard menu.
             var settings_show_copydata_own_stuff = setDataCff('cdos');
             setValue("settings_show_copydata_own_stuff", JSON.stringify(settings_show_copydata_own_stuff));
@@ -18158,6 +18346,7 @@ var mainGC = function() {
                 'settings_map_statistic_set_name_in_map',
                 'settings_map_percentage_statistic',
                 'settings_improve_add_to_list',
+                'settings_show_individual_links',
                 'settings_show_flopps_link',
                 'settings_show_brouter_link',
                 'settings_show_gpsvisualizer_link',
@@ -20172,6 +20361,11 @@ function decode_innerText(v_mit_innerHTML) {
 function html_to_str(s) {
     s = s.replace(/\&amp;/g, "&");
     s = s.replace(/\&nbsp;/g, " ");
+    return s;
+}
+// Convert special characters to HTML entities.
+function convertForHTML(s) {
+    s = s.replace(/"/g,'&quot;').replace(/'/g,'&#039;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     return s;
 }
 
