@@ -2645,9 +2645,6 @@ var mainGC = function() {
         try {
             // Set Ignore.
             changeIgnoreButton('Ignore');
-            // -> #2796: Deactivate feature "One click ignoring".
-            settings_use_one_click_ignoring = false;
-            // <- #2796
             // Prepare one click Ignore, Stop Ignoring.
             if (settings_use_one_click_ignoring) {
                 var link = '#ctl00_ContentBody_GeoNav_uxIgnoreBtn a';
@@ -2679,10 +2676,20 @@ var mainGC = function() {
             method: 'GET',
             url: url,
             onload: function(response) {
-                var viewstate = encodeURIComponent(response.responseText.match(/id="__VIEWSTATE" value="([0-9a-zA-Z+-\/=]*)"/)[1]);
-                var viewstategenerator = (response.responseText.match(/id="__VIEWSTATEGENERATOR" value="([0-9A-Z]*)"/))[1];
-                var postData = '__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=' + viewstate + '&__VIEWSTATEGENERATOR=' + viewstategenerator
-                             + '&navi_search=&ctl00%24ContentBody%24btnYes=Yes.+Ignore+it.';
+                const html = response.responseText;
+    
+                function extract(name) {
+                    return encodeURIComponent($(html).find(`input[name="${name}"]`).val());
+                }
+
+                const postData =
+                    `__EVENTTARGET=&__EVENTARGUMENT=` +
+                    `&__VIEWSTATE=${extract('__VIEWSTATE')}` +
+                    `&__VIEWSTATEGENERATOR=${extract('__VIEWSTATEGENERATOR')}` +
+                    `&__EVENTVALIDATION=${extract('__EVENTVALIDATION')}` +
+                    `&__RequestVerificationToken=${extract('__RequestVerificationToken')}` +
+                    `&ctl00%24ContentBody%24btnYes=${encodeURIComponent($(html).find('#ctl00_ContentBody_btnYes').val())}`;
+
                 GM_xmlhttpRequest({
                     method: 'POST',
                     url: url,
