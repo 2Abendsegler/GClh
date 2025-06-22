@@ -16696,7 +16696,7 @@ var mainGC = function() {
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
             html += newParameterOn3;
-            var placeholder_ilinks = "Possible placeholders for custom links:<br>&nbsp; #GCCode# : GC code<br>&nbsp; #CoordsLat# : Coordinates latitude<br>&nbsp; #CoordsLng# : Coordinates longitude<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholder_ilinks = "Possible placeholders for custom links:<br>&nbsp; #GCCode# : GC code<br>&nbsp; #CoordsLat# : Coordinates latitude in decimal format (DD.DDDDD)<br>&nbsp; #CoordsLng# : Coordinates longitude in decimal format (DD.DDDDD)<br>(Upper and lower case is not required in the placeholders name.)";
             var nameHelp = "The name of a custom link is displayed in listings in the right navigation sidebar. Ideally, a name should not be too long so that the display of it does not wrap.";
             var listingHelp = "The display of a custom link can be restricted for cache listings or event listings.";
             var cachetypeHelp = "The display of a custom link can also be restricted for a cache type.";
@@ -17470,8 +17470,8 @@ var mainGC = function() {
             function buildBothTableRows_ilinks(ilink, idnr) {
                 var html = '';
                 html += "<tr id='ilinks_element_" + idnr + "' class='ilinks_element_first'>";
-                html += "  <td><input id='ilinks_display_" + idnr + "' class='ilinks_display' type='checkbox' " + (ilink.display ? "checked='checked'" : "" ) + "'></td>";
-                html += "  <td><input id='ilinks_name_" + idnr + "' class='gclh_form ilinks_name ilinks_dep' type='text' title='Name' value='" + convertForHTML(ilink.name) + "' style='width: 198px; margin: 1px 0; padding-top: 1px; padding-bottom: 1px;'></td>";
+                html += "  <td><input id='ilinks_display_" + idnr + "' class='ilinks_display' type='checkbox' " + (ilink.display ? "checked='checked'" : "" ) + "' title='Should the link be displayed?'></td>";
+                html += "  <td><input id='ilinks_name_" + idnr + "' class='gclh_form ilinks_name ilinks_dep' type='text' title='Name' value='" + convertForHTML(ilink.name) + "' placeholder='Name' style='width: 198px; margin: 1px 0; padding-top: 1px; padding-bottom: 1px;'></td>";
                 html += "  <td><select id='ilinks_listing_" + idnr + "' class='gclh_form ilinks_listing ilinks_dep' title='Listing' style='width: 75px; padding-top: 1px; padding-bottom: 1px;'>";
                 html += "    <option " + (ilink.listing == "All" ? "selected=\"selected\"" : "") + ">All</option>";
                 html += "    <option " + (ilink.listing == "Caches" ? "selected=\"selected\"" : "") + ">Caches</option>";
@@ -17484,7 +17484,7 @@ var mainGC = function() {
                 html += "</tr>";
                 html += "<tr class='ilinks_element_second'>";
                 html += "  <td></td>";
-                html += "  <td colspan='3'><input id='ilinks_href_" + idnr + "' class='gclh_form ilinks_href ilinks_dep' type='text' title='Link' value='" + convertForHTML(ilink.href) + "' style='width: 100%;'></td>";
+                html += "  <td colspan='3'><input id='ilinks_href_" + idnr + "' class='gclh_form ilinks_href ilinks_dep' type='text' title='Link' value='" + convertForHTML(ilink.href) + "' placeholder='Link' style='width: 100%;'></td>";
                 html += "  <td title='Open in new browser tab'><span>new tab</span><input id='ilinks_newtab_" + idnr + "' class='ilinks_newtab ilinks_dep' type='checkbox' " + (ilink.newtab ? "checked='checked'" : "" ) + "'></td>";
                 html += "</tr>";
                 return html;
