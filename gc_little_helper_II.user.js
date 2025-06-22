@@ -527,6 +527,7 @@ var variablesInit = function(c) {
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
+    c.settings_message_add_gc_code = getValue("settings_message_add_gc_code", true);
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
@@ -3513,7 +3514,7 @@ var mainGC = function() {
     show_mail_and_message_icon:
     try {
         // Cache, TB, Aktiv User Infos ermitteln.
-        var [global_gc, global_tb, global_code, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
+        var [global_gc, global_tb, global_code, global_code_no_brackets, global_name, global_link, global_activ_username, global_founds, global_date, global_time, global_dateTime] = getGcTbUserInfo();
         // Nicht auf Mail, Message Seite ausführen.
         if ($('#ctl00_ContentBody_SendMessagePanel1_SendEmailPanel')[0] || $('#messageArea')[0]) break show_mail_and_message_icon;
         if ((settings_show_mail || settings_show_message)) {
@@ -8329,7 +8330,7 @@ var mainGC = function() {
                 '          {{/if}}';
             if (settings_show_message) new_tmpl +=
                 '          {{if UserName !== "' + global_activ_username + '" }}' +
-                '          <a ' + messageNewWin + 'href="/account/messagecenter?recipientId=${AccountGuid}&text=' + global_MailTemplate + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
+                '          <a ' + messageNewWin + 'href="' + buildMessageCenterHref("${AccountGuid}", global_MailTemplate) + '"><img border=0 title="Send a message to ${UserName}" src="' + global_message_icon + '"></a>' +
                 '          {{/if}}';
             new_tmpl +=
                 '          &nbsp;&nbsp;' +
@@ -14624,7 +14625,7 @@ var mainGC = function() {
     // Cache, TB, Aktiv User Infos ermitteln.
     function getGcTbUserInfo() {
         var g_gc = false; var g_tb = false;
-        var g_code = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
+        var g_code = ""; var g_code_no_brackets = ""; var g_name = ""; var g_link = ""; var g_founds = ""; var g_date = ""; var g_time = ""; var g_dateTime = ""; var g_activ_username = "";
         if ((settings_show_mail || settings_show_message)) {
             // Cache Listing.
             if ($('#ctl00_ContentBody_CacheName')[0]) {
@@ -14671,13 +14672,14 @@ var mainGC = function() {
             }
             if (g_code != "") {
                 g_link = "(https://coord.info/" + g_code + ")";
+                g_code_no_brackets = g_code;
                 g_code = "(" + g_code + ")";
             }
             g_founds = global_findCount;
             [g_date, g_time, g_dateTime] = getDateTime();
             g_activ_username = global_me;
         }
-        return [g_gc, g_tb, g_code, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime];
+        return [g_gc, g_tb, g_code, g_code_no_brackets, g_name, g_link, g_activ_username, g_founds, g_date, g_time, g_dateTime];
     }
     // Message Icon, Mail Icon aufbauen.
     function buildSendIcons(b_side, b_username, b_art, guidSpecial) {
@@ -14717,7 +14719,7 @@ var mainGC = function() {
             mess_img.setAttribute("src", global_message_icon);
             mess_link.appendChild(mess_img);
             if (settings_message_icon_new_win) mess_link.setAttribute("target", "_blank");
-            mess_link.setAttribute("href", "/account/messagecenter?recipientId=" + guid + "&text=" + template_message);
+            mess_link.setAttribute("href", buildMessageCenterHref(guid, template_message));
             b_side.parentNode.insertBefore(mess_link, b_side.nextSibling);
             b_side.parentNode.insertBefore(document.createTextNode(" "), b_side.nextSibling);
             // "Message this owner" und Icon entfernen.
@@ -14753,9 +14755,15 @@ var mainGC = function() {
         tpl = tpl.replace(/#Found-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds+1 - p1 : global_founds+1).replace(/#Found_no-?(\d+)?#/ig, (_match, p1) => p1 ? global_founds - p1 : global_founds)
         tpl = tpl.replace(/#Me#/ig, global_activ_username).replace(/#Date#/ig, global_date).replace(/#Time#/ig, global_time).replace(/#DateTime#/ig, global_dateTime);
         tpl = tpl.replace(/#GCTBName#/ig, global_name).replace(/#GCTBCode#/ig, global_code).replace(/#GCTBLink#/ig, global_link);
-        tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code.replace('(','').replace(')',''));
+        tpl = tpl.replace(/#GCTBCodeNoBrackets#/ig, global_code_no_brackets);
         if (trimIt) tpl = tpl.trim();
         return tpl;
+    }
+    // Message Center Href containing gcCode
+    function buildMessageCenterHref(guid, text) {
+        var mess_link_href = "/account/messagecenter?recipientId=" + guid + "&text=" + text;
+        if (global_code_no_brackets && !text && settings_message_add_gc_code) mess_link_href += "&gcCode=" + global_code_no_brackets;
+        return mess_link_href;
     }
 
 // Zebra look: colorize or remove.
@@ -16224,6 +16232,9 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new browser tab') + "<br>";
             html += checkboxy('settings_show_message', 'Show message link beside user') + "<br>";
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new browser tab') + "<br>";
+            html += newParameterOn3;
+            html += "&nbsp; " + checkboxy('settings_message_add_gc_code', 'Mention GC Code in message') + show_help("If this option is enabled, the message to the user will include the GC code of the page it was sent from. Disable this to have an empty message box. This setting will be ignored if a <a class='gclh_ref_ht_int' href='#gclh_config_mail' title='Link to topic \"Message Form Template\"'>Message Form Template</a> is specified.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hiding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
@@ -18306,6 +18317,7 @@ var mainGC = function() {
                 'settings_hide_map_header',
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
+                'settings_message_add_gc_code',
                 'settings_hide_archived_in_owned',
                 'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
