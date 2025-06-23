@@ -12645,15 +12645,20 @@ var mainGC = function() {
         } catch(e) {gclh_error("enhance cache pop up",e);}
     }
 
-// Leaflet Map für Trackables vergrößern und Zoom per Mausrad zulassen.
+// Trackable map resizing and zooming with mouse wheel.
     if (document.location.href.match(/\.com\/track\/map/)) {
-        try{
-            $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-se" id="xgrip" style="position: absolute; width: 32px;height: 5px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;right: -8px;cursor: se-resize;transform: rotate(-45deg); z-index: 1;"></div>');
-            appendCssStyle('#map_canvas {height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 16px;}');
-            $('#map_canvas').resizable({minHeight: 300, maxHeight: 700});
-            var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable();";
-            injectPageScript(scriptText, 'head');
-        } catch(e) {gclh_error("tb_map_enhancement",e);}
+        try {
+            function waitForTrackableMap(waitCount) {
+                if (unsafeWindow.map !== null) {
+                    $('#map_canvas').append('<div class="ui-resizable-handle ui-resizable-se" id="xgrip" style="position: absolute; width: 32px;height: 5px;background-color: transparent;border-top: 1px solid black;border-bottom: 1px solid black;bottom: 0px;right: -8px;cursor: se-resize;transform: rotate(-45deg); z-index: 1;"></div>');
+                    appendCssStyle('#map_canvas {height: 450px;} .leaflet-bottom.leaflet-right {margin-right: 16px;}');
+                    $('#map_canvas').resizable({minHeight: 300, maxHeight: 700});
+                    var scriptText = "map.invalidateSize(); map.scrollWheelZoom.enable();";
+                    injectPageScript(scriptText, 'head');
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForTrackableMap(waitCount);}, 100);}
+            }
+            waitForTrackableMap(0);
+        } catch(e) {gclh_error("Trackable map resizing and zooming with mouse wheel",e);}
     }
 
 // Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
