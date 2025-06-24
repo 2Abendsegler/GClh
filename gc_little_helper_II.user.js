@@ -11861,7 +11861,7 @@ var mainGC = function() {
                                     } catch(e) {};
                                 }
                             }
-                            if (document.location.pathname.match(/^\/live\/play\/map/)) {
+                            if (document.location.pathname.match(/^(\/live|)\/play\/map/)) {
                                 setTimeout(() => {
                                     // Remove default GS map tiles.
                                     document.querySelector('.mapboxgl-canvas').remove();
@@ -20519,7 +20519,7 @@ function is_page(name) {
     } else if (name == "lists") {
         if (url.match(/^\/plan\/lists/)) status = true;
     } else if (name == "searchmap") {
-        if (url.match(/^\/live\/play\/map/)) status = true;
+        if (url.match(/^(\/live|)\/play\/map/)) status = true;
     } else if (name == "map") {
         if (url.match(/^\/map/)) status = true;
     } else if (name == "find_cache") {
