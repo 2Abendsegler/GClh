@@ -9500,9 +9500,10 @@ var mainGC = function() {
                     $(mapButt).find('a')[0].href = '/map';
                     $(mapButt).find('a')[0].target = settings_but_search_map_new_tab ? "_blank" : "";
                     $(mapButt).find('a')[0].childNodes[2].data = 'Browse Map';
-                    $(mapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                    $(mapButt).find('svg')[0].innerHTML = $(browse_map_icon)[0].innerHTML;
+                    $(mapButt).find('svg').attr('viewBox', '0 0 24 24');
+                    $(mapButt).find('path').attr('stroke-width', '1.2');
                     $('.sidebar-links ul li')[0].before(mapButt);
-                    css += "#map--inline path {stroke-width: 2.0;}";
                 }
                 if (searchButt && $(searchButt).find('a')[0] && $(searchButt).find('a')[0].childNodes[2] && $(searchButt).find('svg')[0]) {
                     $(searchButt).find('a')[0].href = '/play/search';
