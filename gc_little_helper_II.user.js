@@ -4,8 +4,8 @@
 //--> $$000
 // @version      0.16.11
 //<-- $$000
-// @copyright    2010-2016 Torsten Amshove, 2016-2025 2Abendsegler, 2017-2021 Ruko2010, 2019-2025 capoaira
-// @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira
+// @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025 DieBatzen, 2017-2021 Ruko2010, 2010-2016 Torsten Amshove
+// @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; DieBatzen
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
 // @namespace    http://www.amshove.net
@@ -16110,9 +16110,9 @@ var mainGC = function() {
             // Bezeichnung:         GC Name                 Abw. GitHub Name            ProjM  DevL   Dev    BugR   Separator
             html += thanksLineBuild("2Abendsegler",         "",                         true,  true,  true,  true,  false);
             html += thanksLineBuild("capoaira",             "",                         false, true,  true,  true,  false);
+            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, true,  true,  true,  false);
             html += thanksLineBuild("Ruko2010",             "",                         false, 'grey',  true,  true,  true );
             // Rangliste Development von hier https://github.com/2Abendsegler/GClh/graphs/contributors.
-            html += thanksLineBuild("Die Batzen",           "DieBatzen",                false, false, true,  true,  false);
             html += thanksLineBuild("CachingFoX",           "",                         false, false, true,  true,  false);
             html += thanksLineBuild("marGEOcus",            "",                         false, false, true,  true,  false); // Changed from "Herr Ma".
             html += thanksLineBuild("Dratenik",             "",                         false, false, true,  false, false);
@@ -17204,8 +17204,9 @@ var mainGC = function() {
             html += '<div align="right" class="gclh_small" style="float: right; font-size: 9px;">Copyright ©';
             html += ' 2016-'+end+' <a href="/profile/?u=2Abendsegler" target="_blank" title="GC profile of 2Abendsegler">2Abendsegler</a>,';
             html += ' 2019-'+end+' <a href="/profile/?u=capoaira" target="_blank" title="GC profile of capoaira">capoaira</a>,';
-            html += ' 2017-2021 <a href="/profile/?u=Ruko2010" target="_blank" title="GC profile of Ruko2010">Ruko2010</a>,';
-            html += ' 2010-2016 <a href="/profile/?u=Torsten-" target="_blank" title="GC profile of Torsten-">Torsten Amshove</a>';
+            html += ' 2025-'+end+' <a href="/profile/?u=Die Batzen" target="_blank" title="GC profile of Die Batzen">Die Batzen</a><br>';
+            html += '(2017-2021 <a href="/profile/?u=Ruko2010" target="_blank" title="GC profile of Ruko2010">Ruko2010</a>,';
+            html += ' 2010-2016 <a href="/profile/?u=Torsten-" target="_blank" title="GC profile of Torsten-">Torsten Amshove</a>)';
             html += '</div></div></div>';
 
             // Config Content: Aufbauen, Reset Area verbergen, Special Links Nearest List/Map, Own Trackables versorgen. Adapt map icons.
