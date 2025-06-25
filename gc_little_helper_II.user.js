@@ -4,7 +4,7 @@
 //--> $$000
 // @version      0.16.11
 //<-- $$000
-// @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025 DieBatzen, 2017-2021 Ruko2010, 2010-2016 Torsten Amshove
+// @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 DieBatzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; DieBatzen
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
