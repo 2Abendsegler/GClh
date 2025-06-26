@@ -1936,6 +1936,7 @@ var mainGC = function() {
                     if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
                     if (is_page("publicProfile")) css += ".container .profile-panel {width: " + (new_width - 160) + "px;}";
                     if (is_page("cache_listing")) {
+                        css += ".UserSuppliedContent {display: inline-block;}";
                         var widthSpan9 = new_width - 300 - 270 - 13 - 13 - 10 - 6.
                         if (widthSpan9 >= 500) {
                             css += ".span-9 {width: 500px !important;}";
