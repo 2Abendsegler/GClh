@@ -10414,27 +10414,63 @@ var mainGC = function() {
             const isKeyInWebpackChunk_N_E = (key) => {
                 return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
             }
+            // Helper to find the key of a module function by pattern.
+            function getKeyByPattern(obj, pattern1, pattern2) {
+                for (const [index, moduleFunctions] of Object.entries(obj)) {
+                    for (const key in moduleFunctions) {
+                        const value = moduleFunctions[key]?.[pattern1];
+                        if (value && (!pattern2 || value[pattern2])) {
+                            return [index, key];
+                        }
+                    }
+                }
+                return [false, false];
+            }
             // Add proxy for corrected coordinates and get map handle: observe html until webpackChunk_N_E and map are available.
-            let webpackChunk = false;
+            let getLayout = false;
             let mapHandle = false;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
-                if (!webpackChunk && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('77601') && isKeyInWebpackChunk_N_E('2784')) {
-                    webpackChunk = true;
+                // Add proxy to Layout module;
+                // webpackChunk_N_E must be available and fully loaded ('3168' is the last listed chunk (release-20250625.1.2261)).
+                if (!getLayout && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('3168')) {
                     // Add React and Layout object to global space.
                     try {
-                        if (!unsafeWindow.React || !unsafeWindow.React?.gclhLayout) {
-                            unsafeWindow.webpackChunk_N_E.push([
-                                [66666],
-                                { 66667: () => {} },
-                                (n) => { unsafeWindow.React = n(2784); if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) unsafeWindow.React.getLayout = n(77601); }
-                            ]);
+                        // Get webpack module loader: add temporary dummy module, then the last function gets executed and thereby involves the module loader;
+                        // we simply save that module loader and use it to load and store modules later
+                        unsafeWindow.webpackChunk_N_E.push([
+                            ['gclh'],
+                            {},
+                            function(loader) {window.webpackModuleLoader = loader;}
+                        ]);
+                        // Remove dummy module.
+                        unsafeWindow.webpackChunk_N_E.pop();
+
+                        // Load all webpack modules and store locally (now human readable).
+                        let moduleFunctions = [];
+                        unsafeWindow.webpackChunk_N_E.forEach(function([chunk, modules]) {
+                            for (const moduleName in modules) {
+                                modules[moduleName] = window.webpackModuleLoader(moduleName);
+                            }
+                            moduleFunctions.push(modules);
+                        });
+
+                        // Identify 'Layout.getLayout' function as this is the module to modify cache data.
+                        const [index, layout] = getKeyByPattern(moduleFunctions, 'Layout', 'getLayout');
+                        // Save in global context.
+                        if (layout) {
+                            unsafeWindow.React = moduleFunctions[index][layout];
+                            getLayout = true;
                         }
-                    } catch(e) {gclh_error('push to unsafeWindow.webpackChunk_N_E failed',e);}
+                    } catch(e) {
+                        observer.disconnect();
+                        gclh_error('handling of unsafeWindow.webpackChunk_N_E failed',e);
+                    }
 
                     // Add proxy for displaying caches at corrected coordinates.
-                    if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) {
-                        unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
+                    if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map &&
+                        unsafeWindow.React?.Layout?.getLayout) {
+                        unsafeWindow.React.Layout.getLayout = new Proxy(unsafeWindow.React.Layout.getLayout, {
                             apply: (target, thisArg, argArray) => {
                                 if (isActive) {
                                     processCaches(argArray[0]);
@@ -10450,7 +10486,7 @@ var mainGC = function() {
                     mapHandle = true;
                     // Temporary override map creation.
                     let originalFunction = unsafeWindow.L.Map;
-                    unsafeWindow.L.Map = function (...args) {
+                    unsafeWindow.L.Map = function(...args) {
                         // Create and store map instance.
                         unsafeWindow.MapSettings.Map = new originalFunction(...args);
                         // Restore original function.
@@ -10460,7 +10496,7 @@ var mainGC = function() {
                 }
 
                 // Finished, stop observing.
-                if (webpackChunk && mapHandle) {
+                if (getLayout && mapHandle) {
                     observer.disconnect();
                     return;
                 }
@@ -10468,7 +10504,7 @@ var mainGC = function() {
                 // Safeguard.
                 if (++observerCalls > 99) {
                     observer.disconnect();
-                    if (!webpackChunk) gclh_error("Add proxy for corrected coordinates", new Error('unsafeWindow.webpackChunk_N_E not found for ' + observerCalls + ' MutationObserver calls'));
+                    if (!getLayout) gclh_error("Add proxy for corrected coordinates", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
                     if (!mapHandle) gclh_error("Get map handle", new Error('unsafeWindow.L.Map not found for ' + observerCalls + ' MutationObserver calls'));
                     return;
                 }
