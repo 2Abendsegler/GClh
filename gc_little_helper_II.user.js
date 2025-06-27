@@ -10410,11 +10410,12 @@ var mainGC = function() {
         try {
             // Initialize Map object.
             unsafeWindow.MapSettings = {'Map': null};
+
             // Helper to check if a specific key is present in the webpackChunk_N_E modules.
             const isKeyInWebpackChunk_N_E = (key) => {
                 return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
             }
-            // Helper to find the key of a module function by pattern.
+            // Helper to find the key of a module function by pattern ('obj' must contain the loaded modules, since there the function names are human readable).
             function getKeyByPattern(obj, pattern1, pattern2) {
                 for (const [index, moduleFunctions] of Object.entries(obj)) {
                     for (const key in moduleFunctions) {
@@ -10426,15 +10427,16 @@ var mainGC = function() {
                 }
                 return [false, false];
             }
+
             // Add proxy for corrected coordinates and get map handle: observe html until webpackChunk_N_E and map are available.
             let getLayout = false;
             let mapHandle = false;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
-                // Add proxy to Layout module;
+                // Add proxy for corrected coordinates;
                 // webpackChunk_N_E must be available and fully loaded ('3168' is the last listed chunk (release-20250625.1.2261)).
                 if (!getLayout && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('3168')) {
-                    // Add React and Layout object to global space.
+                    // Add Layout module to global space.
                     try {
                         // Get webpack module loader: add temporary dummy module, then the last function gets executed and thereby involves the module loader;
                         // we simply save that module loader and use it to load and store modules later
@@ -10455,7 +10457,7 @@ var mainGC = function() {
                             moduleFunctions.push(modules);
                         });
 
-                        // Identify 'Layout.getLayout' function as this is the module to modify cache data.
+                        // Identify 'Layout.getLayout' function from all webpack modules.
                         const [index, layout] = getKeyByPattern(moduleFunctions, 'Layout', 'getLayout');
                         // Save in global context.
                         if (layout) {
@@ -10468,8 +10470,7 @@ var mainGC = function() {
                     }
 
                     // Add proxy for displaying caches at corrected coordinates.
-                    if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map &&
-                        unsafeWindow.React?.Layout?.getLayout) {
+                    if (getLayout && settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) {
                         unsafeWindow.React.Layout.getLayout = new Proxy(unsafeWindow.React.Layout.getLayout, {
                             apply: (target, thisArg, argArray) => {
                                 if (isActive) {
@@ -10796,8 +10797,8 @@ var mainGC = function() {
                         // Event listener for map move.
                         let dragendEndTimeout;
                         unsafeWindow.MapSettings.Map.on('dragend', () => {
-                            // This approach ensures that the function for handling the dragend event is only executed once,
-                            // even if the user drags the map several times in quick succession.
+                            // This approach ensures that the function for handling the dragend event is only executed once
+                            // (in a certain period of time), e.g. if the user drags the map several times in quick succession.
                             clearTimeout(dragendEndTimeout);
 
                             dragendEndTimeout = setTimeout(() => {
@@ -10807,8 +10808,8 @@ var mainGC = function() {
                         // Event listener for map zoom.
                         let zoomEndTimeout;
                         unsafeWindow.MapSettings.Map.on('zoomend', () => {
-                            // This approach ensures that the function for handling the zoomend event is only executed once,
-                            // even if the user goes through several zoom levels in quick succession.
+                            // This approach ensures that the function for handling the zoomend event is only executed once
+                            // (in a certain period of time), e.g. if the user goes through several zoom levels in quick succession.
                             clearTimeout(zoomEndTimeout);
 
                             zoomEndTimeout = setTimeout(() => {
@@ -10861,6 +10862,19 @@ var mainGC = function() {
                                 setTimeout(() => {
                                     searchThisAreaIsRunning = false;
                                     filterSearchWasRunning = false;
+
+                                    // If the map has moved between start and end of the current search, the map view may
+                                    // not match the search results. Therefore force an additional search to update the results.
+                                    const url_lat = getURLParam('lat')*1;
+                                    const url_lng = getURLParam('lng')*1;
+                                    const map_center = unsafeWindow.MapSettings.Map.getCenter()
+                                    const map_lat = map_center.lat;
+                                    const map_lng = map_center.lng;
+                                    if (url_lat && url_lng && map_lat && map_lng &&
+                                        (Math.abs(url_lat-map_lat)>1e-10 || Math.abs(url_lng-map_lng)>1e-10)) {
+                                        // Fire 'dragend' event to force a search.
+                                        unsafeWindow.MapSettings.Map.fire('dragend');
+                                    }
                                 }, timeout_search+250);
                             }
                         }
