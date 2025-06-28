@@ -10650,35 +10650,6 @@ var mainGC = function() {
             let searchThisAreaIsRunning = false;
             const ONE_MINUTE_MS = 60*1000;
 
-            /*setTimeout(() => {
-                let count = 0;
-                let interv = setInterval(() => {
-                    // stop after 20 calls
-                    if (++count>20) clearInterval(interv);
-                    if (searchThisAreaIsRunning) return;
-                    //if (!run_searchThisArea()) return;
-                    searchThisAreaIsRunning = true;
-                    // move map
-                    unsafeWindow.MapSettings.Map.panTo([49.123+Math.random()/100, 7.456+Math.random()/100]);
-                    // search
-                    //setTimeout(() => {
-                        $('[data-testid="search-this-area-button"]').first().click();
-                        //searchThisArea();
-                    //}, 500);
-                },1000);
-            }, 5000);
-            // Unset blocker variables if any search is finished (trigger: zoom buttons disabled/enabled).
-            waitForElementThenRun('[data-event-label="Map - Zoom In"]', () => {
-                const observer = new MutationObserver((mutationsList, observer) => {
-                    for (const mutation of mutationsList) {
-                        if (mutation?.target?.disabled === false) {
-                            searchThisAreaIsRunning = false;
-                        }
-                    }
-                });
-                observer.observe(document.querySelector('[data-event-label="Map - Zoom In"]'), {attributes: true, attributeFilter: ["disabled"]});
-            }, 20000);*/
-
             function searchThisArea() {
                 let $search_button = $('[data-testid="search-this-area-button"]').first();
                 let $loading_container = $('svg.loading-spinner').parent().parent();
@@ -10818,18 +10789,6 @@ var mainGC = function() {
                                 if (run_searchThisArea()) searchThisArea();
                             }, timeout_search);
                         });
-                        // Debounce Timer
-                        /*let zoomEndTimeout2;
-                        unsafeWindow.MapSettings.Map.on('zoomend', function() {
-                            // Löscht den vorhandenen Timeout, wenn das Ereignis erneut ausgelöst wird
-                            clearTimeout(zoomEndTimeout2);
-
-                            // Setzt einen neuen Timeout
-                            zoomEndTimeout2 = setTimeout(() => {
-                                console.log('Endgültige Zoomstufe nach mehreren Zooms: ' + unsafeWindow.MapSettings.Map.getZoom());
-                                // Führen Sie hier Ihre Logik aus, die nur einmal nach dem letzten Zoom ausgeführt werden soll
-                            }, 1000); // 200 Millisekunden Verzögerung
-                        });*/
 
                         // Initialize map bounds.
                         [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
