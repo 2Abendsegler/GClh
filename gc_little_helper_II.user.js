@@ -526,7 +526,6 @@ var variablesInit = function(c) {
     c.settings_replace_log_by_last_log = getValue("settings_replace_log_by_last_log", false);
     c.settings_hide_top_button = getValue("settings_hide_top_button", false);
     c.settings_show_real_owner = getValue("settings_show_real_owner", false);
-    c.settings_message_add_gc_code = getValue("settings_message_add_gc_code", true);
     c.settings_hide_archived_in_owned = getValue("settings_hide_archived_in_owned", false);
     c.settings_show_button_for_hide_archived = getValue("settings_show_button_for_hide_archived", true);
     c.settings_hide_visits_in_profile = getValue("settings_hide_visits_in_profile", false);
@@ -749,6 +748,7 @@ var variablesInit = function(c) {
     c.settings_listing_ctoc_coords_waypoints = getValue("settings_listing_ctoc_coords_waypoints", true);
     c.settings_listing_add_county_to_place = getValue("settings_listing_add_county_to_place", false);
     c.settings_maps_add_county_to_place = getValue("settings_maps_add_county_to_place", false);
+    c.settings_message_add_gc_code = getValue("settings_message_add_gc_code", true);
 
     tlc('START userToken');
     try {
@@ -16211,9 +16211,6 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_mail_icon_new_win', 'Open mail form in new browser tab') + "<br>";
             html += checkboxy('settings_show_message', 'Show message link beside user') + "<br>";
             html += "&nbsp; " + checkboxy('settings_message_icon_new_win', 'Open message form in new browser tab') + "<br>";
-            html += newParameterOn3;
-            html += "&nbsp; " + checkboxy('settings_message_add_gc_code', 'Mention GC Code in message') + show_help("If this option is enabled, the message to the user will include the GC code of the page it was sent from. Disable this to have an empty message box. This setting will be ignored if a <a class='gclh_ref_ht_int' href='#gclh_config_mail' title='Link to topic \"Message Form Template\"'>Message Form Template</a> is specified.") + "<br>";
-            html += newParameterVersionSetzen('0.16') + newParameterOff;
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Hiding</b>" + "</div>";
             html += checkboxy('settings_hide_advert_link', 'Hide link to advertisement instructions') + "<br>";
@@ -17016,6 +17013,9 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
+            html += newParameterOn3;
+            html += checkboxy('settings_message_add_gc_code', 'Set GC Code reference in message if no template was specified') + show_help("If this option is enabled and no template was specified, a message will include the default GC code reference at the beginning of the message, if the GC code is known. This is the default behavior of the website. For example: \"Regarding GC8FXW4: Dracula 2.0 NC –\". If you prefer an empty message, then please disable it.") + "<br>";
+            html += newParameterVersionSetzen('0.16') + newParameterOff;
             var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : Cache or trackable name<br>&nbsp; #GCTBCode# : Cache or trackable code in brackets<br>&nbsp; #GCTBCodeNoBrackets# : Cache or trackable code not in brackets<br>&nbsp; #GCTBLink# : Cache or trackable link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
@@ -18297,7 +18297,6 @@ var mainGC = function() {
                 'settings_hide_map_header',
                 'settings_replace_log_by_last_log',
                 'settings_show_real_owner',
-                'settings_message_add_gc_code',
                 'settings_hide_archived_in_owned',
                 'settings_show_button_for_hide_archived',
                 'settings_hide_visits_in_profile',
@@ -18483,6 +18482,7 @@ var mainGC = function() {
                 'settings_default_logtype_control',
                 'settings_listing_add_county_to_place',
                 'settings_maps_add_county_to_place',
+                'settings_message_add_gc_code',
             );
             for (var i = 0; i < checkboxes.length; i++) {
                 if (document.getElementById(checkboxes[i])) setValue(checkboxes[i], document.getElementById(checkboxes[i]).checked);
