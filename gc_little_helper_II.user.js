@@ -10440,21 +10440,27 @@ var mainGC = function() {
                     try {
                         // Get webpack module loader: add temporary dummy module, then the last function gets executed and thereby involves the module loader;
                         // we simply save that module loader and use it to load and store modules later
-                        unsafeWindow.webpackChunk_N_E.push([
-                            ['gclh'],
-                            {},
-                            function(loader) {window.webpackModuleLoader = loader;}
-                        ]);
-                        // Remove dummy module.
-                        unsafeWindow.webpackChunk_N_E.pop();
+                        if (!window.webpackModuleLoader) {
+                            unsafeWindow.webpackChunk_N_E.push([
+                                ['gclh'],
+                                {},
+                                function (loader) {
+                                    window.webpackModuleLoader = loader;
+                                }
+                            ]);
+                            // Remove dummy module.
+                            unsafeWindow.webpackChunk_N_E.pop()
+                        }
 
                         // Load all webpack modules and store locally (now human readable).
                         let moduleFunctions = [];
                         unsafeWindow.webpackChunk_N_E.forEach(function([chunk, modules]) {
-                            for (const moduleName in modules) {
-                                modules[moduleName] = window.webpackModuleLoader(moduleName);
-                            }
-                            moduleFunctions.push(modules);
+                            try {
+                                for (const moduleName in modules) {
+                                    modules[moduleName] = window.webpackModuleLoader(moduleName);
+                                }
+                                moduleFunctions.push(modules);
+                            } catch {}
                         });
 
                         // Identify 'Layout.getLayout' function from all webpack modules.
