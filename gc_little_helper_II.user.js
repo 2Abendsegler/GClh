@@ -10842,7 +10842,7 @@ var mainGC = function() {
                                         // Fire 'dragend' event to force a search.
                                         unsafeWindow.MapSettings.Map.fire('dragend');
                                     }
-                                }, timeout_search+250);
+                                }, 2000);
                             }
                         }
                     });
