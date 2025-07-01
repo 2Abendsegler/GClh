@@ -1,3 +1,4 @@
+<a href="#v017" title="GClh II version 0.17 (02.07.2025)">v0.17</a> &nbsp;
 <a href="#v01611" title="GClh II version 0.16.11 (10.05.2025)">v0.16.11</a> &nbsp;
 <a href="#v01610" title="GClh II version 0.16.10 (02.05.2025)">v0.16.10</a> &nbsp;
 <a href="#v0169" title="GClh II version 0.16.9 (25.04.2025)">v0.16.9</a> &nbsp;
@@ -34,6 +35,81 @@
 <span id="readme"></span>
 
 ---
+## v0.17:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Add custom links to right navigation sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/2816" title="Issue 2816">2816</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		This feature allows you to create custom links that are displayed in listings in the right navigation sidebar.<br><br>
+		For example, you can create a link for the <a href="https://gcwizard.net" title="Link to GC Wizard">GC Wizard</a> if it's a mystery cache. You can create a link to <a href="https://bettercacher.org/de/degeocache/GC8FXW4" title="Link to Bettercacher">Bettercacher</a> if it's a cache listing and not an event listing. You can create a link to search for the GC code in your cloud. You can create a link to a map with the coordinates. ...<br>
+		<img src="../images/0.17/Screen03.jpg" alt="Screen03.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_individual_links" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
+		<img src="../images/0.17/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		If you want to use this feature, you have to create custom links.<br>
+		<ul>
+			<li>
+				The name of a custom link is displayed in listings in the right navigation sidebar. Ideally, a name should not be too long so that the display of it does not wrap.<br>
+			</li>
+			<li>
+				The display of a custom link can be restricted for cache listings or event listings. The display of a custom link can also be restricted for a cache type.<br>
+			</li>
+			<li>
+				A custom link is usually an URL. For a custom link, there is no check to see if the link actually leads to an existing address. If it doesn't, you'll likely end up on a DNF page. A custom link can contain various placeholders, such as the GC code or coordinates. These placeholders are then replaced by the values in the listing when displayed in the listing. For details see "Possible placeholders" above. A custom link can be opened in a new browser tab.<br>
+			</li>
+			<li>
+				Under certain conditions, local files and directories on the computer can also be used as a custom link. For security purposes, all browser block links to local files and directories. If you still want to use local links and you are willing to accept the possible risk of linking to local content, you can override the security policy in your browser settings. Please see there, how you can do that.<br><br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing, Message Form] Adding GC Code to message link. [<a href="https://github.com/2Abendsegler/GClh/issues/2826" title="Issue 2826">2826</a> / <a href="https://www.geocaching.com/profile/?u=rambii" title="Thanks to rambii">rambii</a>]<br><br>
+		This feature allows you to use the default GC code reference at the beginning of a message. For example: "Regarding GC8FXW4: Dracula 2.0 NC –".<br>
+		<img src="../images/0.17/Screen06.jpg" alt="Screen06.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_message_add_gc_code" title="Link to your GClh II Config">Settings -> Mail and Message Form:<br>
+		<img src="../images/0.17/Screen05.jpg" alt="Screen05.jpg"></a><br>
+		If this option is enabled and no template was specified, a message will include the default GC code reference at the beginning of the message, if the GC code is known. This is the default behavior of the website. If you prefer an empty message, then please disable it.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Build new link "Search Map" in the navigation column of the new dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2814" title="Issue 2814">2814</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		This feature allows you to create a lijk to the Search Map in the left column (navigation column) of your dashboard.<br>
+		<img src="../images/0.17/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_but_searchmap" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.17/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Navi Search] Possibility to force searching for tracking code. [<a href="https://github.com/2Abendsegler/GClh/issues/2507" title="Issue 2507">2507</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
+		The search field in the page header may not always search for trackable codes correctly if the trackable code begins with an identifier for another search, such as a GC code (GC), a bookmark list (BM), etc. The normal search starts with Enter.<br>
+		You can now force a search for the trackable code using Ctrl+Enter.<br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Owner Dashboard] The GClh features are no longer available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2562" title="Issue 2562">2562</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Link to search map is changed. [<a href="https://github.com/2Abendsegler/GClh/issues/2828" title="Issue 2828">2828</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "One click ignoring" no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2796" title="Issue 2796">2796</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Additional Hints" are displayed next to the listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2839" title="Issue 2839">2839</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Use the correct icon for the browse map link. [<a href="https://github.com/2Abendsegler/GClh/issues/2836" title="Issue 2836">2836</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Integrate new play menu entry "Experimental features" in GClh play menu. [<a href="https://github.com/2Abendsegler/GClh/issues/2833" title="Issue 2833">2833</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Trackable Map] Resizing and zooming with the mouse wheel no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2832" title="Issue 2832">2832</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(02.07.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+
+---
 ## v0.16.11:
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
@@ -41,7 +117,7 @@
 		<strong>New:</strong> [New Dashboard] Hide individual rows in the navigation column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2807" title="Issue 2807">2807</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
 		<img src="../images/0.16.11/Screen02.gif" alt="Screen02.gif"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings ->Dashboard:<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.16.11/Screen01.jpg" alt="Screen01.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
