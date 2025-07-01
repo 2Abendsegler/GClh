@@ -41,7 +41,7 @@
 	<li>
 		<strong>New:</strong> [Cache Listing] Add custom links to right navigation sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/2816" title="Issue 2816">2816</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		This feature allows you to create custom links that are displayed in listings in the right navigation sidebar.<br>
-		For example, you can create a link for the [GC Wizard](https://gcwizard.net) if it's a mystery cache. You can create a link to [Bettercacher](https://bettercacher.org/de/degeocache/GC8FXW4) if it's a cache listing and not an event listing. You can create a link to search for the GC code in your cloud. You can create a link to a map with the coordinates. ...<br>
+		For example, you can create a link for the <a href="https://gcwizard.net" title="Link to GC Wizard">GC Wizard</a> if it's a mystery cache. You can create a link to <a href="https://bettercacher.org/de/degeocache/GC8FXW4" title="Link to Bettercacher">Bettercacher</a> if it's a cache listing and not an event listing. You can create a link to search for the GC code in your cloud. You can create a link to a map with the coordinates. ...<br>
 		<img src="../images/0.17/Screen03.jpg" alt="Screen03.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_individual_links" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
 		<img src="../images/0.17/Screen04.jpg" alt="Screen04.jpg"></a><br>
