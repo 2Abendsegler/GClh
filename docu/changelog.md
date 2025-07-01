@@ -83,15 +83,25 @@
 You can now force a search for the trackable code using Ctrl+Enter.<br><br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [New Dashboard] Hide individual rows in the navigation column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2807" title="Issue 2807">2807</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
-		<img src="../images/0.16.11/Screen02.jpg" alt="Screen02.jpg"><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
-		<img src="../images/0.16.11/Screen01.jpg" alt="Screen01.jpg"></a><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		<strong>Fix:</strong> [Cache Owner Dashboard] The GClh features are no longer available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2562" title="Issue 2562">2562</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] "Order by ..." does not work if a fixed number of logs were previously displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/2809" title="Issue 2809">2809</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Search Map] Link to search map is changed. [<a href="https://github.com/2Abendsegler/GClh/issues/2828" title="Issue 2828">2828</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "One click ignoring" no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2796" title="Issue 2796">2796</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Additional Hints" are displayed next to the listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2839" title="Issue 2839">2839</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Use the correct icon for the browse map link. [<a href="https://github.com/2Abendsegler/GClh/issues/2836" title="Issue 2836">2836</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Integrate new play menu entry "Experimental features" in GClh play menu. [<a href="https://github.com/2Abendsegler/GClh/issues/2833" title="Issue 2833">2833</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Trackable Map] Resizing and zooming with the mouse wheel no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2832" title="Issue 2832">2832</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
