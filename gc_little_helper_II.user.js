@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.16.11
+// @version      0.17
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -14938,8 +14938,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/fBqJ/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iSw"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/QvtB/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iTC"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16132,7 +16132,8 @@ var mainGC = function() {
             html += thanksLineBuild("",                     "sdennler",                 false, false, true,  false, false);
             html += thanksLineBuild("bruzie",               "",                         false, false, true,  false, false);
             html += thanksLineBuild("",                     "ztNFny",                   false, false, true,  true,  false); // GC user changed from ztNFny. Could not find new name.
-            html += thanksLineBuild("FoxFil",               "",                         false, false, true,  true,  true);
+            html += thanksLineBuild("FoxFil",               "",                         false, false, true,  true,  false);
+            html += thanksLineBuild("rambii",               "",                         false, false, true,  false, true);
             // Bug Reporting alphabetisch.
             html += thanksLineBuild("",                     "allyourcodearebelongtous", false, false, false, true,  false);
             html += thanksLineBuild("",                     "AndyPuma",                 false, false, false, true,  false);
@@ -16169,7 +16170,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "10.05.2025";
+            var thanksLastUpdate = "01.07.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16413,7 +16414,6 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_show_found_caches_at_corrected_coords_but', 'Show button to display found caches at corrected coordinates') + show_help("With this option you can show a button to display found caches at corrected coordinates. The button toggles the state between corrected and original coordinates. The last state is always preserved.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + onlySearchMap + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
@@ -16421,7 +16421,6 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_searchmap_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 130 up to 520 pixel. The default is 130 pixel, similar to the standard.") + "<br>";
-            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Homezone Circles</b>" + onlyBrowseMap + "</div>";
             html += checkboxy('settings_show_homezone', 'Show homezone circles') + show_help("This option allows to draw homezone circles around coordinates on the map.") + "<br>";
             html += "<div id='ShowHomezoneCircles' style='display: " + (settings_show_homezone ? "block":"none") + ";'>";
@@ -16493,10 +16492,8 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the map layers menu of the maps. With this option you can reduce the long list to the map layers you really need. If the right list of map layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\", GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II map layers to use the map layers for example from \"Geocaching Map Enhancements\"  or also from \"geocaching.com\".<br><br>It is important, that GC little helper II run at first, particularly in front of other map layer used scripts like \"Geocaching Map Enhancements\".") + "</div>";
             html += checkboxy('settings_use_gclh_layercontrol', 'Replace map layers') + "<br>";
             html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + "; margin-left: 10px;'>";
-            html += newParameterOn1;
             html += checkboxy('settings_use_gclh_layercontrol_on_browse_map', 'Replace map layers in Browse Map') + onlyBrowseMap + "<br>";
             html += checkboxy('settings_use_gclh_layercontrol_on_search_map', 'Replace map layers in Search Map') + onlySearchMap + "<br>";
-            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
             html += "<tr>";
             html += "<td><select class='gclh_form' style='width: 260px; height: 150px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
@@ -16559,9 +16556,7 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","profile")+"<label for='lnk_gclh_config_profile'>Public Profile</label></h4>";
             html += "<div id='gclh_config_profile' class='gclh_block'>";
             html += checkboxy('settings_public_profile_avatar_show_thumbnail', 'Show bigger avatar image while hovering with the mouse') + show_help("This option requires \"Show thumbnails of images\".") + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_public_profile_smaller_privacy_btn', 'Show smaller privacy buttons') + show_help("Replace the text and links for privacy with a clickable icon button.") + "<br>";
-            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += "<div style='margin-left: 5px'><b>Geocaches</b></div>";
             html += checkboxy('settings_profile_old_links', 'Use old links to finds and hides caches') + show_help("The links to finds and hides caches in the public profile run through the new search. With this option you can use the old search again.") + "<br>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Trackables</b></div>";
@@ -16617,10 +16612,10 @@ var mainGC = function() {
             html += checkboxy('settings_show_tb_inv', 'Show trackables inventory on your dashboard') + show_help("With this option a maximum of ten trackables of your trackables inventory is shown on your new dashboard. (On old dashboard it is GC standard to show it.)") + "<br>";
             html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Browse Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
-            html += newParameterOn3;
+            html += newParameterOn1;
             html += checkboxy('settings_but_searchmap', 'Show button "Search Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_searchmap_new_tab', 'Open links in new browser tab') + "<br>";
-            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the navigation column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
@@ -16653,9 +16648,7 @@ var mainGC = function() {
             html += checkboxy('settings_strike_archived', 'Strike through title of archived and disabled caches') + "<br>";
             html += checkboxy('settings_show_real_owner', 'Show real owner name') + show_help("If this option is enabled, the alias that an owner used to publish the cache is replaced with the real owner name.") + "<br>";
             html += checkboxy('settings_show_eventday', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
-            html += newParameterOn1;
             html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
-            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
             html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
             for (var i = 1; i < 11; i++) {
@@ -16710,7 +16703,7 @@ var mainGC = function() {
             html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
-            html += newParameterOn3;
+            html += newParameterOn1;
             var placeholder_ilinks = "Possible placeholders for custom links:<br>&nbsp; #GCCode# : GC code<br>&nbsp; #CoordsLat# : Coordinates latitude in decimal format (DD.DDDDD)<br>&nbsp; #CoordsLng# : Coordinates longitude in decimal format (DD.DDDDD)<br>(Upper and lower case is not required in the placeholders name.)";
             var nameHelp = "The name of a custom link is displayed in listings in the right navigation sidebar. Ideally, a name should not be too long so that the display of it does not wrap.";
             var listingHelp = "The display of a custom link can be restricted for cache listings or event listings.";
@@ -16735,7 +16728,7 @@ var mainGC = function() {
             html += "</tbody></table>";
             html += "<div><button id='ilinks_create' class='gclh_form' style='height: 25px; margin-left: 18px; margin-bottom: 4px;' type='button' title='Create new custom link'>Create</button></div>";
             html += "</div>";
-            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show radius around caches on Flopp\'s Map') + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + "<br>";
@@ -16823,9 +16816,7 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_show_eventinfo_in_desc_bold', 'Show event info bold') + "<br>";
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += "&nbsp; " + checkboxy('settings_show_eventdayX1', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
-            html += newParameterOn1;
             html += "&nbsp; " + checkboxy('settings_show_eventtime_with_24_hoursX0', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
-            html += newParameterVersionSetzen('0.14') + newParameterOff;
             html += checkboxy('settings_img_warning', 'Show warning for unavailable images') + show_help("With this option the images in the cache listing will be checked for existence before trying to load it. If an image is unreachable or dosen't exists, a placeholder is shown. The mouse over the placeholder will shown the image link. A mouse click to the placeholder will open the link in a new tab.") + "<br>";
             html += checkboxy('settings_visitCount_geocheckerCom', 'Show statistic on geochecker.com pages') + show_help("This option adds '&visitCount=1' to all geochecker.com links. This will show some statistics on geochecker.com page like the count of page visits and the count of right and wrong attempts.") + "<br>";
             html += checkboxy('settings_listing_hide_external_link_warning', 'Hide external link warning message') + show_help("With this option you can hide the warning message for external links in the cache listing description. The warning message is a security feature and is intended to inform you that the external link has not been reviewed by the operator of the website.") + "<br>";
@@ -17013,9 +17004,9 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","mail")+"<label for='lnk_gclh_config_mail'>Mail and Message Form</label></h4>";
             html += "<div id='gclh_config_mail' class='gclh_block'>";
-            html += newParameterOn3;
+            html += newParameterOn1;
             html += checkboxy('settings_message_add_gc_code', 'Set GC Code reference in message if no template was specified') + show_help("If this option is enabled and no template was specified, a message will include the default GC code reference at the beginning of the message, if the GC code is known. This is the default behavior of the website. For example: \"Regarding GC8FXW4: Dracula 2.0 NC –\". If you prefer an empty message, then please disable it.") + "<br>";
-            html += newParameterVersionSetzen('0.16') + newParameterOff;
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             var placeholderDescriptionMail = "Possible placeholders in the mail and message form:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Receiver# : Username of the receiver<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : Cache or trackable name<br>&nbsp; #GCTBCode# : Cache or trackable code in brackets<br>&nbsp; #GCTBCodeNoBrackets# : Cache or trackable code not in brackets<br>&nbsp; #GCTBLink# : Cache or trackable link in brackets<br>(Upper and lower case is not required in the placeholders name.)";
             html += "&nbsp;" + "Template" + show_help("The template is automatically added to your mails and messages. You can also use placeholders for variables that will be replaced in the mail and in the message.") + " &nbsp; ( Possible placeholders" + show_help(placeholderDescriptionMail) + ")<br>";
             html += "&nbsp;" + "<textarea class='gclh_form' rows='7' cols='56' id='settings_mail_signature'>&zwnj;" + getValue("settings_mail_signature", "") + "</textarea><br>";
@@ -18555,12 +18546,12 @@ var mainGC = function() {
     var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
     var s = "<span class='gclh_new_para#' style='float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
 //--> $$001
-    newParameterOn1 = d.replace("#", "03");
-    newParameterOn2 = d.replace("#", "06");
-    newParameterOn3 = d.replace("#", "10");
-    newParameterLL1 = s.replace("#", "03");
-    newParameterLL2 = s.replace("#", "06");
-    newParameterLL3 = s.replace("#", "10");
+    newParameterOn1 = d.replace("#", "10");
+    newParameterOn2 = d.replace("#", "03");
+    newParameterOn3 = d.replace("#", "06");
+    newParameterLL1 = s.replace("#", "10");
+    newParameterLL2 = s.replace("#", "03");
+    newParameterLL3 = s.replace("#", "06");
 //<-- $$001
     function newParameterVersionSetzen(version) {
         var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
