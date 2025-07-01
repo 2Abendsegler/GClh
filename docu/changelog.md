@@ -1,3 +1,4 @@
+<a href="#v017" title="GClh II version 0.17 (02.07.2025)">v0.17</a> &nbsp;
 <a href="#v01611" title="GClh II version 0.16.11 (10.05.2025)">v0.16.11</a> &nbsp;
 <a href="#v01610" title="GClh II version 0.16.10 (02.05.2025)">v0.16.10</a> &nbsp;
 <a href="#v0169" title="GClh II version 0.16.9 (25.04.2025)">v0.16.9</a> &nbsp;
@@ -32,6 +33,50 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Cache Listing] Add custom links to right navigation sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/2816" title="Issue 2816">2816</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you to create custom links that are displayed in listings in the right navigation sidebar.<br>
+		For example, you can create a link for the [GC Wizard](https://gcwizard.net) if it's a mystery cache. You can create a link to [Bettercacher](https://bettercacher.org/de/degeocache/GC8FXW4) if it's a cache listing and not an event listing. You can create a link to search for the GC code in your cloud. You can create a link to a map with the coordinates. ...<br>
+		<img src="../images/0.17/Screen03.jpg" alt="Screen03.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_individual_links" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
+		<img src="../images/0.17/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		If you want to use this feature, you have to create custom links.<br>
+		<ul>
+			<li>
+				The name of a custom link is displayed in listings in the right navigation sidebar. Ideally, a name should not be too long so that the display of it does not wrap.<br>
+			</li>
+			<li>
+				The display of a custom link can be restricted for cache listings or event listings. The display of a custom link can also be restricted for a cache type.<br>
+			</li>
+			<li>
+				A custom link is usually an URL. For a custom link, there is no check to see if the link actually leads to an existing address. If it doesn't, you'll likely end up on a DNF page. A custom link can contain various placeholders, such as the GC code or coordinates. These placeholders are then replaced by the values in the listing when displayed in the listing. For details see "Possible placeholders" above. A custom link can be opened in a new browser tab.<br>
+			</li>
+			<li>
+				Under certain conditions, local files and directories on the computer can also be used as a custom link. For security purposes, all browser block links to local files and directories. If you still want to use local links and you are willing to accept the possible risk of linking to local content, you can override the security policy in your browser settings. Please see there, how you can do that.<br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Hide individual rows in the navigation column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2807" title="Issue 2807">2807</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
+		<img src="../images/0.16.11/Screen02.gif" alt="Screen02.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings ->Dashboard:<br>
+		<img src="../images/0.16.11/Screen01.jpg" alt="Screen01.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] "Order by ..." does not work if a fixed number of logs were previously displayed. [<a href="https://github.com/2Abendsegler/GClh/issues/2809" title="Issue 2809">2809</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(02.07.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.16.11:
