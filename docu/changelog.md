@@ -80,7 +80,7 @@
 	<li>
 		<strong>New:</strong> [Navi Search] Possibility to force searching for tracking code. [<a href="https://github.com/2Abendsegler/GClh/issues/2507" title="Issue 2507">2507</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br><br>
 		The search field in the page header may not always search for trackable codes correctly if the trackable code begins with an identifier for another search, such as a GC code (GC), a bookmark list (BM), etc. The normal search starts with Enter.<br>
-You can now force a search for the trackable code using Ctrl+Enter.<br><br><br>
+		You can now force a search for the trackable code using Ctrl+Enter.<br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Owner Dashboard] The GClh features are no longer available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/2562" title="Issue 2562">2562</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
