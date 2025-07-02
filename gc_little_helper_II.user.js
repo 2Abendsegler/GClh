@@ -10430,7 +10430,6 @@ var mainGC = function() {
 
             // Add proxy for corrected coordinates and get map handle: observe html until webpackChunk_N_E and map are available.
             let getLayout = false;
-            let mapHandle = false;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
                 // Add proxy for corrected coordinates;
@@ -10444,9 +10443,7 @@ var mainGC = function() {
                             unsafeWindow.webpackChunk_N_E.push([
                                 ['gclh'],
                                 {},
-                                function (loader) {
-                                    window.webpackModuleLoader = loader;
-                                }
+                                function(loader) {window.webpackModuleLoader = loader;}
                             ]);
                             // Remove dummy module.
                             unsafeWindow.webpackChunk_N_E.pop()
@@ -10488,22 +10485,8 @@ var mainGC = function() {
                     }
                 }
 
-                // Get map handle.
-                if (!mapHandle && unsafeWindow.L?.Map) {
-                    mapHandle = true;
-                    // Temporary override map creation.
-                    let originalFunction = unsafeWindow.L.Map;
-                    unsafeWindow.L.Map = function(...args) {
-                        // Create and store map instance.
-                        unsafeWindow.MapSettings.Map = new originalFunction(...args);
-                        // Restore original function.
-                        unsafeWindow.L.Map = originalFunction;
-                        return unsafeWindow.MapSettings.Map;
-                    };
-                }
-
                 // Finished, stop observing.
-                if (getLayout && mapHandle) {
+                if (getLayout) {
                     observer.disconnect();
                     return;
                 }
@@ -10512,11 +10495,18 @@ var mainGC = function() {
                 if (++observerCalls > 99) {
                     observer.disconnect();
                     if (!getLayout) gclh_error("Add proxy for corrected coordinates", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
-                    if (!mapHandle) gclh_error("Get map handle", new Error('unsafeWindow.L.Map not found for ' + observerCalls + ' MutationObserver calls'));
                     return;
                 }
             });
             observer.observe(document.documentElement, { childList: true, subtree: true });
+
+            // Get map handle.
+            waitForElementThenRun('#map-container', () => {
+                const node = document.querySelector('#map-container');
+                const reactFiberKey = Object.keys(node).find(o => o.includes('__reactFiber'));
+                unsafeWindow.MapSettings.Map = reactFiberKey ? node[reactFiberKey]?.child?.memoizedProps?.value?.map : null;
+                if (!unsafeWindow.MapSettings.Map) gclh_error("Get map handle", new Error('No map found in #map-container'));
+            });
 
             // Handle corrected coordinates.
             let compensateCenterOffset = true;
