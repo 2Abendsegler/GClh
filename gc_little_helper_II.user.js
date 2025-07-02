@@ -10408,109 +10408,127 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
-            // Proxies for map control and corrected coordinates:
-            //   observe html until unsafeWindow.webpackChunk_N_E is available and non-empty.
-            const t0 = Date.now();
-            const timeout = 10000;
-            const observer = new MutationObserver(() => {
-                if (unsafeWindow.webpackChunk_N_E?.length > 0 ) {
-                    observer.disconnect();
+            // Initialize Map object.
+            unsafeWindow.MapSettings = {'Map': null};
 
-                    // Add React object to global space.
-                    try {
-                        if (!unsafeWindow.React) {
-                            unsafeWindow.webpackChunk_N_E.push([
-                                [66666],
-                                { 66667: () => {} },
-                                (n) => { unsafeWindow.React = n(2784); }
-                            ]);
+            // Helper to check if a specific key is present in the webpackChunk_N_E modules.
+            const isKeyInWebpackChunk_N_E = (key) => {
+                return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
+            }
+            // Helper to find the key of a module function by pattern ('obj' must contain the loaded modules, since there the function names are human readable).
+            function getKeyByPattern(obj, pattern1, pattern2) {
+                for (const [index, moduleFunctions] of Object.entries(obj)) {
+                    for (const key in moduleFunctions) {
+                        const value = moduleFunctions[key]?.[pattern1];
+                        if (value && (!pattern2 || value[pattern2])) {
+                            return [index, key];
                         }
-                    } catch { gclh_log('push to webpackChunk_N_E failed'); }
+                    }
+                }
+                return [false, false];
+            }
 
-                    // Add proxy to get (Leaflet) map instance.
-                    if (unsafeWindow.React?.useState) {
-                        unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
-                            apply: (target, thisArg, argArray) => {
-                                let useState = target.apply(thisArg, argArray);
-                                if (useState[0]?.__version) {
-                                    getMapInstance(useState);
+            // Add proxy for corrected coordinates and get map handle: observe html until webpackChunk_N_E and map are available.
+            let getLayout = false;
+            let observerCalls = 0;
+            const observer = new MutationObserver(() => {
+                // Add proxy for corrected coordinates;
+                // webpackChunk_N_E must be available and fully loaded ('3168' is the last listed chunk (release-20250625.1.2261)).
+                if (!getLayout && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('3168')) {
+                    // Add Layout module to global space.
+                    try {
+                        // Get webpack module loader: add temporary dummy module, then the last function gets executed and thereby involves the module loader;
+                        // we simply save that module loader and use it to load and store modules later
+                        if (!window.webpackModuleLoader) {
+                            unsafeWindow.webpackChunk_N_E.push([
+                                ['gclh'],
+                                {},
+                                function(loader) {window.webpackModuleLoader = loader;}
+                            ]);
+                            // Remove dummy module.
+                            unsafeWindow.webpackChunk_N_E.pop()
+                        }
+
+                        // Load all webpack modules and store locally (now human readable).
+                        let moduleFunctions = [];
+                        unsafeWindow.webpackChunk_N_E.forEach(function([chunk, modules]) {
+                            try {
+                                for (const moduleName in modules) {
+                                    modules[moduleName] = window.webpackModuleLoader(moduleName);
                                 }
-                                return useState;
+                                moduleFunctions.push(modules);
+                            } catch {}
+                        });
+
+                        // Identify 'Layout.getLayout' function from all webpack modules.
+                        const [index, layout] = getKeyByPattern(moduleFunctions, 'Layout', 'getLayout');
+                        // Save in global context.
+                        if (layout) {
+                            unsafeWindow.React = moduleFunctions[index][layout];
+                            getLayout = true;
+                        }
+                    } catch(e) {
+                        observer.disconnect();
+                        gclh_error('handling of unsafeWindow.webpackChunk_N_E failed',e);
+                    }
+
+                    // Add proxy for displaying caches at corrected coordinates.
+                    if (getLayout && settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) {
+                        unsafeWindow.React.Layout.getLayout = new Proxy(unsafeWindow.React.Layout.getLayout, {
+                            apply: (target, thisArg, argArray) => {
+                                if (isActive) {
+                                    processCaches(argArray[0]);
+                                }
+                                return target.apply(thisArg, argArray);
                             }
                         });
                     }
+                }
 
-                    // Cache data for displaying at corrected coordinates.
-                    if (settings_show_found_caches_at_corrected_coords_but) {
-                        if (unsafeWindow.React?.useMemo) {
-                            unsafeWindow.React.useMemo = new Proxy(unsafeWindow.React.useMemo, {
-                                apply: (target, thisArg, argArray) => {
-                                    let useMemo = target.apply(thisArg, argArray);
-                                    if (useMemo && useMemo?.props?.searchResults) {
-                                        processCaches(useMemo);
-                                    }
-                                    return useMemo;
-                                }
-                            });
-                        }
-                    }
+                // Finished, stop observing.
+                if (getLayout) {
+                    observer.disconnect();
                     return;
                 }
-                // Timeout.
-                if (Date.now() - t0 > timeout) {
+
+                // Safeguard.
+                if (++observerCalls > 99) {
                     observer.disconnect();
-                    gclh_log('unsafeWindow.webpackChunk_N_E not found for ' + timeout/1000 + 's');
+                    if (!getLayout) gclh_error("Add proxy for corrected coordinates", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
+                    return;
                 }
             });
             observer.observe(document.documentElement, { childList: true, subtree: true });
 
-            // Initialize Map object.
-            unsafeWindow.MapSettings = {'Map': null};
+            // Get map handle.
+            waitForElementThenRun('#map-container', () => {
+                const node = document.querySelector('#map-container');
+                const reactFiberKey = Object.keys(node).find(o => o.includes('__reactFiber'));
+                unsafeWindow.MapSettings.Map = reactFiberKey ? node[reactFiberKey]?.child?.memoizedProps?.value?.map : null;
+                if (!unsafeWindow.MapSettings.Map) gclh_error("Get map handle", new Error('No map found in #map-container'));
+            });
 
-            // Get map instance.
-            const getMapInstance = (state) => {
-                // Only once.
-                if (unsafeWindow.MapSettings?.Map?._mapPane) return;
+            // Handle corrected coordinates.
+            let compensateCenterOffset = true;
+            const processCaches = (layout) => {
+                // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
+                // Otherwise corrected coords cannot be set.
+                layout.props.searchResults = structuredClone(layout.props.searchResults);
 
-                // Leaflet maps only.
-                if (state[0].map) {
-                    unsafeWindow.MapSettings.Map = state[0].map;
-                }
-            }
-
-            // Refresh map.
-            const redrawMap = () => {
-                if (unsafeWindow.MapSettings?.Map?._mapPane) {
-                    // Refresh Leaflet maps.
-                    unsafeWindow.MapSettings.Map.fitBounds(unsafeWindow.MapSettings.Map.getBounds());
-                    // Clear possible cache selection.
-                    unsafeWindow.MapSettings.Map.fireEvent('click');
-                } else {
-                    gclh_log('unsafeWindow.MapSettings.Map._mapPane not available');
-                }
-            }
-
-            // Process cache data.
-            const processCaches = (state) => {
-                // Nothing to be done.
-                if (!isActive) return;
-
-                // Move caches to corrected position.
-                if (state.props.searchResults.results[0]) {
-                    // On initial page load, results array is read-only -> no modifications possible.
-                    // For 'Search this area', results array is (sometimes) writable -> modifications possible.
-                    let caches = state.props.searchResults.results;
-                    // If cache objects are read-only, nothing can be done.
-                    if (Object.getOwnPropertyDescriptor(caches[0], 'name').configurable === false) return;
-
-                    let gc = null;
-                    for (let i = 0; i < caches.length; i++) {
-                        gc = caches[i];
-                        // If corrected coords are available, change cache coords.
-                        if (gc.userCorrectedCoordinates) {
-                            gc.postedCoordinates = gc.userCorrectedCoordinates;
-                        }
+                // If corrected coords are available, change cache coords.
+                let caches = layout.props.searchResults.results;
+                let gc = null;
+                for (let i = 0; i < caches.length; i++) {
+                    gc = caches[i];
+                    if (gc.userCorrectedCoordinates) {
+                        gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
+                }
+
+                // Once on page load, compensate unwanted offset to desired map center (only happens in Chrome).
+                if (compensateCenterOffset && unsafeWindow.MapSettings?.Map?.panTo) {
+                    compensateCenterOffset = false;
+                    unsafeWindow.MapSettings.Map.panTo(Object.values(layout.props.mapCenter));
                 }
             }
 
@@ -10523,10 +10541,13 @@ var mainGC = function() {
                         '</button>';
                     $('button.map-control').first().parent().parent().prepend(button);
 
+                    // Disable button for BML.
+                    if (getURLParam('bmCode')) document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
+
                     // Toggle button for corrected coordinates.
                     $("#gclh_corrected_coords").bind("click", () => {
-                        // Run 'Search this area' to modify coords.
-                        document.querySelector('[data-testid="search-this-area-button"]').click();
+                        // Update view to update coords.
+                        unsafeWindow.MapSettings?.Map?.fitBounds(unsafeWindow.MapSettings?.Map?.getBounds());
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         if (!isActive) {
@@ -10547,61 +10568,31 @@ var mainGC = function() {
             }
 
             // Add button to toggle display of found caches between original and corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but) {
+            if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) {
                 var isActive = getValue('showCorrectedCoords', false);
                 // Add button with small delay to ensure it is always at the top (necessary for FF).
                 setTimeout(addCorrectedCoordsButton, 0);
-
-                // If show at corrected coords is active, update cache locations.
-                if (isActive) {
-                    // Observe distance filter for changes:
-                    // - unset default distance value
-                    // - wait until value gets reset by GS, then data is ready and a search can be performed
-                    const anchor = '[data-event-label="Filters - Distance From"]';
-                    waitForElementThenRun(anchor, () => {
-                        // Unset default distance value.
-                        document.querySelector(anchor).setAttribute('value', '');
-                        // Wait until data is ready, then update cache locations.
-                        const cb = (_, observer) => {
-                            // Run 'Search this area' to modify coords.
-                            document.querySelector('[data-testid="search-this-area-button"]').click();
-                            observer.disconnect();
-                            observer = null;
-                        }
-                        const target = document.querySelector(anchor);
-                        const config = { attributes: true, attributeName: "value" };
-                        let observer = new MutationObserver(cb);
-                        observer.observe(target, config);
-                    });
-                }
             }
 
-            // Disable corrected coords button for GM (displaying corrected coords works, but enabling/disabling doesn't work reliably).
-            if (settings_show_found_caches_at_corrected_coords_but && !settings_use_gclh_layercontrol_on_search_map) {
-                const anchor = 'use[href="#map-layers"]';
-                waitForElementThenRun(anchor, () => {
-                    // On click to layer control start observing as long as layer control is open.
-                    const $layer_control = $(anchor).parent().parent().eq(1);
-                    const cb = (_, observer) => {
-                        // As soon as layer control is closed, enable/disable corrected coords button and stop observing.
-                        if ($layer_control.attr('aria-expanded') === 'false') {
-                            if (unsafeWindow.MapSettings?.Map?._mapPane) {
-                                // Leaflet.
-                                document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
-                            } else {
-                                // GM.
-                                document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
-                            }
-                            observer.disconnect();
-                        }
+            // Set click events to 'Search' and 'My Lists' that will handle enabling/disabling corrected coords button.
+            function addEnableDisableCorrectedCoordsHandler() {
+                if (document.querySelector('button[data-testid="list-mode-toggle')) {
+                    if (!$('ul[data-testid="mode-toggles"]').hasClass('gclh-mode-toggles')) {
+                        $('ul[data-testid="mode-toggles"]').addClass('gclh-mode-toggles');
+                        // Disable button for BML.
+                        $('button[data-testid="list-mode-toggle"]').click(() => {
+                            document.querySelector('#gclh_corrected_coords')?.setAttribute('disabled', '');
+                        });
+                        // Enable button for search lists.
+                        $('button[data-testid="search-mode-toggle"]').click(() => {
+                            document.querySelector('#gclh_corrected_coords')?.removeAttribute('disabled');
+                            // Reinitialize map bounds.
+                            [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
+                        });
+                        // Ensure that corrected coords button is always activated when returning to search lists.
+                        $('button[data-testid="search-mode-toggle"]').click();
                     }
-                    const target = $layer_control[0];
-                    const config = { attributes: true, attributeName: 'aria-expanded' };
-                    const observer = new MutationObserver(cb);
-                    $layer_control.bind('click', () => {
-                        observer.observe(target, config);
-                    });
-                });
+                }
             }
 
             // Add layer control.
@@ -10651,104 +10642,211 @@ var mainGC = function() {
                 }
             }
 
-            // Virtually hit "Search this area" after dragging the map or zooming, if not BML and not link from matrix.
-            var isGclhMatrix = document.location.href.match(/#GClhMatrix/i);
-            var latHighG = false;
-            var latLowG = false;
-            var lngHighG = false;
-            var lngLowG = false;
-            var firstRun = true;
+            // Virtually hit "Search this area" after dragging or zooming the map.
+            let searchThisAreaIsRunning = false;
             const ONE_MINUTE_MS = 60*1000;
-//xxx deaktiviert
-            function searchThisArea(waitCount) {
-                // For the first run.
-                if ($('.leaflet-gl-layer.mapboxgl-map')[0] || $('div.gm-style')[0]) { // Leaflet or GM
-                    if (!$('.loading-container.show')[0] && !$('li.active svg.my-lists-toggle-icon')[0] && ($('#clear-map-control')[0] || firstRun) && !isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
-                        // Delay, so that the last values of a movement are used.
-                        setTimeout(function() {
-                            if ($('.loading-container.show')[0]) return;
-                            // Determine whether a new search is necessary, because we have not yet searched of a part of the map area.
-                            var pxHeight = window.innerHeight;
-                            var pxWidth = window.innerWidth;
-                            var lat = parseFloat(getURLParam('lat'));
-                            var lng = parseFloat(getURLParam('lng'));
-                            var zoom = parseInt(getURLParam('zoom'));
-                            var metersPerPx = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
-                            var latMeterDistance = metersPerPx * pxHeight;
-                            var lngMeterDistance = metersPerPx * pxWidth;
-                            var latHalfDezDistance = latMeterDistance / 1850 / 60 / 2;
-                            var lngHalfDezDistance = lngMeterDistance / (1850 * Math.cos(lat * Math.PI / 180)) / 60 / 2;
-                            var latHigh = (lat + latHalfDezDistance).toFixed(4);
-                            var latLow = (lat - latHalfDezDistance).toFixed(4);
-                            var lngHigh = (lng + lngHalfDezDistance).toFixed(4);
-                            var lngLow = (lng - lngHalfDezDistance).toFixed(4);
-                            if (latHighG == false || latHigh > latHighG || latLow < latLowG || lngHigh > lngHighG || lngLow < lngLowG) {
-                                latHighG = latHigh;
-                                latLowG = latLow;
-                                lngHighG = lngHigh;
-                                lngLowG = lngLow;
 
-                                // ensure that no more than 10 searches per minute are performed (enforce GS limit)
-                                if (!firstRun) {
-                                    // make times persistent across reloads or search map in action on multiple tabs
-                                    // (otherwise GS nag message may still occur)
-                                    let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
-                                    // 9 searches max to be on the safe side ...
-                                    if (times.length < 9) {
-                                        // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
-                                        $('#clear-map-control').click().click();
-                                        times.push(Date.now());
-                                        GM_setValue("search_this_area_times", JSON.stringify(times));
+            function searchThisArea() {
+                let $search_button = $('[data-testid="search-this-area-button"]').first();
+                let $loading_container = $('svg.loading-spinner').parent().parent();
+                if ($search_button[0]) {
+                    // Block further calls to searchThisArea until actual search is finished.
+                    searchThisAreaIsRunning = true;
+
+                    // Ensure that no more than 10 searches per minute are performed (enforce GS limit).
+                    // Make times persistent across reloads or search map in action on multiple tabs
+                    // (otherwise GS nag message may still occur).
+                    let times = JSON.parse(GM_getValue("search_this_area_times", "[]"));
+                    // 9 searches max to be on the safe side.
+                    if (times.length < 9) {
+                        $search_button.click();
+                        times.push(Date.now());
+                        GM_setValue("search_this_area_times", JSON.stringify(times));
+                    } else {
+                        let t = Date.now();
+                        // Check 1min limit.
+                        if ((t - times[0]) > ONE_MINUTE_MS) {
+                            $search_button.click();
+                            // Remove first and append current timestamp.
+                            times.splice(0, 1);
+                            times.push(t);
+                            GM_setValue("search_this_area_times", JSON.stringify(times));
+                        } else {
+                            // Search limit reached, add message, but only once.
+                            if ($('body.gclh-waiting-msg').length === 0) {
+                                // Add marker to body.
+                                $('body').addClass('gclh-waiting-msg');
+                                // Hide GS loading message and spinner.
+                                $('#loading-msg').hide();
+                                $('svg.loading-spinner').attr("style", "display: none !important;");
+                                // Add span for gclh message.
+                                $('.loading-display').append('<span id="gclh-waiting-msg" role="alert" aria-live="assertive"></span>');
+                                // Time to wait for next search.
+                                var wait = Math.ceil((ONE_MINUTE_MS-(t-times[0]))/1000);
+                                // Update message every second.
+                                function countdown(waitTime) {
+                                    if (waitTime < 1) { // waiting time is over
+                                        // Rehide loading container.
+                                        $loading_container.addClass('-top-\[45px\]').removeClass('-top-0');
+                                        $('.loading-display').css('display', '');
+                                        // Unhide GS loading message and spinner.
+                                        $('#loading-msg').show();
+                                        $('svg.loading-spinner').css('display', '');
+                                        // Remove gclh message.
+                                        $('#gclh-waiting-msg').remove();
+                                        $('body').removeClass('gclh-waiting-msg');
+                                        searchThisAreaIsRunning = false;
                                     } else {
-                                        let t = Date.now();
-                                        // check 1min limit
-                                        if ((t - times[0]) > ONE_MINUTE_MS) {
-                                            // double-click necessary, otherwise single zoom out doesn't show caches (issue is on GS)
-                                            $('#clear-map-control').click().click();
-                                            // remove first and append current timestamp
-                                            times.splice(0, 1);
-                                            times.push(t);
-                                            GM_setValue("search_this_area_times", JSON.stringify(times));
-                                        } else {
-                                            // search limit reached, add message, but only once
-                                            if ($('body.gclh-waiting-msg').length === 0) {
-                                                // add marker to body
-                                                $('body').addClass('gclh-waiting-msg');
-                                                // time to wait for next search
-                                                var wait = Math.ceil((ONE_MINUTE_MS-(t-times[0]))/1000);
-                                                // update message every second
-                                                function countdown(waitTime) {
-                                                    if (waitTime < 1) { // waiting time is over
-                                                        // hide message
-                                                        $('#gclh-waiting-msg').remove();
-                                                        $('div.loading-container').css('display', 'none').removeClass('show');
-                                                        $('body').removeClass('gclh-waiting-msg');
-                                                    } else {
-                                                        // show message (keep next line in countdown, otherwise message gets hidden when switching map source during waiting time)
-                                                        $('div.loading-container').css('display', 'flex').addClass('show');
-                                                        // update message
-                                                        $('#gclh-waiting-msg').remove();
-                                                        $('.loading-display').append('<span id="gclh-waiting-msg" role="alert" aria-live="assertive">Too many searches per minute, please try again in <b>' + waitTime + ' s</b>.</span>');
+                                        // Unhide loading container (necessary on each update, since toggle of 'display at corrected coords' during waiting time causes top-position to change).
+                                        $loading_container.addClass('-top-0').removeClass('-top-\[45px\]');
+                                        $('.loading-display').attr("style", "display: flex !important;");
+                                        // Update gclh message.
+                                        $('#gclh-waiting-msg').html('Limit of search requests per minute reached, please try again in <b>' + waitTime + ' s</b>.')
 
-                                                        setTimeout(function() {countdown(--waitTime);}, 1000);
-                                                    }
-                                                }
-                                                countdown(wait);
-                                            }
-                                        }
+                                        setTimeout(function() {countdown(--waitTime);}, 1000);
                                     }
                                 }
-                                firstRun = false;
+                                countdown(wait);
                             }
-                        }, 400);
+                        }
                     }
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){searchThisArea(waitCount);}, 50);}
+                }
             }
 
-            // Preserve zoom parameter in URLs on page load, for Leaflet maps (GS ignores zoom levels from URLs).
-            // Function 'setZoom' will be triggered on each URL change, but only executed once.
+            // Retrieve map bounds.
+            function getMapBounds() {
+                if (unsafeWindow.MapSettings?.Map?.getBounds) {
+                    const bounds = unsafeWindow.MapSettings.Map.getBounds();
+                    return [bounds.getNorth(), bounds.getSouth(), bounds.getEast(), bounds.getWest()];
+                    // In case of failure, return lower bounds.
+                } else return [-180, -180, -180, -180];
+            }
+
+            // Run searchThisArea only when necessary.
+            let isGclhMatrix = getURLParam('gclhmatrix');
+            let latHighG = false, latHigh = false, latLowG = false, latLow = false;
+            let lngHighG = false, lngHigh = false, lngLowG = false, lngLow = false;
+            let filterSearchWasRunning = false;
+            function run_searchThisArea() {
+                // Don't run on matrix links or BML section.
+                if (isGclhMatrix || document.querySelector('li.bg-green-500[data-testid="list-mode-item"]')) return false;
+
+                // Don't run more than once at the same time.
+                if (searchThisAreaIsRunning) return false;
+
+                // Don't run directly after filter searches.
+                if (filterSearchWasRunning) {
+                    filterSearchWasRunning = false;
+                    return false;
+                }
+
+                // Don't run if the current map view is contained in the previous map view (i.e. all search results are already available).
+                // Exeception: if number of search results > maximum number of caches to display, then a search is necessary.
+                const node = document.querySelector('div.page-container');
+                const reactFiberKey = Object.keys(node).find(o => o.includes('__reactFiber'));
+                const total = reactFiberKey ? node[reactFiberKey]?.memoizedProps?.children?.props?.searchResults?.total : 0;
+                const take  = reactFiberKey ? node[reactFiberKey]?.memoizedProps?.children?.props?.take : 0;
+                [latHigh, latLow, lngHigh, lngLow] = getMapBounds();
+                if (latHigh > latHighG || latLow < latLowG || lngHigh > lngHighG || lngLow < lngLowG || total > take) {
+                    latHighG = latHigh;
+                    latLowG = latLow;
+                    lngHighG = lngHigh;
+                    lngLowG = lngLow;
+                } else return false;
+
+                return true;
+            }
+
+            if (settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol_on_search_map) {
+                // Set event listeners for dragging/zooming map and initialize map bounds, as soon as unsafeWindow.MapSettings.Map is ready.
+                const timeout_search = 1000;
+                let count = 0;
+                const interval = setInterval(() => {
+                    try {
+                        // Event listener for map move.
+                        let dragendEndTimeout;
+                        unsafeWindow.MapSettings.Map.on('dragend', () => {
+                            // This approach ensures that the function for handling the dragend event is only executed once
+                            // (in a certain period of time), e.g. if the user drags the map several times in quick succession.
+                            clearTimeout(dragendEndTimeout);
+
+                            dragendEndTimeout = setTimeout(() => {
+                                if (run_searchThisArea()) searchThisArea();
+                            }, timeout_search);
+                        });
+                        // Event listener for map zoom.
+                        let zoomEndTimeout;
+                        unsafeWindow.MapSettings.Map.on('zoomend', () => {
+                            // This approach ensures that the function for handling the zoomend event is only executed once
+                            // (in a certain period of time), e.g. if the user goes through several zoom levels in quick succession.
+                            clearTimeout(zoomEndTimeout);
+
+                            zoomEndTimeout = setTimeout(() => {
+                                if (run_searchThisArea()) searchThisArea();
+                            }, timeout_search);
+                        });
+
+                        // Initialize map bounds.
+                        [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
+
+                        clearInterval(interval);
+                    } catch {
+                        // Safeguard.
+                        if (++count > 200) clearInterval(interval);
+                    }
+                }, 100);
+
+                // Set blocker variable if a filter search is started. This prevents an unnecessary searchThisArea call directly after filter search is finished.
+                waitForElementThenRun('button[data-event-label="Filters - Apply"]', () => {
+                    $('button[data-event-label="Filters - Apply"]').click(() => {
+                        filterSearchWasRunning = true;
+                    });
+                });
+
+                // Set blocker variable if a search is started. This prevents an unnecessary searchThisArea call directly after search is finished.
+                waitForElementThenRun('button[data-testid="search-button"]', () => {
+                    $('button[data-testid="search-button"]').click(() => {
+                        filterSearchWasRunning = true;
+                    });
+                });
+
+                // Unset blocker variables if any search is finished (trigger: zoom buttons disabled/enabled).
+                waitForElementThenRun('[data-event-label="Map - Zoom In"]', () => {
+                    const observer = new MutationObserver((mutationsList, observer) => {
+                        for (const mutation of mutationsList) {
+                            if (mutation?.target?.disabled === false) {
+                                // Delay slightly to prevent next searchThisArea calls running too early.
+                                setTimeout(() => {
+                                    searchThisAreaIsRunning = false;
+                                    filterSearchWasRunning = false;
+
+                                    // If the map has moved between start and end of the current search, the map view may
+                                    // not match the search results. Therefore force an additional search to update the results.
+                                    const url_lat = getURLParam('lat')*1;
+                                    const url_lng = getURLParam('lng')*1;
+                                    const map_center = unsafeWindow.MapSettings.Map.getCenter()
+                                    const map_lat = map_center.lat;
+                                    const map_lng = map_center.lng;
+                                    if (url_lat && url_lng && map_lat && map_lng &&
+                                        (Math.abs(url_lat-map_lat)>1e-10 || Math.abs(url_lng-map_lng)>1e-10)) {
+                                        // Fire 'dragend' event to force a search.
+                                        unsafeWindow.MapSettings.Map.fire('dragend');
+                                    }
+                                }, 2000);
+                            }
+                        }
+                    });
+                    observer.observe(document.querySelector('[data-event-label="Map - Zoom In"]'), {attributes: true, attributeFilter: ["disabled"]});
+                }, 20000);
+            }
+
+            // Preserve zoom parameter in URLs on page load (GS ignores zoom levels from URLs); no BML and for Leaflet maps only.
+            let run_setZoom = getURLParam('bmCode') ? false : true;
             function setZoom() {
-                if (unsafeWindow.MapSettings?.Map?.setZoom) {
+                if (run_setZoom && unsafeWindow.MapSettings?.Map?.setZoom) {
+                    // Only run once.
+                    run_setZoom = false;
+
                     // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
                     const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
                     if (!isNaN(zoom)) unsafeWindow.MapSettings.Map.setZoom(zoom);
@@ -10757,16 +10855,9 @@ var mainGC = function() {
 
             // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
             // (for reference: https://stackoverflow.com/a/64927639)
-            let use_zoom_from_url = true;
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
-                    if (use_zoom_from_url) {
-                        // Run only once.
-                        use_zoom_from_url = false;
-                        setZoom();
-                    }
-//xxx deaktiviert
-//                    searchThisArea(0);
+                    setZoom();
                     return target.apply(thisArg, argArray);
                 }
             });
@@ -11414,6 +11505,7 @@ var mainGC = function() {
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
+                if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol_on_search_map) addEnableDisableCorrectedCoordsHandler();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -11455,13 +11547,11 @@ var mainGC = function() {
 //            compactLayoutWait(0);
 
             var css = '';
-//xxx deaktiviert
-/*
             // Hide button search this area and icon loading, if not link from matrix.
-            if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging) {
-                css += '#clear-map-control, .loading-container {display: none;}';
+            if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol_on_search_map) {
+                css += '[data-event-label="Map - Search This Area"], .loading-display {display: none !important;}';
             }
-*/
+
             // Set link to owner.
             css += '.gclhOwner a:hover {color: #02874d !important;}';
             css += '.gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
@@ -12694,14 +12784,14 @@ var mainGC = function() {
                                 cell.children[0].href +=
                                     "&origin=" + DectoDeg(getValue("home_lat"), getValue("home_lng")) +
                                     "&radius=" + settings_count_own_matrix_links_radius + "km" +
-                                    "&nfb[0]=" + global_me + "&o=2#GClhMatrix";
+                                    "&nfb[0]=" + global_me + "&o=2&gclhmatrix=1";
                                 if (settings_count_own_matrix_links == "map") {
                                     var zoom = Math.round(24 - Math.log2(settings_count_own_matrix_links_radius * 1000));
                                     var dt = cell.children[0].href.match(/d=(.*?)&t=(.*?)&/i);
                                     cell.children[0].href = 'https://www.geocaching.com/play/map?lat=' + (getValue("home_lat") / 10000000)
                                                           + '&lng=' + (getValue("home_lng") / 10000000) + '&zoom=' + zoom
                                                           + '&asc=true&sort=distance&ot=coords&r=' + settings_count_own_matrix_links_radius
-                                                          + '&d=' + dt[1] + '&t=' + dt[2] + '&hf=1&nfb=' + global_me + '#GClhMatrix';
+                                                          + '&d=' + dt[1] + '&t=' + dt[2] + '&hf=1&nfb=' + global_me + '&gclhmatrix=1';
                                     cell.children[0].title += ", on map";
                                 } else {
                                     cell.children[0].href += "#searchResultsTable";
@@ -16403,7 +16493,7 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
             html += "<div id='gclh_config_maps' class='gclh_block'>";
             html += checkboxy('settings_relocate_other_map_buttons', 'Relocate the buttons \"Search\" and \"Browse geocaches\" to other buttons above') + "<br>";
-            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + show_help("Displayed caches are automatically updated when the map is moved or zoomed, the 'Search this area' button no longer needs to be pressed. The behavior is therefore similar to that of the browse map.<br><br>This feature requires <a href=\"#settings_use_gclh_layercontrol_on_search_map\">Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on cache detail screen') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
@@ -17937,6 +18027,8 @@ var mainGC = function() {
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventdayX1");
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
             setEvForDepPara("settings_compact_layout_new_dashboard", "settings_row_hide_new_dashboard");
+            setEvForDepPara("settings_use_gclh_layercontrol_on_search_map","settings_searchmap_autoupdate_after_dragging");
+            setEvForDepPara("settings_use_gclh_layercontrol_on_search_map","settings_show_found_caches_at_corrected_coords_but");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
