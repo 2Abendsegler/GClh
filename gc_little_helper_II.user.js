@@ -10497,9 +10497,7 @@ var mainGC = function() {
                     if (unsafeWindow.React?.getLayout && settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                         unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
                             apply: (target, thisArg, argArray) => {
-                                if (isActive) {
-                                    processCaches(argArray[0]);
-                                }
+                                processCaches(argArray[0]);
                                 return target.apply(thisArg, argArray);
                             }
                         });
@@ -10544,15 +10542,16 @@ var mainGC = function() {
                 let gc = null;
                 for (let i = 0; i < caches.length; i++) {
                     gc = caches[i];
-                    if (gc.userCorrectedCoordinates) {
+                    if (gc.userCorrectedCoordinates && isActive) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
+                    if (getValue('hideDNFs', false) && gc.userDidNotFind && settings_map_hide_dnfs) delete gc.userDidNotFind;
                 }
             }
 
             // Button for corrected coordinates.
             let moveend_zoomend = false;
-            const addCorrectedCoordsButton = () => {
+            const addCorrectedCoordsButton2 = () => {
                 waitForElementThenRun("button.map-control", () => {
                     const button =
                         '<button id="gclh_corrected_coords" class="map-control" title="Found caches displayed at ' + (isActive ? 'corrected' : 'original') + ' coordinates">' +
@@ -10588,6 +10587,52 @@ var mainGC = function() {
                 });
             }
 
+            function addCorrectedCoordsButton() {
+                waitForElementThenRun("button.map-control", () => {
+                    $('button.map-control').first().parent().parent().prepend('<button id="gclh_cache_display_control" class="gclh_cache_display_control map-control" title="Cache display options"></button>');
+                    $('#gclh_cache_display_control').append('<a id="gclh_dummy"></a>');
+                    $('#gclh_cache_display_control').append('<svg style="height: 75%;"><use href="#filters"></use></svg>');
+                    $("#gclh_cache_display_control").append('<div id="gclh_cache_display_list" class="gclh_cache_display_list"></div>');
+                    $("#gclh_cache_display_list").append('<b>Cache display options</b>');
+                    if (settings_show_found_caches_at_corrected_coords_but) $("#gclh_cache_display_list").append('<label for="gclh_option1"><input type="checkbox" id="gclh_option1" ' + (isActive ? 'checked' : '') + '>Display found caches corrected coordinates</label>');
+                    if (settings_map_hide_dnfs) $("#gclh_cache_display_list").append('<label for="gclh_option2"><input type="checkbox" id="gclh_option2" ' + (getValue('hideDNFs', false) ? 'checked' : '') + '>Hide DNF caches</label>');
+                    if (false) $("#gclh_cache_display_list").append('<label for="gclh_option3"><input type="checkbox" id="gclh_option3">Show cache type instead of DNF</label>');
+                    $("#gclh_cache_display_control").click(function() {
+                        $("#gclh_cache_display_list").css('display', 'block');
+                    });
+                    $('.gclh_cache_display_list').mouseleave(function() {
+                        $(this).css('display', 'none');
+                    });
+                    $("#gclh_option1").click(function() {
+                        moveend_zoomend = true;
+                        unsafeWindow.MapSettings?.Map?.fitBounds(unsafeWindow.MapSettings?.Map?.getBounds());
+                        // Clear possible cache selection.
+                        unsafeWindow.MapSettings?.Map?.fireEvent('click');
+                        if (!isActive) {
+                            // Activate.
+                            isActive = true;
+                        } else {
+                            // Deactivate.
+                            isActive = false;
+                        }
+                        setValue('showCorrectedCoords', isActive);
+                    });
+                    $("#gclh_option2").click(function() {
+                        moveend_zoomend = true;
+                        unsafeWindow.MapSettings?.Map?.fitBounds(unsafeWindow.MapSettings?.Map?.getBounds());
+                        // Clear possible cache selection.
+                        unsafeWindow.MapSettings?.Map?.fireEvent('click');
+                        setValue('hideDNFs', !getValue('hideDNFs', false));
+                    });
+                    $("#gclh_option3").click(function() {alert('gclh_option3 clicked');});
+                    var css = '';
+                    css += '.gclh_cache_display_list {display: none; position: absolute; right: 0px; top: 0px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px; z-index: 1000; color: black;}';
+                    css += '.gclh_cache_display_list > label {display: flex; align-items: center; padding: 2px 2px; font-size: 13px; cursor: pointer;}';
+                    css += '.gclh_cache_display_list label:hover {background-color: #e6f7ef; text-decoration: none;}';
+                    appendCssStyle(css, null, 'gclh_cache_display_css');
+                });
+            }
+
             // Add button to toggle display of found caches between original and corrected coordinates.
             if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 var isActive = getValue('showCorrectedCoords', false);
@@ -10602,13 +10647,13 @@ var mainGC = function() {
                         $('ul[data-testid="mode-toggles"]').addClass('gclh-mode-toggles');
                         // Disable button for BML.
                         $('button[data-testid="list-mode-toggle"]').click(() => {
-                            document.querySelector('#gclh_corrected_coords')?.setAttribute('disabled', '');
+                            document.querySelector('#gclh_cache_display_control')?.setAttribute('disabled', '');
                         });
                     }
                     // Enable button when returning to search list.
                     if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]') &&
-                        document.querySelector('#gclh_corrected_coords')?.hasAttribute('disabled')) {
-                        document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
+                        document.querySelector('#gclh_cache_display_control')?.hasAttribute('disabled')) {
+                        document.querySelector('#gclh_cache_display_control').removeAttribute('disabled');
                         // Reinitialize map bounds.
                         [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
                         // Disable 'moveend' and 'zoomend' event handlers.
@@ -12222,6 +12267,7 @@ var mainGC = function() {
         css += '.gclh-leaflet-list a:hover {background-color: #e6f7ef; text-decoration: none;}';
         appendCssStyle(css, null, 'gclh_geoservices_css');
     }
+
     function getMapCooords() {
         // Mögliche url Zusammensetzungen Browse Map, Beispiele: https://www.geocaching.com/map ...
         // 1. /default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
