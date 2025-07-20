@@ -1,3 +1,4 @@
+<a href="#v0171" title="GClh II version 0.17.1 (20.07.2025)">v0.17.1</a> &nbsp;
 <a href="#v017" title="GClh II version 0.17 (02.07.2025)">v0.17</a> &nbsp;
 <a href="#v01611" title="GClh II version 0.16.11 (10.05.2025)">v0.16.11</a> &nbsp;
 <a href="#v01610" title="GClh II version 0.16.10 (02.05.2025)">v0.16.10</a> &nbsp;
@@ -33,6 +34,33 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.1:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Search Map] Fix issues from tech migration. [<a href="https://github.com/2Abendsegler/GClh/issues/2827" title="Issue 2827">2827</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<ul>
+			<li>
+				Automatic search for new caches after dragging or zooming.<br>
+			</li>
+			<li>
+				Improve displaying of found caches at corrected coordinates.<br>
+			</li>
+			<li>
+				Improve performance and stability.<br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Added missing description of parameter for replacing the map layers. [<a href="https://github.com/2Abendsegler/GClh/issues/2846" title="Issue 2846">2846</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(20.07.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17:
