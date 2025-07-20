@@ -46,7 +46,7 @@
 				Automatic search for new caches after dragging or zooming.<br>
 			</li>
 			<li>
-				Improve displaying of found geocaches at corrected coordinates.<br>
+				Improve displaying of found caches at corrected coordinates.<br>
 			</li>
 			<li>
 				Improve performance and stability.<br><br>
