@@ -16642,19 +16642,19 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_map_hide_1858', "<img "+imgStyle+" src='" + imageBaseUrl + "1858.png' title='Wherigo'>") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Layers in Map</b>" + show_help("Here you can select the map layers which should be added into the map layers menu of the maps. With this option you can reduce the long list to the map layers you really need. If the right list of map layers is empty, all will be displayed. If you use other scripts like \"Geocaching Map Enhancements\", GC little helper II will overwrite its layercontrol. With this option you can disable GC little helper II map layers to use the map layers for example from \"Geocaching Map Enhancements\"  or also from \"geocaching.com\".<br><br>It is important, that GC little helper II run at first, particularly in front of other map layer used scripts like \"Geocaching Map Enhancements\".") + "</div>";
-            html += checkboxy('settings_use_gclh_layercontrol', 'Replace map layers') + "<br>";
+            html += checkboxy('settings_use_gclh_layercontrol', 'Replace map layers') + show_help("This option can be used to disable the complete replacement of map layers in both maps, Browse Map and Search Map. If this parameter is disabled, all other parameters related to the map layers will be hidden.") + "<br>";
             html += "<div id='MapLayersConfiguration' style='display: " + (settings_use_gclh_layercontrol ? "block":"none") + "; margin-left: 10px;'>";
-            html += checkboxy('settings_use_gclh_layercontrol_on_browse_map', 'Replace map layers in Browse Map') + onlyBrowseMap + "<br>";
-            html += checkboxy('settings_use_gclh_layercontrol_on_search_map', 'Replace map layers in Search Map') + onlySearchMap + "<br>";
-            html += "<table cellspacing='0' cellpadding='0' border='0'><tbody>";
+            html += checkboxy('settings_use_gclh_layercontrol_on_browse_map', 'Replace map layers in Browse Map') + show_help("This option enables the use of map layers on the (Leaflet) Browse Map. If this parameter is enabled, the map layers in the right list will be used in (Leaflet) Browse Map.") + onlyBrowseMap + "<br>";
+            html += checkboxy('settings_use_gclh_layercontrol_on_search_map', 'Replace map layers in Search Map') + show_help("This option enables the use of map layers on the Search Map. If this parameter is enabled, the map layers in the right list will be used in Search Map.") + onlySearchMap + "<br>";
+            html += "<table cellspacing='0' cellpadding='0' border='0' style='margin-bottom: -22px;'><thead><tr><th style='float: left !important;'>Available map layers</th><th></th><th style='float: left !important;'>Used map layers</th></tr></thead><tbody>";
             html += "<tr>";
             html += "<td><select class='gclh_form' style='width: 260px; height: 150px;' id='settings_maplayers_unavailable' multiple='single' size='7'></select></td>";
             html += "<td><input style='padding-left: 2px; padding-right: 2px; cursor: pointer; margin: 0 4px; padding-bottom: 3px; color: #4a4a4a !important;' class='gclh_form' type='button' value='>' id='btn_map_layer_right'><br><br><input style='padding-left: 2px; padding-right: 2px;  cursor: pointer; margin: 0 4px; padding-bottom: 3px; color: #4a4a4a !important;' class='gclh_form' type='button' value='<' id='btn_map_layer_left'></td>";
             html += "<td><select class='gclh_form' style='width: 260px; height: 150px;' id='settings_maplayers_available' multiple='single' size='7'></select></td>";
             html += "</tr>";
-            html += "<tr><td colspan='3'>Default layer &nbsp; <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
-            html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a layer from the right list and push the button \"Set default layer\".");
-            html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
+            html += "<tr><td colspan='3'>Default map layer &nbsp; <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
+            html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a map layer from the right list and push the button \"Set default map layer\".");
+            html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default map layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
             //>> Issue 2016
             //html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
             //<< Issue 2016
