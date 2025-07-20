@@ -49,7 +49,7 @@
 				Improve displaying geocaches at corrected coordinates.<br>
 			</li>
 			<li>
-				Improve performance and stability.<br>
+				Improve performance and stability.<br><br>
 			</li>
 		</ul>
 	</li>
