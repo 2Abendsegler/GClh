@@ -5176,15 +5176,21 @@ var mainGC = function() {
                     }
                     if (!$('.tb-inventory-header.gclh_tb_header_bottom')[0]) {
                         $('.tb-list').after(tbHeader);
-                        $('.gclh_tb_header_bottom button[data-event-label*="clear all"]')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
-                        });
-                        $('.gclh_tb_header_bottom button[data-event-label*="visit all"]')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
-                        });
-                        $('.gclh_tb_header_bottom button[data-event-label*="drop all"]')[0].addEventListener("click", function(){
-                            $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
-                        });
+                        if ($('.gclh_tb_header_bottom button[data-event-label*="clear all"]')[0]) {
+                            $('.gclh_tb_header_bottom button[data-event-label*="clear all"]')[0].addEventListener("click", function(){
+                                $('.tb-inventory-header:nth-child(1) button[data-event-label*="clear all"]').trigger( "click" );
+                            });
+                        }
+                        if ($('.gclh_tb_header_bottom button[data-event-label*="visit all"]')[0]) {
+                            $('.gclh_tb_header_bottom button[data-event-label*="visit all"]')[0].addEventListener("click", function(){
+                                $('.tb-inventory-header:nth-child(1) button[data-event-label*="visit all"]').trigger( "click" );
+                            });
+                        }
+                        if ($('.gclh_tb_header_bottom button[data-event-label*="drop all"]')[0]) {
+                            $('.gclh_tb_header_bottom button[data-event-label*="drop all"]')[0].addEventListener("click", function(){
+                                $('.tb-inventory-header:nth-child(1) button[data-event-label*="drop all"]').trigger( "click" );
+                            });
+                        }
                     }
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
@@ -16585,6 +16591,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
+//xxxx
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_show_cache_display_options', 'Show button for additional geocache display options') + show_help("With this option you can show a button for additional geocache display options on Search Map, e.g. show geocaches at corrected coordinates or hide DNFs.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
