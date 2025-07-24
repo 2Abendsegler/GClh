@@ -693,7 +693,7 @@ var variablesInit = function(c) {
     c.settings_color_nv = getValue("settings_color_nv", "F0DFC6");
     c.settings_color_navi_search = getValue("settings_color_navi_search", false);
     c.settings_map_show_btn_hide_header = getValue("settings_map_show_btn_hide_header", true);
-    c.settings_show_found_caches_at_corrected_coords_but = getValue("settings_show_found_caches_at_corrected_coords_but", true);
+    c.settings_searchmap_show_cache_display_options = getValue("settings_searchmap_show_cache_display_options", true);
     c.settings_save_as_pq_set_defaults = getValue("settings_save_as_pq_set_defaults", false);
     c.settings_save_as_pq_set_all = getValue("settings_save_as_pq_set_all", true);
     c.settings_compact_layout_cod = getValue("settings_compact_layout_cod", false);
@@ -10428,10 +10428,10 @@ var mainGC = function() {
                 return [false, false];
             }
 
-            // Add proxy for corrected coordinates and get map handle: observe html until webpackChunk_N_E and map are available.
+            // Add proxy for cache properties and get map handle: observe html until webpackChunk_N_E and map are available.
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
-                // Add proxy for corrected coordinates;
+                // Add proxy for cache properties;
                 // webpackChunk_N_E must be available and fully loaded ('3168' is the key of the last listed chunk (release-20250625.1.2261)).
                 if (!unsafeWindow.React?.getLayout && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('3168')) {
                     // Add Layout module to global space.
@@ -10493,13 +10493,11 @@ var mainGC = function() {
                         });
                     }
 
-                    // Add proxy for displaying caches at corrected coordinates.
-                    if (unsafeWindow.React?.getLayout && settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                    // Add proxy for cache properties.
+                    if (unsafeWindow.React?.getLayout && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                         unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
                             apply: (target, thisArg, argArray) => {
-                                if (isActive) {
-                                    processCaches(argArray[0]);
-                                }
+                                processCaches(argArray[0]);
                                 return target.apply(thisArg, argArray);
                             }
                         });
@@ -10516,7 +10514,7 @@ var mainGC = function() {
                 if (++observerCalls > 99) {
                     observer.disconnect();
                     if (!unsafeWindow.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
-                    if (!unsafeWindow.React?.getLayout) gclh_error("Add proxy for corrected coordinates", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
+                    if (!unsafeWindow.React?.getLayout) gclh_error("Add proxy for cache properties", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
                     return;
                 }
             });
@@ -10533,82 +10531,104 @@ var mainGC = function() {
                 }
             }
 
-            // Handle corrected coordinates.
+            // Handle cache properties.
             const processCaches = (layout) => {
                 // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
-                // Otherwise corrected coords cannot be set.
+                // Otherwise cache properties cannot be set.
                 layout.props.searchResults = structuredClone(layout.props.searchResults);
 
-                // If corrected coords are available, change cache coords.
                 let caches = layout.props.searchResults.results;
                 let gc = null;
                 for (let i = 0; i < caches.length; i++) {
                     gc = caches[i];
-                    if (gc.userCorrectedCoordinates) {
+                    // Change cache coords.
+                    if (showAtCorrectedCoords && gc.userCorrectedCoordinates) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
+                    // Hide DNF icon.
+                    if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
                 }
             }
 
-            // Button for corrected coordinates.
+            // Force a refresh of all caches on the map (without reloading from the server).
             let moveend_zoomend = false;
-            const addCorrectedCoordsButton = () => {
-                waitForElementThenRun("button.map-control", () => {
-                    const button =
-                        '<button id="gclh_corrected_coords" class="map-control" title="Found caches displayed at ' + (isActive ? 'corrected' : 'original') + ' coordinates">' +
-                        '<svg><use href="' + (isActive ? '#solved' : '#solved_disabled') + '"></use></svg>' +
-                        '</button>';
-                    $('button.map-control').first().parent().parent().prepend(button);
+            function forceCachesRefresh() {
+                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call.
+                moveend_zoomend = true;
+                unsafeWindow.MapSettings.Map.fire('moveend');
+            }
 
-                    // Disable button for BML on page load.
-                    if (getURLParam('bmCode')) document.querySelector('#gclh_corrected_coords').setAttribute('disabled', '');
+            // Button for additional geocache display options.
+            function cacheDisplayOptionsButton() {
+                waitForElementThenRun("button.map-control", function() {
+                    // Button.
+                    $('button.map-control').first().parent().parent().prepend('<button id="gclh_display_options_control" class="gclh_display_options_control map-control"></button>');
 
-                    // Toggle button for corrected coordinates.
-                    $("#gclh_corrected_coords").bind("click", () => {
-                        // fitBounds forces a screen update which in turn calls getLayout (which sets/resets corrected coordinates).
-                        // For this to work, the moveend handler needs to be active - otherwise getLayout doesn't get called.
-                        moveend_zoomend = true;
-                        unsafeWindow.MapSettings?.Map?.fitBounds(unsafeWindow.MapSettings?.Map?.getBounds());
+                    // Options list.
+                    $('#gclh_display_options_control').append('<svg><title>Geocache display options</title><use href="#filters"></use></svg>');
+                    $("#gclh_display_options_control").append('<div id="gclh_display_options_list" class="gclh_display_options_list"></div>');
+                    $("#gclh_display_options_list").append('<b>Geocache display options</b>');
+                    $("#gclh_display_options_list").append('<label for="gclh_showAtCorrectedCoords"><input type="checkbox" id="gclh_showAtCorrectedCoords" ' + (showAtCorrectedCoords ? 'checked' : '') + '>Show found caches at corrected coordinates</label>');
+                    $("#gclh_display_options_list").append('<label for="gclh_hideDNFIcons"><input type="checkbox" id="gclh_hideDNFIcons" ' + (hideDNFIcons ? 'checked' : '') + '>Hide DNF icons</label>');
+
+                    // Open options on 'click'.
+                    $("#gclh_display_options_control").click(function() {
+                        $("#gclh_display_options_list").css('display', 'block');
+                    });
+                    // Close options on 'mouseleave'.
+                    $('.gclh_display_options_list').mouseleave(function() {
+                        $(this).css('display', 'none');
+                    });
+
+                    // Option handlers.
+                    $("#gclh_showAtCorrectedCoords").click(function() {
+                        forceCachesRefresh();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
-                        if (!isActive) {
-                            // Activate.
-                            isActive = true;
-                            setValue('showCorrectedCoords', isActive);
-                            $('#gclh_corrected_coords').prop('title', 'Found caches displayed at corrected coordinates');
-                            $('#gclh_corrected_coords use').attr('href', '#solved');
-                        } else {
-                            // Deactivate.
-                            isActive = false;
-                            setValue('showCorrectedCoords', isActive);
-                            $('#gclh_corrected_coords').prop('title', 'Found caches displayed at original coordinates');
-                            $('#gclh_corrected_coords use').attr('href', '#solved_disabled');
-                        }
+                        showAtCorrectedCoords = !showAtCorrectedCoords;
+                        setValue('set_switch_SM_show_at_corrected_coords', showAtCorrectedCoords);
                     });
+                    $("#gclh_hideDNFIcons").click(function() {
+                        forceCachesRefresh();
+                        // Clear possible cache selection.
+                        unsafeWindow.MapSettings?.Map?.fireEvent('click');
+                        hideDNFIcons = !hideDNFIcons;
+                        setValue('set_switch_SM_hide_dnf_icons', hideDNFIcons);
+                    });
+
+                    // Styles.
+                    let css = '';
+                    css += '.gclh_display_options_control > svg {height: 1.9em !important;}';
+                    css += '.gclh_display_options_list {display: none; position: absolute; right: 0px; top: 0px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px; z-index: 1000; color: black; font-family: "Noto Sans", Arial, Helvetica, sans-serif;}';
+                    css += '.gclh_display_options_list > label {display: flex; align-items: center; padding: 2px 2px; font-size: 13px; cursor: pointer;}';
+                    css += '.gclh_display_options_list > label:hover {background-color: #e6f7ef;}';
+                    css += '.gclh_display_options_list > label > input[type="checkbox"]:checked {accent-color: rgb(0 125 70);}';
+                    appendCssStyle(css);
                 });
             }
 
-            // Add button to toggle display of found caches between original and corrected coordinates.
-            if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
-                var isActive = getValue('showCorrectedCoords', false);
+            // Add button for additional geocache display options.
+            if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                var showAtCorrectedCoords = getValue('set_switch_SM_show_at_corrected_coords', false);
+                var hideDNFIcons = getValue('set_switch_SM_hide_dnf_icons', false);
                 // Add button with small delay to ensure it is always at the top (necessary for FF).
-                setTimeout(addCorrectedCoordsButton, 0);
+                setTimeout(cacheDisplayOptionsButton, 0);
             }
 
-            // Handle enabling/disabling corrected coords button.
-            function addEnableDisableCorrectedCoordsHandler() {
+            // Handle enabling/disabling display options button.
+            function addEnableDisableDisplayOptionsHandler() {
                 if (document.querySelector('button[data-testid="list-mode-toggle"]')) {
                     if (!$('ul[data-testid="mode-toggles"]').hasClass('gclh-mode-toggles')) {
                         $('ul[data-testid="mode-toggles"]').addClass('gclh-mode-toggles');
                         // Disable button for BML.
-                        $('button[data-testid="list-mode-toggle"]').click(() => {
-                            document.querySelector('#gclh_corrected_coords')?.setAttribute('disabled', '');
+                        $('button[data-testid="list-mode-toggle"]').click(function() {
+                            document.querySelector('#gclh_display_options_control')?.setAttribute('disabled', '');
                         });
                     }
                     // Enable button when returning to search list.
                     if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]') &&
-                        document.querySelector('#gclh_corrected_coords')?.hasAttribute('disabled')) {
-                        document.querySelector('#gclh_corrected_coords').removeAttribute('disabled');
+                        document.querySelector('#gclh_display_options_control')?.hasAttribute('disabled')) {
+                        document.querySelector('#gclh_display_options_control').removeAttribute('disabled');
                         // Reinitialize map bounds.
                         [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
                         // Disable 'moveend' and 'zoomend' event handlers.
@@ -10720,7 +10740,7 @@ var mainGC = function() {
                                         $('body').removeClass('gclh-waiting-msg');
                                         searchThisAreaIsRunning = false;
                                     } else {
-                                        // Unhide loading container (necessary on each update, since toggle of 'display at corrected coords' during waiting time causes top-position to change).
+                                        // Unhide loading container (necessary on each update, since toggle of 'geocache display options' during waiting time causes top-position to change).
                                         $loading_container.addClass('-top-0').removeClass('-top-\[45px\]');
                                         $('.loading-display').attr("style", "display: flex !important;");
                                         // Update gclh message.
@@ -10796,8 +10816,7 @@ var mainGC = function() {
 
                             if (run_searchThisArea()) {
                                 // Update page content to actual state after movement.
-                                moveend_zoomend = true;
-                                unsafeWindow.MapSettings.Map.fire('moveend');
+                                forceCachesRefresh();
                                 // Sligthly delayed search is necessary to reduce server load and prevent console errors, among other things.
                                 dragendTimeout = setTimeout(() => {
                                     searchThisArea();
@@ -10814,8 +10833,7 @@ var mainGC = function() {
 
                             if (run_searchThisArea()) {
                                 // Update page content to actual state after zoom.
-                                moveend_zoomend = true;
-                                unsafeWindow.MapSettings.Map.fire('moveend');
+                                forceCachesRefresh();
                                 // Sligthly delayed search is necessary to reduce server load and prevent console errors, among other things.
                                 zoomendTimeout = setTimeout(() => {
                                     searchThisArea();
@@ -11567,7 +11585,7 @@ var mainGC = function() {
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
-                if (settings_show_found_caches_at_corrected_coords_but && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) addEnableDisableCorrectedCoordsHandler();
+                if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) addEnableDisableDisplayOptionsHandler();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -12222,6 +12240,7 @@ var mainGC = function() {
         css += '.gclh-leaflet-list a:hover {background-color: #e6f7ef; text-decoration: none;}';
         appendCssStyle(css, null, 'gclh_geoservices_css');
     }
+
     function getMapCooords() {
         // Mögliche url Zusammensetzungen Browse Map, Beispiele: https://www.geocaching.com/map ...
         // 1. /default.aspx?lat=50.889233&lng=13.386967#?ll=50.89091,13.39551&z=14
@@ -16566,7 +16585,7 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
-            html += checkboxy('settings_show_found_caches_at_corrected_coords_but', 'Show button to display found caches at corrected coordinates') + show_help("With this option you can show a button to display found caches at corrected coordinates. The button toggles the state between corrected and original coordinates. The last state is always preserved.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_show_cache_display_options', 'Show button for additional geocache display options') + show_help("With this option you can show a button for additional geocache display options on Search Map, e.g. show geocaches at corrected coordinates or hide DNFs.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + onlySearchMap + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
             for (var i = 130; i < 521; i++) {
@@ -18090,9 +18109,9 @@ var mainGC = function() {
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
             setEvForDepPara("settings_compact_layout_new_dashboard", "settings_row_hide_new_dashboard");
             setEvForDepPara("settings_use_gclh_layercontrol","settings_searchmap_autoupdate_after_dragging");
-            setEvForDepPara("settings_use_gclh_layercontrol","settings_show_found_caches_at_corrected_coords_but");
+            setEvForDepPara("settings_use_gclh_layercontrol","settings_searchmap_show_cache_display_options");
             setEvForDepPara("settings_use_gclh_layercontrol_on_search_map","settings_searchmap_autoupdate_after_dragging");
-            setEvForDepPara("settings_use_gclh_layercontrol_on_search_map","settings_show_found_caches_at_corrected_coords_but");
+            setEvForDepPara("settings_use_gclh_layercontrol_on_search_map","settings_searchmap_show_cache_display_options");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -18582,7 +18601,7 @@ var mainGC = function() {
                 'settings_map_overview_search_map_icon_new_tab',
                 'settings_color_navi_search',
                 'settings_map_show_btn_hide_header',
-                'settings_show_found_caches_at_corrected_coords_but',
+                'settings_searchmap_show_cache_display_options',
                 'settings_compact_layout_cod',
                 'settings_show_button_fav_proz_cod',
                 'settings_show_compact_certitude_information',
