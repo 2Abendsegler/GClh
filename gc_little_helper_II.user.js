@@ -10539,6 +10539,9 @@ var mainGC = function() {
 
             // Handle cache properties.
             const processCaches = (layout) => {
+                // Don't run if display options button is disabled.
+                if (document.querySelector('#gclh_display_options_control')?.hasAttribute('disabled')) return;
+
                 // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
                 // Otherwise cache properties cannot be set.
                 layout.props.searchResults = structuredClone(layout.props.searchResults);
@@ -10641,7 +10644,7 @@ var mainGC = function() {
             function forceCachesRefresh() {
                 // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call.
                 moveend_zoomend = true;
-                unsafeWindow.MapSettings.Map.fire('moveend');
+                unsafeWindow.MapSettings?.Map?.fire('moveend');
             }
 
             // Button for additional display options of search results.
@@ -10870,22 +10873,22 @@ var mainGC = function() {
             // Handle enabling/disabling display options button.
             function addEnableDisableDisplayOptionsHandler() {
                 if (document.querySelector('button[data-testid="list-mode-toggle"]')) {
-                    if (!$('ul[data-testid="mode-toggles"]').hasClass('gclh-mode-toggles')) {
-                        $('ul[data-testid="mode-toggles"]').addClass('gclh-mode-toggles');
-                        // Disable button for BML.
-                        $('button[data-testid="list-mode-toggle"]').click(function() {
-                            document.querySelector('#gclh_display_options_control')?.setAttribute('disabled', '');
-                        });
-                    }
-                    // Enable button when returning to search list.
-                    if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]') &&
-                        document.querySelector('#gclh_display_options_control')?.hasAttribute('disabled')) {
-                        document.querySelector('#gclh_display_options_control').removeAttribute('disabled');
-                        // Reinitialize map bounds.
-                        [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
-                        // Disable 'moveend' and 'zoomend' event handlers.
-                        moveend_zoomend = false;
+                    // Returning to search list.
+                    if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]')) {
+                        if ($('#gclh_display_options_control').hasClass('gclh-bml')) {
+                            $('#gclh_display_options_control').removeClass('gclh-bml');
+                            document.querySelector('#gclh_display_options_control')?.removeAttribute('disabled', '');
+                            // Reinitialize map bounds.
+                            [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
+                            // Disable 'moveend' and 'zoomend' event handlers.
+                            moveend_zoomend = false;
+                        }
                     } else {
+                        if (getURLParam('bmCode')) {
+                            $('#gclh_display_options_control').addClass('gclh-bml');
+                            document.querySelector('#gclh_display_options_control')?.setAttribute('disabled', '');
+                            forceCachesRefresh();
+                        }
                         // Ensure proper zooming in BML by enabling 'moveend' and 'zoomend' event handlers.
                         moveend_zoomend = true;
                     }
@@ -11140,7 +11143,7 @@ var mainGC = function() {
                     $('button[data-testid="search-button"]').click(() => {
                         filterSearchWasRunning = true;
                     });
-                });
+                }, 10000);
 
                 // Unset blocker variables if any search is finished (trigger: zoom buttons disabled/enabled).
                 waitForElementThenRun('[data-event-label="Map - Zoom In"]', () => {
