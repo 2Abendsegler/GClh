@@ -10661,7 +10661,7 @@ var mainGC = function() {
                         // Cache statuses.
                         '<br><div style="grid-column: 1 / span 6; margin-bottom: 5px;">Filter by Cache Status</div>' +
                         '<div><svg id="gclh_hideLegendGray_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All statuses</title><use href="#cache_icon_small_disabled"></use></svg><input type="checkbox" id="gclh_hideLegendGray" ' + (hideLegendGray ? 'checked' : '') + ' style="display:none"></div>' +
-                        '<div><span id="gclh_separatorGray" style="width: 4px;height: 20px;background-color: lightgray;display:block;"></span></div>' +
+                        '<div><span id="gclh_separatorGray" class="gclh_separator" style="width: 4px;height: 20px;background-color: lightgray;display:block;"></span></div>' +
                         '<div><svg id="gclh_hideFinds_svg"><title>My Finds</title><use href="#smiley"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hideFinds" ' + (hideFinds ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideOwned_svg"><title>My Hides</title><use href="#owned"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hideOwned" ' + (hideOwned ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideDNFIcons_svg"><title>My DNFs</title><use href="#dnf"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hideDNFIcons" ' + (hideDNFIcons ? 'checked' : '') + ' style="display:none"></div>' +
@@ -10669,24 +10669,24 @@ var mainGC = function() {
                         // Cache types.
                         '<br><div style="grid-column: 1 / span 6; margin-bottom: 5px;">Filter by Cache Type</div>' +
                         '<div><svg id="gclh_hideLegendGreen_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All green types</title><use href="#cache_icon_small_traditional"></use></svg><input type="checkbox" id="gclh_hideLegendGreen" ' + (hideLegendGreen ? 'checked' : '') + ' style="display:none"></div>' +
-                        '<div><span id="gclh_separatorGreen" style="width: 4px;height: 20px;background-color: forestgreen;display:block;"></span></div>' +
+                        '<div><span id="gclh_separatorGreen" class="gclh_separator" style="width: 4px;height: 20px;background-color: forestgreen;display:block;"></span></div>' +
                         '<div style="grid-column: 3 / span 4;"><svg id="gclh_hideTradis_svg"><title>Traditionals</title><use href="#traditional"></use></svg><input type="checkbox" class="gclh-checkbox-green" id="gclh_hideTradis" ' + (hideTradis ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideLegendOrange_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All orange types</title><use href="#cache_icon_small_multi"></use></svg><input type="checkbox" id="gclh_hideLegendOrange" ' + (hideLegendOrange ? 'checked' : '') + ' style="display:none"></div>' +
-                        '<div><span id="gclh_separatorOrange" style="width: 4px;height: 20px;background-color: darkorange;display:block;"></span></div>' +
+                        '<div><span id="gclh_separatorOrange" class="gclh_separator" style="width: 4px;height: 20px;background-color: darkorange;display:block;"></span></div>' +
                         '<div style="grid-column: 3 / span 4;"><svg id="gclh_hideMultis_svg"><title>Multi-Caches</title><use href="#multi"></use></svg><input type="checkbox" class="gclh-checkbox-orange" id="gclh_hideMultis" ' + (hideMultis ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideLegendRed_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All red types</title><use href="#cache_icon_small_event"></use></svg><input type="checkbox" id="gclh_hideLegendRed" ' + (hideLegendRed ? 'checked' : '') + ' style="display:none"></div>' +
-                        '<div><span id="gclh_separatorRed" style="width: 4px;height: 20px;background-color: darkred;display:block;"></span></div>' +
+                        '<div><span id="gclh_separatorRed" class="gclh_separator" style="width: 4px;height: 20px;background-color: darkred;display:block;"></span></div>' +
                         '<div><svg id="gclh_hideEvents_svg"><title>Events / Community Celebration Events</title><use href="#event"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideEvents" ' + (hideEvents ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideCitos_svg"><title>Cache In Trash Out Events</title><use href="#cito"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideCitos" ' + (hideCitos ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideMegas_svg"><title>Mega-Events</title><use href="#mega"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideMegas" ' + (hideMegas ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideGigas_svg"><title>Giga-Events</title><use href="#giga"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideGigas" ' + (hideGigas ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideLegendTurquoise_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All turquoise types</title><use href="#cache_icon_small_virtual"></use></svg><input type="checkbox" id="gclh_hideLegendTurquoise" ' + (hideLegendTurquoise ? 'checked' : '') + ' style="display:none"></div>' +
-                        '<div><span id="gclh_separatorTurquoise" style="width: 4px;height: 20px;background-color: #009bbb;display:block;"></span></div>' +
+                        '<div><span id="gclh_separatorTurquoise" class="gclh_separator" style="width: 4px;height: 20px;background-color: #009bbb;display:block;"></span></div>' +
                         '<div><svg id="gclh_hideEarthcaches_svg"><title>EarthCaches</title><use href="#earth"></use></svg><input type="checkbox" class="gclh-checkbox-turquoise" id="gclh_hideEarthcaches" ' + (hideEarthcaches ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideVirtuals_svg"><title>Virtuals</title><use href="#virtual"></use></svg><input type="checkbox" class="gclh-checkbox-turquoise" id="gclh_hideVirtuals" ' + (hideVirtuals ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div style="grid-column: 5 / span 2;"><svg id="gclh_hideWebcams_svg"><title>Webcams</title><use href="#webcam"></use></svg><input type="checkbox" class="gclh-checkbox-turquoise" id="gclh_hideWebcams" ' + (hideWebcams ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideLegendBlue_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All blue types</title><use href="#cache_icon_small_mystery"></use></svg><input type="checkbox" id="gclh_hideLegendBlue" ' + (hideLegendBlue ? 'checked' : '') + ' style="display:none"></div>' +
-                        '<div><span id="gclh_separatorBlue" style="width: 4px;height: 20px;background-color: #12508c;display: block;"></span></div>' +
+                        '<div><span id="gclh_separatorBlue" class="gclh_separator" style="width: 4px;height: 20px;background-color: #12508c;display: block;"></span></div>' +
                         '<div><svg id="gclh_hideMysteries_svg"><title>Mysteries</title><use href="#mystery"></use></svg><input type="checkbox" class="gclh-checkbox-blue" id="gclh_hideMysteries" ' + (hideMysteries ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div><svg id="gclh_hideLetterboxes_svg"><title>Letterboxes</title><use href="#letterbox"></use></svg><input type="checkbox" class="gclh-checkbox-blue" id="gclh_hideLetterboxes" ' + (hideLetterboxes ? 'checked' : '') + ' style="display:none"></div>' +
                         '<div style="grid-column: 5 / span 2;"><svg id="gclh_hideWherigos_svg"><title>Wherigos</title><use href="#wherigo"></use></svg><input type="checkbox" class="gclh-checkbox-blue" id="gclh_hideWherigos" ' + (hideWherigos ? 'checked' : '') + ' style="display:none"></div>' +
@@ -10802,12 +10802,14 @@ var mainGC = function() {
                             // Omit statuses.
                             if (color === 'Gray') continue;
                             checkbox = document.getElementById("gclh_hideLegend"+color);
+                            // If checked, uncheck.
                             if (checkbox.checked) $("#gclh_hideLegend"+color+"_svg").trigger('click');
+                            // If unchecked, check and immediately uncheck again (this ensures that whole row is unchecked).
+                            else $("#gclh_hideLegend"+color+"_svg").trigger('click').trigger('click');
                         }
                     });
 
                     // Update view of legend icons according to state of included types/statuses.
-                    let opacity = 0.25;
                     function updateFilterLegendStatus(color) {
                         // All checkboxes of included types/statuses.
                         const checkboxes = document.querySelectorAll('.gclh-checkbox-' + color.toLowerCase());
@@ -10815,11 +10817,10 @@ var mainGC = function() {
                         const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
                         document.getElementById("gclh_hideLegend" + color).checked = allChecked;
                         setValue('set_switch_SM_hideLegend' + color, allChecked);
-                        // Update separator status as well.
-                        document.getElementById("gclh_separator" + color).style.opacity = allChecked ? opacity : 1.0;
                     };
 
                     // Styling.
+                    const opacity = 0.25;
                     let css = '';
                     css += '.gclh_display_options_control > svg {height: 1.9em !important;}';
                     css += '.gclh_display_options_list {max-height: 60vh; overflow-y: auto; display: none; position: absolute; right: 0px; top: 0px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 15px; z-index: 1000; color: black; font-family: "Noto Sans", Arial, Helvetica, sans-serif; cursor: default; text-align: left;}';
@@ -10830,6 +10831,7 @@ var mainGC = function() {
                     css += '.gclh_display_options_list svg:hover {cursor: pointer;}';
                     css += '.gclh_grid_container {display: grid !important;grid-template-columns: 25px 4px 30px 30px 30px 30px;justify-items: start;}';
                     css += '.gclh_grid_container > div:has(input[type="checkbox"]:checked) {opacity: '+opacity+';}';
+                    css += '.gclh_grid_container > div:has(input[type="checkbox"]:checked) + div .gclh_separator {opacity: '+opacity+';}';
                     css += '.gclh_options_info {display: none; position: absolute; right: 1em; top: 50px; width: 280px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 15px; z-index: 1001; color: black; font-family: "Noto Sans", Arial, Helvetica, sans-serif; cursor: default; text-align: left; font-size: 13px;}';
                     appendCssStyle(css);
                 });
