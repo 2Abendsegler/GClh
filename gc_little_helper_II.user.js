@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.1
+// @version      0.17.2
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -15115,8 +15115,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/rrwq/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iTZ"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/SqDg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iUw"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16347,7 +16347,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "20.07.2025";
+            var thanksLastUpdate = "31.07.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16591,7 +16591,6 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
-//xxxx
             html += newParameterOn1;
             html += checkboxy('settings_searchmap_show_cache_display_options', 'Show button for additional geocache display options') + show_help("With this option you can show a button for additional geocache display options on Search Map, e.g. show geocaches at corrected coordinates or hide DNFs.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
