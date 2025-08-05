@@ -4615,6 +4615,9 @@ var mainGC = function() {
                 } catch(e) {}
                 if (typeof nextData !== 'undefined' && typeof nextData.props !== 'undefined' && typeof nextData.props.pageProps !== 'undefined') {
                     var pageData = nextData.props.pageProps;
+//xxxx
+//console.log(pageData.logValues.dateLoggedGeocacheTime);
+//console.log(pageData.logValues.logDate);
                 }
             }
             let css = '';
@@ -5023,7 +5026,9 @@ var mainGC = function() {
                         if (match && match[2]) {
                             var refCode = match[2].trim();
                             var trackable = $.grep(pageData.trackables, function(e){return e.referenceCode == refCode;});
-                            if ((settings_hide_locked_tbs_log_form && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
+//xxxx
+//                            if ((settings_hide_locked_tbs_log_form && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
+                            if ((settings_hide_locked_tbs_log_form && trackable[0] && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
                                 $(tbs[i]).addClass('gclh_hideTB');
                             }
                         }
@@ -5091,6 +5096,8 @@ var mainGC = function() {
             }
             function waitForTbsAV(waitCount) {
                 if ($('ul.tb-list li.tb-item').length > 0) {
+//xxxx
+console.log('waitCount '+waitCount);
                     var tbs = getTbsAV();
                     if (tbs.length > 0) {
                         for (let i=0; i<tbs.length; i++) {
@@ -5152,9 +5159,12 @@ var mainGC = function() {
                     });
                     autovisitObserver.observe($('ul.tb-list')[0], config);
                 }
-                waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
+//xxxx
+//                waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
+                waitCount++; if (waitCount <= 10) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
             }
             try {
+//xxxx
                 if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
                     waitForTbsAV(0);
                     css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
@@ -10539,6 +10549,9 @@ var mainGC = function() {
 
             // Handle cache properties.
             const processCaches = (layout) => {
+                // Don't run if display options button is disabled.
+                if (document.querySelector('#gclh_display_options_control')?.hasAttribute('disabled')) return;
+
                 // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
                 // Otherwise cache properties cannot be set.
                 layout.props.searchResults = structuredClone(layout.props.searchResults);
@@ -10547,12 +10560,92 @@ var mainGC = function() {
                 let gc = null;
                 for (let i = 0; i < caches.length; i++) {
                     gc = caches[i];
-                    // Change cache coords.
+                    // Hide finds.
+                    if (hideFinds && gc.userFound) {
+                        caches.splice(i--,1);
+                        continue;
+                    }
+                    // Hide own caches.
+                    if (hideOwned && gc.owner.code === layout.props.gcUser.referenceCode) {
+                        caches.splice(i--,1);
+                        continue;
+                    }
+                    // Hide past events.
+                    if (hidePastEvents && [6,13,453,1304,3653,3774,4738,7005].includes(gc.geocacheType)) {
+                        let today = new Date();
+                        // Interpret "past" as yesterday.
+                        today.setHours(0, 0, 0, 0);
+                        if (today > new Date(gc.placedDate)) {
+                            caches.splice(i--, 1);
+                            continue;
+                        }
+                    }
+                    // Hide Traditionals (Tradi + Project A.P.E. Cache + Geocaching HQ).
+                    if (hideTradis && [2,9,3773].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Multis.
+                    if (hideMultis && [3].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Events (Regular + Community Celebration Event).
+                    if (hideEvents && [6,3653].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide CITOs.
+                    if (hideCitos && [13].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Megas (Mega + GPS Adventures Exhibit + Geocaching HQ Celebration + Geocaching HQ Block Party).
+                    if (hideMegas && [453,1304,3774,4738].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Gigas.
+                    if (hideGigas && [7005].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Earthcaches.
+                    if (hideEarthcaches && [137].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Virtuals.
+                    if (hideVirtuals && [4].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Webcams.
+                    if (hideWebcams && [11].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Mysteries.
+                    if (hideMysteries && [8].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Letterboxes.
+                    if (hideLetterboxes && [5].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide Wherigos.
+                    if (hideWherigos && [1858].includes(gc.geocacheType)) {
+                        caches.splice(i--, 1);
+                        continue;
+                    }
+                    // Hide DNF icons.
+                    if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
+                    // Change original cache coords to corrected coords.
                     if (showAtCorrectedCoords && gc.userCorrectedCoordinates) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
-                    // Hide DNF icon.
-                    if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
                 }
             }
 
@@ -10561,21 +10654,61 @@ var mainGC = function() {
             function forceCachesRefresh() {
                 // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call.
                 moveend_zoomend = true;
-                unsafeWindow.MapSettings.Map.fire('moveend');
+                unsafeWindow.MapSettings?.Map?.fire('moveend');
             }
 
-            // Button for additional geocache display options.
-            function cacheDisplayOptionsButton() {
+            // Button for additional display options of search results.
+            function addCacheDisplayOptionsButton() {
                 waitForElementThenRun("button.map-control", function() {
                     // Button.
                     $('button.map-control').first().parent().parent().prepend('<button id="gclh_display_options_control" class="gclh_display_options_control map-control"></button>');
+                    $('#gclh_display_options_control')
+                        .append('<svg><title>Display Options for Search Results</title><use href="#filters"></use></svg>')
+                        .append('<div id="gclh_display_options_list" class="gclh_display_options_list"></div>');
 
                     // Options list.
-                    $('#gclh_display_options_control').append('<svg><title>Geocache display options</title><use href="#filters"></use></svg>');
-                    $("#gclh_display_options_control").append('<div id="gclh_display_options_list" class="gclh_display_options_list"></div>');
-                    $("#gclh_display_options_list").append('<b>Geocache display options</b>');
-                    $("#gclh_display_options_list").append('<label for="gclh_showAtCorrectedCoords"><input type="checkbox" id="gclh_showAtCorrectedCoords" ' + (showAtCorrectedCoords ? 'checked' : '') + '>Show found caches at corrected coordinates</label>');
-                    $("#gclh_display_options_list").append('<label for="gclh_hideDNFIcons"><input type="checkbox" id="gclh_hideDNFIcons" ' + (hideDNFIcons ? 'checked' : '') + '>Hide DNF icons</label>');
+                    $("#gclh_display_options_list")
+                        .append('<b>Display Options for Search Results</b><svg id="gclh_options_info"><title>Info</title><use href="#tooltip"></use></svg><div class="gclh_options_info">These GClh options allow you to control the display of your search results.<br><br>If some caches seem to be missing (e.g. your finds), please check your search filters.</div>')
+                        .append(
+                        '<div class="gclh_grid_container">' +
+                        // Cache statuses.
+                        '<br><div style="grid-column: 1 / span 6; margin-bottom: 5px;">Filter by Cache Status</div>' +
+                        '<div><svg id="gclh_hideLegendGray_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All statuses</title><use href="#cache_icon_small_disabled"></use></svg><input type="checkbox" id="gclh_hideLegendGray" ' + (hideLegendGray ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><span id="gclh_separatorGray" class="gclh_separator" style="width: 4px;height: 20px;background-color: lightgray;display:block;"></span></div>' +
+                        '<div><svg id="gclh_hideFinds_svg"><title>My Finds</title><use href="#smiley"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hideFinds" ' + (hideFinds ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideOwned_svg"><title>My Hides</title><use href="#owned"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hideOwned" ' + (hideOwned ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideDNFIcons_svg"><title>My DNFs</title><use href="#dnf"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hideDNFIcons" ' + (hideDNFIcons ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hidePastEvents_svg"><title>Past Events</title><use href="#event_disabled"></use></svg><input type="checkbox" class="gclh-checkbox-gray" id="gclh_hidePastEvents" ' + (hidePastEvents ? 'checked' : '') + ' style="display:none"></div>' +
+                        // Cache types.
+                        '<br><div style="grid-column: 1 / span 6; margin-bottom: 5px;">Filter by Cache Type</div>' +
+                        '<div><svg id="gclh_hideLegendGreen_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All green types</title><use href="#cache_icon_small_traditional"></use></svg><input type="checkbox" id="gclh_hideLegendGreen" ' + (hideLegendGreen ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><span id="gclh_separatorGreen" class="gclh_separator" style="width: 4px;height: 20px;background-color: forestgreen;display:block;"></span></div>' +
+                        '<div style="grid-column: 3 / span 4;"><svg id="gclh_hideTradis_svg"><title>Traditionals</title><use href="#traditional"></use></svg><input type="checkbox" class="gclh-checkbox-green" id="gclh_hideTradis" ' + (hideTradis ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideLegendOrange_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All orange types</title><use href="#cache_icon_small_multi"></use></svg><input type="checkbox" id="gclh_hideLegendOrange" ' + (hideLegendOrange ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><span id="gclh_separatorOrange" class="gclh_separator" style="width: 4px;height: 20px;background-color: darkorange;display:block;"></span></div>' +
+                        '<div style="grid-column: 3 / span 4;"><svg id="gclh_hideMultis_svg"><title>Multi-Caches</title><use href="#multi"></use></svg><input type="checkbox" class="gclh-checkbox-orange" id="gclh_hideMultis" ' + (hideMultis ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideLegendRed_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All red types</title><use href="#cache_icon_small_event"></use></svg><input type="checkbox" id="gclh_hideLegendRed" ' + (hideLegendRed ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><span id="gclh_separatorRed" class="gclh_separator" style="width: 4px;height: 20px;background-color: darkred;display:block;"></span></div>' +
+                        '<div><svg id="gclh_hideEvents_svg"><title>Events / Community Celebration Events</title><use href="#event"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideEvents" ' + (hideEvents ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideCitos_svg"><title>Cache In Trash Out Events</title><use href="#cito"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideCitos" ' + (hideCitos ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideMegas_svg"><title>Mega-Events</title><use href="#mega"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideMegas" ' + (hideMegas ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideGigas_svg"><title>Giga-Events</title><use href="#giga"></use></svg><input type="checkbox" class="gclh-checkbox-red" id="gclh_hideGigas" ' + (hideGigas ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideLegendTurquoise_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All turquoise types</title><use href="#cache_icon_small_virtual"></use></svg><input type="checkbox" id="gclh_hideLegendTurquoise" ' + (hideLegendTurquoise ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><span id="gclh_separatorTurquoise" class="gclh_separator" style="width: 4px;height: 20px;background-color: #009bbb;display:block;"></span></div>' +
+                        '<div><svg id="gclh_hideEarthcaches_svg"><title>EarthCaches</title><use href="#earth"></use></svg><input type="checkbox" class="gclh-checkbox-turquoise" id="gclh_hideEarthcaches" ' + (hideEarthcaches ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideVirtuals_svg"><title>Virtuals</title><use href="#virtual"></use></svg><input type="checkbox" class="gclh-checkbox-turquoise" id="gclh_hideVirtuals" ' + (hideVirtuals ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div style="grid-column: 5 / span 2;"><svg id="gclh_hideWebcams_svg"><title>Webcams</title><use href="#webcam"></use></svg><input type="checkbox" class="gclh-checkbox-turquoise" id="gclh_hideWebcams" ' + (hideWebcams ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideLegendBlue_svg" style="width: 0.75em !important;margin-right: 0.5em;"><title>All blue types</title><use href="#cache_icon_small_mystery"></use></svg><input type="checkbox" id="gclh_hideLegendBlue" ' + (hideLegendBlue ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><span id="gclh_separatorBlue" class="gclh_separator" style="width: 4px;height: 20px;background-color: #12508c;display: block;"></span></div>' +
+                        '<div><svg id="gclh_hideMysteries_svg"><title>Mysteries</title><use href="#mystery"></use></svg><input type="checkbox" class="gclh-checkbox-blue" id="gclh_hideMysteries" ' + (hideMysteries ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div><svg id="gclh_hideLetterboxes_svg"><title>Letterboxes</title><use href="#letterbox"></use></svg><input type="checkbox" class="gclh-checkbox-blue" id="gclh_hideLetterboxes" ' + (hideLetterboxes ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div style="grid-column: 5 / span 2;"><svg id="gclh_hideWherigos_svg"><title>Wherigos</title><use href="#wherigo"></use></svg><input type="checkbox" class="gclh-checkbox-blue" id="gclh_hideWherigos" ' + (hideWherigos ? 'checked' : '') + ' style="display:none"></div>' +
+                        '<div style="grid-column: 1 / span 6;"><a id="hide_all_cachetypes" title="Hide all cache types" href="#">Hide all cache types</a></div>' +
+                        '<div style="grid-column: 1 / span 6;"><a id="show_all_cachetypes"title="Show all cache types" href="#">Show all cache types</a></div>' +
+                        '</div>'
+                        )
+                        // Corrected coords.
+                        .append('<br><label for="gclh_showAtCorrectedCoords"><svg id="gclh_showAtCorrectedCoords_svg"><title>Show finds at corrected coordinates</title><use href="#solved"></use></svg><input type="checkbox" id="gclh_showAtCorrectedCoords" ' + (showAtCorrectedCoords ? 'checked' : '') + '>Show finds at corrected coordinates</label>');
 
                     // Open options on 'click'.
                     $("#gclh_display_options_control").click(function() {
@@ -10585,61 +10718,187 @@ var mainGC = function() {
                     $('.gclh_display_options_list').mouseleave(function() {
                         $(this).css('display', 'none');
                     });
+                    // Open tooltip on 'click'.
+                    $("#gclh_options_info").click(function() {
+                        $('.gclh_options_info').css('display', 'block');
+                    });
+                    // Close tooltip on 'mouseleave'.
+                    $('#gclh_options_info').mouseleave(function() {
+                        $('.gclh_options_info').css('display', 'none');
+                    });
 
-                    // Option handlers.
-                    $("#gclh_showAtCorrectedCoords").click(function() {
+                    // Handle clicks on type and status icons.
+                    function createTypeAndStatusClickHandlers(name,color) {
+                        $("#gclh_hide"+name+"_svg").click(function() {
+                            // Toggle checkbox.
+                            let checkbox = document.getElementById("gclh_hide"+name);
+                            checkbox.checked = !checkbox.checked;
+
+                            forceCachesRefresh();
+                            // Clear possible cache selection.
+                            unsafeWindow.MapSettings?.Map?.fireEvent('click');
+                            // Toggle state variable.
+                            eval('hide'+name+' = !hide'+name+';');
+                            // Save state.
+                            setValue('set_switch_SM_hide'+name, eval('hide'+name));
+                            updateFilterLegendStatus(color);
+                        });
+                    }
+                    // Handle clicks on legend icons.
+                    function createLegendClickHandlers(color) {
+                        $("#gclh_hideLegend"+color+"_svg").click(function () {
+                            // Toggle checkbox.
+                            let checkbox = document.getElementById("gclh_hideLegend"+color);
+                            checkbox.checked = !checkbox.checked;
+                            // Preserve current checkbox state (in case checkbox.checked toggles).
+                            let legendState = checkbox.checked;
+                            // If checked, all content must be checked, too. If unchecked, all must be unchecked.
+                            types[color].forEach(function(type,legendCheckbox) {
+                                let typeCheckbox = document.getElementById("gclh_hide" + type);
+                                if (typeCheckbox.checked !== legendState) {
+                                    $("#gclh_hide" + type + "_svg").trigger('click');
+                                }
+                            });
+
+                            forceCachesRefresh();
+                            // Clear possible cache selection.
+                            unsafeWindow.MapSettings?.Map?.fireEvent('click');
+                            // Toggle state variable.
+                            eval('hideLegend'+color+' = !hideLegend'+color+';');
+                            // Save state.
+                            setValue('set_switch_SM_hideLegend'+color, eval('hideLegend'+color));
+                        });
+                    }
+                    // Generate click handlers for legend icons and type/status icons.
+                    const types = {
+                        Gray: ['Finds','Owned','DNFIcons','PastEvents'],
+                        Green: ['Tradis'],
+                        Orange: ['Multis'],
+                        Red: ['Events','Citos','Megas','Gigas'],
+                        Turquoise: ['Earthcaches','Virtuals','Webcams'],
+                        Blue: ['Mysteries','Letterboxes','Wherigos'],
+                    };
+                    for (const color in types) {
+                        // Legend icons.
+                        createLegendClickHandlers(color);
+                        // Type/Status icons.
+                        types[color].forEach(function(type) {
+                            createTypeAndStatusClickHandlers(type, color);
+                        });
+                    }
+
+                    // Handle clicks on corrected coords label.
+                    $("#gclh_showAtCorrectedCoords").click(function () {
                         forceCachesRefresh();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
+                        // Toggle state variable.
                         showAtCorrectedCoords = !showAtCorrectedCoords;
-                        setValue('set_switch_SM_show_at_corrected_coords', showAtCorrectedCoords);
-                    });
-                    $("#gclh_hideDNFIcons").click(function() {
-                        forceCachesRefresh();
-                        // Clear possible cache selection.
-                        unsafeWindow.MapSettings?.Map?.fireEvent('click');
-                        hideDNFIcons = !hideDNFIcons;
-                        setValue('set_switch_SM_hide_dnf_icons', hideDNFIcons);
+                        // Save state.
+                        setValue('set_switch_SM_showAtCorrectedCoords', showAtCorrectedCoords);
                     });
 
-                    // Styles.
+                    // Hide all cache types.
+                    $('#hide_all_cachetypes').click(function() {
+                        let checkbox;
+                        for (const color in types) {
+                            // Omit statuses.
+                            if (color === 'Gray') continue;
+                            checkbox = document.getElementById("gclh_hideLegend"+color);
+                            if (!checkbox.checked) $("#gclh_hideLegend"+color+"_svg").trigger('click');
+                        }
+                    });
+                    // Show all cache types.
+                    $('#show_all_cachetypes').click(function() {
+                        let checkbox;
+                        for (const color in types) {
+                            // Omit statuses.
+                            if (color === 'Gray') continue;
+                            checkbox = document.getElementById("gclh_hideLegend"+color);
+                            // If checked, uncheck.
+                            if (checkbox.checked) $("#gclh_hideLegend"+color+"_svg").trigger('click');
+                            // If unchecked, check and immediately uncheck again (this ensures that whole row is unchecked).
+                            else $("#gclh_hideLegend"+color+"_svg").trigger('click').trigger('click');
+                        }
+                    });
+
+                    // Update view of legend icons according to state of included types/statuses.
+                    function updateFilterLegendStatus(color) {
+                        // All checkboxes of included types/statuses.
+                        const checkboxes = document.querySelectorAll('.gclh-checkbox-' + color.toLowerCase());
+                        // Check legend checkbox if and only if all included checkboxes are checked.
+                        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                        document.getElementById("gclh_hideLegend" + color).checked = allChecked;
+                        setValue('set_switch_SM_hideLegend' + color, allChecked);
+                    };
+
+                    // Styling.
+                    const opacity = 0.25;
                     let css = '';
                     css += '.gclh_display_options_control > svg {height: 1.9em !important;}';
-                    css += '.gclh_display_options_list {display: none; position: absolute; right: 0px; top: 0px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px; z-index: 1000; color: black; font-family: "Noto Sans", Arial, Helvetica, sans-serif;}';
-                    css += '.gclh_display_options_list > label {display: flex; align-items: center; padding: 2px 2px; font-size: 13px; cursor: pointer;}';
-                    css += '.gclh_display_options_list > label:hover {background-color: #e6f7ef;}';
+                    css += '.gclh_display_options_list {max-height: 60vh; overflow-y: auto; display: none; position: absolute; right: 0px; top: 0px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 15px; z-index: 1000; color: black; font-family: "Noto Sans", Arial, Helvetica, sans-serif; cursor: default; text-align: left;}';
+                    css += '.gclh_display_options_list > label {display: flex; align-items: center; padding: 2px 2px; font-size: 13px;}';
+                    css += '.gclh_display_options_list > label:hover {background-color: #e6f7ef; cursor: pointer;}';
                     css += '.gclh_display_options_list > label > input[type="checkbox"]:checked {accent-color: rgb(0 125 70);}';
+                    css += '.gclh_display_options_list svg {width: 1.5em !important; height: 1.5em !important; margin-left: 0.5em; margin-right: 0.5em}';
+                    css += '.gclh_display_options_list svg:hover {cursor: pointer;}';
+                    css += '.gclh_grid_container {display: grid !important;grid-template-columns: 25px 4px 30px 30px 30px 30px;justify-items: start;}';
+                    css += '.gclh_grid_container > div:has(input[type="checkbox"]:checked) {opacity: '+opacity+';}';
+                    css += '.gclh_grid_container > div:has(input[type="checkbox"]:checked) + div .gclh_separator {opacity: '+opacity+';}';
+                    css += '.gclh_options_info {display: none; position: absolute; right: 1em; top: 50px; width: 280px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 15px; z-index: 1001; color: black; font-family: "Noto Sans", Arial, Helvetica, sans-serif; cursor: default; text-align: left; font-size: 13px;}';
                     appendCssStyle(css);
                 });
             }
 
             // Add button for additional geocache display options.
             if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
-                var showAtCorrectedCoords = getValue('set_switch_SM_show_at_corrected_coords', false);
-                var hideDNFIcons = getValue('set_switch_SM_hide_dnf_icons', false);
+                var hideFinds = getValue('set_switch_SM_hideFinds', false);
+                var hideOwned = getValue('set_switch_SM_hideOwned', false);
+                var hideDNFIcons = getValue('set_switch_SM_hideDNFIcons', false);
+                var hidePastEvents = getValue('set_switch_SM_hidePastEvents', false);
+                var hideTradis = getValue('set_switch_SM_hideTradis', false);
+                var hideMultis = getValue('set_switch_SM_hideMultis', false);
+                var hideEvents = getValue('set_switch_SM_hideEvents', false);
+                var hideCitos = getValue('set_switch_SM_hideCitos', false);
+                var hideMegas = getValue('set_switch_SM_hideMegas', false);
+                var hideGigas = getValue('set_switch_SM_hideGigas', false);
+                var hideEarthcaches = getValue('set_switch_SM_hideEarthcaches', false);
+                var hideVirtuals = getValue('set_switch_SM_hideVirtuals', false);
+                var hideWebcams = getValue('set_switch_SM_hideWebcams', false);
+                var hideMysteries = getValue('set_switch_SM_hideMysteries', false);
+                var hideLetterboxes = getValue('set_switch_SM_hideLetterboxes', false);
+                var hideWherigos = getValue('set_switch_SM_hideWherigos', false);
+                var hideLegendGray = getValue('set_switch_SM_hideLegendGray', false);
+                var hideLegendGreen = getValue('set_switch_SM_hideLegendGreen', false);
+                var hideLegendOrange = getValue('set_switch_SM_hideLegendOrange', false);
+                var hideLegendRed = getValue('set_switch_SM_hideLegendRed', false);
+                var hideLegendTurquoise = getValue('set_switch_SM_hideLegendTurquoise', false);
+                var hideLegendBlue = getValue('set_switch_SM_hideLegendBlue', false);
+                var showAtCorrectedCoords = getValue('set_switch_SM_showAtCorrectedCoords', false);
+
                 // Add button with small delay to ensure it is always at the top (necessary for FF).
-                setTimeout(cacheDisplayOptionsButton, 0);
+                setTimeout(addCacheDisplayOptionsButton, 0);
             }
 
             // Handle enabling/disabling display options button.
             function addEnableDisableDisplayOptionsHandler() {
                 if (document.querySelector('button[data-testid="list-mode-toggle"]')) {
-                    if (!$('ul[data-testid="mode-toggles"]').hasClass('gclh-mode-toggles')) {
-                        $('ul[data-testid="mode-toggles"]').addClass('gclh-mode-toggles');
-                        // Disable button for BML.
-                        $('button[data-testid="list-mode-toggle"]').click(function() {
-                            document.querySelector('#gclh_display_options_control')?.setAttribute('disabled', '');
-                        });
-                    }
-                    // Enable button when returning to search list.
-                    if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]') &&
-                        document.querySelector('#gclh_display_options_control')?.hasAttribute('disabled')) {
-                        document.querySelector('#gclh_display_options_control').removeAttribute('disabled');
-                        // Reinitialize map bounds.
-                        [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
-                        // Disable 'moveend' and 'zoomend' event handlers.
-                        moveend_zoomend = false;
+                    // Returning to search list.
+                    if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]')) {
+                        if ($('#gclh_display_options_control').hasClass('gclh-bml')) {
+                            $('#gclh_display_options_control').removeClass('gclh-bml');
+                            document.querySelector('#gclh_display_options_control')?.removeAttribute('disabled', '');
+                            // Reinitialize map bounds.
+                            [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
+                            // Disable 'moveend' and 'zoomend' event handlers.
+                            moveend_zoomend = false;
+                        }
                     } else {
+                        if (getURLParam('bmCode')) {
+                            $('#gclh_display_options_control').addClass('gclh-bml');
+                            document.querySelector('#gclh_display_options_control')?.setAttribute('disabled', '');
+                            forceCachesRefresh();
+                        }
                         // Ensure proper zooming in BML by enabling 'moveend' and 'zoomend' event handlers.
                         moveend_zoomend = true;
                     }
@@ -10894,7 +11153,7 @@ var mainGC = function() {
                     $('button[data-testid="search-button"]').click(() => {
                         filterSearchWasRunning = true;
                     });
-                });
+                }, 10000);
 
                 // Unset blocker variables if any search is finished (trigger: zoom buttons disabled/enabled).
                 waitForElementThenRun('[data-event-label="Map - Zoom In"]', () => {
@@ -15115,8 +15374,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/SqDg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iUw"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/rrwq/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iTZ"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16347,7 +16606,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "31.07.2025";
+            var thanksLastUpdate = "20.07.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -16591,8 +16850,9 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
             html += checkboxy('settings_map_show_btn_hide_header', 'Show button "Hide Header"') + '<br>'
             html += checkboxy('settings_show_eventdayX0', 'Show weekday of an event') + show_help("With this option the day of the week will be displayed next to the event date.") + "<br>";
+//xxxx
             html += newParameterOn1;
-            html += checkboxy('settings_searchmap_show_cache_display_options', 'Show button for additional geocache display options') + show_help("With this option you can show a button for additional geocache display options on Search Map, e.g. show geocaches at corrected coordinates or hide DNFs.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
+            html += checkboxy('settings_searchmap_show_cache_display_options', 'Show button for additional geocache display options') + show_help("With this option you can show a button for additional geocache display options on Search Map, e.g. show finds at corrected coordinates, hide DNFs or filter cache types.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop up to bookmark a cache') + onlySearchMap + prem + "<br>";
             html += " &nbsp; &nbsp;" + "Maximum height of pop up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
