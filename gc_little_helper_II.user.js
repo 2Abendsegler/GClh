@@ -5023,7 +5023,7 @@ var mainGC = function() {
                         if (match && match[2]) {
                             var refCode = match[2].trim();
                             var trackable = $.grep(pageData.trackables, function(e){return e.referenceCode == refCode;});
-                            if ((settings_hide_locked_tbs_log_form && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
+                            if ((settings_hide_locked_tbs_log_form && trackable[0] && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
                                 $(tbs[i]).addClass('gclh_hideTB');
                             }
                         }
