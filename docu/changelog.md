@@ -47,10 +47,10 @@
 		<img src="../images/0.17.3/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log Form] Autovisit buttons are missing sometimes if more than 20 TBs. [<a href="https://github.com/2Abendsegler/GClh/issues/2864" title="Issue 2864">2864</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [New Log Form] Autovisit buttons are missing sometimes if more than 20 TBs. [<a href="https://github.com/2Abendsegler/GClh/issues/2864" title="Issue 2864">2864</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Log Form] Uncaught TypeError in function waitForTbsHide. [<a href="https://github.com/2Abendsegler/GClh/issues/2862" title="Issue 2862">2862</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [New Log Form] Uncaught TypeError in function waitForTbsHide. [<a href="https://github.com/2Abendsegler/GClh/issues/2862" title="Issue 2862">2862</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
