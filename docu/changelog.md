@@ -43,7 +43,7 @@
 <ul>
 	<li>
 		<strong>New:</strong> [New Log Form] Log date and time from draft as new placeholder in log templates and signature. [<a href="https://github.com/2Abendsegler/GClh/issues/2865" title="Issue 2865">2865</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		These placeholders allow you to note the time of the draft in the log. This works for all drafts, in addition to drafts from apps, also for drafts from GPS devices.<br> 
+		These placeholders allow you to note the time of the draft in the log. This works for all drafts, in addition to drafts from apps, also for drafts from GPS devices. This feature is only available in the new log form.<br> 
 		<img src="../images/0.17.3/Screen01.jpg" alt="Screen01.jpg"><br><br>
 	</li>
 	<li>
