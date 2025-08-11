@@ -1,3 +1,4 @@
+<a href="#v0173" title="GClh II version 0.17.3 (11.08.2025)">v0.17.3</a> &nbsp;
 <a href="#v0172" title="GClh II version 0.17.2 (31.07.2025)">v0.17.2</a> &nbsp;
 <a href="#v0171" title="GClh II version 0.17.1 (20.07.2025)">v0.17.1</a> &nbsp;
 <a href="#v017" title="GClh II version 0.17 (02.07.2025)">v0.17</a> &nbsp;
@@ -35,6 +36,27 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.3:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [New Log Form] Log date and time from draft as new placeholder in log templates and signature. [<a href="https://github.com/2Abendsegler/GClh/issues/2865" title="Issue 2865">2865</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		There is now a new button that contains all display options.<br> 
+		<img src="../images/0.17.3/Screen01.jpg" alt="Screen01.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Autovisit buttons are missing sometimes if more than 20 TBs. [<a href="https://github.com/2Abendsegler/GClh/issues/2864" title="Issue 2864">2864</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Uncaught TypeError in function waitForTbsHide. [<a href="https://github.com/2Abendsegler/GClh/issues/2862" title="Issue 2862">2862</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(11.08.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.2:
