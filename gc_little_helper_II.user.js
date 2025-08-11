@@ -4720,7 +4720,10 @@ var mainGC = function() {
                     var [aDate, aTime, aDateTime] = getDateTime();
                     text = text.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
                     var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfoLogForm();
-                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate).replace(/#GCType#/ig, aGCType);
+                    var aDraftLogDate = '';
+                    var aDraftLogTime = '';
+                    if (pageData) var [aDraftLogDate, aDraftLogTime] = getDraftData(pageData);
+                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate).replace(/#GCType#/ig, aGCType).replace(/#DraftLogDate#/ig, aDraftLogDate).replace(/#DraftLogTime#/ig, aDraftLogTime);
                     return text;
                 }
                 if ($('#gc-md-editor_md')[0] && !$('.gclh_signature')[0]) {
@@ -4770,6 +4773,8 @@ var mainGC = function() {
                         code += "  var aGCTBLink = '" + aGCTBLink + "';";
                         code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
                         code += "  var aGCType = '" + aGCType + "';";
+                        code += "  var aDraftLogDate = '" + aDraftLogDate + "';";
+                        code += "  var aDraftLogTime = '" + aDraftLogTime + "';";
                         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
                         code += "  var owner = '" + aOwner + "';";
                         code += "  var inhalt = document.getElementById(id).innerHTML;";
@@ -4787,6 +4792,8 @@ var mainGC = function() {
                         code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
                         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
                         code += "  if (aGCType) inhalt = inhalt.replace(/#GCType#/ig, aGCType);";
+                        code += "  if (aDraftLogDate || aDraftLogDate == '') inhalt = inhalt.replace(/#DraftLogDate#/ig, aDraftLogDate);";
+                        code += "  if (aDraftLogTime || aDraftLogTime == '') inhalt = inhalt.replace(/#DraftLogTime#/ig, aDraftLogTime);";
                         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
                         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
                         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
@@ -4832,6 +4839,9 @@ var mainGC = function() {
                         liste += "</select>";
                     }
                     var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfoLogForm();
+                    var aDraftLogDate = '';
+                    var aDraftLogTime = '';
+                    if (pageData) var [aDraftLogDate, aDraftLogTime] = getDraftData(pageData);
                     var aOwner = decode_innerText($('.hidden-by a')[0]);
                     insertLogTemplatesFunction();
                     var liste = "";
@@ -15190,6 +15200,15 @@ var mainGC = function() {
         }
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate, GCType];
     }
+    function getDraftData(pageData) {
+        var DraftLogDate = ""; var DraftLogTime = "";
+        if (pageData && pageData.logValues && pageData.logValues.dateLoggedGeocacheTime) {
+            var date = new Date(pageData.logValues.dateLoggedGeocacheTime);
+            var DraftLogDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})
+            var DraftLogTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+        }
+        return [DraftLogDate, DraftLogTime];
+    }
 
 // Show, hide box. e.g.: Both VIP boxes in the cache listing.
     function showHideBoxCL(id_lnk, first) {
@@ -17134,7 +17153,7 @@ var mainGC = function() {
             html += content_settings_after_sending_draft_related_log2_button.replace("settings_drafts_after_new_logging_view_log_button", "settings_drafts_after_new_logging_view_log_buttonX0");
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_after_new_logging_view_log', 'After sending or edit a non draft related cache log, automatic view log') + show_help('If it was not a draft related cache log or it was an edit of a cache log, you can enable this option to automatic go to view log page, instead of going to cache listing.') + "<br>";
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : Cache or trackable name<br>&nbsp; #GCTBLink# : Cache or trackable link<br>&nbsp; #GCTBNameLink# : Cache or trackable name as a link<br>&nbsp; #GCType# : Cache type<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : Cache or trackable name<br>&nbsp; #GCTBLink# : Cache or trackable link<br>&nbsp; #GCTBNameLink# : Cache or trackable name as a link<br>&nbsp; #GCType# : Cache type<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>&nbsp; #DraftLogDate# : Log date of draft (1) (2)<br>&nbsp; #DraftLogTime# : Log time of draft (1) (2)<br>(1) Only available in new log form.<br>(2) No data, then empty.<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
             html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked trackables from trackable inventory') + show_help("A trackable can be marked as locked in the trackable listing. Locked trackables cannot be logged. With this option you can hide such trackables from trackable inventory.<br><br>This feature is only available for the first 20 trackables displayed in the trackable inventory.") + "<br>";
             html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own trackables from trackable inventory') + show_help("With this option you can hide your own trackables from trackable inventory.<br><br>This feature is only available for the first 20 trackables displayed in the trackable inventory.") + "<br>";
