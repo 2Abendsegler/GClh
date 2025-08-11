@@ -16391,7 +16391,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "31.07.2025";
+            var thanksLastUpdate = "11.08.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
