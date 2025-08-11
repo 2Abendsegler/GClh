@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.2
+// @version      0.17.3
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -4720,7 +4720,10 @@ var mainGC = function() {
                     var [aDate, aTime, aDateTime] = getDateTime();
                     text = text.replace(/#Date#/ig, aDate).replace(/#Time#/ig, aTime).replace(/#DateTime#/ig, aDateTime);
                     var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfoLogForm();
-                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate).replace(/#GCType#/ig, aGCType);
+                    var aDraftLogDate = '';
+                    var aDraftLogTime = '';
+                    if (pageData) var [aDraftLogDate, aDraftLogTime] = getDraftData(pageData);
+                    text = text.replace(/#GCTBName#/ig, aGCTBName).replace(/#GCTBLink#/ig, aGCTBLink).replace(/#GCTBNameLink#/ig, aGCTBNameLink).replace(/#LogDate#/ig, aLogDate).replace(/#GCType#/ig, aGCType).replace(/#DraftLogDate#/ig, aDraftLogDate).replace(/#DraftLogTime#/ig, aDraftLogTime);
                     return text;
                 }
                 if ($('#gc-md-editor_md')[0] && !$('.gclh_signature')[0]) {
@@ -4770,6 +4773,8 @@ var mainGC = function() {
                         code += "  var aGCTBLink = '" + aGCTBLink + "';";
                         code += "  var aGCTBNameLink = '" + aGCTBNameLink + "';";
                         code += "  var aGCType = '" + aGCType + "';";
+                        code += "  var aDraftLogDate = '" + aDraftLogDate + "';";
+                        code += "  var aDraftLogTime = '" + aDraftLogTime + "';";
                         code += "  var settings_replace_log_by_last_log = " + settings_replace_log_by_last_log + ";";
                         code += "  var owner = '" + aOwner + "';";
                         code += "  var inhalt = document.getElementById(id).innerHTML;";
@@ -4787,6 +4792,8 @@ var mainGC = function() {
                         code += "  if (aGCTBLink) inhalt = inhalt.replace(/#GCTBLink#/ig, aGCTBLink);";
                         code += "  if (aGCTBNameLink) inhalt = inhalt.replace(/#GCTBNameLink#/ig, aGCTBNameLink);";
                         code += "  if (aGCType) inhalt = inhalt.replace(/#GCType#/ig, aGCType);";
+                        code += "  if (aDraftLogDate || aDraftLogDate == '') inhalt = inhalt.replace(/#DraftLogDate#/ig, aDraftLogDate);";
+                        code += "  if (aDraftLogTime || aDraftLogTime == '') inhalt = inhalt.replace(/#DraftLogTime#/ig, aDraftLogTime);";
                         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
                         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
                         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
@@ -4832,6 +4839,9 @@ var mainGC = function() {
                         liste += "</select>";
                     }
                     var [aGCTBName, aGCTBLink, aGCTBNameLink, aLogDate, aGCType] = getGCTBInfoLogForm();
+                    var aDraftLogDate = '';
+                    var aDraftLogTime = '';
+                    if (pageData) var [aDraftLogDate, aDraftLogTime] = getDraftData(pageData);
                     var aOwner = decode_innerText($('.hidden-by a')[0]);
                     insertLogTemplatesFunction();
                     var liste = "";
@@ -5008,6 +5018,8 @@ var mainGC = function() {
             } catch(e) {gclh_error("Show additional cache info in improve log form",e);}
 
             // Hide own or locked trackables.
+            // Bug: An own or locked trackable is only recognized if it is among the first 20 trackables, because "__NEXT_DATA__"
+            //      does not contain more than 20 trackables.
             function setNoVisitForHiddenTBs() {
                 var tbsNotNoVisit = $('ul.tb-list li.tb-item.gclh_hideTB .segmented-buttons:first .segmented-item:first:not(.checked)');
                 for (let i=0; i<tbsNotNoVisit.length; i++) {
@@ -5023,7 +5035,7 @@ var mainGC = function() {
                         if (match && match[2]) {
                             var refCode = match[2].trim();
                             var trackable = $.grep(pageData.trackables, function(e){return e.referenceCode == refCode;});
-                            if ((settings_hide_locked_tbs_log_form && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me)) {
+                            if (trackable[0] && ((settings_hide_locked_tbs_log_form && trackable[0].isLocked == true) || (settings_hide_own_tbs_log_form && trackable[0].owner.userName == global_me))) {
                                 $(tbs[i]).addClass('gclh_hideTB');
                             }
                         }
@@ -5047,15 +5059,8 @@ var mainGC = function() {
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsHide(waitCount);}, 200);
             }
-            try {
-                var isTbHideActiv = false;
-                if (!isTB && !$('.no-trackables-container')[0] && (settings_hide_locked_tbs_log_form || settings_hide_own_tbs_log_form)
-                    && typeof pageData !== 'undefined' && typeof pageData.trackables !== 'undefined' && pageData.trackables.length > 0) {
-                    isTbHideActiv = true;
-                    waitForTbsHide(0);
-                    css += 'ul.tb-list li.tb-item.gclh_hideTB, .trackable-inventory .mantine-Accordion-panel .gclh_hideTB {display: none !important;}';
-                }
-            } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
+            var isTbHideActiv = false;
+            css += 'ul.tb-list li.tb-item.gclh_hideTB, .trackable-inventory .mantine-Accordion-panel .gclh_hideTB {display: none !important;}';
 
             // Auto visit for TBs.
             var classesSelected = '';
@@ -5140,28 +5145,11 @@ var mainGC = function() {
                         });
                     }
                 }
-                if ($('ul.tb-list')[0] && !$('ul.tb-list.gclh_autovisitObserver')[0]) {
-                    $('ul.tb-list').addClass('gclh_autovisitObserver');
-                    const config = { childList: true, subtree: true };
-                    const autovisitObserver = new MutationObserver(function(_, observer) {
-                        observer.disconnect();
-                        waitForTbsAV(0);
-                        if (is_page('logform')) {
-                            observer.observe($('ul.tb-list')[0], config);
-                        }
-                    });
-                    autovisitObserver.observe($('ul.tb-list')[0], config);
-                }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
             }
-            try {
-                if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
-                    waitForTbsAV(0);
-                    css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
-                    css += '.segmented-buttons.gclh_autovisit {position: absolute; margin-top: 60px !important;}';
-                    css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
-                }
-            } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
+            css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
+            css += '.segmented-buttons.gclh_autovisit {position: absolute; margin-top: 60px !important;}';
+            css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
 
             // Replicate TB-Header to bottom.
             function buildTBHeaderToBottom(waitCount) {
@@ -5195,12 +5183,7 @@ var mainGC = function() {
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBHeaderToBottom(waitCount);}, 200);
             }
-            try {
-                if (!isTB && !$('.no-trackables-container')[0]) {
-                    buildTBHeaderToBottom(0);
-                    css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
-                }
-            } catch(e) {gclh_error("Replicate TB-Header to bottom in improve log form",e);}
+            css += '.gclh_tb_header_bottom {border-top: 1px solid rgb(228, 228, 228); padding-bottom: 0px !important; padding-top: 1rem;}';
 
             // Sort trackables by name.
             var dir = -1;
@@ -5226,12 +5209,7 @@ var mainGC = function() {
                 }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBSortButton(waitCount);}, 200);
             }
-            try {
-                if (!isTB && !$('.no-trackables-container')[0] && settings_button_sort_tbs_by_name_log_form) {
-                    buildTBSortButton(0);
-                    css += '.tb-inventory-header h2.gclh_sortByName button {margin-left: 20px;}';
-                }
-            } catch(e) {gclh_error("Sort trackables by name in improve log form",e);}
+            css += '.tb-inventory-header h2.gclh_sortByName button {margin-left: 20px;}';
 
             // Send Log with F2.
             function buildSendLogWithF2(waitCount) {
@@ -5264,6 +5242,63 @@ var mainGC = function() {
                     removeTarget(0, '.content-container');
                 }
             } catch(e) {gclh_error("Prevent links automatically open in new tab in improve log form",e);}
+
+            // Process TBs.
+            function processTBs(waitCount) {
+                // Hide own or locked trackables.
+                try {
+                    if (!isTB && !$('.no-trackables-container')[0] && (settings_hide_locked_tbs_log_form || settings_hide_own_tbs_log_form)
+                        && typeof pageData !== 'undefined' && typeof pageData.trackables !== 'undefined' && pageData.trackables.length > 0) {
+                        isTbHideActiv = true;
+                        waitForTbsHide(0);
+                    }
+                } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
+                // Auto visit for TBs.
+                try {
+                    if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
+                        waitForTbsAV(0);
+                    }
+                } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
+                // Improve TB-Header.
+                if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-inventory-header .button-container button')[0] && !$('.tb-inventory-header .button-container button[data-event-label*="show all"]')[0] && $('.tb-list')[0]) {
+                    // Replicate TB-Header to bottom.
+                    try {
+                        if (!isTB && !$('.no-trackables-container')[0]) {
+                            buildTBHeaderToBottom(0);
+                        }
+                    } catch(e) {gclh_error("Replicate TB-Header to bottom in improve log form",e);}
+                    // Sort trackables by name in TB-Header.
+                    try {
+                        if (!isTB && !$('.no-trackables-container')[0] && settings_button_sort_tbs_by_name_log_form) {
+                            buildTBSortButton(0);
+                        }
+                    } catch(e) {gclh_error("Sort trackables by name in improve log form",e);}
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){processTBs(waitCount);}, 200);
+            }
+            try {
+                processTBs(0);
+            } catch(e) {gclh_error("Process TBs in improve log form",e);}
+
+            // Build an observer for TBs.
+            function buildTBsObserver(waitCount) {
+                if ($('ul.tb-list')[0] && !$('ul.tb-list.gclh_TBsObserver')[0]) {
+                    $('ul.tb-list').addClass('gclh_TBsObserver');
+                    const config = { childList: true, subtree: true };
+                    const TBsObserver = new MutationObserver(function(_, observer) {
+                        observer.disconnect();
+                        processTBs(0);
+                        if (is_page('logform')) {
+                            observer.observe($('ul.tb-list')[0], config);
+                        }
+                    });
+                    TBsObserver.observe($('ul.tb-list')[0], config);
+                }
+                waitCount++; if (waitCount <= 50) setTimeout(function(){buildTBsObserver(waitCount);}, 200);
+            }
+            try {
+                buildTBsObserver(0);
+            } catch(e) {gclh_error("Build an observer for TBs in improve log form",e);}
 
             // Append the style.
             if (!$('#gclh_css_improveLogForm')[0]) appendCssStyle(css, 'head', 'gclh_css_improveLogForm');
@@ -15115,8 +15150,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/SqDg/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iUw"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/fDma/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iU9"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15164,6 +15199,15 @@ var mainGC = function() {
             var GCType = $('#ctl00_ContentBody_LogBookPanel1_WaypointLink')[0].nextSibling.children[0].title;
         }
         return [GCTBName, GCTBLink, GCTBNameLink, LogDate, GCType];
+    }
+    function getDraftData(pageData) {
+        var DraftLogDate = ""; var DraftLogTime = "";
+        if (pageData && pageData.logValues && pageData.logValues.dateLoggedGeocacheTime) {
+            var date = new Date(pageData.logValues.dateLoggedGeocacheTime);
+            var DraftLogDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})
+            var DraftLogTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+        }
+        return [DraftLogDate, DraftLogTime];
     }
 
 // Show, hide box. e.g.: Both VIP boxes in the cache listing.
@@ -16347,7 +16391,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "31.07.2025";
+            var thanksLastUpdate = "11.08.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17109,10 +17153,10 @@ var mainGC = function() {
             html += content_settings_after_sending_draft_related_log2_button.replace("settings_drafts_after_new_logging_view_log_button", "settings_drafts_after_new_logging_view_log_buttonX0");
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += checkboxy('settings_after_new_logging_view_log', 'After sending or edit a non draft related cache log, automatic view log') + show_help('If it was not a draft related cache log or it was an edit of a cache log, you can enable this option to automatic go to view log page, instead of going to cache listing.') + "<br>";
-            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : Cache or trackable name<br>&nbsp; #GCTBLink# : Cache or trackable link<br>&nbsp; #GCTBNameLink# : Cache or trackable name as a link<br>&nbsp; #GCType# : Cache type<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>(Upper and lower case is not required in the placeholders name.)";
+            var placeholderDescription = "Possible placeholders:<br>&nbsp; #Found# : Your founds + 1 (reduce it with a minus followed by a number)<br>&nbsp; #Found_no# : Your founds (reduce it with a minus followed by a number)<br>&nbsp; #Me# : Your username<br>&nbsp; #Owner# : Username of the owner<br>&nbsp; #Date# : Actual date<br>&nbsp; #Time# : Actual time in format hh:mm<br>&nbsp; #DateTime# : Actual date actual time<br>&nbsp; #GCTBName# : Cache or trackable name<br>&nbsp; #GCTBLink# : Cache or trackable link<br>&nbsp; #GCTBNameLink# : Cache or trackable name as a link<br>&nbsp; #GCType# : Cache type<br>&nbsp; #LogDate# : Content of field \"Date Logged\"<br>&nbsp; #DraftLogDate# : Log date of draft (1) (2)<br>&nbsp; #DraftLogTime# : Log time of draft (1) (2)<br>(1) Only available in new log form.<br>(2) No data, then empty.<br>(Upper and lower case is not required in the placeholders name.)";
             html += newParameterOn2;
-            html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked trackables from trackable inventory') + show_help("A trackable can be marked as locked in the trackable listing. Locked trackables cannot be logged. With this option you can hide such trackables from trackable inventory.") + "<br>";
-            html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own trackables from trackable inventory') + show_help("With this option you can hide your own trackables from trackable inventory.") + "<br>";
+            html += checkboxy('settings_hide_locked_tbs_log_form', 'Hide locked trackables from trackable inventory') + show_help("A trackable can be marked as locked in the trackable listing. Locked trackables cannot be logged. With this option you can hide such trackables from trackable inventory.<br><br>This feature is only available for the first 20 trackables displayed in the trackable inventory.") + "<br>";
+            html += checkboxy('settings_hide_own_tbs_log_form', 'Hide own trackables from trackable inventory') + show_help("With this option you can hide your own trackables from trackable inventory.<br><br>This feature is only available for the first 20 trackables displayed in the trackable inventory.") + "<br>";
             html += checkboxy('settings_hide_share_log_button_log_view', 'Hide \"Share log\" button on view log page') + show_help("With this option you can hide the \"Share log\" button on page view geocache log.<br><br>If you just want to hide the social sharing icons for Facebook, Twitter (X) behind the \"Share log\" button instead, you can do this with the parameter \"Hide social sharing via Facebook, Twitter (X)\" in the \"Global - Hiding\" area.") + "<br>";
             html += checkboxy('settings_remove_target_log_form', 'Do not open links on log form page automatic in new browser tab') + show_help("The links on the pages \"Log this geocache\" and \"Edit log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
             html += checkboxy('settings_remove_target_log_view', 'Do not open links on view log page automatic in new browser tab') + show_help("The links on the page \"View geocache log\" will automatically open in a new tab. If you want to decide for yourself whether a link should open in the same browser tab or in a new one, you can choose this option.") + "<br>";
