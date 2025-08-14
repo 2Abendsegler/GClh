@@ -1,3 +1,4 @@
+<a href="#v0174" title="GClh II version 0.17.4 (14.08.2025)">v0.17.4</a> &nbsp;
 <a href="#v0173" title="GClh II version 0.17.3 (11.08.2025)">v0.17.3</a> &nbsp;
 <a href="#v0172" title="GClh II version 0.17.2 (31.07.2025)">v0.17.2</a> &nbsp;
 <a href="#v0171" title="GClh II version 0.17.1 (20.07.2025)">v0.17.1</a> &nbsp;
@@ -36,6 +37,21 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.4:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Remove:</strong> [Log Form] Remove auto visit feature. [<a href="https://github.com/2Abendsegler/GClh/issues/2871" title="Issue 2871">2871</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		The feature "Auto visit" has been removed from the log formulars. GS has asked for this.<br> 
+		Background: <a href="https://forums.geocaching.com/GC/index.php?/topic/425855-release-notes-website-trackable-inventory-on-cache-logs-july-23-2025" title="Release Notes">Release Notes (Website: Trackable inventory on cache logs) - July 23, 2025</a><br><br>
+	</li>
+</ul>
+<br>
+(14.08.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.3:
