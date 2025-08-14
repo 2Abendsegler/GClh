@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.3
+// @version      0.17.4
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -509,8 +509,6 @@ var variablesInit = function(c) {
     c.settings_show_fav_percentage = getValue('settings_show_fav_percentage', true);
     c.settings_show_vip_list = getValue('settings_show_vip_list', true);
     c.settings_show_owner_vip_list = getValue('settings_show_owner_vip_list', true);
-    c.settings_autovisit = getValue("settings_autovisit", true);
-    c.settings_autovisit_default = getValue("settings_autovisit_default", false);
     c.settings_show_thumbnails = getValue("settings_show_thumbnails", true);
     c.settings_imgcaption_on_top = getValue("settings_imgcaption_on_top", false);
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
@@ -4399,60 +4397,7 @@ var mainGC = function() {
     }
 
 // Autovisit Old Log Page.
-    if (settings_autovisit && document.location.href.match(/\.com\/seek\/log\.aspx/) && !document.location.href.match(/\.com\/seek\/log\.aspx\?LUID=/) && !document.getElementById('ctl00_ContentBody_LogBookPanel1_CoordInfoLinkControl1_uxCoordInfoCode')) {
-        try {
-            var tbs = getTbsO();
-            if (tbs.length != 0) {
-                for (var i = 0; i < tbs.length; i++) {
-                    var [tbC, tbN] = getTbO(tbs[i].parentNode);
-                    if (!tbC || !tbN) continue;
-                    var auto = document.createElement("input");
-                    auto.setAttribute("type", "checkbox");
-                    auto.setAttribute("id", "gclh_"+tbC);
-                    auto.setAttribute("value", tbN);
-                    auto.addEventListener("click", setAutoO, false);
-                    tbs[i].appendChild(auto);
-                    tbs[i].appendChild(document.createTextNode(" AutoVisit"));
-                }
-                $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0].addEventListener("input", buildAutosO, false);
-                buildAutosO(true);
-                window.addEventListener("load", function(){buildAutosO(true);}, false);
-            }
-            function buildAutosO(start) {
-                var type = getTypeO();
-                var tbs = getTbsO();
-                for (var i = 0; i < tbs.length; i++) {
-                    var [tbC, tbN] = getTbO(tbs[i].parentNode);
-                    setAutoO(tbC, tbN, type, start, true);
-                }
-                if (unsafeWindow.setSelectedActions) unsafeWindow.setSelectedActions();
-            }
-            function setAutoO(tbC, tbN, type, start, allTbs) {
-                if (!type) var type = getTypeO();
-                if (!tbC || !tbN) var [tbC, tbN] = getTbO(this.parentNode.parentNode);
-                var options = $('#gclh_'+tbC)[0].parentNode.getElementsByTagName('option');
-                var select = $('#gclh_'+tbC)[0].parentNode.getElementsByTagName('select');
-                var autos = $('#gclh_'+tbC)[0];
-                if (!type || !tbC || !tbN || !select[0] || options.length < 2 || !autos) return;
-                if (start) {
-                    if (getValue("autovisit_"+tbC, settings_autovisit_default)) autos.checked = true;
-                    else autos.checked = false;
-                }
-                if (options.length == 2 || (options.length == 3 && select[0].selectedIndex != 1)) {
-                    if (autos.checked == true) {
-                        if (type == 2 || type == 10 || type == 11) select[0].selectedIndex = options.length - 1;
-                        else select[0].selectedIndex = 0;
-                    } else {
-                        if (allTbs != true && (type == 2 || type == 10 || type == 11)) select[0].selectedIndex = 0;
-                    }
-                }
-                setValue("autovisit_"+tbC, (autos.checked ? true:false));
-            }
-            function getTypeO() {return $('#ctl00_ContentBody_LogBookPanel1_ddLogType')[0].value;}
-            function getTbsO() {return $('#tblTravelBugs tbody tr td select').closest('td');}
-            function getTbO(tb) {return [$(tb).find('td a')[0].innerHTML, $(tb).find('td select option')[0].value];}
-        } catch(e) {gclh_error("Autovisit Old",e);}
-    }
+    // (Das Feature "Auto visit" wurde entfernt. GS hat am 13.08.2025 darum gebeten. Hintergrund: Release Notes (Website: Trackable inventory on cache logs) - July 23, 2025 https://forums.geocaching.com/GC/index.php?/topic/425855-release-notes-website-trackable-inventory-on-cache-logs-july-23-2025)
 
 // Default Log Type and Log Signature Old Log Page.
     // Cache:
@@ -5063,93 +5008,7 @@ var mainGC = function() {
             css += 'ul.tb-list li.tb-item.gclh_hideTB, .trackable-inventory .mantine-Accordion-panel .gclh_hideTB {display: none !important;}';
 
             // Auto visit for TBs.
-            var classesSelected = '';
-            var classesNotSelected = '';
-            function getTbsAV() {return (isTbHideActiv ? $('ul.tb-list li.tb-item.gclh_hideTB_checked:not(.gclh_hideTB)') : $('ul.tb-list li.tb-item'))}
-            function getLogTypeAV() {return $('input[name="logType"]').val();}
-            function getTbCodeAV(tb) {return $(tb).find('.tb-stats dd')[1].innerHTML;};
-            function getTbActionTypeAV(tb) {
-                let r = $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[type="radio"]');
-                for (let i=0; i<3; i++) {
-                    if (r[i].checked) return r[i].value;
-                }
-            }
-            function buildAutoAV(tb) {
-                let tbC = getTbCodeAV(tb);
-                if ((getLogTypeAV() == 2 || getLogTypeAV() == 10 || getLogTypeAV() == 11) && getValue("autovisit_"+tbC, false) && !document.location.pathname.match(/\/edit/))  {
-                    if (getTbActionTypeAV(tb) == '-1') {
-                        $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="75"]')[0].click();
-                    }
-                } else if (getTbActionTypeAV(tb) == '75') {
-                    $(tb).find('div.segmented-buttons:not(.gclh_autovisit) input[value="-1"]')[0].click();
-                }
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '0' : '1')+'"]').closest('label').prop('class', classesNotSelected);
-                $(tb).find('div.gclh_autovisit input[value="'+(getValue('autovisit_'+tbC, false) ? '1' : '0')+'"]').closest('label').prop('class', classesSelected);
-            }
-            function buildAutosAV() {
-                let tbs = getTbsAV();
-                if (tbs.length > 0) {
-                    for (let i=0; i<tbs.length; i++) {
-                        buildAutoAV(tbs[i])
-                    }
-                }
-            }
-            function waitForTbsAV(waitCount) {
-                if ($('ul.tb-list li.tb-item').length > 0) {
-                    var tbs = getTbsAV();
-                    if (tbs.length > 0) {
-                        for (let i=0; i<tbs.length; i++) {
-                            // Copy existing buttons for auto visit feature.
-                            if ($(tbs[i]).find('.segmented-buttons.gclh_autovisit')[0] || !$(tbs[i]).find('.segmented-buttons')[0]) continue;
-                            var autoButtons = $( $(tbs[i]).find('.segmented-buttons')[0] ).clone()[0];
-                            $(autoButtons).addClass('gclh_autovisit');
-                            $(tbs[i]).find('.segmented-buttons')[0].append(autoButtons);
-                            // Save TB for autovisit if it is new.
-                            let tbC = getTbCodeAV(tbs[i]);
-                            if (getValue("autovisit_"+tbC, "new") === "new") {
-                                setValue("autovisit_"+tbC, settings_autovisit_default);
-                            }
-                            // Notice classes for selected and not selected buttons.
-                            classesSelected = $(tbs[i]).find('.gclh_autovisit label')[0].className;
-                            classesNotSelected = $(tbs[i]).find('.gclh_autovisit label')[1].className;
-                            // Adapt copied buttons for auto visit feature.
-                            $(tbs[i]).find('.gclh_autovisit label')[2].remove();
-                            $(tbs[i]).find('.gclh_autovisit input')[0].value = 0;
-                            $(tbs[i]).find('.gclh_autovisit input')[1].value = 1;
-                            $(tbs[i]).find('.gclh_autovisit span')[1].innerHTML = 'Auto Visit';
-                            $(tbs[i]).find('.gclh_autovisit label').each(function() {
-                                $(this).find('input')[0].setAttribute('name', 'autovisit_'+tbC);
-                                $(this).find('input')[0].setAttribute('data-event-category', '');
-                                $(this).find('input')[0].setAttribute('data-event-label', '');
-                                $(this).find('input')[0].setAttribute('data-testid', '');
-                                $(this).find('input')[0].addEventListener('click', function(evt) {
-                                    setValue(evt.target.name, (evt.target.value==1 ? true : false));
-                                    buildAutoAV(tbs[i]);
-                                })
-                            });
-                            buildAutoAV(tbs[i]);
-                        }
-                    }
-                }
-                if ($('#react-select-cache-log-type-input')[0]) {
-                    // Set autovisits for all TBs if logtype changed.
-                    if (!$('#react-select-cache-log-type-input').hasClass('gclh_logtypeClick_build')) {
-                        $('#react-select-cache-log-type-input').addClass('gclh_logtypeClick_build');
-                        var selectedLogType = '';
-                        $('#react-select-cache-log-type-input')[0].addEventListener('click', function(){
-                            if ($('.log-type-container input[name="logType"]')[0].value != selectedLogType &&
-                                $('#react-select-cache-log-type-input')[0].ariaExpanded == 'false') {
-                                selectedLogType = $('.log-type-container input[name="logType"]')[0].value;
-                                buildAutosAV();
-                            }
-                        });
-                    }
-                }
-                waitCount++; if (waitCount <= 50) setTimeout(function(){waitForTbsAV(waitCount);}, 200);
-            }
-            css += '.segmented-buttons:not(.gclh_autovisit) {margin-top: -30px !important;}';
-            css += '.segmented-buttons.gclh_autovisit {position: absolute; margin-top: 60px !important;}';
-            css += '.segmented-buttons.gclh_autovisit label {display: inline-block;}';
+            // (Das Feature "Auto visit" wurde entfernt. GS hat am 13.08.2025 darum gebeten. Hintergrund: Release Notes (Website: Trackable inventory on cache logs) - July 23, 2025 https://forums.geocaching.com/GC/index.php?/topic/425855-release-notes-website-trackable-inventory-on-cache-logs-july-23-2025)
 
             // Replicate TB-Header to bottom.
             function buildTBHeaderToBottom(waitCount) {
@@ -5254,11 +5113,7 @@ var mainGC = function() {
                     }
                 } catch(e) {gclh_error("Hide own or locked trackables in improve log form",e);}
                 // Auto visit for TBs.
-                try {
-                    if (!isTB && !$('.no-trackables-container')[0] && settings_autovisit) {
-                        waitForTbsAV(0);
-                    }
-                } catch(e) {gclh_error("Auto visit for TBs in improve log form",e);}
+                // (Das Feature "Auto visit" wurde entfernt. GS hat am 13.08.2025 darum gebeten. Hintergrund: Release Notes (Website: Trackable inventory on cache logs) - July 23, 2025 https://forums.geocaching.com/GC/index.php?/topic/425855-release-notes-website-trackable-inventory-on-cache-logs-july-23-2025)
                 // Improve TB-Header.
                 if ($('.tb-inventory-header')[0] && $('.tb-inventory-header h2')[0] && $('.tb-inventory-header .button-container button')[0] && !$('.tb-inventory-header .button-container button[data-event-label*="show all"]')[0] && $('.tb-list')[0]) {
                     // Replicate TB-Header to bottom.
@@ -15150,8 +15005,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/fDma/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iU9"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/Ykde/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iVe"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16391,7 +16246,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "11.08.2025";
+            var thanksLastUpdate = "14.08.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17140,8 +16995,6 @@ var mainGC = function() {
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","logging")+"<label for='lnk_gclh_config_logging'>Log</label></h4>";
             html += "<div id='gclh_config_logging' class='gclh_block'>";
             html += checkboxy('settings_replace_log_by_last_log', 'Replace log by last log template') + show_help("If you enable this option, the last log template will replace the whole log. If you disable it, it will be appended to the log.") + "<br>";
-            html += checkboxy('settings_autovisit', 'Enable \"AutoVisit\" feature for trackables') + show_help("With this option you are able to select trackables which should be automatically set from \"No action\" to \"Visited\" on every log, if the logtype is \"Found It\", \"Webcam Photo Taken\" or \"Attended\". For other logtypes trackables are automatically set from \"Visited\" to \"No action\". You can select \"AutoVisit\" for each trackable in the list on the bottom of the log form.") + "<br>";
-            html += "&nbsp;&nbsp;" + checkboxy('settings_autovisit_default', 'Set \"AutoVisit\" for all trackables by default') + show_help("With this option all new trackables in your inventory are automatically set to \"AutoVisit\".") + "<br>"
             html += content_settings_show_log_it.replace("show_log_it", "show_log_itX2");
             html += content_settings_logit_for_basic_in_pmo.replace("basic_in_pmo","basic_in_pmoX0");
             html += checkboxy('settings_improve_character_counter', 'Show length of logtext') + show_help("If you enable this option, a counter shows the length of your logtext and the maximum length.\nOn the old logging page this feature ist auto-enabled.") + "<br>";
@@ -18108,7 +17961,6 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_show_dd","settings_lists_hide_desc");
             setEvForDepPara("settings_lists_show_dd","settings_lists_upload_file");
             setEvForDepPara("settings_lists_show_dd","settings_lists_open_tabs");
-            setEvForDepPara("settings_autovisit","settings_autovisit_default");
             setEvForDepPara("settings_add_log_templates","settings_log_template_name[0]");
             setEvForDepPara("settings_add_log_templates","settings_log_template[0]");
             setEvForDepPara("settings_add_log_templates","settings_log_template_name[1]");
@@ -18502,8 +18354,6 @@ var mainGC = function() {
                 'settings_show_fav_percentage',
                 'settings_show_vip_list',
                 'settings_show_owner_vip_list',
-                'settings_autovisit',
-                'settings_autovisit_default',
                 'settings_show_thumbnails',
                 'settings_imgcaption_on_top',
                 'settings_hide_avatar',
