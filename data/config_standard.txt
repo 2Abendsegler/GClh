@@ -144,7 +144,6 @@
   "settings_show_fav_percentage": true,
   "settings_show_vip_list": true,
   "settings_show_owner_vip_list": true,
-  "settings_autovisit": true,
   "settings_show_thumbnails": true,
   "settings_hover_image_max_size": "600",
   "settings_imgcaption_on_top": false,
