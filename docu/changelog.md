@@ -45,7 +45,7 @@
 	<li>
 		<strong>Remove:</strong> [Log Form] Remove auto visit feature. [<a href="https://github.com/2Abendsegler/GClh/issues/2871" title="Issue 2871">2871</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		The feature "Auto visit" has been removed from the log formulars. GS has asked for this.<br> 
-		Background: <a href="https://forums.geocaching.com/GC/index.php?/topic/425855-release-notes-website-trackable-inventory-on-cache-logs-july-23-2025" title="Release Notes">Release Notes (Website: Trackable inventory on cache logs) - July 23, 2025</a><br><br>
+		Background: <a href="https://forums.geocaching.com/GC/index.php?/topic/425855-release-notes-website-trackable-inventory-on-cache-logs-july-23-2025" title="Release Notes">Release Notes (Website: Trackable inventory on cache logs) - July 23, 2025</a><br>
 	</li>
 </ul>
 <br>
