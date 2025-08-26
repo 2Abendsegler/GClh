@@ -1,3 +1,4 @@
+<a href="#v0175" title="GClh II version 0.17.5 (26.08.2025)">v0.17.5</a> &nbsp;
 <a href="#v0174" title="GClh II version 0.17.4 (14.08.2025)">v0.17.4</a> &nbsp;
 <a href="#v0173" title="GClh II version 0.17.3 (11.08.2025)">v0.17.3</a> &nbsp;
 <a href="#v0172" title="GClh II version 0.17.2 (31.07.2025)">v0.17.2</a> &nbsp;
@@ -37,6 +38,25 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.5:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Search Map] More display options for search results. [<a href="https://github.com/2Abendsegler/GClh/issues/2855" title="Issue 2855">2855</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>New:</strong> [Search Map] Hide past events on map. [<a href="https://github.com/2Abendsegler/GClh/issues/2277" title="Issue 2277">2277</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		<img src="../images/0.17.5/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		These options allow you to control the display of the current search results. Caches can be hidden for the current session based on their status and type, as we know it from the Browse Map. In addition to found and own caches, past events can also be hidden even if they have not yet been archived.<br>
+In addition, there are several other display options in the lower section that can be saved across multiple sessions.<br>
+Note: These options do not perform a new search themselves. They only affect the display of the current search results.<br>
+		<img src="../images/0.17.5/Screen02.jpg" alt="Screen02.jpg"><br>
+	</li>
+</ul>
+<br>
+(26.08.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.4:
