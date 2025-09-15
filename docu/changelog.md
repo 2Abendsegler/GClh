@@ -1,3 +1,4 @@
+<a href="#v0176" title="GClh II version 0.17.6 (16.09.2025)">v0.17.6</a> &nbsp;
 <a href="#v0175" title="GClh II version 0.17.5 (26.08.2025)">v0.17.5</a> &nbsp;
 <a href="#v0174" title="GClh II version 0.17.4 (14.08.2025)">v0.17.4</a> &nbsp;
 <a href="#v0173" title="GClh II version 0.17.3 (11.08.2025)">v0.17.3</a> &nbsp;
@@ -38,6 +39,24 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.6:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Note:</strong> [New Log Form] Logging trackables does not work properly. [<a href="https://github.com/2Abendsegler/GClh/issues/2879" title="Issue 2879">2879</a>]<br>
+		Please note: <strong>You have to accept all cookies from geocaching.com and not just the necessary ones.</strong> Otherwise, errors in the website's cookie processing can lead to aborts in the script.<br>
+		Please see our <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#10-en" title="FAQ 10.">FAQ number 10</a> for more details.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Search Map] useState not found in unsafeWindow.webpackChunk_N_E for 100 MutationObserver calls. [<a href="https://github.com/2Abendsegler/GClh/issues/2880" title="Issue 2880">2880</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+</ul>
+<br>
+(16.09.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.5:
