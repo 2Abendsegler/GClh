@@ -46,7 +46,7 @@
 <ul>
 	<li>
 		<strong>Note:</strong> [New Log Form] Logging trackables does not work properly. [<a href="https://github.com/2Abendsegler/GClh/issues/2879" title="Issue 2879">2879</a>]<br>
-		Please note: **You have to accept all cookies from geocaching.com and not just the necessary ones.** Otherwise, errors in the website's cookie processing can lead to aborts in the script.<br>
+		Please note: <strong>You have to accept all cookies from geocaching.com and not just the necessary ones.</strong> Otherwise, errors in the website's cookie processing can lead to aborts in the script.<br>
 		Please see our <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/faq.md#10-en" title="FAQ 10.">FAQ number 10</a> for more details.<br><br>
 	</li>
 	<li>
