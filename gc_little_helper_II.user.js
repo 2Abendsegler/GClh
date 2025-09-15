@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.5
+// @version      0.17.6
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -10327,9 +10327,16 @@ var mainGC = function() {
             // Add proxy for cache properties and get map handle: observe html until webpackChunk_N_E and map are available.
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
+                // Safeguard.
+                if (++observerCalls > 99) {
+                    observer.disconnect();
+                    if (!unsafeWindow.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
+                    if (!unsafeWindow.React?.getLayout) gclh_error("Add proxy for cache properties", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
+                    return;
+                }
+
                 // Add proxy for cache properties;
-                // webpackChunk_N_E must be available and fully loaded ('3168' is the key of the last listed chunk (release-20250625.1.2261)).
-                if (!unsafeWindow.React?.getLayout && unsafeWindow.webpackChunk_N_E && isKeyInWebpackChunk_N_E('3168')) {
+                if (!unsafeWindow.React?.getLayout && unsafeWindow.webpackChunk_N_E) {
                     // Add Layout module to global space.
                     try {
                         if (!window.webpackModuleLoader) {
@@ -10360,7 +10367,7 @@ var mainGC = function() {
                             // Save in global context.
                             if (key) {
                                 unsafeWindow.React = moduleFunctions[index][key];
-                            }
+                            } else return;
                         }
 
                         // Identify 'Layout.getLayout' function from all webpack modules.
@@ -10369,7 +10376,7 @@ var mainGC = function() {
                             // Save in global context.
                             if (key) {
                                 unsafeWindow.React.getLayout = moduleFunctions[index][key];
-                            }
+                            } else return;
                         }
                     } catch(e) {
                         observer.disconnect();
@@ -10391,26 +10398,22 @@ var mainGC = function() {
 
                     // Add proxy for cache properties.
                     if (unsafeWindow.React?.getLayout && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
-                        unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
-                            apply: (target, thisArg, argArray) => {
-                                processCaches(argArray[0]);
-                                return target.apply(thisArg, argArray);
-                            }
-                        });
+                        // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
+                        // (if "show at corrected coords" is active on page load)
+                        setTimeout(() => {
+                            unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
+                                apply: (target, thisArg, argArray) => {
+                                    processCaches(argArray[0]);
+                                    return target.apply(thisArg, argArray);
+                                }
+                            });
+                        }, 250);
                     }
                 }
 
                 // Finished, stop observing.
                 if (unsafeWindow.React?.getLayout) {
                     observer.disconnect();
-                    return;
-                }
-
-                // Safeguard.
-                if (++observerCalls > 99) {
-                    observer.disconnect();
-                    if (!unsafeWindow.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
-                    if (!unsafeWindow.React?.getLayout) gclh_error("Add proxy for cache properties", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
                     return;
                 }
             });
@@ -15535,8 +15538,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/8vCc/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iVn"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/IOmK/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iVV"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16776,7 +16779,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "25.08.2025";
+            var thanksLastUpdate = "16.09.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
