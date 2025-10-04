@@ -3914,7 +3914,15 @@ var mainGC = function() {
                         }
                         getElevations(context.retries+1,context.locations);
                     } else {
-                        var json = JSON.parse(responseDetails.responseText);
+                        try {
+                            var json = JSON.parse(responseDetails.responseText);
+                        } catch(e) {
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": JSON.parse failed.");
+                            console.log("responseDetails.responseText: "+responseDetails.responseText);
+                            console.log(responseDetails);
+                            getElevations(context.retries+1,context.locations);
+                            return;
+                        }
                         if (!json.geonames) {
                             console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": json.geonames is undefined.");
                             console.log(responseDetails);
