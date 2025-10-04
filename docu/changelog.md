@@ -52,21 +52,21 @@
 		Here you can select additional layers to be added as overlays to the map layer menu.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_overlay_wmthiking" title="Link to your GClh II Config">Settings -> Map - Available map overlays:<br>
 		<img src="../images/0.17.7/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
-		Here you can select additional links to the Waymarked Trails website to be added under the Go to ... icon.<br>
+		Here you can select additional links to the Waymarked Trails websites to be added under the Go to ... icon.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_wmthiking_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Waymarked Trails Pages:<br>
 		<img src="../images/0.17.7/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Listing Trackable] Color lines run into error. [<a href="https://github.com/2Abendsegler/GClh/issues/2893" title="Issue 2893">2893</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Log Trackable] Overflow trackable log form on the right side. [<a href="https://github.com/2Abendsegler/GClh/issues/2892" title="Issue 2892">2892</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Overflow in long cache names and owner names in popup. [<a href="https://github.com/2Abendsegler/GClh/issues/2891" title="Issue 2891">2891</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] JSON.parse error in geonames elevation data no longer displays as an error. [<a href="https://github.com/2Abendsegler/GClh/issues/2890" title="Issue 2890">2890</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing Trackable] Color lines run into error. [<a href="https://github.com/2Abendsegler/GClh/issues/2893" title="Issue 2893">2893</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Trackable] Overflow trackable log form on the right side. [<a href="https://github.com/2Abendsegler/GClh/issues/2892" title="Issue 2892">2892</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 </ul>
 <br>
