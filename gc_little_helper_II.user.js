@@ -9234,7 +9234,7 @@ var mainGC = function() {
         appendCssStyle(css);
         // TB Listing: Zeilen in Zebra, für User, Owner, Reviewer und VIP einfärben.
         if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
-            var lines = $("table.Table").find("tbody").find("tr");
+            var lines = $("table.TrackableItemLogTable").find("tbody").find("tr");
             if (lines && lines[0] && lines[0].getAttribute('class').match(/BorderTop/)) {
                 var linesNew = lines.slice(0, -1);
                 var owner = document.getElementById("ctl00_ContentBody_BugDetails_BugOwner").innerHTML;
