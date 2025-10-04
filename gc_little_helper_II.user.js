@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.6
+// @version      0.17.7
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -176,6 +176,9 @@ var constInit = function(c) {
     c.urlFlopps = "https://flopp.net/?c={lat}:{lon}&z={zoom}&t=OSM&f=n&m=&d=";
     c.urlGeoHack = "https://tools.wmflabs.org/geohack/geohack.php?pagename=Geocaching&params={latDeg}_{latMin}_{latSec}_{latOrient}_{lonDeg}_{lonMin}_{lonSec}_{lonOrient}";
     c.urlKomoot = "https://www.komoot.com/plan/@{lat},{lon},{zoomMinus1}z";
+    c.urlWaymarkedTrailsHiking = "https://hiking.waymarkedtrails.org/#?map={zoom}/{lat}/{lon}";
+    c.urlWaymarkedTrailsCycling = "https://cycling.waymarkedtrails.org/#?map={zoom}/{lat}/{lon}";
+    c.urlWaymarkedTrailsMTB = "https://mtb.waymarkedtrails.org/#?map={zoom}/{lat}/{lon}";
     c.idCopyName = "idName";
     c.idCopyCode = "idCode";
     c.idCopyUrl = "idUrl";
@@ -448,6 +451,12 @@ var variablesInit = function(c) {
     c.settings_switch_to_geohack_in_same_tab = getValue("settings_switch_to_geohack_in_same_tab", false);
     c.settings_add_link_komoot_on_gc_map = getValue("settings_add_link_komoot_on_gc_map", true);
     c.settings_switch_to_komoot_in_same_tab = getValue("settings_switch_to_komoot_in_same_tab", false);
+    c.settings_add_link_wmthiking_on_gc_map = getValue("settings_add_link_wmthiking_on_gc_map", true);
+    c.settings_switch_to_wmthiking_in_same_tab = getValue("settings_switch_to_wmthiking_in_same_tab", false);
+    c.settings_add_link_wmtcycling_on_gc_map = getValue("settings_add_link_wmtcycling_on_gc_map", true);
+    c.settings_switch_to_wmtcycling_in_same_tab = getValue("settings_switch_to_wmtcycling_in_same_tab", false);
+    c.settings_add_link_wmtmtb_on_gc_map = getValue("settings_add_link_wmtmtb_on_gc_map", true);
+    c.settings_switch_to_wmtmtb_in_same_tab = getValue("settings_switch_to_wmtmtb_in_same_tab", false);
     c.settings_sort_default_bookmarks = getValue("settings_sort_default_bookmarks", true);
     c.settings_make_vip_lists_hideable = getValue("settings_make_vip_lists_hideable", true);
     c.settings_show_latest_logs_symbols = getValue("settings_show_latest_logs_symbols", true);
@@ -705,6 +714,9 @@ var variablesInit = function(c) {
     c.settings_upgrade_button_header_remove = getValue("settings_upgrade_button_header_remove", false);
     c.settings_unsaved_log_message = getValue("settings_unsaved_log_message", true);
     c.settings_sort_map_layers = getValue("settings_sort_map_layers", false);
+    c.settings_add_overlay_wmthiking = getValue("settings_add_overlay_wmthiking", true);
+    c.settings_add_overlay_wmtcycling = getValue("settings_add_overlay_wmtcycling", true);
+    c.settings_add_overlay_wmtmtb = getValue("settings_add_overlay_wmtmtb", true);
     c.settings_add_search_in_logs_func = getValue("settings_add_search_in_logs_func", true);
     c.settings_show_add_cache_info_in_log_page = getValue("settings_show_add_cache_info_in_log_page", true);
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
@@ -1968,9 +1980,8 @@ var mainGC = function() {
                         css += ".span-20 {width: " + new_width + "px;}";
                     } else if (is_page("logform") || document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) {
                         if (settings_larger_content_width_log_form) {
-                            css += ".content-container, .content-container section, .content-container form {width: " + new_width + "px !important; max-width: unset !important;}";
-                            css += ".form-container {margin-left: 0px !important; margin-right: 0px !important;}";
-                            css += ".breadcrumbs {margin-left: 0px !important; margin-right: 0px !important; padding-left: 0px !important; padding-right: 0px !important;}";
+                            css += ".content-container {width: " + new_width + "px !important; max-width: unset !important;}";
+                            css += ".content-container section, .content-container form {max-width: unset !important;}";
                         }
                         if (settings_less_space_log_lines_log_form) {
                             css += "#gc-md-editor_md, .markdown-output {line-height: 1.375; font-size: 14px; gap: 0px;}";
@@ -3902,7 +3913,15 @@ var mainGC = function() {
                         }
                         getElevations(context.retries+1,context.locations);
                     } else {
-                        var json = JSON.parse(responseDetails.responseText);
+                        try {
+                            var json = JSON.parse(responseDetails.responseText);
+                        } catch(e) {
+                            console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": JSON.parse failed.");
+                            console.log("responseDetails.responseText: "+responseDetails.responseText);
+                            console.log(responseDetails);
+                            getElevations(context.retries+1,context.locations);
+                            return;
+                        }
                         if (!json.geonames) {
                             console.error("GClh_ERROR (no header alert) - addElevationToWaypoints_GeonamesElevation() - " + document.location.href + ": json.geonames is undefined.");
                             console.log(responseDetails);
@@ -9215,7 +9234,7 @@ var mainGC = function() {
         appendCssStyle(css);
         // TB Listing: Zeilen in Zebra, für User, Owner, Reviewer und VIP einfärben.
         if (document.location.href.match(/\.com\/track\/details\.aspx\?/)) {
-            var lines = $("table.Table").find("tbody").find("tr");
+            var lines = $("table.TrackableItemLogTable").find("tbody").find("tr");
             if (lines && lines[0] && lines[0].getAttribute('class').match(/BorderTop/)) {
                 var linesNew = lines.slice(0, -1);
                 var owner = document.getElementById("ctl00_ContentBody_BugDetails_BugOwner").innerHTML;
@@ -11584,8 +11603,8 @@ var mainGC = function() {
                     $('#gclh_browse_map').append($('[data-testid="gc-button-link"]').remove().get().reverse());
                     $('#gclh_browse_map a')[0].childNodes[1].remove();
                 }
-                // Add button with links to Google, OSM, Flopp's, GeoHack and Komoot Map.
-                if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map)) {
+                // Add button with links to Google, OSM, Flopp's, GeoHack, Komoot and Waymarked Trails map.
+                if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map)) {
                     initGeoServiceControl();
                 }
             }
@@ -12235,7 +12254,7 @@ var mainGC = function() {
             } else {
                 var mr = 0;
                 if (settings_use_gclh_layercontrol_on_search_map) mr += 48;
-                if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map) mr += 48;
+                if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
                 css += '[data-testid="gc-button-link"] {margin-right: ' + mr + 'px;}';
             }
             // Sidebar Enhancements.
@@ -12309,7 +12328,7 @@ var mainGC = function() {
                     // Change map parameter and add homezone to map.
                     changeParameterAddHomezoneOnBrowseMap();
                     // Add links to Google, OSM, Flopp's, GeoHack and Komoot Map on Browse Map.
-                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map) {
+                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) {
                         addLinksOnBrowseMap();
                     }
                     // Relocate button search geocaches on Browse Map.
@@ -12385,10 +12404,19 @@ var mainGC = function() {
             for (var i = 0; i < new_settings_map_layers.length; i++) { map_layers[new_settings_map_layers[i]] = all_map_layers[new_settings_map_layers[i]]; }
             // Layer Control aufbauen.
             function addLayerControl() {
-                injectPageScriptFunction(function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
-                    window["GCLittleHelper_MapLayerHelper"] = function(map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
+                // Filter selected overlays.
+                let map_overlays_selected = {};
+                for (const key in map_overlays) {
+                    if ((key === "Waymarked Trails Hiking" && settings_add_overlay_wmthiking) ||
+                        (key === "Waymarked Trails Cycling" && settings_add_overlay_wmtcycling) ||
+                        (key === "Waymarked Trails MTB" && settings_add_overlay_wmtmtb)) {
+                        map_overlays_selected[key] = map_overlays[key];
+                    }
+                }
+                injectPageScriptFunction(function(map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
+                    window["GCLittleHelper_MapLayerHelper"] = function(map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers) {
                         if (!window.MapSettings.Map) {
-                            setTimeout(function() {window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);}, 10);
+                            setTimeout(function() {window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);}, 10);
                         } else {
                             var layerControl = new window.L.Control.Layers();
                             var layerToAdd = null;
@@ -12404,10 +12432,10 @@ var mainGC = function() {
                                 else if (defaultLayer == null) defaultLayer = layerToAdd;
                             }
                             //>> Issue 2016
-                            //for (name in map_overlays) {
-                            //    layerToAdd = new L.tileLayer(map_overlays[name].tileUrl, map_overlays[name]);
-                            //    layerControl.addOverlay(layerToAdd, name);
-                            //}
+                            for (name in map_overlays_selected) {
+                                layerToAdd = new L.tileLayer(map_overlays_selected[name].tileUrl, map_overlays_selected[name]);
+                                layerControl.addOverlay(layerToAdd, name);
+                            }
                             //<< Issue 2016
                             window.MapSettings.Map.addControl(layerControl);
                             layerControl._container.className += " gclh_layers gclh_used";
@@ -12441,8 +12469,8 @@ var mainGC = function() {
                             }
                         }
                     };
-                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
-                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + "," + settings_sort_map_layers + ")");
+                    window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
+                }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays_selected) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + "," + settings_sort_map_layers + ")");
             }
             // Layer Defaults setzen.
             function setDefaultsInLayer() {
@@ -12640,7 +12668,8 @@ var mainGC = function() {
         if (is_page('map')) {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
-            $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>');
+            // Increase z-index, otherwise buttons may overlap map control.
+            $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>').css('z-index', 2001);
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
@@ -12650,11 +12679,17 @@ var mainGC = function() {
         if (settings_add_link_flopps_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_flopps">Flopp\'s Map</a>');
         if (settings_add_link_geohack_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_geohack">GeoHack</a>');
         if (settings_add_link_komoot_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_komoot">Komoot</a>');
+        if (settings_add_link_wmthiking_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_waymarkedtrails_hiking">Waymarked Trails Hiking</a>');
+        if (settings_add_link_wmtcycling_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_waymarkedtrails_cycling">Waymarked Trails Cycling</a>');
+        if (settings_add_link_wmtmtb_on_gc_map) $("#gclh_geoservices_list").append('<a id="gclh_geoservice_waymarkedtrails_mtb">Waymarked Trails MTB</a>');
         $("#gclh_geoservice_googlemaps").click(function() {callGeoService(urlGoogleMaps, settings_switch_to_google_maps_in_same_tab);});
         $("#gclh_geoservice_osm").click(function() {callGeoService(urlOSM, settings_switch_to_osm_in_same_tab);});
         $("#gclh_geoservice_flopps").click(function() {callGeoService(urlFlopps, settings_switch_to_flopps_in_same_tab);});
         $("#gclh_geoservice_geohack").click(function() {callGeoService(urlGeoHack, settings_switch_to_geohack_in_same_tab);});
         $("#gclh_geoservice_komoot").click(function() {callGeoService(urlKomoot, settings_switch_to_komoot_in_same_tab);});
+        $("#gclh_geoservice_waymarkedtrails_hiking").click(function() {callGeoService(urlWaymarkedTrailsHiking, settings_switch_to_wmthiking_in_same_tab);});
+        $("#gclh_geoservice_waymarkedtrails_cycling").click(function() {callGeoService(urlWaymarkedTrailsCycling, settings_switch_to_wmtcycling_in_same_tab);});
+        $("#gclh_geoservice_waymarkedtrails_mtb").click(function() {callGeoService(urlWaymarkedTrailsMTB, settings_switch_to_wmtmtb_in_same_tab);});
         var css = '';
         css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
         css += '.searchmap .gclh-leaflet-list {right: -1px; top: -1px; }';
@@ -12662,7 +12697,7 @@ var mainGC = function() {
         css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; padding: 4px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
         css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 0px; top: 0px;}';
-        css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
+        css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
         css += '.gclh-leaflet-control:hover .gclh-leaflet-list {display: block;}';
@@ -12926,7 +12961,7 @@ var mainGC = function() {
             css += "span.premium_only img {margin-right:0px;}";
             css += "#ownBMLsCount {cursor: default;} .map-item .send2gps img {margin-right: 0px;}";
             css += ".LogTotals, .LogTotals li {display: inline-block; margin: 0;} .LogTotals li {margin-right: 5px;}";
-            if (browser == 'firefox') css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: -moz-hidden-unscrollable; text-overflow: ellipsis;}";
+            css += ".gclh_owner {max-width: 110px;} .map-item h4 a {max-width: 265px;} .gclh_owner, .map-item h4 a {display: inline-block; white-space: nowrap; overflow: clip; text-overflow: ellipsis;}";
             appendCssStyle(css);
 
             // Create an observer instance.
@@ -15538,8 +15573,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/IOmK/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iVV"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/KfMM/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iWT"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16779,7 +16814,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "16.09.2025";
+            var thanksLastUpdate = "04.10.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17120,6 +17155,12 @@ var mainGC = function() {
             html += "</td></tr>";
             html += "</tbody></table>";
             html += checkboxy('settings_sort_map_layers', 'Sort map layers in map') + "<br>";
+            html += newParameterOn1;
+            html += "<div><b>Available map overlays</b>" + show_help("Here you can select additional layers to be added as overlays to the map layer menu.") + "</div>";
+            html += checkboxy('settings_add_overlay_wmthiking', 'Waymarked Trails Hiking') + "<br>";
+            html += checkboxy('settings_add_overlay_wmtcycling', 'Waymarked Trails Cycling') + "<br>";
+            html += checkboxy('settings_add_overlay_wmtmtb', 'Waymarked Trails MTB') + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "</div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps Page</b></div>";
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
@@ -17150,6 +17191,15 @@ var mainGC = function() {
             html += checkboxy('settings_add_link_komoot_on_gc_map', 'Add link to Komoot on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Komoot.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_switch_to_komoot_in_same_tab', 'Switch in same browser tab') + "<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterOn1;
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Waymarked Trails Pages</b></div>";
+            html += checkboxy('settings_add_link_wmthiking_on_gc_map', 'Add link to Waymarked Trails Hiking on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Waymarked Trails Hiking.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_wmthiking_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += checkboxy('settings_add_link_wmtcycling_on_gc_map', 'Add link to Waymarked Trails Cycling on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Waymarked Trails Cycling.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_wmtcycling_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += checkboxy('settings_add_link_wmtmtb_on_gc_map', 'Add link to Waymarked Trails MTB on Browse and Search Map') + show_help("With this option an icon is placed on the Browse Map and on the Search Map page to link to the same area in Waymarked Trails MTB.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_switch_to_wmtmtb_in_same_tab', 'Switch in same browser tab') + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop up on the Browse Map and in the cache detail screen on the left side of the Search Map. Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.") + "<br>";
             html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
@@ -18428,6 +18478,9 @@ var mainGC = function() {
             setEvForDepPara("settings_add_link_flopps_on_gc_map", "settings_switch_to_flopps_in_same_tab");
             setEvForDepPara("settings_add_link_geohack_on_gc_map", "settings_switch_to_geohack_in_same_tab");
             setEvForDepPara("settings_add_link_komoot_on_gc_map", "settings_switch_to_komoot_in_same_tab");
+            setEvForDepPara("settings_add_link_wmthiking_on_gc_map", "settings_switch_to_wmthiking_in_same_tab");
+            setEvForDepPara("settings_add_link_wmtcycling_on_gc_map", "settings_switch_to_wmtcycling_in_same_tab");
+            setEvForDepPara("settings_add_link_wmtmtb_on_gc_map", "settings_switch_to_wmtmtb_in_same_tab");
             setEvForDepPara("settings_show_latest_logs_symbols", "settings_show_latest_logs_symbols_count");
             setEvForDepPara("settings_load_logs_with_gclh", "settings_show_latest_logs_symbols");
             setEvForDepPara("settings_log_statistic", "settings_log_statistic_reload");
@@ -18843,6 +18896,12 @@ var mainGC = function() {
                 'settings_switch_to_geohack_in_same_tab',
                 'settings_add_link_komoot_on_gc_map',
                 'settings_switch_to_komoot_in_same_tab',
+                'settings_add_link_wmthiking_on_gc_map',
+                'settings_switch_to_wmthiking_in_same_tab',
+                'settings_add_link_wmtcycling_on_gc_map',
+                'settings_switch_to_wmtcycling_in_same_tab',
+                'settings_add_link_wmtmtb_on_gc_map',
+                'settings_switch_to_wmtmtb_in_same_tab',
                 'settings_sort_default_bookmarks',
                 'settings_make_vip_lists_hideable',
                 'settings_show_latest_logs_symbols',
@@ -19048,6 +19107,9 @@ var mainGC = function() {
                 'settings_upgrade_button_header_remove',
                 'settings_unsaved_log_message',
                 'settings_sort_map_layers',
+                'settings_add_overlay_wmthiking',
+                'settings_add_overlay_wmtcycling',
+                'settings_add_overlay_wmtmtb',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
                 'settings_show_create_pq_from_pq_splitter',

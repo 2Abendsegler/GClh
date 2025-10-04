@@ -1,3 +1,4 @@
+<a href="#v0177" title="GClh II version 0.17.7 (04.10.2025)">v0.17.7</a> &nbsp;
 <a href="#v0176" title="GClh II version 0.17.6 (16.09.2025)">v0.17.6</a> &nbsp;
 <a href="#v0175" title="GClh II version 0.17.5 (26.08.2025)">v0.17.5</a> &nbsp;
 <a href="#v0174" title="GClh II version 0.17.4 (14.08.2025)">v0.17.4</a> &nbsp;
@@ -39,6 +40,39 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.7:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Maps] Add Waymarked Trails as overlays to available map layers. [<a href="https://github.com/2Abendsegler/GClh/issues/2885" title="Issue 2885">2885</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		The maps now offer the option to display overlays for Waymarked Trails Hiking, Cycling and MTB. For details on the displayed trails, there are also links to Waymarked Trails website. The overlays and the websites are a service provided by Waymarked Trails.<br>
+		<img src="../images/0.17.7/Screen01.gif" alt="Screen01.gif"><br><br>
+		Here you can select additional layers to be added as overlays to the map layer menu.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_overlay_wmthiking" title="Link to your GClh II Config">Settings -> Map - Available map overlays:<br>
+		<img src="../images/0.17.7/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+		Here you can select additional links to the Waymarked Trails websites to be added under the Go to ... icon.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_link_wmthiking_on_gc_map" title="Link to your GClh II Config">Settings -> Map - Waymarked Trails Pages:<br>
+		<img src="../images/0.17.7/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Overflow in long cache names and owner names in popup. [<a href="https://github.com/2Abendsegler/GClh/issues/2891" title="Issue 2891">2891</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] JSON.parse error in geonames elevation data no longer displays as an error. [<a href="https://github.com/2Abendsegler/GClh/issues/2890" title="Issue 2890">2890</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing Trackable] Color lines run into error. [<a href="https://github.com/2Abendsegler/GClh/issues/2893" title="Issue 2893">2893</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Trackable] Overflow trackable log form on the right side. [<a href="https://github.com/2Abendsegler/GClh/issues/2892" title="Issue 2892">2892</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(04.10.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.6:
