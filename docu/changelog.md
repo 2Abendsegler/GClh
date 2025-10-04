@@ -1,4 +1,4 @@
-<a href="#v0176" title="GClh II version 0.17.7 (04.10.2025)">v0.17.7</a> &nbsp;
+<a href="#v0177" title="GClh II version 0.17.7 (04.10.2025)">v0.17.7</a> &nbsp;
 <a href="#v0176" title="GClh II version 0.17.6 (16.09.2025)">v0.17.6</a> &nbsp;
 <a href="#v0175" title="GClh II version 0.17.5 (26.08.2025)">v0.17.5</a> &nbsp;
 <a href="#v0174" title="GClh II version 0.17.4 (14.08.2025)">v0.17.4</a> &nbsp;
