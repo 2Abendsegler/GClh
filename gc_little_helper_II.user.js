@@ -1980,9 +1980,8 @@ var mainGC = function() {
                         css += ".span-20 {width: " + new_width + "px;}";
                     } else if (is_page("logform") || document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) {
                         if (settings_larger_content_width_log_form) {
-                            css += ".content-container, .content-container section, .content-container form {width: " + new_width + "px !important; max-width: unset !important;}";
-                            css += ".form-container {margin-left: 0px !important; margin-right: 0px !important;}";
-                            css += ".breadcrumbs {margin-left: 0px !important; margin-right: 0px !important; padding-left: 0px !important; padding-right: 0px !important;}";
+                            css += ".content-container {width: " + new_width + "px !important; max-width: unset !important;}";
+                            css += ".content-container section, .content-container form {max-width: unset !important;}";
                         }
                         if (settings_less_space_log_lines_log_form) {
                             css += "#gc-md-editor_md, .markdown-output {line-height: 1.375; font-size: 14px; gap: 0px;}";
