@@ -8534,7 +8534,7 @@ var mainGC = function() {
                     // Fire every 500ms at maximum.
                     lastFired = + new Date();
                     var isBusy = false;
-                    var startReloadAtThisPixel = $(document).height() - $("#cache_logs_container").offset().top + 50;
+                    var startReloadAtThisPixel = $(document).height() - $("#cache_logs_container").offset()?.top + 50;
                     var currentPosition = $(this).scrollTop();
                     if (currentPosition > startReloadAtThisPixel) {
                         // If dynamic log load is busy, disabled or all logs are already loaded, no need to continue.
@@ -20693,7 +20693,7 @@ var mainGC = function() {
             span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
             if (style != "") span.setAttribute("style", style);
             if (!anker_element) anker_element = element_to_copy;
-            if (!anker_element.parentNode) return;
+            if (!anker_element?.parentNode) return;
             anker_element.parentNode.insertBefore(span, anker_element);
             appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
             span.addEventListener('click', function() {
