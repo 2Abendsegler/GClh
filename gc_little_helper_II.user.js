@@ -11386,7 +11386,16 @@ var mainGC = function() {
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
                     setZoom();
-                    return target.apply(thisArg, argArray);
+
+                    // FF issue (https://github.com/2Abendsegler/GClh/issues/2889):
+                    // "Too many calls to Location or History APIs in a short period of time" results in an exception
+                    // and therefore gclh code stops. This exception is catched here and logged as a warning.
+                    // Not an issue in Chrome.
+                    try {
+                        return target.apply(thisArg, argArray);
+                    } catch(e) {
+                        console.warn(e);
+                    }
                 }
             });
 
