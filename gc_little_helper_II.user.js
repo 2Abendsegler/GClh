@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.7
+// @version      0.17.8
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -8534,7 +8534,7 @@ var mainGC = function() {
                     // Fire every 500ms at maximum.
                     lastFired = + new Date();
                     var isBusy = false;
-                    var startReloadAtThisPixel = $(document).height() - $("#cache_logs_container").offset().top + 50;
+                    var startReloadAtThisPixel = $(document).height() - $("#cache_logs_container").offset()?.top + 50;
                     var currentPosition = $(this).scrollTop();
                     if (currentPosition > startReloadAtThisPixel) {
                         // If dynamic log load is busy, disabled or all logs are already loaded, no need to continue.
@@ -11386,7 +11386,16 @@ var mainGC = function() {
             window.history.pushState = new Proxy(window.history.pushState, {
                 apply: (target, thisArg, argArray) => {
                     setZoom();
-                    return target.apply(thisArg, argArray);
+
+                    // FF issue (https://github.com/2Abendsegler/GClh/issues/2889):
+                    // "Too many calls to Location or History APIs in a short period of time" results in an exception
+                    // and therefore gclh code stops. This exception is catched here and logged as a warning.
+                    // Not an issue in Chrome.
+                    try {
+                        return target.apply(thisArg, argArray);
+                    } catch(e) {
+                        console.warn(e);
+                    }
                 }
             });
 
@@ -15573,8 +15582,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/KfMM/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iWT"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/VVr8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iXw"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16814,7 +16823,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "04.10.2025";
+            var thanksLastUpdate = "19.10.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -20693,7 +20702,7 @@ var mainGC = function() {
             span.innerHTML = '<a class="ctoc_link" href="javascript:void(0);"><img src="'+global_copy_icon+'" title="Copy ' + title + ' ' + 'to clipboard" style="vertical-align: text-top;"> </a>';
             if (style != "") span.setAttribute("style", style);
             if (!anker_element) anker_element = element_to_copy;
-            if (!anker_element.parentNode) return;
+            if (!anker_element?.parentNode) return;
             anker_element.parentNode.insertBefore(span, anker_element);
             appendCssStyle(".ctoc_link:link {text-decoration: none ;}", null, 'ctoc_link_style_id');
             span.addEventListener('click', function() {
