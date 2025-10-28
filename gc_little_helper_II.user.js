@@ -11063,31 +11063,6 @@ var mainGC = function() {
                 setTimeout(addCacheDisplayOptionsButton, 0);
             }
 
-            // Handle enabling/disabling display options button.
-            function addEnableDisableDisplayOptionsHandler() {
-                if (document.querySelector('button[data-testid="list-mode-toggle"]')) {
-                    // Returning to search list.
-                    if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]')) {
-                        if ($('#gclh_display_options_control').hasClass('gclh-bml')) {
-                            $('#gclh_display_options_control').removeClass('gclh-bml');
-                            moveend_zoomend = false;
-
-                            // Run box search s.t. results match map view.
-                            setTimeout(() => {
-                                $('[data-event-label="Map - Search This Area"]').first().click();
-                            },1000);
-                        }
-                    } else {
-                        if (getURLParam('bmCode')) {
-                            $('#gclh_display_options_control').addClass('gclh-bml');
-                            forceCachesRefresh();
-                        }
-                        // Ensure proper zooming in BML by enabling 'moveend' and 'zoomend' event handlers.
-                        moveend_zoomend = true;
-                    }
-                }
-            }
-
             // Add layer control.
             if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 addLayersOnMap();
@@ -11220,7 +11195,7 @@ var mainGC = function() {
             let filterSearchWasRunning = false;
             function run_searchThisArea() {
                 // Don't run on matrix links or BML section.
-                if (isGclhMatrix || document.querySelector('li.bg-green-500[data-testid="list-mode-item"]')) return false;
+                if (isGclhMatrix || document.querySelector('button[data-testid="list-mode-toggle"][aria-selected="true"]')) return false;
 
                 // Don't run more than once at the same time.
                 if (searchThisAreaIsRunning) return false;
@@ -11246,6 +11221,36 @@ var mainGC = function() {
                 } else return false;
 
                 return true;
+            }
+
+            // Handle toggle between search results and bookmark lists (if automatic search is active).
+            function handleToggleBetweenSearchAndBMLTab() {
+                const $searchTab = $('button[data-testid="search-mode-toggle"]');
+                if (!$searchTab[0]) return;
+
+                const $meta = $('meta#GClh_II_running');
+                if ($searchTab.attr('aria-selected') === 'true') {
+                    // Search tab is active.
+                    if ($meta.hasClass('gclh_search_map_bml')) {
+                        // Returning from list to search tab and a BML had been selected.
+                        $meta.removeClass('gclh_search_map_bml');
+
+                        // Run box search s.t. results match map view.
+                        setTimeout(() => {
+                            $('[data-event-label="Map - Search This Area"]').first().click();
+                        },1000);
+                        // Temporarily disable 'moveend' and 'zoomend' event handlers.
+                        moveend_zoomend = false;
+                    }
+                } else {
+                    // BML tab is active.
+                    if (getURLParam('bmCode')) {
+                        // BML selected.
+                        $meta.addClass('gclh_search_map_bml');
+                    }
+                    // Ensure proper zooming in BML by enabling 'moveend' and 'zoomend' event handlers.
+                    moveend_zoomend = true;
+                }
             }
 
             if (settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
@@ -11946,7 +11951,7 @@ var mainGC = function() {
             // Create Save as PQ Button.
             var set_defaults = getValue('set_switch_searchmap_set_defaults', false);
             function addCreatePQButton() {
-                if ($('.bg-green-500[data-testid="list-mode-item"]')[0]) {
+                if ($('button[data-testid="list-mode-toggle"][aria-selected="true"]')[0]) {
                     $('.gclh_PQHead').remove();
                 } else {
                     if ($('[data-testid="sidebar-header-container"]')[0] && $('#gclh_action_bar')[0] && !$('.gclh_PQHead')[0]) {
@@ -12028,11 +12033,12 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
-//xxx deaktiviert
                 scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
+//xxx deaktiviert
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
+//xxx deaktiviert
 //                setStrikeDisabledInList();
                 showHint();
                 scrollUpInDescription();
@@ -12042,7 +12048,7 @@ var mainGC = function() {
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
-                if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) addEnableDisableDisplayOptionsHandler();
+                if (settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) handleToggleBetweenSearchAndBMLTab();
             }
 
             // Observer callback for body and checking existence of sidebar.
