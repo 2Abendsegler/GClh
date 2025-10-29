@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.8
+// @version      0.17.9
 //<-- $$000
 // @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -11063,31 +11063,6 @@ var mainGC = function() {
                 setTimeout(addCacheDisplayOptionsButton, 0);
             }
 
-            // Handle enabling/disabling display options button.
-            function addEnableDisableDisplayOptionsHandler() {
-                if (document.querySelector('button[data-testid="list-mode-toggle"]')) {
-                    // Returning to search list.
-                    if (document.querySelector('li.bg-green-500[data-testid="search-mode-item"]')) {
-                        if ($('#gclh_display_options_control').hasClass('gclh-bml')) {
-                            $('#gclh_display_options_control').removeClass('gclh-bml');
-                            moveend_zoomend = false;
-
-                            // Run box search s.t. results match map view.
-                            setTimeout(() => {
-                                $('[data-event-label="Map - Search This Area"]').first().click();
-                            },1000);
-                        }
-                    } else {
-                        if (getURLParam('bmCode')) {
-                            $('#gclh_display_options_control').addClass('gclh-bml');
-                            forceCachesRefresh();
-                        }
-                        // Ensure proper zooming in BML by enabling 'moveend' and 'zoomend' event handlers.
-                        moveend_zoomend = true;
-                    }
-                }
-            }
-
             // Add layer control.
             if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 addLayersOnMap();
@@ -11220,7 +11195,7 @@ var mainGC = function() {
             let filterSearchWasRunning = false;
             function run_searchThisArea() {
                 // Don't run on matrix links or BML section.
-                if (isGclhMatrix || document.querySelector('li.bg-green-500[data-testid="list-mode-item"]')) return false;
+                if (isGclhMatrix || document.querySelector('button[data-testid="list-mode-toggle"][aria-selected="true"]')) return false;
 
                 // Don't run more than once at the same time.
                 if (searchThisAreaIsRunning) return false;
@@ -11246,6 +11221,36 @@ var mainGC = function() {
                 } else return false;
 
                 return true;
+            }
+
+            // Handle toggle between search results and bookmark lists (if automatic search is active).
+            function handleToggleBetweenSearchAndBMLTab() {
+                const $searchTab = $('button[data-testid="search-mode-toggle"]');
+                if (!$searchTab[0]) return;
+
+                const $meta = $('meta#GClh_II_running');
+                if ($searchTab.attr('aria-selected') === 'true') {
+                    // Search tab is active.
+                    if ($meta.hasClass('gclh_search_map_bml')) {
+                        // Returning from list to search tab and a BML had been selected.
+                        $meta.removeClass('gclh_search_map_bml');
+
+                        // Run box search s.t. results match map view.
+                        setTimeout(() => {
+                            $('[data-event-label="Map - Search This Area"]').first().click();
+                        },1000);
+                        // Temporarily disable 'moveend' and 'zoomend' event handlers.
+                        moveend_zoomend = false;
+                    }
+                } else {
+                    // BML tab is active.
+                    if (getURLParam('bmCode')) {
+                        // BML selected.
+                        $meta.addClass('gclh_search_map_bml');
+                    }
+                    // Ensure proper zooming in BML by enabling 'moveend' and 'zoomend' event handlers.
+                    moveend_zoomend = true;
+                }
             }
 
             if (settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
@@ -11946,7 +11951,7 @@ var mainGC = function() {
             // Create Save as PQ Button.
             var set_defaults = getValue('set_switch_searchmap_set_defaults', false);
             function addCreatePQButton() {
-                if ($('.bg-green-500[data-testid="list-mode-item"]')[0]) {
+                if ($('button[data-testid="list-mode-toggle"][aria-selected="true"]')[0]) {
                     $('.gclh_PQHead').remove();
                 } else {
                     if ($('[data-testid="sidebar-header-container"]')[0] && $('#gclh_action_bar')[0] && !$('.gclh_PQHead')[0]) {
@@ -12028,11 +12033,12 @@ var mainGC = function() {
 
             // Processing all steps.
             function processAllSearchMap() {
-//xxx deaktiviert
                 scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
+//xxx deaktiviert
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
+//xxx deaktiviert
 //                setStrikeDisabledInList();
                 showHint();
                 scrollUpInDescription();
@@ -12042,7 +12048,7 @@ var mainGC = function() {
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
-                if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) addEnableDisableDisplayOptionsHandler();
+                if (settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) handleToggleBetweenSearchAndBMLTab();
             }
 
             // Observer callback for body and checking existence of sidebar.
@@ -15582,8 +15588,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/VVr8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iXw"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/5KS9/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iXB"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16823,7 +16829,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "19.10.2025";
+            var thanksLastUpdate = "28.10.2025";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";

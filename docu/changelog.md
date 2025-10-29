@@ -1,4 +1,5 @@
-<a href="#v0178" title="GClh II version 0.17.9 (20.10.2025)">v0.17.8</a> &nbsp;
+<a href="#v0179" title="GClh II version 0.17.9 (29.10.2025)">v0.17.9</a> &nbsp;
+<a href="#v0178" title="GClh II version 0.17.8 (20.10.2025)">v0.17.8</a> &nbsp;
 <a href="#v0177" title="GClh II version 0.17.7 (04.10.2025)">v0.17.7</a> &nbsp;
 <a href="#v0176" title="GClh II version 0.17.6 (16.09.2025)">v0.17.6</a> &nbsp;
 <a href="#v0175" title="GClh II version 0.17.5 (26.08.2025)">v0.17.5</a> &nbsp;
@@ -41,6 +42,19 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.9:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Search Map] No automatic search when switching from lists to search tab. [<a href="https://github.com/2Abendsegler/GClh/issues/2903" title="Issue 2903">2903</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+</ul>
+<br>
+(29.10.2025)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.8:
