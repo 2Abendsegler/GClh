@@ -10331,32 +10331,33 @@ var mainGC = function() {
                 return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
             }
             // Helper to find the key of a module function by pattern ('obj' must contain the loaded modules, since there the function names are human readable).
-            function getKeyByPattern(obj, pattern1, pattern2) {
+            // Function searches on root and 1st child level of each module.
+            function getKeyByPattern(obj, pattern) {
                 for (const [index, moduleFunctions] of Object.entries(obj)) {
                     for (const key in moduleFunctions) {
-                        const value = moduleFunctions[key]?.[pattern1];
-                        if (value && (!pattern2 || value[pattern2])) {
-                            return [index, key];
-                        }
+                        const entry = moduleFunctions[key];
+                        if (entry?.[pattern]) return [index, key];
+                        if (entry && Object.values(entry).some(inner => inner?.[pattern])) return [index, key];
                     }
                 }
                 return [false, false];
             }
 
-            // Add proxy for cache properties and get map handle: observe html until webpackChunk_N_E and map are available.
+            // Add proxies for getting map handle and modifying cache properties.
+            if (!unsafeWindow.GCLH) unsafeWindow.GCLH = {};
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
                 // Safeguard.
                 if (++observerCalls > 99) {
                     observer.disconnect();
-                    if (!unsafeWindow.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
-                    if (!unsafeWindow.React?.getLayout) gclh_error("Add proxy for cache properties", new Error('Layout.getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls'));
+                    if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
+                    if (!unsafeWindow.GCLH?.getLayout) gclh_error("Add proxy for cache properties", new Error('getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Display options won\'t work as expected.'));
                     return;
                 }
 
-                // Add proxy for cache properties;
-                if (!unsafeWindow.React?.getLayout && unsafeWindow.webpackChunk_N_E) {
-                    // Add Layout module to global space.
+                // Add proxies for getting map handle and modifying cache properties.
+                if (unsafeWindow.webpackChunk_N_E && (!unsafeWindow.GCLH?.React || !unsafeWindow.GCLH?.getLayout) ) {
+                    // Add webpack modules to global space.
                     try {
                         if (!window.webpackModuleLoader) {
                             // Add temp module to get access to the webpack module loader.
@@ -10381,57 +10382,55 @@ var mainGC = function() {
                         });
 
                         // Identify 'useState' function from all webpack modules.
-                        if (!unsafeWindow.React) {
+                        if (!unsafeWindow.GCLH?.React) {
                             let [index, key] = getKeyByPattern(moduleFunctions, 'useState');
-                            // Save in global context.
                             if (key) {
-                                unsafeWindow.React = moduleFunctions[index][key];
-                            } else return;
+                                // Save in global context.
+                                unsafeWindow.GCLH.React = moduleFunctions[index][key];
+                                // Add proxy to get map handle.
+                                if (unsafeWindow.GCLH?.React?.useState) {
+                                    unsafeWindow.GCLH.React.useState = new Proxy(unsafeWindow.GCLH.React.useState, {
+                                        apply: (target, thisArg, argArray) => {
+                                            let useState = target.apply(thisArg, argArray);
+                                            if (useState[0]?.__version) {
+                                                getMapHandle(useState);
+                                            }
+                                            return useState;
+                                        }
+                                    });
+                                }
+                            }
                         }
 
-                        // Identify 'Layout.getLayout' function from all webpack modules.
-                        if (unsafeWindow.React && !unsafeWindow.React?.getLayout) {
-                            [index, key] = getKeyByPattern(moduleFunctions, 'Layout', 'getLayout');
-                            // Save in global context.
+                        // Identify 'getLayout' function from all webpack modules.
+                        if (!unsafeWindow.GCLH?.getLayout) {
+                            [index, key] = getKeyByPattern(moduleFunctions, 'getLayout');
                             if (key) {
-                                unsafeWindow.React.getLayout = moduleFunctions[index][key];
-                            } else return;
+                                // Save in global context.
+                                unsafeWindow.GCLH.getLayout = moduleFunctions[index][key];
+                                // Add proxy to modify cache properties.
+                                if (unsafeWindow.GCLH?.getLayout?.default?.getLayout && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                                    // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
+                                    // (if "show at corrected coords" is active on page load)
+                                    setTimeout(() => {
+                                        unsafeWindow.GCLH.getLayout.default.getLayout = new Proxy(unsafeWindow.GCLH.getLayout.default.getLayout, {
+                                            apply: (target, thisArg, argArray) => {
+                                                processCaches(argArray[0]);
+                                                return target.apply(thisArg, argArray);
+                                            }
+                                        });
+                                    }, 250);
+                                }
+                            }
                         }
                     } catch(e) {
                         observer.disconnect();
                         gclh_error('handling of unsafeWindow.webpackChunk_N_E failed',e);
                     }
-
-                    // Add proxy to get map handle.
-                    if (unsafeWindow.React?.useState) {
-                        unsafeWindow.React.useState = new Proxy(unsafeWindow.React.useState, {
-                            apply: (target, thisArg, argArray) => {
-                                let useState = target.apply(thisArg, argArray);
-                                if (useState[0]?.__version) {
-                                    getMapHandle(useState);
-                                }
-                                return useState;
-                            }
-                        });
-                    }
-
-                    // Add proxy for cache properties.
-                    if (unsafeWindow.React?.getLayout && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
-                        // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
-                        // (if "show at corrected coords" is active on page load)
-                        setTimeout(() => {
-                            unsafeWindow.React.getLayout.Layout.getLayout = new Proxy(unsafeWindow.React.getLayout.Layout.getLayout, {
-                                apply: (target, thisArg, argArray) => {
-                                    processCaches(argArray[0]);
-                                    return target.apply(thisArg, argArray);
-                                }
-                            });
-                        }, 250);
-                    }
                 }
 
                 // Finished, stop observing.
-                if (unsafeWindow.React?.getLayout) {
+                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout) {
                     observer.disconnect();
                     return;
                 }
