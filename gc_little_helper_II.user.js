@@ -248,7 +248,7 @@ var constInit = function(c) {
     bookmark("Drafts", "/my/fieldnotes.aspx", c.bookmarks);
     bookmark("Public Profile Statistics", "/p/default.aspx?tab=stats#profilepanel", c.bookmarks);
     bookmark("Geocaches RecViewed", "/my/recentlyviewedcaches.aspx", c.bookmarks);
-    bookmark("Search TB", "/track/travelbug.aspx", c.bookmarks);
+    bookmark("Search TB", "/track", c.bookmarks);
     bookmark("Search Geocoin", "/track/geocoin.aspx", c.bookmarks);
     externalBookmark("Geocaches Labs", "https://labs.geocaching.com/", c.bookmarks);
     bookmark("Search GC", "/play/search/", c.bookmarks);
