@@ -745,6 +745,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
     c.settings_improve_notifications = getValue("settings_improve_notifications", true);
+    c.settings_dim_lost_trackables = getValue("settings_dim_lost_trackables", false);
     c.settings_remove_target_log_form = getValue("settings_remove_target_log_form", false);
     c.settings_remove_target_log_view = getValue("settings_remove_target_log_view", false);
     c.settings_hide_locked_tbs_log_form = getValue("settings_hide_locked_tbs_log_form", true);
@@ -13284,6 +13285,13 @@ var mainGC = function() {
         } catch(e) {gclh_error("Trackable map resizing and zooming with mouse wheel",e);}
     }
 
+// Dimmed style for lost trackabels on owned trackables view.
+    if (document.location.href.match(/\.com\/track\/search\.aspx\?o=1&uid=/) && settings_dim_lost_trackables) {
+        const $rows = $('table.Table td:nth-child(5)').not(':has(img[src^="/images/"])').closest('tr');
+        $rows.find('td, a').css({ color: '#AFAFAF', textDecoration: 'line-through' });
+        $rows.find('img').css({ opacity: 0.35 });
+    }
+
 // Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
     try {
         if ((settings_count_own_matrix || settings_count_own_matrix_show_next) && isOwnStatisticsPage()) {
@@ -17056,6 +17064,9 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_improve_notifications', 'Improve notification list and notifications') + "<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_dim_lost_trackables', 'Dim lost trackables in owned trackables view') + show_help("Lost trackables in owned trackables view can be visually dimmed so they are easier to distinguish from active trackables.") + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
@@ -19145,6 +19156,7 @@ var mainGC = function() {
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
                 'settings_improve_notifications',
+                'settings_dim_lost_trackables',
                 'settings_remove_target_log_form',
                 'settings_remove_target_log_view',
                 'settings_hide_locked_tbs_log_form',
