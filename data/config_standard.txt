@@ -231,6 +231,7 @@
   "settings_show_individual_links": true,
   "settings_show_flopps_link": true,
   "settings_show_brouter_link": true,
+  "settings_show_bikerouter_link": true,
   "settings_show_gpsvisualizer_link": true,
   "settings_show_gpsvisualizer_gcsymbols": true,
   "settings_show_gpsvisualizer_typedesc": true,
