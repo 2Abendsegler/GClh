@@ -383,6 +383,7 @@ var variablesInit = function(c) {
     c.settings_gc_tour_is_working = getValue("settings_gc_tour_is_working", false);
     c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     c.settings_show_message = getValue("settings_show_message", true);
+    c.settings_hide_view_treasures_link = getValue("settings_hide_view_treasures_link", false);
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     c.settings_use_one_click_ignoring = getValue("settings_use_one_click_ignoring", true);
     c.settings_show_common_lists_in_zebra = getValue("settings_show_common_lists_in_zebra", true);
@@ -2646,6 +2647,11 @@ var mainGC = function() {
 // Prevent pop up when clicking on "Watch" or "Stop Watching".
     if (is_page("cache_listing") && settings_prevent_watchclick_popup) {
         appendCssStyle('.qtip.qtip-light.qtip-pos-rc:not(.qtip-shadow):not(.pop-modal) {display: none !important;}');
+    }
+
+// Hide "View Treasures" link.
+    if (is_page("cache_listing") && settings_hide_view_treasures_link) {
+        $('#ctl00_ContentBody_GeoNav_uxViewTreasuresBtn').hide();
     }
 
 // Improve Ignore, Stop Ignoring button handling.
@@ -17376,6 +17382,9 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_hide_view_treasures_link', 'Hide \"View Treasures\" link') + prem + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
             html += newParameterOn1;
@@ -18854,6 +18863,7 @@ var mainGC = function() {
                 'settings_menu_show_separator',
                 'settings_menu_float_right',
                 'settings_show_message',
+                'settings_hide_view_treasures_link',
                 'settings_show_remove_ignoring_link',
                 'settings_use_one_click_ignoring',
                 'settings_show_common_lists_in_zebra',

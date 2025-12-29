@@ -33,6 +33,7 @@
   "settings_gc_tour_is_working": false,
   "settings_show_smaller_gc_link": true,
   "settings_show_message": true,
+  "settings_hide_view_treasures_link": false,
   "settings_show_remove_ignoring_link": true,
   "settings_use_one_click_ignoring": true,
   "settings_show_common_lists_in_zebra": true,
