@@ -2,9 +2,9 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.17.10
+// @version      0.17.11
 //<-- $$000
-// @copyright    2016-2025 2Abendsegler, 2019-2025 capoaira, 2025-2025 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
+// @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
 // @license      GNU General Public License v2.0
 // @supportURL   https://github.com/2Abendsegler/GClh/issues
@@ -383,6 +383,7 @@ var variablesInit = function(c) {
     c.settings_gc_tour_is_working = getValue("settings_gc_tour_is_working", false);
     c.settings_show_smaller_gc_link = getValue("settings_show_smaller_gc_link", true);
     c.settings_show_message = getValue("settings_show_message", true);
+    c.settings_hide_view_treasures_link = getValue("settings_hide_view_treasures_link", false);
     c.settings_show_remove_ignoring_link = getValue("settings_show_remove_ignoring_link", true);
     c.settings_use_one_click_ignoring = getValue("settings_use_one_click_ignoring", true);
     c.settings_show_common_lists_in_zebra = getValue("settings_show_common_lists_in_zebra", true);
@@ -596,6 +597,7 @@ var variablesInit = function(c) {
     c.settings_individual_links = JSON.parse(getValue("settings_individual_links", "{}"));
     c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
+    c.settings_show_bikerouter_link = getValue("settings_show_bikerouter_link", true);
     c.settings_show_gpsvisualizer_link = getValue("settings_show_gpsvisualizer_link", true);
     c.settings_show_gpsvisualizer_gcsymbols = getValue("settings_show_gpsvisualizer_gcsymbols", true);
     c.settings_show_gpsvisualizer_typedesc = getValue("settings_show_gpsvisualizer_typedesc", true);
@@ -745,6 +747,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
     c.settings_improve_notifications = getValue("settings_improve_notifications", true);
+    c.settings_dim_lost_trackables = getValue("settings_dim_lost_trackables", false);
     c.settings_remove_target_log_form = getValue("settings_remove_target_log_form", false);
     c.settings_remove_target_log_view = getValue("settings_remove_target_log_view", false);
     c.settings_hide_locked_tbs_log_form = getValue("settings_hide_locked_tbs_log_form", true);
@@ -2648,6 +2651,11 @@ var mainGC = function() {
         appendCssStyle('.qtip.qtip-light.qtip-pos-rc:not(.qtip-shadow):not(.pop-modal) {display: none !important;}');
     }
 
+// Hide "View Treasures" link.
+    if (is_page("cache_listing") && settings_hide_view_treasures_link) {
+        $('#ctl00_ContentBody_GeoNav_uxViewTreasuresBtn').hide();
+    }
+
 // Improve Ignore, Stop Ignoring button handling.
     if (is_page("cache_listing") && (settings_show_remove_ignoring_link && settings_use_one_click_ignoring)) {
         appendCssStyle("#ignoreSaved {display: none; color: #E0B70A; float: right; padding-left: 0px;}");
@@ -3013,7 +3021,7 @@ var mainGC = function() {
         remove_copydata_menu_content();
     }
 
-// Links BRouter, Flopps Map, GPSVisualizer and Openrouteservice at right sidebar.
+// Links BRouter, Bikerouter, Flopps Map, GPSVisualizer and Openrouteservice at right sidebar.
     const LatLonDigits = 6;
     function mapservice_link( service_configuration ) {
         var uniqueServiceId = service_configuration.uniqueServiceId;
@@ -3105,7 +3113,8 @@ var mainGC = function() {
             runWithOneWaypoint: service_configuration.runWithOneWaypoint
         };
         var url = data.urlTemplate;
-        var waypointString = "";
+        var lnglatString = [];
+        var poiString = [];
         var boundarybox = undefined;
         if ( data.context == undefined ) data.context = {};
         if ( data.temp == undefined ) data.context.temp = {};
@@ -3147,11 +3156,20 @@ var mainGC = function() {
             }
             value = data.waypointFunction( waypoint, name, radius, data.context );
             if (value != "") {
-                waypointString += (i?data.waypointSeparator:'') + value;
+                lnglatString.push(value);
+                // In waypoint.name, handle characters that have a special meaning.
+                poiString.push(value + ',' + name + ' - ' + html_to_str(waypoint.name).replace(/[;,&+]/g, '_'));
                 boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
         }
+        let waypointString = lnglatString.join(data.waypointSeparator);
         var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
+        if (service_configuration.uniqueServiceId === 'bikerouter') {
+            // Add waypoint POIs.
+            waypointString += '&pois=' + poiString.join(data.waypointSeparator);
+            // Adapt zoom level to account for reduced view port due to navigation and statistics bars.
+            zoom--;
+        }
         url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
         url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
         url = url.replace("{zoom}",zoom);
@@ -3227,8 +3245,8 @@ var mainGC = function() {
         return roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits);
     }
 
-// CSS for BRouter, Flopp's Map, GPSVisualizer, Openrouteservice and Copy Data links.
-    if ((settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing")) {
+// CSS for BRouter, Bikerouter, Flopp's Map, GPSVisualizer, Openrouteservice and Copy Data links.
+    if ((settings_show_brouter_link || settings_show_bikerouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing")) {
         css += ".GClhdropbtn {";
         css += "  white-space: nowrap;";
         css += "  cursor: pointer;}";
@@ -3297,6 +3315,28 @@ var mainGC = function() {
                     runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
+        }
+        // Show links which open Bikerouter with all waypoints of a cache.
+        if (settings_show_bikerouter_link) {
+            try {
+                const language = unsafeWindow.serverParameters["app:options"]?.localRegion?.split('-')[0] || 'en';
+                mapservice_link( {
+                    uniqueServiceId: "bikerouter",
+                    urlTemplate: 'https://bikerouter.de/?lng=' + language + '#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}&profile=shortest',
+                    layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 18, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 15, displayName: 'OpenTopoMap' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
+                    waypointSeparator : ';',
+                    waypointFunction : brouterWaypoint,
+                    mapOffset : { width: 0, height: 0 },
+                    defaultMap : 'OpenStreetMap',
+                    sidebar : { linkText : "Show on Bikerouter", icon : true, icondata : global_bikerouter_icon },
+                    waypointtable : { linkText : "Show route on Bikerouter with &#8230;", icon : false },
+                    maxUrlLength: 4000,
+                    action: mapservice_open,
+                    context : {},
+                    useHomeCoords: false,
+                    runWithOneWaypoint: true
+                });
+            } catch(e) {gclh_error("Show button Bikerouter and open Bikerouter",e);}
         }
         // Show links which open GPSVisualizer with all waypoints of a cache.
         if (settings_show_gpsvisualizer_link) {
@@ -13284,6 +13324,15 @@ var mainGC = function() {
         } catch(e) {gclh_error("Trackable map resizing and zooming with mouse wheel",e);}
     }
 
+// Dimmed style for lost trackabels on owned trackables view.
+    if (document.location.href.match(/\.com\/track\/search\.aspx\?o=1&uid=/) && settings_dim_lost_trackables) {
+        try {
+            const $rows = $('table.Table td:nth-child(5)').not(':has(img[src^="/images/"])').closest('tr');
+            $rows.find('td, a').css({ color: '#AFAFAF', textDecoration: 'line-through' });
+            $rows.find('img').css({ opacity: 0.35 });
+        } catch(e) {gclh_error("Dimmed style for lost trackabels on owned trackables view",e);}
+    }
+
 // Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
     try {
         if ((settings_count_own_matrix || settings_count_own_matrix_show_next) && isOwnStatisticsPage()) {
@@ -15587,8 +15636,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/SH1k/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iXP"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/4qxT/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iYK"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -15708,24 +15757,6 @@ var mainGC = function() {
         if (check_wpdata_evaluable() == false) return waypoints;
         try {
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
-            var ListingCoords = {
-                name: unsafeWindow.mapLatLng.name,
-                gccode: gccode,
-                prefix: "",
-                source: "listing",
-                typeid: unsafeWindow.mapLatLng.type,
-                latitude: unsafeWindow.mapLatLng.lat,
-                longitude: unsafeWindow.mapLatLng.lng,
-                prefixedName: gccode,
-            };
-            waypoints.push(ListingCoords);
-            if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
-                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
-                OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
-                OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
-                OriginalCoords.source = "original";
-                waypoints.push(OriginalCoords);
-            }
             for ( var i=0; i<cmapAdditionalWaypoints.length; i++ ) {
                 var waypoint = {
                     name: cmapAdditionalWaypoints[i].name,
@@ -15738,6 +15769,30 @@ var mainGC = function() {
                     prefixedName: cmapAdditionalWaypoints[i].pf+gccode.substring(2),
                 };
                 waypoints.push(waypoint);
+            }
+            var ListingCoords = {
+                name: unsafeWindow.mapLatLng.name,
+                gccode: gccode,
+                prefix: "",
+                source: "listing",
+                typeid: unsafeWindow.mapLatLng.type,
+                latitude: unsafeWindow.mapLatLng.lat,
+                longitude: unsafeWindow.mapLatLng.lng,
+                prefixedName: gccode,
+            };
+            if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
+                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
+                OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
+                OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
+                OriginalCoords.source = "original";
+                waypoints.unshift(OriginalCoords);
+            }
+            // Multi,Letterbox,Mystery,Wherigo: if not corrected then start routing at listing coords else end routing at listing coords.
+            // All others: always end routing at listing coords.
+            if (!unsafeWindow.mapLatLng.isUserDefined && [3, 5, 8, 1858].includes(unsafeWindow.mapLatLng.type)) {
+                waypoints.unshift(ListingCoords);
+            } else {
+                waypoints.push(ListingCoords);
             }
         } catch(e) {gclh_error("Determine waypoints",e);}
         return waypoints;
@@ -16828,7 +16883,7 @@ var mainGC = function() {
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
-            var thanksLastUpdate = "21.11.2025";
+            var thanksLastUpdate = "11.01.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17056,6 +17111,9 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_improve_notifications', 'Improve notification list and notifications') + "<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_dim_lost_trackables', 'Dim lost trackables in owned trackables view') + show_help("Lost trackables in owned trackables view can be visually dimmed so they are easier to distinguish from active trackables.") + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "</div>";
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","maps")+"<label for='lnk_gclh_config_maps'>Map</label></h4>";
@@ -17376,6 +17434,9 @@ var mainGC = function() {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the maximum height of the \"Add to list\" pop up to bookmark a cache from 100 up to 520 pixel. The default is 205 pixel, similar to the standard.") + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_hide_view_treasures_link', 'Hide \"View Treasures\" link') + prem + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_show_remove_ignoring_link', 'Show \"Stop Ignoring\", if cache is already ignored') + show_help("This option replace the \"Ignore\" link description with the \"Stop Ignoring\" link description in the cache listing, if the cache is already ignored.") + prem + "<br>";
             html += "&nbsp; " + checkboxy('settings_use_one_click_ignoring', 'One click ignoring/restoring') + show_help("With this option you will be able to ignore respectively restore a cache in cache listing with only one click.") + "<br>";
             html += newParameterOn1;
@@ -17407,6 +17468,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show radius around caches on Flopp\'s Map') + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_show_bikerouter_link', 'Show Bikerouter links in sidebar and under the "Additional Waypoints"') + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use geocaching icons on GPSVisualizer map') + show_help("Instead of default icons, geocaching icons are used. If the URL is too long, disable this option.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help("Transfer for every waypoint the type as text in the description. If the URL is too long, disable this option.") + "<br>";
@@ -18854,6 +18918,7 @@ var mainGC = function() {
                 'settings_menu_show_separator',
                 'settings_menu_float_right',
                 'settings_show_message',
+                'settings_hide_view_treasures_link',
                 'settings_show_remove_ignoring_link',
                 'settings_use_one_click_ignoring',
                 'settings_show_common_lists_in_zebra',
@@ -19021,6 +19086,7 @@ var mainGC = function() {
                 'settings_show_individual_links',
                 'settings_show_flopps_link',
                 'settings_show_brouter_link',
+                'settings_show_bikerouter_link',
                 'settings_show_gpsvisualizer_link',
                 'settings_show_gpsvisualizer_gcsymbols',
                 'settings_show_gpsvisualizer_typedesc',
@@ -19145,6 +19211,7 @@ var mainGC = function() {
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
                 'settings_improve_notifications',
+                'settings_dim_lost_trackables',
                 'settings_remove_target_log_form',
                 'settings_remove_target_log_view',
                 'settings_hide_locked_tbs_log_form',
