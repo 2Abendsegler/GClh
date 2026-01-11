@@ -384,6 +384,7 @@
   "settings_searchmap_improve_add_to_list_height": 130,
   "settings_searchmap_improve_add_to_list": true,
   "settings_improve_notifications": true,
+  "settings_dim_lost_trackables": false,
   "settings_remove_target_log_form": false,
   "settings_remove_target_log_view": false,
   "settings_hide_locked_tbs_log_form": true,
