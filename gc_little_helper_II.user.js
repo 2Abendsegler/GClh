@@ -597,6 +597,7 @@ var variablesInit = function(c) {
     c.settings_individual_links = JSON.parse(getValue("settings_individual_links", "{}"));
     c.settings_show_flopps_link = getValue("settings_show_flopps_link", true);
     c.settings_show_brouter_link = getValue("settings_show_brouter_link", true);
+    c.settings_show_bikerouter_link = getValue("settings_show_bikerouter_link", true);
     c.settings_show_gpsvisualizer_link = getValue("settings_show_gpsvisualizer_link", true);
     c.settings_show_gpsvisualizer_gcsymbols = getValue("settings_show_gpsvisualizer_gcsymbols", true);
     c.settings_show_gpsvisualizer_typedesc = getValue("settings_show_gpsvisualizer_typedesc", true);
@@ -3020,7 +3021,7 @@ var mainGC = function() {
         remove_copydata_menu_content();
     }
 
-// Links BRouter, Flopps Map, GPSVisualizer and Openrouteservice at right sidebar.
+// Links BRouter, Bikerouter, Flopps Map, GPSVisualizer and Openrouteservice at right sidebar.
     const LatLonDigits = 6;
     function mapservice_link( service_configuration ) {
         var uniqueServiceId = service_configuration.uniqueServiceId;
@@ -3113,6 +3114,7 @@ var mainGC = function() {
         };
         var url = data.urlTemplate;
         var waypointString = "";
+        var poiString = [];
         var boundarybox = undefined;
         if ( data.context == undefined ) data.context = {};
         if ( data.temp == undefined ) data.context.temp = {};
@@ -3155,10 +3157,18 @@ var mainGC = function() {
             value = data.waypointFunction( waypoint, name, radius, data.context );
             if (value != "") {
                 waypointString += (i?data.waypointSeparator:'') + value;
+                // In waypoint.name, handle characters that have a special meaning.
+                poiString.push(value + ',' + name + ' - ' + html_to_str(waypoint.name).replace(/[;,&+]/g, '_'));
                 boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
         }
         var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
+        if (service_configuration.uniqueServiceId === 'bikerouter') {
+            // Add waypoint POIs.
+            waypointString += '&pois=' + poiString.join(data.waypointSeparator);
+            // Adapt zoom level to account for reduced view port due to navigation and statistics bars.
+            zoom--;
+        }
         url = url.replace("{center_latitude}",roundTO( boundarybox.center.latitude,LatLonDigits));
         url = url.replace("{center_longitude}",roundTO( boundarybox.center.longitude,LatLonDigits));
         url = url.replace("{zoom}",zoom);
@@ -3234,8 +3244,8 @@ var mainGC = function() {
         return roundTO(waypoint.latitude,LatLonDigits)+','+roundTO(waypoint.longitude,LatLonDigits);
     }
 
-// CSS for BRouter, Flopp's Map, GPSVisualizer, Openrouteservice and Copy Data links.
-    if ((settings_show_brouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing")) {
+// CSS for BRouter, Bikerouter, Flopp's Map, GPSVisualizer, Openrouteservice and Copy Data links.
+    if ((settings_show_brouter_link || settings_show_bikerouter_link || settings_show_flopps_link || settings_show_gpsvisualizer_link || settings_show_openrouteservice_link || settings_show_copydata_menu) && is_page("cache_listing")) {
         css += ".GClhdropbtn {";
         css += "  white-space: nowrap;";
         css += "  cursor: pointer;}";
@@ -3304,6 +3314,28 @@ var mainGC = function() {
                     runWithOneWaypoint: true
                 });
             } catch(e) {gclh_error("Show button BRouter and open BRouter",e);}
+        }
+        // Show links which open Bikerouter with all waypoints of a cache.
+        if (settings_show_bikerouter_link) {
+            try {
+                const language = unsafeWindow.serverParameters["app:options"]?.localRegion?.split('-')[0] || 'en';
+                mapservice_link( {
+                    uniqueServiceId: "bikerouter",
+                    urlTemplate: 'https://bikerouter.de/?lng=' + language + '#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}&profile=shortest',
+                    layers: {'OpenStreetMap': { maxZoom: 18, displayName: 'OpenStreetMap' }, 'OpenStreetMap.de': { maxZoom: 18, displayName: 'OSM German Style' }, 'OpenTopoMap': { maxZoom: 15, displayName: 'OpenTopoMap' }, 'Esri World Imagery': { maxZoom: 18, displayName: 'Esri World Imagery' }},
+                    waypointSeparator : ';',
+                    waypointFunction : brouterWaypoint,
+                    mapOffset : { width: 0, height: 0 },
+                    defaultMap : 'OpenStreetMap',
+                    sidebar : { linkText : "Show on Bikerouter", icon : true, icondata : global_bikerouter_icon },
+                    waypointtable : { linkText : "Show route on Bikerouter with &#8230;", icon : false },
+                    maxUrlLength: 4000,
+                    action: mapservice_open,
+                    context : {},
+                    useHomeCoords: false,
+                    runWithOneWaypoint: true
+                });
+            } catch(e) {gclh_error("Show button Bikerouter and open Bikerouter",e);}
         }
         // Show links which open GPSVisualizer with all waypoints of a cache.
         if (settings_show_gpsvisualizer_link) {
@@ -17429,6 +17461,9 @@ var mainGC = function() {
             html += checkboxy('settings_show_flopps_link', 'Show Flopp\'s Map links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_radius_on_flopps', 'Show radius around caches on Flopp\'s Map') + "<br>";
             html += checkboxy('settings_show_brouter_link', 'Show BRouter links in sidebar and under the "Additional Waypoints"') + "<br>";
+            html += newParameterOn1;
+            html += checkboxy('settings_show_bikerouter_link', 'Show Bikerouter links in sidebar and under the "Additional Waypoints"') + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_show_gpsvisualizer_link', 'Show GPSVisualizer links in sidebar and under the "Additional Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_gcsymbols', 'Use geocaching icons on GPSVisualizer map') + show_help("Instead of default icons, geocaching icons are used. If the URL is too long, disable this option.") + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help("Transfer for every waypoint the type as text in the description. If the URL is too long, disable this option.") + "<br>";
@@ -19044,6 +19079,7 @@ var mainGC = function() {
                 'settings_show_individual_links',
                 'settings_show_flopps_link',
                 'settings_show_brouter_link',
+                'settings_show_bikerouter_link',
                 'settings_show_gpsvisualizer_link',
                 'settings_show_gpsvisualizer_gcsymbols',
                 'settings_show_gpsvisualizer_typedesc',
