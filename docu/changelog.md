@@ -67,6 +67,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Own Trackables] Option to dim lost trackables in owned trackables view. [<a href="https://github.com/2Abendsegler/GClh/issues/2844" title="Issue 2844">2844</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Lost trackables in owned trackables view can be visually dimmed so they are easier to distinguish from active trackables.<br>
 		<img src="../images/0.17.11/Screen01.jpg" alt="Screen01.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dim_lost_trackables" title="Link to your GClh II Config">Settings -> Others:<br>
 		<img src="../images/0.17.11/Screen02.jpg" alt="Screen02.jpg"></a><br>
