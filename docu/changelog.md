@@ -50,7 +50,7 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Cache Listing] Add Bikerouter routing service link. [<a href="https://github.com/2Abendsegler/GClh/issues/2922" title="Issue 2922">2922</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		<strong>New:</strong> [Cache Listing] Add Bikerouter routing service link. [<a href="https://github.com/2Abendsegler/GClh/issues/2922" title="Issue 2922">2922</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 		<img src="../images/0.17.11/Screen05.gif" alt="Screen05.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_show_bikerouter_link" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
 		<img src="../images/0.17.11/Screen06.jpg" alt="Screen06.jpg"></a><br><br>
@@ -59,18 +59,18 @@
 		<strong>New:</strong> [Cache Listing] Optimize waypoint order for routing services. [<a href="https://github.com/2Abendsegler/GClh/issues/2923" title="Issue 2923">2923</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing] Option to hide "View Treasures" link. [<a href="https://github.com/2Abendsegler/GClh/issues/2917" title="Issue 2917">2917</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		<strong>New:</strong> [Cache Listing] Option to hide "View Treasures" link. [<a href="https://github.com/2Abendsegler/GClh/issues/2917" title="Issue 2917">2917</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 		<img src="../images/0.17.11/Screen03.jpg" alt="Screen03.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_view_treasures_link" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
 		<img src="../images/0.17.11/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Own Trackables] Option to dim lost trackables in owned trackables view. [<a href="https://github.com/2Abendsegler/GClh/issues/2844" title="Issue 2844">2844</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		<strong>New:</strong> [Own Trackables] Option to dim lost trackables in owned trackables view. [<a href="https://github.com/2Abendsegler/GClh/issues/2844" title="Issue 2844">2844</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 		<img src="../images/0.17.11/Screen01.jpg" alt="Screen01.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_view_treasures_link" title="Link to your GClh II Config">Settings -> Listing - Cache Detail Navigation:<br>
 		<img src="../images/0.17.11/Screen02.jpg" alt="Screen02.jpg"></a><br>
-		If you want to use this feature, you have to activate it.<br><br>
+		If you want to use this feature, you have to activate it.<br>
 	</li>
 </ul>
 <br>
