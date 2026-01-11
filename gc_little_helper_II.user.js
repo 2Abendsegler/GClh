@@ -13287,9 +13287,11 @@ var mainGC = function() {
 
 // Dimmed style for lost trackabels on owned trackables view.
     if (document.location.href.match(/\.com\/track\/search\.aspx\?o=1&uid=/) && settings_dim_lost_trackables) {
-        const $rows = $('table.Table td:nth-child(5)').not(':has(img[src^="/images/"])').closest('tr');
-        $rows.find('td, a').css({ color: '#AFAFAF', textDecoration: 'line-through' });
-        $rows.find('img').css({ opacity: 0.35 });
+        try {
+            const $rows = $('table.Table td:nth-child(5)').not(':has(img[src^="/images/"])').closest('tr');
+            $rows.find('td, a').css({ color: '#AFAFAF', textDecoration: 'line-through' });
+            $rows.find('img').css({ opacity: 0.35 });
+        } catch(e) {gclh_error("Dimmed style for lost trackabels on owned trackables view",e);}
     }
 
 // Improve cache matrix on statistics page and public profile page and handle cache search links in list or map.
