@@ -3113,7 +3113,7 @@ var mainGC = function() {
             runWithOneWaypoint: service_configuration.runWithOneWaypoint
         };
         var url = data.urlTemplate;
-        var waypointString = "";
+        var lnglatString = [];
         var poiString = [];
         var boundarybox = undefined;
         if ( data.context == undefined ) data.context = {};
@@ -3156,12 +3156,13 @@ var mainGC = function() {
             }
             value = data.waypointFunction( waypoint, name, radius, data.context );
             if (value != "") {
-                waypointString += (i?data.waypointSeparator:'') + value;
+                lnglatString.push(value);
                 // In waypoint.name, handle characters that have a special meaning.
                 poiString.push(value + ',' + name + ' - ' + html_to_str(waypoint.name).replace(/[;,&+]/g, '_'));
                 boundarybox = BoundaryBox( boundarybox, data.waypoints[i].latitude, data.waypoints[i].longitude );
             }
         }
+        let waypointString = lnglatString.join(data.waypointSeparator);
         var zoom = TileMapZoomLevelForBoundaryBox( boundarybox, data.mapOffset.width, data.mapOffset.height, data.maxZoomLevel );
         if (service_configuration.uniqueServiceId === 'bikerouter') {
             // Add waypoint POIs.
@@ -15756,24 +15757,6 @@ var mainGC = function() {
         if (check_wpdata_evaluable() == false) return waypoints;
         try {
             var gccode = ($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) ? $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0].textContent : "n/a";
-            var ListingCoords = {
-                name: unsafeWindow.mapLatLng.name,
-                gccode: gccode,
-                prefix: "",
-                source: "listing",
-                typeid: unsafeWindow.mapLatLng.type,
-                latitude: unsafeWindow.mapLatLng.lat,
-                longitude: unsafeWindow.mapLatLng.lng,
-                prefixedName: gccode,
-            };
-            waypoints.push(ListingCoords);
-            if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
-                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
-                OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
-                OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
-                OriginalCoords.source = "original";
-                waypoints.push(OriginalCoords);
-            }
             for ( var i=0; i<cmapAdditionalWaypoints.length; i++ ) {
                 var waypoint = {
                     name: cmapAdditionalWaypoints[i].name,
@@ -15786,6 +15769,30 @@ var mainGC = function() {
                     prefixedName: cmapAdditionalWaypoints[i].pf+gccode.substring(2),
                 };
                 waypoints.push(waypoint);
+            }
+            var ListingCoords = {
+                name: unsafeWindow.mapLatLng.name,
+                gccode: gccode,
+                prefix: "",
+                source: "listing",
+                typeid: unsafeWindow.mapLatLng.type,
+                latitude: unsafeWindow.mapLatLng.lat,
+                longitude: unsafeWindow.mapLatLng.lng,
+                prefixedName: gccode,
+            };
+            if ( original && unsafeWindow.mapLatLng.isUserDefined == true ) {
+                var OriginalCoords = Object.assign({}, ListingCoords); // create a copy
+                OriginalCoords.latitude = unsafeWindow.mapLatLng.oldLatLng[0];
+                OriginalCoords.longitude = unsafeWindow.mapLatLng.oldLatLng[1];
+                OriginalCoords.source = "original";
+                waypoints.unshift(OriginalCoords);
+            }
+            // Multi,Letterbox,Mystery,Wherigo: if not corrected then start routing at listing coords else end routing at listing coords.
+            // All others: always end routing at listing coords.
+            if (!unsafeWindow.mapLatLng.isUserDefined && [3, 5, 8, 1858].includes(unsafeWindow.mapLatLng.type)) {
+                waypoints.unshift(ListingCoords);
+            } else {
+                waypoints.push(ListingCoords);
             }
         } catch(e) {gclh_error("Determine waypoints",e);}
         return waypoints;
