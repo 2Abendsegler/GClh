@@ -1,3 +1,4 @@
+<a href="#v01711" title="GClh II version 0.17.12 (22.01.2026)">v0.17.12</a> &nbsp;
 <a href="#v01711" title="GClh II version 0.17.11 (11.01.2026)">v0.17.11</a> &nbsp;
 <a href="#v01710" title="GClh II version 0.17.10 (21.11.2025)">v0.17.10</a> &nbsp;
 <a href="#v0179" title="GClh II version 0.17.9 (29.10.2025)">v0.17.9</a> &nbsp;
@@ -44,6 +45,22 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.12:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Some features in left navigation sidebar don't work because of new dashboard release. [<a href="https://github.com/2Abendsegler/GClh/issues/2928" title="Issue 2928">2928</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [PQ-Splitter] PQ creation not working after redesign of Project-GC website. [<a href="https://github.com/2Abendsegler/GClh/issues/2867" title="Issue 2867">2867</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(22.01.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.11:
