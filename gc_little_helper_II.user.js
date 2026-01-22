@@ -976,7 +976,7 @@ var mainPGC = function() {
             $(side).append(html);
             return;
         }
-        var error_text = checkSelectErrorAvailable();
+        var error_text = checkSelectErrorAvailable(sel);
         if (error_text != '') {
             html += '<h5>Error:</h5>';
             html += '<p>' + error_text + '</p>';
@@ -1033,7 +1033,8 @@ var mainPGC = function() {
 // Build css.
     function buildCss() {
         var css = '';
-        css += 'tfoot {background-color: #d4edda;}';
+        css += 'tfoot td {background-color: #d4edda !important;}';
+        css += 'tfoot h4, tfoot h5 {font-weight: bold;}';
         css += 'tfoot h4 > span {font-size: 14px; font-weight: normal; float: right; margin-top: 2px;}';
         css += 'tfoot h5 {margin-top: 18px;}';
         css += 'tfoot label {padding-left: 4px; margin-bottom: 0px; font-weight: normal;}';
@@ -1087,7 +1088,7 @@ var mainPGC = function() {
     }
 
 // Check whether select errors are available.
-    function checkSelectErrorAvailable() {
+    function checkSelectErrorAvailable(sel) {
         // There are restrictions for difficulty and terrain. Not all combinations can be specified on the PQ page.
         function checkDT(name) {
             var error = '';
@@ -1096,8 +1097,8 @@ var mainPGC = function() {
             var last = false;
             var next = '';
             var all = '';
-            $('#' + name + 'select option[selected=""]').each(function() {
-                var content = $(this).val();
+            while (sel[name+"["+n+"]"]) {
+                var content = sel[name+"["+n+"]"];
                 if (!first || content < first) first = content;
                 if (!last || content > last) last = content;
                 if (next == '' || next == parseInt(content.replace(/(\.|,)/, ''))) {
@@ -1108,7 +1109,7 @@ var mainPGC = function() {
                 }
                 all += (n == 0 ? '' : '/') + content;
                 n++;
-            });
+            }
             if (n <= 1 || (n > 1 && first == '1.0' && next) || (n > 1 && last == '5.0' && next)) {
             } else {
                 error = "Your " + name + " specifications " + all + " can not be specified on the PQ page.<br>";
@@ -1121,22 +1122,48 @@ var mainPGC = function() {
 // Get selection parameter.
     function getSelection() {
         var sel = new Object();
-        $('#filtertoggle2div > div:not(.row,.hide) select, #filtertoggle2div > div:not(.row,.hide) input:not(.btn)').each(function() {
-            if ($(this).val() != null && $(this).val() != '') {
-                var name = $(this).attr('name').replace(/(\[|\])/g, '');
-                if ($(this).attr('multiple')) {
-                    for (var i = 0; i < $(this).val().length; i++) {
-                        sel[name+"["+i+"]"] = $(this).val()[i];
-                    }
-                } else if ($(this)[0].id.match(/hidden_to(yyyy|mm|dd)/)) {
-                    sel[name] = $(this).val();
-                } else if ($(this)[0].type == 'checkbox' && $(this)[0].checked) {
-                    sel[name] = $(this).val();
-                } else if ($(this)[0].type == 'text' && $(this).val() != '') {
-                    sel[name] = $(this).val();
-                }
+        var items = location.search.substr(1).split("&");
+        var itemNameBefore = "";
+        var n = 0;
+        for (var index = 0; index < items.length; index++) {
+            var item = items[index].split("=");
+            var itemName = urldecode(item[0]);
+            if (itemName == itemNameBefore) ++n;
+            else n = 0;
+            if (itemName == "filter_ts_type[]") {
+                sel["type["+n+"]"] = item[1];
+            } else if (itemName == "filter_ts_size[]") {
+                sel["size["+n+"]"] = item[1];
+            } else if (itemName == "filter_fh_found") {
+                sel["hidefound"] = item[1];
+            } else if (itemName == "filter_fh_notFound") {
+                sel["hidenotfound"] = item[1];
+            } else if (itemName == "filter_fh_hides") {
+                sel["hideowned"] = item[1];
+            } else if (itemName == "filter_pmo_pmo") {
+                sel["hidepremium"] = item[1];
+            } else if (itemName == "filter_dt_difficulty[]") {
+                sel["difficulty["+n+"]"] = item[1];
+            } else if (itemName == "filter_dt_terrain[]") {
+                sel["terrain["+n+"]"] = item[1];
+            } else if (itemName == "filter_crc_countries[]") {
+                sel["multi_country["+n+"]"] = urldecode(item[1]);
+            } else if (itemName == "filter_crc_regions[]") {
+                sel["multi_countryregion["+n+"]"] = urldecode(item[1]);
+            } else if (itemName == "filter_cr_centerLocation") {
+                sel["location"] = urldecode(item[1]);
+            } else if (itemName == "filter_cr_radius") {
+                sel["max_distance"] = item[1];
+            } else if (itemName == "filter_cr_units") {
+                sel["unit"] = item[1];
+            } else if (itemName == "filter_hd_toDate") {
+                var hidden = item[1].split("-");
+                sel["hidden_toyyyy"] = hidden[0];
+                sel["hidden_tomm"] = hidden[1];
+                sel["hidden_todd"] = hidden[2];
             }
-        });
+            itemNameBefore = itemName;
+        }
         return sel;
     }
 
@@ -1223,15 +1250,13 @@ var mainPGC = function() {
 
 // Get user language of the page.
     function getLanguage() {
-        if ($('ul.navbar-right .drowdown-toggle img[src*="country_flags"]')[0]) {
-            var match = $('ul.navbar-right .drowdown-toggle img[src*="country_flags"]')[0].src.match(/country_flags(2\/png|_manual)\/(.*)\./);
+        if ($('#pgc-navbar-locale .nav-link img[src*="country_flags"]')[0]) {
+            var match = $('#pgc-navbar-locale .nav-link img[src*="country_flags"]')[0].src.match(/country_flags(2\/png|_manual)\/(.*)\./);
             if (match && match[1] && match[2]) {
                 lang = match[2].replace(/catalonia/, 'es').toUpperCase();
-                if ($('#menu_locales a[href*="_' + lang + '"]')[0]) {
-                    var match = $('#menu_locales a[href*="_' + lang + '"]')[0].href.match(/#(.{2})/);
-                    if (match && match[1]) {
-                        return match[1];
-                    }
+                if ($('#pgc-navbar-locale .dropdown-menu a[data-locale*="_' + lang + '"]')[0]) {
+                    var langReal = $('#pgc-navbar-locale .dropdown-menu a[data-locale*="_' + lang + '"]')[0].dataset.locale.replace('_'+lang, '');
+                    return langReal;
                 }
             }
         }
@@ -5772,10 +5797,13 @@ var mainGC = function() {
                         } else alert('Coordinates could not be interpreted "' + deg + '"');
                     }
                 }
-                // Within a Radius of km.
+                // Within a Radius of km or miles.
                 if (findGetParameter('max_distance')) {
                     $('#ctl00_ContentBody_tbRadius').val(findGetParameter('max_distance'));
-                    $('#ctl00_ContentBody_rbUnitType_1').attr('checked', true);
+                }
+                if (findGetParameter('unit')) {
+                    if (findGetParameter('unit') == 'mi') $('#ctl00_ContentBody_rbUnitType_0').attr('checked', true);
+                    else $('#ctl00_ContentBody_rbUnitType_1').attr('checked', true);
                 }
                 // Placed During.
                 $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
@@ -5788,8 +5816,8 @@ var mainGC = function() {
                     var year = findGetParameter('ey');
                 } else {
                     if ((findGetParameter('hidden_todd') != '') && (findGetParameter('hidden_tomm') != '') && (findGetParameter('hidden_toyyyy') != '')) {
-                        var day = findGetParameter('hidden_todd');
-                        var month = findGetParameter('hidden_tomm');
+                        var day = parseInt(findGetParameter('hidden_todd'));
+                        var month = parseInt(findGetParameter('hidden_tomm'));
                         var year = findGetParameter('hidden_toyyyy');
                     } else {
                         var day = 31;
