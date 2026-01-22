@@ -1,0 +1,80 @@
+<div id="sidebar-group" class="desktop"><div class="active has-active-cache" id="sidebar"><div class="sidebar-control sidebar-search-container"><div class="css-8qkjl6"><button class="search-bar-back-cta css-latyut" data-testid="search-bar-back-cta" tabindex="0" title="Back" type="button"><svg aria-label="Back"><use class="back-icon" href="#back"></use></svg></button><div class=" css-1x3c738" id="gc-search-typeahead-form"><div class="gc-autocomplete css-gqmc4e" aria-expanded="false" role="combobox" display="inline-block"><div class="inner-wrapper"><input autocomplete="off" class="gc-search-typeahead" data-testid="gc-search-typeahead" id="gc-search-typeahead-input" placeholder="City, state, coordinates, GC code..." autocorrect="off" type="search" value="N 49° 40.870' E 8° 37.310'"><button aria-label="Search" class="gc-search-typeahead-submit  css-qku61l" title="Search"><svg aria-hidden="true"><use xlink:href="#search"></use></svg></button></div></div></div><button aria-label="Filters" class="gc-filter-toggle css-tj93bg" data-event-category="data" data-event-label="Filters - Open Enhanced Filters"><span aria-hidden="true" class="gc-filter-toggle-icon"><svg><use xlink:href="#filters"></use></svg></span><span class="gc-filter-toggle-label">Filters</span></button></div></div><div class="cache-detail-preview"><button aria-label="Close menu" class="mobile-close"><svg aria-hidden="true"><use xlink:href="#close"></use></svg></button><header class="cache-preview-header"><div class="header-top"><div class="more-info"><a class="more-info-link" href="https://www.geocaching.com/geocache/GC8FXW4" rel="noopener noreferrer" target="_blank"><span class="arrow-icon"><svg class="right-arrow"><use xlink:href="#right-arrow"></use></svg></span><span class="more-info-label">Open cache page</span></a></div></div><div class="header-top-left"><p class="status-and-type"><span class="status"><span style="color: rgb(4, 200, 214);">Premium</span><span aria-hidden="true" class="vertical-spacer"> | </span></span>Multi-Cache</p><h1>Dracula 2.0 NC</h1><p class="cache-metadata"><span class="cache-metadata-last-found">Last logged: 27.10.2024</span><span aria-hidden="true" class="vertical-spacer"> | </span><span class="cache-metadata-code">GC8FXW4</span></p></div><p class="cache-metadata"><span class="cache-metadata-last-found">Last logged: 27.10.2024</span><span aria-hidden="true" class="vertical-spacer"> | </span><span class="cache-metadata-code">GC8FXW4</span></p></header><div class="preview-main"><div class="preview-main-inner"><div><div class="cache-preview-description"><div class="close-cta-row"><button class="close-cta"><svg class="close-svg"><use xlink:href="#close"></use></svg></button></div><div class="gc-map-cache-hint"><h2><span>Hint</span><button class="cache-hint-toggle" type="button">Show hint</button></h2><div class="hint-text">2: start huette / rumänisch / Zahlen koennen ausgeschrieben werden ;-)/ p/d nicht verwechseln. / QS19 / 
+5b: Wikipedia. Pfähler ist wörtlich
+6: Teamstage. Ist klar?Das Grundstück ist schon groß....
+
+</div></div><div class="cache-preview-text"><h2>Description</h2><div class="cache-preview-text-markup"><center>(<a href="http://www.dexter-geocaching.de/dracula2/makingof/making_of.pdf">TAGEBUCH (Passwort: Code Schloss am Eingang + Code Schloss Logbuch)</a> )<br>
+<br>
+<br>
+<img src="https://s3.amazonaws.com/gs-geo-images/cf80c7b2-ad3d-470d-89ed-622899e70eaa_l.jpg"><br>
+<br>
+<br>
+<br>
+<h4>ACHTUNG: Das ist ein expliziter Nachtcache. Schaut euch die Attribute des Caches genau an.!<br>
+<br>
+Wer eine Spinnenphobie hat, wird im Finale etwas Probleme bekommen. Das nur zur Info.</h4>
+<br>
+<br>
+Wir schreiben das Jahr 2030. Regierungen weltweit setzen Gesetze um, die Privatleuten das Betreiben von Friedhöfen erlaubt. Durch das extreme wachsen der Weltbevölkerung konnten Kommunen keine freien, städtischen Flächen als geweihte Stätten ausweisen. Hinzu kommen seltsame Todesfälle seit dem Jahr 2019. Menschen jeglichen Alters sterben aus unerklärlichen Gründen. Am Streichling in Bensheim gibt es auf einem Privatfriedhof Vorkommnisse, die sich keiner erklären kann. Seit einiger Zeit laufen Klagen gegen den Betreiber, weil dieser den freien Platz vor Ort nicht für weitere Gräber öffnen möchte....Es gibt viele Gerüchte....<br>
+<br>
+<a href="http://www.staubfinger0702.de/geo_banner_keine_fotos.pdf"><img src="https://imgproxy.geocaching.com/d5d075c2075534dee75ba85911554d1e789f8098?url=http%3a%2f%2fwww.staubfinger0702.de%2fgeo_banner_keine_fotos.jpg"></a><br>
+&gt;</center>
+<br>
+<br>
+<center>---------------------<br>
+---------------------<br>
+---------------------<br>
+<h4>WhatsApp: 0175-1601752</h4>
+<br>
+<br>
+<h4>Ist etwas defekt oder verschwunden? Schickt mir bitte eine WhatsApp und/oder kontaktiert mich über den Message Center. E.Mails gehen durch die vielen Logs leider verloren....Hilfe bzw. TJ kann ich über diese Nummer allerdings nicht leisten ;-) Dafür gibt es andere Wege :-)<br>
+<br></h4>
+Dieser Cache ist nur bedingt für Kinder geeignet.<br>
+<br>
+Parken geht im Wohnviertel ca. 1000 Meter vor dem Cache. Max 1-2 Autos.<br>
+<br>
+Minimum 3 Personen (es geht auch zu zweit. Dann muss an einer Stelle eine Hilfe verwendet werden).Ich empfehle 3-6 Personen. Nicht alleine. Stirnlampe. UV-Lampe. Smart-Phone mit Internet. QR-Code Reader. Stift. Zettel. Wetterfester, bunter Marker zum Loggen. UND eine Grabkerze mitbringen. Feuerzeug. Mundschutz wegen möglichem Schimmel in der Gruft. Zur Jahreszeit passende Blumenzwiebel.<br>
+<h4>Dauer: ca. 3 Stunden</h4>
+<br>
+Das wichtigste bei diesem Cache ist, dass Ihr am Ende ein paar Dinge wieder so "bearbeitet", dass die nächste Truppe den gleichen Spaß hat. Das wird euch aber vor Ort genau gesagt...<br>
+<br>
+Hunde können nicht mit.<br>
+<h4>---------------KALENDER---------------<br>
+(<a href="https://geocache-planer.de/CAL/index.php?CALID=ANKHNHL">KALENDER</a> )<br>
+<br>
+Ihr erhaltet 24 Stunden vor Eurem Termin eine Mail. Darin ist der Code ein zweites Mal enthalten. Dieser ist 15 Minuten vor bis 15 Minuten nach dem Termin gültig. Seid also pünktlich ;-)<br>
+<br>
+<br></h4>
+<div align="center">
+<h4>Für alle, die sich gerne ein Banner ins Profil laden:<br>
+<a href="https://coord.info/GC8FXW4"><img src="https://imgproxy.geocaching.com/12adde5aa48496420302dd1fae12e4c3c19776f6?url=http%3a%2f%2fwww.dexter-geocaching.de%2fdracula2%2fbanner.jpg"></a><br>
+<font color="black" size="1">&lt;a href="https://coord.info/GC8FXW4"target="_blank"&gt; &lt;img src="http://www.dexter-geocaching.de/dracula2/banner.jpg" alt="Dracula 2.0" border="0" /&gt;&lt;/a&gt;</font><br>
+<br>
+<br>
+<br></h4>
+</div>
+<br>
+Beta-Tests. Von mir an alle, ein herzliches "Danke schön"...:<br>
+<br>
+<br>
+07.12.19 / 1001Nacht, monodio, the greenone<br>
+<br>
+08.12.19 / Die Blümchen, Scharfzähne, Vlad-Tepes<br>
+<br>
+08.12.19 / vier-jungs, flinker, Schmuka<br>
+<br>
+09.12.19 / KleineTruppe, Hexamine &amp; Hexejane<br>
+<br>
+11.12.19 / Finkenpiraten<br>
+<br>
+12.12.19 / TX-Tracker, Speedy-1702<br>
+<br>
+12.12.19 / Agra78, joerg75, Nick78 und fluffy84<br>
+<br>
+13.12.19 / grunemer<br>
+<br>
+14.12.19 / Grobi1974, Cycle73<br>
+<br>
+15.12.19 / TCapitano, Toxic!, Kadett11, Hase-und-Igel<br>
+<br>
+<br>
+<br></center></div></div></div></div></div></div></div></div><button aria-controls="sidebar" aria-label="Close map search menu." class="sidebar-toggle css-sjm5qd" data-testid="sidebar-toggle" tabindex="0"><svg aria-hidden="true" data-testid="caret" class="css-u5rc0h"><use href="#caret-down"></use></svg></button></div>
