@@ -7454,27 +7454,6 @@ var mainGC = function() {
         } catch(e) {gclh_error("Linklist on old dashboard",e);}
     }
 
-// Linklist, Default Links on new dashboard.
-    if (is_page("dashboard")) {
-        try {
-            buildDashboardCss();
-            if (settings_bookmarks_show) {
-                buildBoxDashboard("linklist", "Linklist", "Linklist");
-                var box = document.getElementsByName("box_linklist")[0];
-                box.innerHTML = "";
-                buildBoxElementsLinklist(box);
-            }
-            if (settings_show_default_links) {
-                bm_tmp = buildCopyOfBookmarks();
-                sortBookmarksByDescription(true, bm_tmp);
-                buildBoxDashboard("links", "Default Links", "Default Links for the Linklist");
-                var box = document.getElementsByName("box_links")[0];
-                box.innerHTML = "";
-                buildBoxElementsLinks(box, bm_tmp);
-            }
-        } catch(e) {gclh_error("Linklist, Default Links on new dashboard",e);}
-    }
-
 // Loggen über Standard "Log It" Icons zu PMO Caches für Basic Members.
     if (settings_logit_for_basic_in_pmo && document.getElementsByClassName('premium').length > 0) {
         try {
@@ -8008,7 +7987,7 @@ var mainGC = function() {
 
             // New Dashboard:
             // ----------
-            } else if (document.location.href.match(/\.com\/account\/dashboard/) && $('#DashboardSidebar nav')[0]) {
+            } else if (document.location.href.match(/\.com\/account\/dashboard/)) {
                 function build_box_vipvup(desc) {
                     buildBoxDashboard(desc, "All my " + desc.toUpperCase() + "s", "All my " + (desc == 'vip' ? 'very important persons':'very unimportant persons'));
                 }
@@ -8032,16 +8011,22 @@ var mainGC = function() {
                         if (settings_show_mail_in_allmyvips && settings_show_mail && settings_show_vip_list) buildSendIcons(li, user, "per u");
                     }
                 }
-                build_box_vipvup("vip");
-                fill_box_vipvup(global_vips, "vip");
-                if (settings_process_vup) {
-                    build_box_vipvup("vup");
-                    fill_box_vipvup(global_vups, "vup");
+                function waitForLeftSidebarVip(waitCount) {
+                    if ($('#sidebarNavigation > nav')[0]) {
+                        build_box_vipvup("vip");
+                        fill_box_vipvup(global_vips, "vip");
+                        if (settings_process_vup) {
+                            build_box_vipvup("vup");
+                            fill_box_vipvup(global_vups, "vup");
+                        }
+                        // Verarbeitung wird durch gclh_add... und gclh_del... angestoßen. Dadurch werden beide Listen hier neu aufgebaut.
+                        gclh_build_vip_list = function() {
+                            fill_box_vipvup(global_vips, "vip");
+                            if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
+                        };
+                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebarVip(waitCount);}, 50);}
                 }
-                gclh_build_vip_list = function() {
-                    fill_box_vipvup(global_vips, "vip");
-                    if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
-                };
+                waitForLeftSidebarVip(0);
 
             // Friends list:
             // ----------
@@ -9427,30 +9412,36 @@ var mainGC = function() {
                 // Link at the top to the old dashboard.
                 css += ".alert {padding-top: 6px; padding-bottom: 0px; margin-bottom: -2px;}";
                 // User block in the first block in the left column.
-                css += ".user-bio .bio-username {margin-top: 4px !important;}";
-                css += ".user-bio .bio-userrole {margin-bottom: 12px !important;}";
-                css += ".user-bio .gc-button {margin-top: 12px !important; padding: 8px 14px !important;}";
-                css += ".user-bio {padding-bottom: 12px !important;}";
+                css += ".user-bio {padding-bottom: 0px !important;}";
+                css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
+                css += ".gclh_parent_profile_button a {margin-top: 8px !important; padding-top: 6px !important; padding-bottom: 6px !important;}";
                 // Primary navigation links (quick links) in the second block in the left column.
-                css += "#quickLinks ul:not(.link-block):not(.gclh) {padding-top: 8px !important;}";
+                css += "#quickLinks ul:not(.link-block):not(.gclh) {padding-top: 3px !important;}";
                 css += "#quickLinks ul:not(.link-block):not(.gclh) li {padding: 1px 0 1px 0 !important;}";
-                css += "#quickLinks ul:not(.link-block):not(.gclh) a {padding: 4px 8px !important;}";
+                css += "#quickLinks ul:not(.link-block):not(.gclh) li > a {padding: 4px 8px !important;}";
                 // Secondary navigation links in further blocks in the left column.
-                css += "#DashboardSidebar nav ul:not(.gclh) {margin-bottom: 0px !important; padding-bottom: 5px !important;}";
-                css += "#DashboardSidebar nav ul:not(.gclh) li {padding-top: 2px !important;}";
-                css += "#DashboardSidebar nav ul:not(.gclh) ul {padding-top: 0px !important; padding-bottom: 0px !important; margin-top: 0px !important; gap: 0px !important;}";
+                css += "#sidebarNavigation > nav ul:not(.gclh) {margin-bottom: 0px !important; padding-bottom: 5px !important;}";
+                css += "#sidebarNavigation > nav ul:not(.gclh) li {padding-top: 2px !important;}";
+                css += "#sidebarNavigation > nav ul:not(.gclh) ul {padding-top: 0px !important; padding-bottom: 0px !important; margin-top: 0px !important; gap: 0px !important;}";
+                css += "button[aria-controls='trackableInventoryItems'] {margin-top: -2px !important;}";
+                css += "button[aria-controls='trackableInventoryItems'] svg {margin-right: 5px !important;}";
                 // Button to display or hide the configuration to hide rows in left column.
-                css += ".clickSum {position: absolute; margin-top: -13px; margin-left: 2px; cursor: pointer;}";
-                css += ".clickSum svg {height: 23px; width: 22px; fill: #777; transition: all .3s ease; transform-origin: 50% 50%;}";
+                css += ".clickSum {position: absolute; margin-top: -23px; margin-left: 1px; cursor: pointer;}";
+                css += ".clickSum svg {height: 20px; width: 20px; fill: #777; transition: all .3s ease; transform-origin: 50% 50%;}";
                 css += ".clickSumHide .clickSum svg {transform: rotate(90deg);}";
                 // Buttons to mark rows for display or hide in left column.
-                css += "#quickLinks ul .clickPoint {padding: 5px !important; margin-left: -17px !important;}";
-                css += "#DashboardSidebar nav ul .clickPoint {position: absolute; padding-top: 1px; margin-left: -20px; cursor: pointer;}";
+                css += ".clickPoint {position: absolute; padding: 2px 3px 0px 2px !important; cursor: pointer; color: rgb(110, 110, 110);}";
+                css += ".bio-data .clickPoint {margin: 120px 0px 0px -144px !important;}";
+                css += "#user-bio-root .clickPoint {margin: 1px 0px 0px -17px !important;}";
+                css += "#user-bio-root .gclh_parent_profile_button .clickPoint {margin: 15px 0px 0px -17px !important;}";
+                css += "#user-bio-root .gclh_parent_profile_button a {display: block !important;}";
+                css += "#quickLinks ul .clickPoint {margin: 3px 0px 0px -17px !important;}";
+                css += "#sidebarNavigation > nav ul .clickPoint {margin: -1px 0px 0px -24px !important;}";
                 css += ".clickPoint:hover {background-color: rgb(245 245 245);}";
                 css += ".clickPoint svg {height: 12px !important; width: 12px !important; opacity: 0.4;}";
                 css += ".clickPointHide svg {opacity: 1;}";
                 // Hide rows which are marked for hide in left column.
-                css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none;}";
+                css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none !important;}";
                 // In the middle and in the right column.
                 css += ".activity-item, .panel-header {padding: 5px 15px !important;}";
                 css += ".activity-tray {padding: 5px 40px !important;}";
@@ -9468,8 +9459,10 @@ var mainGC = function() {
                 css += "#_Geocaching101Container {display: none;}";
             }
 
-            // Search / Browse Map buttons and Search Map button in left sidebar.
-            function createQuickLinks() {
+            // Improve quick links and further links in left sidebar.
+            function improveLeftSidebar() {
+
+                // Search / Browse Map buttons and Search Map button as quick links in left sidebar.
                 if ($('#quickLinks ul li')[0]) {
                     if (settings_but_searchmap) { // Search Map
                         var searchmapButt = $( $('#quickLinks ul li')[0] ).clone()[0];
@@ -9504,90 +9497,151 @@ var mainGC = function() {
                         css += "#search--inline path {stroke-width: 1.0; stroke: currentColor;}";
                     }
                 }
-            }
 
-            // Add link to Ignore List into dashboard sidebar.
-            if (settings_embedded_smartlink_ignorelist && $(".bio-userrole").text() == "Premium" ) {
-                var sidebarLists = $($('#DashboardSidebar nav ul:not(".gclh") a[href*="/my/watchlist.aspx"]'));
-                var html = '<li class="leading-5 pt-2"><a class="no-underline rounded hover:text-gray-600 hover:underline focus:text-gray-600" id="gclh_goto_ignorelist" href="/plan/lists/ignored">Ignore List</a></li>';
-                sidebarLists.parent().after(html);
-            }
-
-            // Build Show/Hide buttons for areas in left column.
-            var list = $('#DashboardSidebar nav > h3:not(.gclh), #DashboardSidebar nav > ul:not(.gclh)');
-            var ident = 0;
-            for (var i = 0; i < list.length; i=i+2) {
-                ident++;
-                $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide");
-                $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide");
-                list[i].setAttribute("name", "head_" + ident);
-                list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill' title=''></use></svg>";
-                list[i].addEventListener("click", showHideBoxDashboard, false);
-            }
-
-            // Build configuration to Show/Hide rows in left column.
-            function setClickSumDashboard() {
-                if (getValue('show_box_dashboard_0', false) == true) {
-                    $('.clickSum').closest('#DashboardSidebar').addClass('clickSumHide');
-                    $('.clickSum')[0].title = 'Click here to view the configuration for hiding rows';
-                } else {
-                    $('.clickSum').closest('#DashboardSidebar').removeClass('clickSumHide');
-                    $('.clickSum')[0].title = 'Click here to hide the configuration for hiding rows';
+                // Add link to Ignore List into dashboard sidebar.
+                if (settings_embedded_smartlink_ignorelist && $("#user-bio-root")[0].innerHTML.match(/Premium/) && $('#sidebarNavigation > nav ul:not(".gclh") li a[href*="/plan/lists"]')[0]) {
+                    var ignorelist = $( $('#sidebarNavigation > nav ul:not(".gclh") li a[href*="/plan/lists"]').closest('li') ).clone()[0];
+                    $(ignorelist).find('a')[0].href = $(ignorelist).find('a')[0].href + '/ignored';
+                    $(ignorelist).find('a')[0].innerHTML = 'Ignore List';
+                    $('#sidebarNavigation > nav ul:not(".gclh") li a[href*="/plan/lists"]').closest('li').after(ignorelist);
                 }
-            }
-            function saveClickSumDashboard() {
-                if ($('.clickSumHide')[0]) setValue('show_box_dashboard_0', false);
-                else setValue('show_box_dashboard_0', true);
-                setClickSumDashboard();
-            }
-            function setClickPointDashboard(row) {
-                var name = $(row).attr('name')
-                if (getValue(name, false) == true) {
-                    $(row).closest('li').addClass('clickPointHide');
-                    $(row)[0].title = 'Click to mark the row for display\nAfter the configuration is complete, click the icon at the top of the column';
-                } else {
-                    $(row).closest('li').removeClass('clickPointHide');
-                    $(row)[0].title = 'Click to mark the row for hide\nAfter the configuration is complete, click the icon at the top of the column';
+
+                // Build Show/Hide buttons for areas in left column.
+                var list = $('#sidebarNavigation > nav > h3:not(.gclh), #sidebarNavigation > nav > ul:not(.gclh)');
+                var ident = 0;
+                for (var i = 0; i < list.length; i=i+2) {
+                    ident++;
+                    $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide");
+                    $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide");
+                    list[i].setAttribute("name", "head_" + ident);
+                    list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill' title=''></use></svg>";
+                    list[i].addEventListener("click", showHideBoxDashboard, false);
                 }
-            }
-            function saveClickPointDashboard() {
-                if ($(this).closest('li').hasClass('clickPointHide')) setValue($(this).attr('name'), false);
-                else setValue($(this).attr('name'), true);
-                setClickPointDashboard(this);
-            }
-            function createButtonsToHideLinks(waitCount) {
-                if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.user-bio')[0] && $('#quickLinks ul')[0] && $('#DashboardSidebar nav > ul')[0]) {
+
+                // Build configuration to Show/Hide rows in left column.
+                function setClickSumDB() {
+                    if (getValue('show_box_dashboard_0', false) == true) {
+                        $('.clickSum').closest('#DashboardSidebar').addClass('clickSumHide');
+                        $('.clickSum')[0].title = 'Click here to view the configuration for hiding rows';
+                    } else {
+                        $('.clickSum').closest('#DashboardSidebar').removeClass('clickSumHide');
+                        $('.clickSum')[0].title = 'Click here to hide the configuration for hiding rows';
+                    }
+                }
+                function saveClickSumDB() {
+                    if ($('.clickSumHide')[0]) setValue('show_box_dashboard_0', false);
+                    else setValue('show_box_dashboard_0', true);
+                    setClickSumDB();
+                }
+                function setClickPointDB(row) {
+                    var name = $(row).attr('name')
+                    if (getValue(name, false) == true) {
+                        $(row).parent().addClass('clickPointHide');
+                        $(row)[0].title = 'Click to mark the row for display\nAfter the configuration is complete, click the icon at the top of the column';
+                    } else {
+                        $(row).parent().removeClass('clickPointHide');
+                        $(row)[0].title = 'Click to mark the row for hide\nAfter the configuration is complete, click the icon at the top of the column';
+                    }
+                }
+                function saveClickPointDB() {
+                    if ($(this).parent().hasClass('clickPointHide')) setValue($(this).attr('name'), false);
+                    else setValue($(this).attr('name'), true);
+                    setClickPointDB(this);
+                }
+                if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.bio-data')[0] && $('#user-bio-root')[0] && $('#quickLinks ul li')[0] && $('#sidebarNavigation > nav > ul li')[0]) {
                     // Build button to display or hide the configuration to hide rows.
-                    if ($('.user-bio')[0]) {
-                        $($('.user-bio')[0]).append('<span class="clickSum"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill" title=""</use></svg></span>');
-                        $('.clickSum')[0].addEventListener("click", saveClickSumDashboard, false);
-                        setClickSumDashboard();
+                    if ($('#user-bio-root')[0]) {
+                        $($('#user-bio-root')[0]).prepend('<span class="clickSum"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill" title=""</use></svg></span>');
+                        $('.clickSum')[0].addEventListener("click", saveClickSumDB, false);
+                        setClickSumDB();
                         // Build buttons to mark rows for display or hide.
-                        var links = $('#DashboardSidebar nav > ul:not(.gclh) li');
-                        for (var i = 0; i < links.length; i++) {
-                            var name = '';
-                            if ($(links[i]).find('a')[0]) {
-                                name = 'set_switch_db_' + $(links[i]).find('a')[0].href.replace(/(https:\/\/(www|payments)\.geocaching\.com|\/|\.)/ig, '');
-                            } else if ($(links[i]).hasClass('favorites-points') && $(links[i]).find('span')[0]) {
-                                name = 'set_switch_db_favorites-points';
+                        function buildButtonToMarkRowDB(row, name) {
+                            if (row && row.length == 1 && name && name != '') {
+                                $(row).prepend('<span name="' + name + '" class="clickPoint"><svg><use href="#close--inline"></use></svg></span>');
+                                $(row).find('.clickPoint')[0].addEventListener("click", saveClickPointDB, false);
+                                setClickPointDB($(row).find('.clickPoint')[0]);
                             }
-                            if (name != '') {
-                                $(links[i]).prepend('<span name="' + name + '" class="clickPoint"><svg><use href="#close--inline"></use></svg></span>');
-                                $(links[i]).find('.clickPoint')[0].addEventListener("click", saveClickPointDashboard, false);
-                                setClickPointDashboard($(links[i]).find('.clickPoint')[0]);
+                        }
+                        // Build buttons for user data and GClh links above.
+                        function waitForGClhLinksDB(waitCount) {
+                            if ($('#gclh_config_lnk')[0]) {
+                                // User cover image and profile image.
+                                var row = $('.bio-data');
+                                buildButtonToMarkRowDB(row, 'set_switch_db_bio-userImages');
+                                // User name.
+                                var row = $('#user-bio-root > div > div > h1:first').closest('div');
+                                buildButtonToMarkRowDB(row, 'set_switch_db_bio-userName');
+                                // All user bio in "ul li" like Joined, Renewal Date, finds, hides, GClh links and perhaps further.
+                                var rows = $('#user-bio-root > div > ul > li');
+                                for (var i = 0; i < rows.length; i++) {
+                                    name = '';
+                                    if ($(rows[i]).find('svg:first use')[0] && !$(rows[i]).find('svg:first use').attr('href') == '') {
+                                        name = 'set_switch_db_bio-' + $(rows[i]).find('svg:first use').attr('href').replace(/(#|_no-outline|--inline)/ig, '');
+                                    }
+                                    buildButtonToMarkRowDB($(rows[i]), name);
+                                }
+                                // User profile button (without parent).
+                                var row = $('#user-bio-root > div > a[href*="/p/default.aspx"]');
+                                if (row && row.length == 1) {
+                                    var div = document.createElement('div');
+                                    div.setAttribute('class', 'gclh_parent_profile_button');
+                                    row.after(div);
+                                    $('.gclh_parent_profile_button').append($('#user-bio-root > div > a').remove().get().reverse());
+                                    var row = $('.gclh_parent_profile_button');
+                                    buildButtonToMarkRowDB(row, 'set_switch_db_bio-userProfile');
+                                }
+                            } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForGClhLinksDB(waitCount);}, 50);}
+                        }
+                        waitForGClhLinksDB(0);
+                        // Build buttons for primary links (quick links) and for secondary links (without gclh areas).
+                        var rows = $('#quickLinks ul > li, #sidebarNavigation > nav > ul:not(.gclh) > li');
+                        if (rows) {
+                            for (var i = 0; i < rows.length; i++) {
+                                name = '';
+                                if (!$(rows[i]).find('a:first')[0].href.match(/\?upgrade=true/)) {
+                                    if ($(rows[i]).find('a:first')[0]) {
+                                        var rel = $(rows[i]).find('a:first')[0].href.match(/https:\/\/(www|payments)\.geocaching\.com\/(.*?)($|\.aspx)/)
+                                        if (rel && rel[2]) {
+                                            if ($(rows[i]).closest('#quickLinks')[0]) name = 'set_switch_db_prim-';
+                                            else name = 'set_switch_db_second-';
+                                            name = name + rel[2].replace(/\//ig, '');
+                                            // Link to my/inventory is not available if a list of trackables is shown.
+                                            name = name.replace(/trackdetails/, 'myinventory');
+                                        }
+                                    }
+                                }
+                                buildButtonToMarkRowDB($(rows[i]), name);
                             }
                         }
                     }
                 }
+
+                // Linklist, Default Links on new dashboard.
+                try {
+                    buildDashboardCss();
+                    if (settings_bookmarks_show) {
+                        buildBoxDashboard("linklist", "Linklist", "Linklist");
+                        var box = document.getElementsByName("box_linklist")[0];
+                        box.innerHTML = "";
+                        buildBoxElementsLinklist(box);
+                    }
+                    if (settings_show_default_links) {
+                        bm_tmp = buildCopyOfBookmarks();
+                        sortBookmarksByDescription(true, bm_tmp);
+                        buildBoxDashboard("links", "Default Links", "Default Links for the Linklist");
+                        var box = document.getElementsByName("box_links")[0];
+                        box.innerHTML = "";
+                        buildBoxElementsLinks(box, bm_tmp);
+                    }
+                } catch(e) {gclh_error("Linklist, Default Links on new dashboard",e);}
             }
 
-            function waitForQuickLinks(waitCount) {
-                if ($('#quickLinks ul')[0]) {
-                    createQuickLinks();
-                    createButtonsToHideLinks(0);
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForQuickLinks(waitCount);}, 50);}
+            function waitForLeftSidebar(waitCount) {
+                if ($('#DashboardSidebar')[0] && $('.user-bio')[0] && $('#user-bio-root')[0] && $('#quickLinks ul')[0] && $('#sidebarNavigation > nav')[0]) {
+                    improveLeftSidebar();
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebar(waitCount);}, 50);}
             }
-            waitForQuickLinks(0);
+            waitForLeftSidebar(0);
 
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
@@ -14414,8 +14468,8 @@ var mainGC = function() {
             document.location.href = clearUrlAppendix(document.location.href, true);
             setTimeout(createFindPlayerForm, 5);
         }
-        // Old Dashboard (Profile), Dashboard Seite.
-        if ((is_page('profile') && $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0]) || (is_page("dashboard") && $('.bio-meta')[0])) {
+        // Old Dashboard (Profile). (Hier sind noch Teile vom new dashboard mit drin, das stört aber nicht.)
+        if (is_page('profile') && $('#ctl00_ContentBody_WidgetMiniProfile1_memberProfileLink')[0]) {
             // Config, Sync und Changelog Links beim Avatar in Profile, Dashboard.
             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
@@ -14438,6 +14492,21 @@ var mainGC = function() {
                 document.getElementsByName("lnk_findplayer_profile")[0].href = "#GClhShowFindPlayer";
                 document.getElementsByName("lnk_findplayer_profile")[0].addEventListener('click', createFindPlayerForm, false);
             }
+        }
+        // New dashboard: Config, Sync and Changelog Links.
+        if (is_page("dashboard")) {
+            function waitForLeftSidebarForGClhLinks(waitCount) {
+                if ($('#user-bio-root ul li')[0]) {
+                    var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
+                    var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
+                    var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
+                    var custIcon = "<svg class='size-[14px]'><use href='#settings--inline'></use></svg>";
+                    $('#user-bio-root ul')[0].innerHTML += '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + lnk_config + lnk_sync + lnk_changelog + '</li>';
+                    $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
+                    $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
+                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebarForGClhLinks(waitCount);}, 50);}
+            }
+            waitForLeftSidebarForGClhLinks(0);
         }
     } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt)",e);}
 
@@ -15662,13 +15731,17 @@ var mainGC = function() {
 
 // Do migration tasks for new version.
     function migrationTasks() {
-        // Migrate new parameter for map related "Replace map layers" to false if general parameter for it is false (zu v0.14).
-        if (getValue("migration_task_08", false) != true) {
-            if (settings_use_gclh_layercontrol == false) {
-                setValue("settings_use_gclh_layercontrol_on_browse_map", false);
-                setValue("settings_use_gclh_layercontrol_on_search_map", false);
+        // Delete older parameter set_switch_db... (zu v0.17.13).
+        if (getValue("migration_task_09", false) != true) {
+            var config_tmp = {};
+            for (key in CONFIG) {
+                if (!key.match(/^set_switch_db_/)) {
+                    config_tmp[key] = CONFIG[key];
+                }
             }
-            setValue("migration_task_08", true);
+            CONFIG = config_tmp;
+            GM_setValue("CONFIG", JSON.stringify(CONFIG));
+            setValue("migration_task_09", true);
         }
     }
 
@@ -15820,11 +15893,11 @@ var mainGC = function() {
 // Build box for VIPS, VUPS, All Links, Linklist on dashboard and the standard boxes.
     function buildDashboardCss() {
         var css = "";
-        css += "#DashboardSidebar nav ul.gclh {padding-top: 0px !important;}";
-        css += "#DashboardSidebar nav ul.isHide {display: none !important} .link-block {border-bottom: unset;}";
-        css += "#DashboardSidebar nav h3.gclh {cursor: pointer; margin-top: 4px !important;}";
-        css += "#DashboardSidebar nav h3.gclh svg {height: 23px; width: 22px; fill: #777; float: right; margin-top: -3px; margin-right: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
-        css += "#DashboardSidebar nav h3.gclh.isHide svg {transform: rotate(90deg);}";
+        css += "#sidebarNavigation > nav ul.gclh {padding-top: 2px !important;}";
+        css += "#sidebarNavigation > nav ul.isHide {display: none !important} .link-block {border-bottom: unset;}";
+        css += "#sidebarNavigation > nav h3.gclh {cursor: pointer; margin-top: 4px !important;}";
+        css += "#sidebarNavigation > nav h3.gclh svg {height: 23px; width: 22px; fill: #777; float: right; margin-top: -3px; margin-right: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
+        css += "#sidebarNavigation > nav h3.gclh.isHide svg {transform: rotate(90deg);}";
         appendCssStyle(css);
     }
     function buildBoxDashboard(ident, name, title) {
@@ -15834,11 +15907,16 @@ var mainGC = function() {
         if (title) head.setAttribute("title", title);
         if (name) head.innerHTML = name + " <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
         head.addEventListener("click", showHideBoxDashboard, false);
-        $("#DashboardSidebar nav")[0].appendChild(head);
         var box = document.createElement("ul");
         box.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-block gclh" : "link-block gclh isHide") + " pl-2");
         box.setAttribute("name", "box_" + ident);
-        $("#DashboardSidebar nav")[0].appendChild(box);
+        if (ident == 'vip') {
+            $("#sidebarNavigation > nav > ul:not(.gclh)").last().after(box).after(head);
+        } else if (ident == 'vup') {
+            $("#sidebarNavigation > nav > ul[name*='box_vip']").after(box).after(head);
+        } else {
+            $("#sidebarNavigation > nav > ul").last().after(box).after(head);
+        }
     }
     function buildCopyOfBookmarks() {
         var bm_tmp = new Array();
