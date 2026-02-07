@@ -2243,21 +2243,12 @@ var mainGC = function() {
     function showDraftIndicatorInHeader() {
         if (settings_show_draft_indicator) {
             try {
-                $.get('https://www.geocaching.com/account/dashboard', null, function(text) {
-                    // Look for drafts in old layout.
-                    draft_list = $(text).find('#uxDraftLogs span');
-                    if (draft_list != null) drafts = draft_list[0];
-                    else drafts = false;
-                    if (!drafts) {
-                        // If not found, Look for drafts in new layout.
-                        draft_list = $(text).find("nav a[href='/my/fieldnotes.aspx']");
-                        if (draft_list != null) drafts = draft_list[0];
-                        else drafts = false;
-                    }
-                    if (drafts) {
-                        draft_count = parseInt(drafts.innerHTML.match(/\d+/));
-                        if (Number.isInteger(draft_count) && draft_count > 0) {
-                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/my/fieldnotes.aspx" title="Go to Drafts" style="outline: none;">' + draft_count + '</a></span>');
+                $.ajax({
+                    type: "GET",
+                    url: 'https://www.geocaching.com/api/proxy/web/v1/logdrafts',
+                    success: function(drafts) {
+                        if (drafts.total > 0) {
+                            $('.li-user-info .user-avatar, .player-profile').prepend('<span class="draft-indicator"><a href="/account/drafts" title="Go to Drafts" style="outline: none;">' + drafts.total + '</a></span>');
                         }
                     }
                 });

@@ -456,7 +456,6 @@ gclh_nav .profile-panel ul::after {
     background-color: #e0b70a;
     font-weight: bold;
     position: absolute;
-    padding: 0 5px;
     border-radius: 15px;
 }
 .draft-indicator a {
@@ -464,6 +463,7 @@ gclh_nav .profile-panel ul::after {
     font-size: 14px;
     min-width: 10px;
     display: block;
+    padding: 0 5px;
     text-align: center;
     color: white;
 }
