@@ -624,7 +624,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
-    c.settings_row_hide_new_dashboard = getValue("settings_row_hide_new_dashboard", false);
+    c.settings_row_hide_new_dashboard = getValue("settings_row_hide_new_dashboard", true);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_enhanced_map_coords = getValue("settings_show_enhanced_map_coords", true);
@@ -2720,7 +2720,7 @@ var mainGC = function() {
             url: url,
             onload: function(response) {
                 const html = response.responseText;
-    
+
                 function extract(name) {
                     return encodeURIComponent($(html).find(`input[name="${name}"]`).val());
                 }
@@ -9431,7 +9431,7 @@ var mainGC = function() {
                 css += ".clickSumHide .clickSum svg {transform: rotate(90deg);}";
                 // Buttons to mark rows for display or hide in left column.
                 css += ".clickPoint {position: absolute; padding: 2px 3px 0px 2px !important; cursor: pointer; color: rgb(110, 110, 110);}";
-                css += ".bio-data .clickPoint {margin: 120px 0px 0px -144px !important;}";
+                css += ".bio-data .clickPoint {margin: 120px 0px 0px -1px !important; display: block;}";
                 css += "#user-bio-root .clickPoint {margin: 1px 0px 0px -17px !important;}";
                 css += "#user-bio-root .gclh_parent_profile_button .clickPoint {margin: 15px 0px 0px -17px !important;}";
                 css += "#user-bio-root .gclh_parent_profile_button a {display: block !important;}";
@@ -9459,7 +9459,7 @@ var mainGC = function() {
                 css += "#_Geocaching101Container {display: none;}";
             }
 
-            // Improve quick links and further links in left sidebar.
+            // Improve left sidebar.
             function improveLeftSidebar() {
 
                 // Search / Browse Map buttons and Search Map button as quick links in left sidebar.
@@ -9574,11 +9574,10 @@ var mainGC = function() {
                                 // All user bio in "ul li" like Joined, Renewal Date, finds, hides, GClh links and perhaps further.
                                 var rows = $('#user-bio-root > div > ul > li');
                                 for (var i = 0; i < rows.length; i++) {
-                                    name = '';
                                     if ($(rows[i]).find('svg:first use')[0] && !$(rows[i]).find('svg:first use').attr('href') == '') {
-                                        name = 'set_switch_db_bio-' + $(rows[i]).find('svg:first use').attr('href').replace(/(#|_no-outline|--inline)/ig, '');
+                                        var name = 'set_switch_db_bio-' + $(rows[i]).find('svg:first use').attr('href').replace(/(#|_no-outline|--inline)/ig, '');
+                                        buildButtonToMarkRowDB($(rows[i]), name);
                                     }
-                                    buildButtonToMarkRowDB($(rows[i]), name);
                                 }
                                 // User profile button (without parent).
                                 var row = $('#user-bio-root > div > a[href*="/p/default.aspx"]');
@@ -9597,20 +9596,21 @@ var mainGC = function() {
                         var rows = $('#quickLinks ul > li, #sidebarNavigation > nav > ul:not(.gclh) > li');
                         if (rows) {
                             for (var i = 0; i < rows.length; i++) {
-                                name = '';
-                                if (!$(rows[i]).find('a:first')[0].href.match(/\?upgrade=true/)) {
-                                    if ($(rows[i]).find('a:first')[0]) {
-                                        var rel = $(rows[i]).find('a:first')[0].href.match(/https:\/\/(www|payments)\.geocaching\.com\/(.*?)($|\.aspx)/)
-                                        if (rel && rel[2]) {
-                                            if ($(rows[i]).closest('#quickLinks')[0]) name = 'set_switch_db_prim-';
-                                            else name = 'set_switch_db_second-';
-                                            name = name + rel[2].replace(/\//ig, '');
-                                            // Link to my/inventory is not available if a list of trackables is shown.
-                                            name = name.replace(/trackdetails/, 'myinventory');
+                                if ($(rows[i]).find('a:first')[0] && $(rows[i]).find('a:first')[0].href) {
+                                    if (!$(rows[i]).find('a:first')[0].href.match(/\?upgrade=true/)) {
+                                        if ($(rows[i]).find('a:first')[0]) {
+                                            var rel = $(rows[i]).find('a:first')[0].href.match(/https:\/\/(www|payments)\.geocaching\.com\/(.*?)($|\.aspx)/)
+                                            if (rel && rel[2]) {
+                                                if ($(rows[i]).closest('#quickLinks')[0]) var name = 'set_switch_db_prim-';
+                                                else var name = 'set_switch_db_second-';
+                                                name = name + rel[2].replace(/\//ig, '');
+                                                // Link to my/inventory is not available if a list of trackables is shown.
+                                                name = name.replace(/trackdetails/, 'myinventory');
+                                                buildButtonToMarkRowDB($(rows[i]), name);
+                                            }
                                         }
                                     }
                                 }
-                                buildButtonToMarkRowDB($(rows[i]), name);
                             }
                         }
                     }
@@ -10728,7 +10728,7 @@ var mainGC = function() {
                                 </svg>
                                 <input type="checkbox" class="gclh-checkbox-gray" id="gclh_hidePastEvents" ${hidePastEvents ? 'checked' : ''} style="display:none">
                             </div>
-                            
+
                             <!-- Cache types -->
                             <div style="grid-column: 1 / span 6; height: 1em;"></div>
                             <div style="grid-column: 1 / span 6; margin-bottom: 5px;"><u>Show / Hide Caches by Type</u></div>
@@ -14501,7 +14501,7 @@ var mainGC = function() {
                     var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
                     var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
                     var custIcon = "<svg class='size-[14px]'><use href='#settings--inline'></use></svg>";
-                    $('#user-bio-root ul')[0].innerHTML += '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + lnk_config + lnk_sync + lnk_changelog + '</li>';
+                    $('#user-bio-root ul')[0].innerHTML += '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>';
                     $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
                     $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebarForGClhLinks(waitCount);}, 50);}
