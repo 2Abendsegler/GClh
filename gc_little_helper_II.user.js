@@ -8251,8 +8251,11 @@ var mainGC = function() {
             global_MailTemplate = urlencode(buildSendTemplate().replace(/#Receiver#/ig, "__Receiver__"));
             global_MailTemplate = global_MailTemplate.replace(/__Receiver__/ig, "${UserName}");
 
-            var isUpvoteActive = false;
-            if ($('#cache_logs_container div.sort-logs')[0] || $('div.upvotes')[0]) isUpvoteActive = true;
+            // The upvote buttons "Great story" and "Helpful" are available for premium and basic members in cache and event listings.
+            // (Only the upvote sort feature is only available for premium members.)
+            // (Originally, we checked whether the upvote buttons were displayed in the standard logs. However, since the logs are now loaded with a time delay,)
+            // (no buttons are present yet. This check isn't necessary anyway.)
+            var isUpvoteActive = true;
             var upvoteIconPixel = (settings_smaller_upvotes_icons ? 16:24);
 
             var vupUserString = 'if UserName == "#" ';
