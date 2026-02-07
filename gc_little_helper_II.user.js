@@ -8449,10 +8449,10 @@ var mainGC = function() {
             // Log Text und User Bereich noch etwas ausrichten, keinen Platz in der Höhe verlieren.
             css += ".LogDisplayRight .LogText {min-height: unset; padding-top: 0; margin-bottom: 8px;} .LogType img {vertical-align: top; z-index: 1; position: relative;}";
             css += ".favoritePoint {color: rgb(0 125 70); margin-right: 0px; margin-left: -7px; vertical-align: top;}";
-            css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats img {vertical-align: sub;}";
+            css += ".logOwnerProfileName {padding-top: 0; margin-bottom: 8px;} .logIcons, .logOwnerAvatar {margin-bottom: 4px;} .logOwnerStats {margin-bottom: 0;} .logOwnerStats img {vertical-align: sub;}";
             css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
-            if (!settings_hide_avatar) css += ".markdown-output {min-height: 6em;}";
+            if (!settings_hide_avatar) css += ".markdown-output {min-height: 5.5em;}";
             // Bilderrahmen im Log ausrichten.
             css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
             css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
@@ -8461,7 +8461,7 @@ var mainGC = function() {
             // For upvotes functionality.
             if (isUpvoteActive) css += ".upvotes{display: block;}";
             css += ".TableLogContent {padding-left: 0; border-left: none; margin-bottom: 0.5em;}";
-            css += ".log-cta {margin-bottom: -0.5em;}";
+            css += ".log-cta {margin-bottom: 0;}";
             css += ".gclh_hide_upvotes div.sort-logs, .gclh_hide_upvotes div.upvotes {display: none!important;}";
             if (settings_no_wiggle_upvotes_click) css += ".upvotes .loading-container {height: " + (settings_smaller_upvotes_icons ? 20:26) +"px;}";
             if (settings_no_wiggle_upvotes_click) css += "#sort_logs_working {display: none;}";
