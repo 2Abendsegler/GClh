@@ -1,3 +1,4 @@
+<a href="#v01713" title="GClh II version 0.17.13 (08.02.2026)">v0.17.13</a> &nbsp;
 <a href="#v01712" title="GClh II version 0.17.12 (22.01.2026)">v0.17.12</a> &nbsp;
 <a href="#v01711" title="GClh II version 0.17.11 (11.01.2026)">v0.17.11</a> &nbsp;
 <a href="#v01710" title="GClh II version 0.17.10 (21.11.2025)">v0.17.10</a> &nbsp;
@@ -45,6 +46,39 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.13:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [New Dashboard] Extending of the hide of individual rows in the left column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2939" title="Issue 2939">2939</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you to hide individual rows in the complete left column of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
+		<img src="../images/0.17.13/Screen01.gif" alt="Screen01.gif"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.17.13/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		If you want to use this feature, you may need to activate it.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Some features in left navigation sidebar don't work because of new dashboard release, again. [<a href="https://github.com/2Abendsegler/GClh/issues/2934" title="Issue 2934">2934</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Draft indicator in header no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/2935" title="Issue 2935">2935</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] The order of the links in the Play Menu has changed. [<a href="https://github.com/2Abendsegler/GClh/issues/2942" title="Issue 2942">2942</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Upvote buttons "Great story" and "Helpful" in logs are no longer available for basic members. [<a href="https://github.com/2Abendsegler/GClh/issues/2943" title="Issue 2943">2943</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Different spacing of the buttons at the bottom of the logs. [<a href="https://github.com/2Abendsegler/GClh/issues/2944" title="Issue 2944">2944</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(08.02.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.12:
