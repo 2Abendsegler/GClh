@@ -52,7 +52,7 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [New Dashboard] Extending of the hide individual rows in the left column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2939" title="Issue 2939">2939</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>New:</strong> [New Dashboard] Extending of the hide of individual rows in the left column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2939" title="Issue 2939">2939</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		This feature allows you to hide individual rows in the complete left column of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
 		<img src="../images/0.17.13/Screen01.gif" alt="Screen01.gif"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
