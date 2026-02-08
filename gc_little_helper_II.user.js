@@ -753,6 +753,7 @@ var variablesInit = function(c) {
     c.settings_hide_own_tbs_log_form = getValue("settings_hide_own_tbs_log_form", false);
     c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
     c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
+    c.settings_dashboard_hide_right_sidebar = getValue("settings_dashboard_hide_right_sidebar", false);
     c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
     c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
@@ -9972,6 +9973,42 @@ var mainGC = function() {
 
             // Latest Activity: Do not cut avatar image.
             css += '.activity-details > div > a {flex-shrink: 0;}';
+
+            // Hide right sidebar ("Events nearby" and "Geocaches nearby").
+            waitForElementThenRun('div.sidebar-right', function() {
+                const $sidebar_right = $('div.sidebar-right');
+                if (settings_dashboard_hide_right_sidebar) $sidebar_right.hide();
+
+                const title_hide = 'Click to hide "Events nearby" and "Geocaches nearby"';
+                const title_show = 'Click to show "Events nearby" and "Geocaches nearby"';
+                const $btn = $('<button>', {
+                    id: 'gclh_right_sidebar_toggle',
+                    type: 'button',
+                    title: (settings_dashboard_hide_right_sidebar ? title_show : title_hide)
+                }).html(`
+                  <svg style="transform: ${settings_dashboard_hide_right_sidebar ? 'rotate(90deg)' : 'rotate(-90deg)'};">
+                    <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
+                  </svg>`);
+                $sidebar_right.before($btn);
+
+                $btn.click(function() {
+                    const $svg = $btn.find('svg');
+                    if ($sidebar_right.is(':visible')) {
+                        $sidebar_right.hide('fast');
+                        $svg.css('transform', 'rotate(90deg)');
+                        $btn.attr('title', title_show);
+                    } else {
+                        $sidebar_right.show('fast');
+                        $svg.css('transform', 'rotate(-90deg)');
+                        $btn.attr('title', title_hide);
+                    }
+                });
+
+                css += '#LayoutFeed {max-width: none;}';
+                css += '#gclh_right_sidebar_toggle {position: relative; right: 10px; top: 5px; height: 23px; padding: 0; border: none; cursor: pointer; z-index: 9999; background-color: unset;}';
+                css += '#gclh_right_sidebar_toggle svg {height: 23px; width: 23px; pointer-events: none; // prevent sprite tooltip}';
+            });
+
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve new dashboard",e);}
     }
@@ -17445,6 +17482,9 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
+            html += newParameterOn1;
+            html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide "Events nearby" and "Geocaches nearby" by default') + show_help('This option allows you to hide “Events nearby” and “Geocaches nearby” in the right sidebar by default.') + "<br>";
+            html += newParameterVersionSetzen('0.17') + newParameterOff;
 
             html += "<div class='gclh_old_new_line'>Old Dashboard Only</div>";
             html += checkboxy('settings_hide_visits_in_profile', 'Hide trackable visits on your dashboard') + "<br>";
@@ -19296,6 +19336,7 @@ var mainGC = function() {
                 'settings_hide_own_tbs_log_form',
                 'settings_hide_share_log_button_log_view',
                 'settings_dashboard_hide_tb_activity',
+                'settings_dashboard_hide_right_sidebar',
                 'settings_button_sort_tbs_by_name_log_form',
                 'settings_larger_content_width_log_form',
                 'settings_less_space_log_lines_log_form',
