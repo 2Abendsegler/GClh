@@ -9556,36 +9556,39 @@ var mainGC = function() {
                                 setClickPointDB($(row).find('.clickPoint')[0]);
                             }
                         }
-                        // Build buttons for user data and GClh links above.
-                        function waitForGClhLinksDB(waitCount) {
-                            if ($('#gclh_config_lnk')[0]) {
-                                // User cover image and profile image.
-                                var row = $('.bio-data');
-                                buildButtonToMarkRowDB(row, 'set_switch_db_bio-userImages');
-                                // User name.
-                                var row = $('#user-bio-root > div > div > h1:first').closest('div');
-                                buildButtonToMarkRowDB(row, 'set_switch_db_bio-userName');
-                                // All user bio in "ul li" like Joined, Renewal Date, finds, hides, GClh links and perhaps further.
-                                var rows = $('#user-bio-root > div > ul > li');
-                                for (var i = 0; i < rows.length; i++) {
+                        // Build button for user cover image and profile image.
+                        var row = $('.bio-data');
+                        buildButtonToMarkRowDB(row, 'set_switch_db_bio-userImages');
+                        // Build button for user name.
+                        var row = $('#user-bio-root > div > div > h1:first').closest('div');
+                        buildButtonToMarkRowDB(row, 'set_switch_db_bio-userName');
+                        // Build button for user profile button (has no parent).
+                        var row = $('#user-bio-root > div > a[href*="/p/default.aspx"]');
+                        if (row && row.length == 1) {
+                            var div = document.createElement('div');
+                            div.setAttribute('class', 'gclh_parent_profile_button');
+                            row.after(div);
+                            $('.gclh_parent_profile_button').append($('#user-bio-root > div > a').remove().get().reverse());
+                            var row = $('.gclh_parent_profile_button');
+                            buildButtonToMarkRowDB(row, 'set_switch_db_bio-userProfile');
+                        }
+                        // Build buttons for user data in list like Joined, Renewal Date, finds and hides, and foreign data like gclh and send2cgeo.
+                        function buildButtonsForUserDataInList(waitCount) {
+                            var rows = $('#user-bio-root > div > ul > li');
+                            for (var i = 0; i < rows.length; i++) {
+                                if (!$(rows[i]).find('.clickPoint')[0]) {
                                     if ($(rows[i]).find('svg:first use')[0] && !$(rows[i]).find('svg:first use').attr('href') == '') {
                                         var name = 'set_switch_db_bio-' + $(rows[i]).find('svg:first use').attr('href').replace(/(#|_no-outline|--inline)/ig, '');
                                         buildButtonToMarkRowDB($(rows[i]), name);
+                                    } else if ($(rows[i]).find('img:first')[0] && !$(rows[i]).find('img:first').attr('src') == '') {
+                                        var name = 'set_switch_db_bio-' + $(rows[i]).find('img:first').attr('src').replace(/(http:|https:|www|\/|\.png|\.jpg|\.)/ig, '');
+                                        buildButtonToMarkRowDB($(rows[i]), name);
                                     }
                                 }
-                                // User profile button (without parent).
-                                var row = $('#user-bio-root > div > a[href*="/p/default.aspx"]');
-                                if (row && row.length == 1) {
-                                    var div = document.createElement('div');
-                                    div.setAttribute('class', 'gclh_parent_profile_button');
-                                    row.after(div);
-                                    $('.gclh_parent_profile_button').append($('#user-bio-root > div > a').remove().get().reverse());
-                                    var row = $('.gclh_parent_profile_button');
-                                    buildButtonToMarkRowDB(row, 'set_switch_db_bio-userProfile');
-                                }
-                            } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForGClhLinksDB(waitCount);}, 50);}
+                            }
+                            waitCount++; if (waitCount <= 1000) setTimeout(function(){buildButtonsForUserDataInList(waitCount);}, 10);
                         }
-                        waitForGClhLinksDB(0);
+                        buildButtonsForUserDataInList(0);
                         // Build buttons for primary links (quick links) and for secondary links (without gclh areas).
                         var rows = $('#quickLinks ul > li, #sidebarNavigation > nav > ul:not(.gclh) > li');
                         if (rows) {
@@ -14495,7 +14498,12 @@ var mainGC = function() {
                     var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
                     var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
                     var custIcon = "<svg class='size-[14px]'><use href='#settings--inline'></use></svg>";
-                    $('#user-bio-root ul')[0].innerHTML += '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>';
+                    var row = '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>';
+                    if ($('#user-bio-root ul li a[id="s2cg_open_sendList"]')[0]) {
+                        $($('#user-bio-root ul li a[id="s2cg_open_sendList"]')[0].closest('li')).before(row);
+                    } else {
+                        $('#user-bio-root ul').append('<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>');
+                    }
                     $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
                     $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebarForGClhLinks(waitCount);}, 50);}
