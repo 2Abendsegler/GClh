@@ -9407,6 +9407,7 @@ var mainGC = function() {
                 css += ".alert {padding-top: 6px; padding-bottom: 0px; margin-bottom: -2px;}";
                 // User block in the first block in the left column.
                 css += ".user-bio {padding-bottom: 0px !important;}";
+                css += ".user-bio .bio-cover-image {height: 65px;}";
                 css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
                 css += ".gclh_parent_profile_button a {margin-top: 8px !important; padding-top: 6px !important; padding-bottom: 6px !important;}";
                 // Primary navigation links (quick links) in the second block in the left column.
@@ -9425,7 +9426,7 @@ var mainGC = function() {
                 css += ".clickSumHide .clickSum svg {transform: rotate(90deg);}";
                 // Buttons to mark rows for display or hide in left column.
                 css += ".clickPoint {position: absolute; padding: 2px 3px 0px 2px !important; cursor: pointer; color: rgb(110, 110, 110);}";
-                css += ".bio-data .clickPoint {margin: 120px 0px 0px -1px !important; display: block;}";
+                css += ".bio-data .clickPoint {margin: 85px 0px 0px -1px !important; display: block;}";
                 css += "#user-bio-root .clickPoint {margin: 1px 0px 0px -17px !important;}";
                 css += "#user-bio-root .gclh_parent_profile_button .clickPoint {margin: 15px 0px 0px -17px !important;}";
                 css += "#user-bio-root .gclh_parent_profile_button a {display: block !important;}";
@@ -17422,7 +17423,7 @@ var mainGC = function() {
 
             html += "<div class='gclh_old_new_line'>New Dashboard Only</div>";
             html += checkboxy('settings_show_default_links', 'Show all default links on your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar on your dashboard.") + "<br>";
-            html += checkboxy('settings_but_search_map', 'Show buttons "Search" and "Browse Map" on your dashboard') + "<br>";
+            html += checkboxy('settings_but_search_map', 'Show button "Browse Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_search_map_new_tab', 'Open links in new browser tab') + "<br>";
             html += newParameterOn1;
             html += checkboxy('settings_but_searchmap', 'Show button "Search Map" on your dashboard') + "<br>";
