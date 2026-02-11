@@ -9405,7 +9405,7 @@ var mainGC = function() {
             var css = '';
             // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-                // Links at the top of the container.
+                // Link at the top of the container.
                 if ($('.alert')[0]) {
                     css += ".alert {padding: 6px 16px 0px 16px;}";
                     css += ".container {padding-top: 8px !important;}";
