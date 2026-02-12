@@ -9407,7 +9407,7 @@ var mainGC = function() {
             if (settings_compact_layout_new_dashboard) {
                 // Link at the top of the container.
                 if ($('.alert')[0]) {
-                    css += ".alert {padding: 6px 16px 0px 16px;}";
+                    css += ".alert {padding: 6px 20px 0px 20px;}";
                     css += ".container {padding-top: 8px !important;}";
                 }
                 // User block in the first block in the left column.
@@ -9473,7 +9473,7 @@ var mainGC = function() {
 
             // Build menu under the header of the old dashboard in the new dashbaord.
             if (settings_dashboard_build_menu_old_db_in_new_db) {
-                css += ".alert, .gclh_menu_old_db {padding: 6px 16px 0px 16px; text-align: center;}";
+                css += ".alert, .gclh_menu_old_db {padding: 6px 20px 0px 20px; text-align: center;}";
                 css += ".container {padding-top: 8px !important;}";
             }
             function buildMenuOfOldDBInNewDB() {
