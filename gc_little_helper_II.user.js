@@ -9843,7 +9843,7 @@ var mainGC = function() {
             // Show unpublished hides.
             if (settings_showUnpublishedHides) {
                 function waitForGeocachesNearbyContainer(waitCount) {
-                    if ($('#_GeocachesNearbyContainer')[0] && $('#_GeocachesNearbyContainer svg')[0]) {
+                    if ($('#sidebarNavigation > nav')[0] && $('#_GeocachesNearbyContainer svg')[0]) {
                         var panel = '<div id="gclh_unpublishedCaches" class="panel collapsible">';
                         panel += '    <div class="panel-header isActive">';
                         panel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
@@ -9871,8 +9871,8 @@ var mainGC = function() {
                                 setValue('unpublishedCaches_visible', true);
                             }
                         });
-                        // If the link to unpublished hides is shown in dashboard, there are some.
-                        if ($('a.bold[href="/account/dashboard/unpublishedcaches"]')[0]) {
+                        // If the link to unpublished hides is shown in bold, there are some.
+                        if ($('a[href*="/play/owner/unpublished"]:has(> strong)')[0]) {
                             // Build the area to list the unpublished caches and events.
                             function buildListArea() {
                                 if ($('#gclh_unpublishedCaches_list')[0]) return;
