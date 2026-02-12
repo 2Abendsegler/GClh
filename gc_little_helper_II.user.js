@@ -10031,37 +10031,40 @@ var mainGC = function() {
                     height: 'fit-content'
                 });
                 $sidebar_right.wrap($wrapper);
-                if (settings_dashboard_hide_right_sidebar) $sidebar_right.hide();
 
                 const title_hide = 'Click to hide all sections on the right side';
                 const title_show = 'Click to show all sections on the right side';
                 const $btn = $('<button>', {
                     id: 'gclh_right_sidebar_toggle',
-                    type: 'button',
-                    title: (settings_dashboard_hide_right_sidebar ? title_show : title_hide)
+                    type: 'button'
                 }).html(`
-                  <svg style="transform: ${settings_dashboard_hide_right_sidebar ? 'rotate(90deg)' : 'rotate(-90deg)'};">
+                  <svg>
                     <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
                   </svg>`);
                 $sidebar_right.before($btn);
+                css += '#gclh_right_sidebar_toggle {position: absolute; margin-left: -19px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
+                css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
 
                 const $svg = $btn.find('svg');
                 $btn.click(function() {
-                    if ($sidebar_right.is(':visible')) {
-                        $sidebar_right.hide('fast');
-                        $svg.css('transform', 'rotate(90deg)');
-                        $layoutFeed.css('max-width', 'none');
-                        $btn.attr('title', title_show);
-                    } else {
-                        $sidebar_right.show('fast');
-                        $svg.css('transform', 'rotate(-90deg)');
-                        $layoutFeed.css('max-width', $layoutFeed_max_width);
-                        $btn.attr('title', title_hide);
-                    }
+                    if ($sidebar_right.is(':visible')) hideSidebar();
+                    else showSidebar();
                 });
+                function hideSidebar() {
+                    $sidebar_right.hide('fast');
+                    $svg.css('transform', 'rotate(90deg)');
+                    $layoutFeed.css('max-width', 'none');
+                    $btn.attr('title', title_show);
+                }
+                function showSidebar() {
+                    $sidebar_right.show('fast');
+                    $svg.css('transform', 'rotate(-90deg)');
+                    $layoutFeed.css('max-width', $layoutFeed_max_width);
+                    $btn.attr('title', title_hide);
+                }
 
-                css += '#gclh_right_sidebar_toggle {position: absolute; margin-left: -19px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
-                css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
+                if (settings_dashboard_hide_right_sidebar) hideSidebar();
+                else showSidebar();
             });
 
             appendCssStyle(css);
@@ -17543,7 +17546,7 @@ var mainGC = function() {
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += newParameterOn1;
-            html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide "Events nearby" and "Geocaches nearby" by default') + show_help('This option allows you to hide “Events nearby” and “Geocaches nearby” in the right sidebar by default.') + "<br>";
+            html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide the sidebar on the far right (“Events nearby” etc.) by default') + show_help('This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
             html += checkboxy('settings_dashboard_build_menu_old_db_in_new_db', 'Show menu under the header as in the old dashboard') + show_help('This option allows you to show a menu below the header, similar to what you know from the old dashboard.') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
 
