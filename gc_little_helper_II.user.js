@@ -754,6 +754,7 @@ var variablesInit = function(c) {
     c.settings_hide_share_log_button_log_view = getValue("settings_hide_share_log_button_log_view", false);
     c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
     c.settings_dashboard_hide_right_sidebar = getValue("settings_dashboard_hide_right_sidebar", false);
+    c.settings_dashboard_build_menu_old_db_in_new_db = getValue("settings_dashboard_build_menu_old_db_in_new_db", false);
     c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
     c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
@@ -9404,8 +9405,11 @@ var mainGC = function() {
             var css = '';
             // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-                // Link at the top to the old dashboard.
-                css += ".alert {padding-top: 6px; padding-bottom: 0px; margin-bottom: -2px;}";
+                // Link at the top of the container.
+                if ($('.alert')[0]) {
+                    css += ".alert {padding: 6px 16px 0px 16px;}";
+                    css += ".container {padding-top: 8px !important;}";
+                }
                 // User block in the first block in the left column.
                 css += ".user-bio {padding-bottom: 0px !important;}";
                 css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
@@ -9452,6 +9456,42 @@ var mainGC = function() {
                 css += "#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}";
                 // Hide tips and instruction container in the right column.
                 css += "#_Geocaching101Container {display: none;}";
+            }
+
+            // Save uid of own trackables from new dashboard.
+            function saveUidOfOwnTrackables() {
+                try {
+                    var link = $('a[href*="/track/search.aspx?o=1&uid="]')[0];
+                    if (link) {
+                        var uid = link.href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
+                        if (uid && uid[1]) {
+                            if (getValue("uid", "") != uid[1]) setValue("uid", uid[1]);
+                        }
+                    }
+                } catch(e) {gclh_error("Save uid of own trackables from new dashboard",e);}
+            }
+
+            // Build menu under the header of the old dashboard in the new dashbaord.
+            if (settings_dashboard_build_menu_old_db_in_new_db) {
+                css += ".alert, .gclh_menu_old_db {padding: 6px 16px 0px 16px; text-align: center;}";
+                css += ".container {padding-top: 8px !important;}";
+            }
+            function buildMenuOfOldDBInNewDB() {
+                if (settings_dashboard_build_menu_old_db_in_new_db) {
+                    var html = '';
+                    html += '<div class="gclh_menu_old_db">';
+                    html += '<a href="/account/lists" title="Lists">Lists</a> | ';
+                    html += '<a href="/my/geocaches.aspx" title="Geocaches">Geocaches</a> (<a href="/my/owned.aspx" title="Your Geocaches">Yours</a>) (<a href="/my/recentlyviewedcaches.aspx" title="Your Recently Viewed Geocaches">Recently Viewed</a>) | ';
+                    html += '<a href="/my/travelbugs.aspx" title="Trackable Items">Trackable Items</a> (<a href="/track/search.aspx?o=1&uid=' + getValue("uid", "") + '" title="Your Trackable Items">Yours</a>) | ';
+                    html += '<a href="/my/inventory.aspx" title="Trackables Inventory">Trackables Inventory</a> | ';
+                    html += '<a href="/my/collection.aspx" title="Trackables Collection">Trackables Collection</a> | ';
+                    html += '<a href="/my/souvenirs.aspx" title="Souvenirs">Souvenirs</a> | ';
+                    html += '<a href="/my/statistics.aspx" title="Statistics">Statistics</a>&nbsp;| ';
+                    html += '<a href="/my/subscription.aspx" title="Member Features">Member Features</a> | ';
+                    html += '<a href="/my/myfriends.aspx" title="Your Friends">Your Friends</a>';
+                    html += '</div>';
+                    $('.container').before(html);
+                }
             }
 
             // Improve left sidebar.
@@ -9635,7 +9675,9 @@ var mainGC = function() {
             }
 
             function waitForLeftSidebar(waitCount) {
-                if ($('#DashboardSidebar')[0] && $('.user-bio')[0] && $('#user-bio-root')[0] && $('#quickLinks ul')[0] && $('#sidebarNavigation > nav')[0]) {
+                if ($('.container')[0] && $('#DashboardSidebar')[0] && $('.user-bio')[0] && $('#user-bio-root')[0] && $('#quickLinks ul')[0] && $('#sidebarNavigation > nav')[0]) {
+                    saveUidOfOwnTrackables();
+                    buildMenuOfOldDBInNewDB();
                     improveLeftSidebar();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebar(waitCount);}, 50);}
             }
@@ -14420,8 +14462,8 @@ var mainGC = function() {
         }
     }
 
-// Save uid of own trackable from dashboard.
-    if (is_page("profile") || is_page("dashboard")) {
+// Save uid of own trackables from old dashboard.
+    if (is_page("profile")) {
        try {
             var link = $('a[href*="/track/search.aspx?o=1&uid="]')[0];
             if (link) {
@@ -17502,6 +17544,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.15') + newParameterOff;
             html += newParameterOn1;
             html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide "Events nearby" and "Geocaches nearby" by default') + show_help('This option allows you to hide “Events nearby” and “Geocaches nearby” in the right sidebar by default.') + "<br>";
+            html += checkboxy('settings_dashboard_build_menu_old_db_in_new_db', 'Show menu under the header as in the old dashboard') + show_help('This option allows you to show a menu below the header, similar to what you know from the old dashboard.') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
 
             html += "<div class='gclh_old_new_line'>Old Dashboard Only</div>";
@@ -19355,6 +19398,7 @@ var mainGC = function() {
                 'settings_hide_share_log_button_log_view',
                 'settings_dashboard_hide_tb_activity',
                 'settings_dashboard_hide_right_sidebar',
+                'settings_dashboard_build_menu_old_db_in_new_db',
                 'settings_button_sort_tbs_by_name_log_form',
                 'settings_larger_content_width_log_form',
                 'settings_less_space_log_lines_log_form',
