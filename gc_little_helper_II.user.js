@@ -20705,16 +20705,13 @@ var mainGC = function() {
 
 // Sort functions for unpublished in Dashboard.
     function abc(a, b) {
-        var sort = $(a)[0].name < $(b)[0].name ? -1 : $(b)[0].name < $(a)[0].name ? 1 : 0;
-        return sort;
+        return a.name.localeCompare(b.name, undefined, {'numeric': true });
     }
     function gcOld(a, b) {
-        var sort = $(b)[0].referenceCode < $(a)[0].referenceCode ? -1 : $(a)[0].referenceCode < $(b)[0].referenceCode ? 1 : 0;
-        return sort;
+        return a.referenceCode.localeCompare(b.referenceCode);
     }
     function gcNew(a, b) {
-        var sort = $(a)[0].referenceCode < $(b)[0].referenceCode ? -1 : $(b)[0].referenceCode < $(a)[0].referenceCode ? 1 : 0;
-        return sort;
+        return b.referenceCode.localeCompare(a.referenceCode);
     }
 
 // Trim.
