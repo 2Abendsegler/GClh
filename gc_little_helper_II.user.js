@@ -4902,7 +4902,8 @@ var mainGC = function() {
                     // Count words.
                     $('.character-limit').append('<span class="gclh_word_count"></span>');
                     $('#gc-md-editor_md').bind('input', (e) => {
-                        let words = e.target.value.split(/[^\w]/).filter(w => w.match(/\w+/)).length;
+                        // (For details and explanations see https://github.com/2Abendsegler/GClh/pull/2958.)
+                        let words = e.target.value.trim().split(/\s+/).filter(Boolean).filter(token => /[\p{L}\p{N}\p{Extended_Pictographic}]/u.test(token)).length;
                         $('.gclh_word_count').html(`&nbsp;(${words})`);
                     });
                 }
