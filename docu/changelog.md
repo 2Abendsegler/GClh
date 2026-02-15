@@ -1,3 +1,4 @@
+<a href="#v01714" title="GClh II version 0.17.14 (16.02.2026)">v0.17.14</a> &nbsp;
 <a href="#v01713" title="GClh II version 0.17.13 (08.02.2026)">v0.17.13</a> &nbsp;
 <a href="#v01712" title="GClh II version 0.17.12 (22.01.2026)">v0.17.12</a> &nbsp;
 <a href="#v01711" title="GClh II version 0.17.11 (11.01.2026)">v0.17.11</a> &nbsp;
@@ -46,6 +47,55 @@
 <a href="#v012" title="GClh II version 0.12 (15.10.2022)">v0.12</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.17.14:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [New Dashboard] Show menu under the header as in the old dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2953" title="Issue 2953">2953</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This option allows you to show a menu below the header, similar to what you know from the old dashboard.<br>
+		<img src="../images/0.17.14/Screen01.jpg" alt="Screen01.jpg"><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_build_menu_old_db_in_new_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.17.14/Screen02.jpg" alt="Screen02.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Option to hide/show the right sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/2950" title="Issue 2950">2950</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<img src="../images/0.17.14/Screen03.gif" alt="Screen03.gif"><br>
+		This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_hide_right_sidebar" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.17.14/Screen04.jpg" alt="Screen04.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Unpublished event dates follow user setting. [<a href="https://github.com/2Abendsegler/GClh/issues/2962" title="Issue 2962">2962</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Dates of unpublished events now follow the date format of own user setting.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Improve and fix sorting of unpublished caches. [<a href="https://github.com/2Abendsegler/GClh/issues/2959" title="Issue 2959">2959</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		An alphabetical sorting now also considers numbers in cache names and a sorting by GC code now works properly.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [New Dashboard] Integrate additional external rows like "send2cgeo" into the hiding of individual rows in the left column of your dashboard. [<a href="https://github.com/2Abendsegler/GClh/issues/2949" title="Issue 2949">2949</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Unpublished hides are missing. [<a href="https://github.com/2Abendsegler/GClh/issues/2952" title="Issue 2952">2952</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Dashboard] Fix border for unpublished events. [<a href="https://github.com/2Abendsegler/GClh/issues/2961" title="Issue 2961">2961</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Wrong position of button "Display Options". [<a href="https://github.com/2Abendsegler/GClh/issues/2963" title="Issue 2963">2963</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [New Log Form] Word count not correct when using special characters. [<a href="https://github.com/2Abendsegler/GClh/issues/2957" title="Issue 2957">2957</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+</ul>
+<br>
+(16.02.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.17.13:
