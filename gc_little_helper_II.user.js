@@ -9949,7 +9949,13 @@ var mainGC = function() {
                                     let eventStartTime = events[i].eventStartTime;
                                     // Date and time format: window.navigator.language: There is the preferred language in the browser for displaying pages.
                                     let date = new Date(eventStartTime);
-                                    let startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'})
+                                    let startDate;
+                                    try {
+                                        const jqui_date_format = unsafeWindow.serverParameters["user:info"].dateFormat.replace(/yy/g, 'y').replace(/M/g, 'm').replace(/mmm/, 'M');
+                                        startDate = $.datepicker.formatDate(jqui_date_format, date);
+                                    } catch {
+                                        startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'});
+                                    }
                                     let startTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
                                     list += '<li class="activity-item activity-item-head">';
                                     list += '    <div class="activity-type-icon">';
