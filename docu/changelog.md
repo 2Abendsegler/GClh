@@ -63,7 +63,7 @@
 	<li>
 		<strong>New:</strong> [New Dashboard] Option to hide/show the right sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/2950" title="Issue 2950">2950</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 		<img src="../images/0.17.14/Screen03.gif" alt="Screen03.gif"><br>
-		This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.<br>
+		This following option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_dashboard_hide_right_sidebar" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.17.14/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br><br>
