@@ -9935,7 +9935,7 @@ var mainGC = function() {
                                 }
                                 $('#gclh_unpublishedCaches_cachesList').html(list);
                                 if ($('#gclh_unpublishedCaches_eventsList li')[0]) {
-                                    $('#gclh_unpublishedCaches_cachesList li:last')[0].setAttribute('style', 'border-bottom: 1px solid #e4e4e4 !important;');
+                                    $('#gclh_unpublishedCaches_eventsList li')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4;');
                                 }
                             }
                             // Build the list of unpublished events.
@@ -9974,7 +9974,7 @@ var mainGC = function() {
                                 }
                                 $('#gclh_unpublishedCaches_eventsList').html(list);
                                 if ($('#gclh_unpublishedCaches_cachesList li')[0]) {
-                                    $('#gclh_unpublishedCaches_eventsList li:last')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4 !important;');
+                                    $('#gclh_unpublishedCaches_eventsList li')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4;');
                                 }
                             }
                             // Get a list of unpublished caches via api.
