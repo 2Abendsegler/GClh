@@ -10750,9 +10750,9 @@ var mainGC = function() {
 
             // Button for additional display options of search results.
             function addCacheDisplayOptionsButton() {
-                waitForElementThenRun("button.map-control", function() {
+                waitForElementThenRun('button[data-event-label="Map - Current Location"]', function() {
                     // Button.
-                    const $parent = $('button.map-control').first().parent().parent();
+                    const $parent = $('button[data-event-label="Map - Current Location"]').parent();
                     $parent.prepend(`
                         <button id="gclh_display_options_control" class="gclh_display_options_control map-control"></button>
                     `);
