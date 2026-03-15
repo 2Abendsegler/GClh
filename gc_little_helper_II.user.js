@@ -1689,7 +1689,7 @@ var mainGC = function() {
 // Wait for new header and build up old header.
     tlc('START MutationObserver');
     try {
-        const obs = new MutationObserver(() => {
+        function handleHeader() {
             if ($('#gc-header, #GCHeader')[0] && !$('#ctl00_gcNavigation')[0]) {
                 obs.disconnect();
                 tlc('Header found');
@@ -1730,10 +1730,17 @@ var mainGC = function() {
                     }
                 });
                 tlc('START OK');
-                obs.observe(document.documentElement, { childList: true, subtree: true });
             }
-        });
+        }
+        const obs = new MutationObserver(handleHeader);
         obs.observe(document.documentElement, { childList: true, subtree: true });
+        // Safeguard to finish observer after 20s, throw error if no header could be found.
+        setTimeout(() => {
+            obs.disconnect();
+            if (!$('#ctl00_gcNavigation')[0]) {
+                console.error('GClh_ERROR (no header alert) - Wait for header and build up header: Timeout detecting header');
+            }
+        }, 20000);
     } catch (e) { gclh_error("Wait for new header and build up old header", e); }
 
 // Set user avatar, user and found count in new header.
@@ -5428,6 +5435,7 @@ var mainGC = function() {
         const logviewObserver = new MutationObserver(function(_, observer) {
             observer.disconnect();
             if (url !== document.location.pathname) {
+                handleHeader();
                 if (is_page('logform')) runImproveLogForm();
                 else if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) runImproveLogView();
             }
