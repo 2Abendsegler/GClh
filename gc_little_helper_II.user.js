@@ -1730,16 +1730,10 @@ var mainGC = function() {
                     }
                 });
                 tlc('START OK');
+                obs.observe(document.documentElement, { childList: true, subtree: true });
             }
         });
         obs.observe(document.documentElement, { childList: true, subtree: true });
-        // Safeguard to finish observer after 20s, throw error if no header could be found.
-        setTimeout(() => {
-            obs.disconnect();
-            if (!$('#ctl00_gcNavigation')[0]) {
-                console.error('GClh_ERROR (no header alert) - Wait for header and build up header: Timeout detecting header');
-            }
-        }, 20000);
     } catch (e) { gclh_error("Wait for new header and build up old header", e); }
 
 // Set user avatar, user and found count in new header.
