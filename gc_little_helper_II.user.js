@@ -1689,58 +1689,62 @@ var mainGC = function() {
 // Wait for new header and build up old header.
     tlc('START MutationObserver');
     try {
+        // (If the header is not built, see "function observerForMultiplePages()".)
         function handleHeader() {
-            if ($('#gc-header, #GCHeader')[0] && !$('#ctl00_gcNavigation')[0]) {
+            function waitForNewHeaderAndBuildOldHeader() {
+                if ($('#gc-header, #GCHeader')[0] && !$('#ctl00_gcNavigation')[0]) {
+                    obs.disconnect();
+                    tlc('Header found');
+                    // Integrate old header.
+                    ($('#gc-header') || $('#GCHeader')).after(header_old);
+                    // Run header relevant features.
+                    tlc('START setUserParameter');
+                    setUserParameter();
+                    tlc('START setMessageIndicator');
+                    setMessageIndicator(0);
+                    tlc('START setUpgradeButton');
+                    setUpgradeButton();
+                    tlc('START changeHeaderLayout');
+                    changeHeaderLayout();
+                    tlc('START newWidth');
+                    newWidth();
+                    tlc('START removeGCMenues');
+                    removeGCMenues();
+                    tlc('START linklistOnTop');
+                    linklistOnTop();
+                    tlc('START buildSpecialLinklistLinks');
+                    buildSpecialLinklistLinks();
+                    tlc('START setSpecialLinks');
+                    setSpecialLinks();
+                    tlc('START runAfterRedirect');
+                    runAfterRedirect();
+                    tlc('START showDraftIndicatorInHeader');
+                    showDraftIndicatorInHeader();
+                    // User profile menu bend into shape.
+                    tlc('START User profile');
+                    $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
+                        $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh)').toggleClass('gclh_open');
+                    });
+                    // Disable user profile menu by clicking anywhere else.
+                    $(document).click(function(){
+                        if (!$(this)[0].activeElement.className.match(/li-user-toggle/)) {
+                            $('#ctl00_uxLoginStatus_divSignedIn li.li-user').removeClass('gclh_open');
+                        }
+                    });
+                    tlc('START OK');
+                }
+            }
+            const obs = new MutationObserver(waitForNewHeaderAndBuildOldHeader);
+            obs.observe(document.documentElement, { childList: true, subtree: true });
+            // Safeguard to finish observer after 20s, throw error if no header could be found.
+            setTimeout(() => {
                 obs.disconnect();
-                tlc('Header found');
-                // Integrate old header.
-                ($('#gc-header') || $('#GCHeader')).after(header_old);
-                // Run header relevant features.
-                tlc('START setUserParameter');
-                setUserParameter();
-                tlc('START setMessageIndicator');
-                setMessageIndicator(0);
-                tlc('START setUpgradeButton');
-                setUpgradeButton();
-                tlc('START changeHeaderLayout');
-                changeHeaderLayout();
-                tlc('START newWidth');
-                newWidth();
-                tlc('START removeGCMenues');
-                removeGCMenues();
-                tlc('START linklistOnTop');
-                linklistOnTop();
-                tlc('START buildSpecialLinklistLinks');
-                buildSpecialLinklistLinks();
-                tlc('START setSpecialLinks');
-                setSpecialLinks();
-                tlc('START runAfterRedirect');
-                runAfterRedirect();
-                tlc('START showDraftIndicatorInHeader');
-                showDraftIndicatorInHeader();
-                // User profile menu bend into shape.
-                tlc('START User profile');
-                $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
-                    $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh)').toggleClass('gclh_open');
-                });
-                // Disable user profile menu by clicking anywhere else.
-                $(document).click(function(){
-                    if (!$(this)[0].activeElement.className.match(/li-user-toggle/)) {
-                        $('#ctl00_uxLoginStatus_divSignedIn li.li-user').removeClass('gclh_open');
-                    }
-                });
-                tlc('START OK');
-            }
+                if (!$('#ctl00_gcNavigation')[0]) {
+                    console.error('GClh_ERROR (no header alert) - Wait for header and build up header: Timeout detecting header');
+                }
+            }, 20000);
         }
-        const obs = new MutationObserver(handleHeader);
-        obs.observe(document.documentElement, { childList: true, subtree: true });
-        // Safeguard to finish observer after 20s, throw error if no header could be found.
-        setTimeout(() => {
-            obs.disconnect();
-            if (!$('#ctl00_gcNavigation')[0]) {
-                console.error('GClh_ERROR (no header alert) - Wait for header and build up header: Timeout detecting header');
-            }
-        }, 20000);
+        handleHeader();
     } catch (e) { gclh_error("Wait for new header and build up old header", e); }
 
 // Set user avatar, user and found count in new header.
@@ -5429,24 +5433,15 @@ var mainGC = function() {
     }
 
 // Run improve log form, run improve log view.
+    function improveLogFormAndLogView() {
+        if (is_page('logform')) runImproveLogForm();
+        else if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) runImproveLogView();
+    }
+    // Start monitoring for the URL to build or rebuild website header and features for the log form and the log view websites.
     if (document.location.pathname.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i)) {
-        let url = '';
-        const config = { childList: true, subtree: true };
-        const logviewObserver = new MutationObserver(function(_, observer) {
-            observer.disconnect();
-            if (url !== document.location.pathname) {
-                handleHeader();
-                if (is_page('logform')) runImproveLogForm();
-                else if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) runImproveLogView();
-            }
-            url = document.location.pathname;
-            observer.observe(document.body, config);
-        });
-        logviewObserver.observe(document.body, config);
-        // Safeguard: if FF loads the page from browser cache then it is already fully loaded at this point,
-        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
-        // In Chrome or if one forces a page reload from the server this isn't an issue.
-        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
+        try {
+            observerForMultiplePages(improveLogFormAndLogView);
+        } catch(e) {gclh_error("Run improve log form, run improve log view.",e);}
     }
 
 // Improve Mail.
@@ -21369,6 +21364,36 @@ var mainGC = function() {
         }
         return undefined;
     };
+
+// Start monitoring for the URL to build or rebuild website header and features for the website.
+// - Handelt es sich um eine geänderte URL, wird die Verarbeitung zum Webseiten Header aufgerufen. Für die initial URL ist die Verarbeitung
+//   zum Webseiten Header mit dem Start des Skriptes bereits erfolgt.
+// - Der Parameter "callback" enthält die aufzurufende Function, wenn eine URL bemerkt wird (initiale URL oder geänderte URL). Die Function
+//   wird beim Aufruf von observerForMultiplePages ohne Klammern angegeben.
+// - Wird der Parameter "callback" nicht angegeben, wird bei geänderter URL lediglich die Verarbeitung zum Webseiten Header aufgerufen.
+// - Ein Beispiel gibt es bei "Run improve log form, run improve log view".
+    function observerForMultiplePages(callback) {
+        let url = '';
+        const config = { childList: true, subtree: true };
+        const urlObserver = new MutationObserver(function(_, observer) {
+            observer.disconnect();
+            if (url !== document.location.pathname) {
+                if (url !== '') {
+                    handleHeader();
+                }
+                if (callback && typeof callback === 'function') {
+                    callback();
+                }
+            }
+            url = document.location.pathname;
+            observer.observe(document.body, config);
+        });
+        urlObserver.observe(document.body, config);
+        // Safeguard: If FF loads the page from browser cache then it is already fully loaded at this point,
+        // therefore add a dummy element (and immediately remove it) to force a call to the observer callback.
+        // In Chrome or if one forces a page reload from the server this isn't an issue.
+        $('body').append('<div id="gclh_dummy"></div>'); $('div#gclh_dummy').remove();
+    }
 
 };  // End of mainGC.
 
