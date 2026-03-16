@@ -1689,7 +1689,7 @@ var mainGC = function() {
 // Wait for new header and build up old header.
     tlc('START MutationObserver');
     try {
-        // (If the header is not built, see "function observerForMultiplePages()".)
+        // (If the header is not built, see "function observerForMultiplePages".)
         function handleHeader() {
             function waitForNewHeaderAndBuildOldHeader() {
                 if ($('#gc-header, #GCHeader')[0] && !$('#ctl00_gcNavigation')[0]) {
