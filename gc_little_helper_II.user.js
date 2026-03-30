@@ -672,6 +672,7 @@ var variablesInit = function(c) {
     c.settings_lists_back_to_top = getValue("settings_lists_back_to_top", false);
     c.settings_searchmap_autoupdate_after_dragging = getValue("settings_searchmap_autoupdate_after_dragging", true);
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
+    c.settings_browsemap_compact_layout_sidebar = getValue("settings_browsemap_compact_layout_sidebar", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
     c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
@@ -12676,7 +12677,7 @@ var mainGC = function() {
     if (is_page("map")) {
         try {
             function checkBrowseMap(waitCount) {
-                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
+                if (($('.leaflet-container')[0] || $('.Map.Google')[0]) && $('.Sidebar')[0]) {
                     // Display Google-Maps warning, wenn Leaflet-Map nicht aktiv ist.
                     googleMapsWarningOnBrowseMap();
                     // Add layers, control to map and set default layers.
@@ -12699,12 +12700,18 @@ var mainGC = function() {
                     if (!$('#uxGoogleMapsSelect')[0]) {
                         hideCachesOnBrowseMap();
                     }
+                    // Compact layout on sidebar.
+                    if (settings_browsemap_compact_layout_sidebar) {
+                        compactLayoutSidebarBrowseMap(0);
+                    }
                     // Save as PQ and set defaults for Browse Map.
                     saveAsPQOnBrowseMap();
                     // Display more informations on Browse Map pop up for a cache.
                     if (settings_show_enhanced_map_popup && getValue("gclhLeafletMapActive")) {
                         cachePopupOnBrowseMap();
                     }
+                    // Enable Linklist, config and sync scrolling on Browse Map.
+                    $('body')[0].style.setProperty('overflow', 'visible', 'important');
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkBrowseMap(waitCount);}, 100);}
             }
             checkBrowseMap(0);
@@ -12717,8 +12724,6 @@ var mainGC = function() {
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             appendCssStyle(css);
-            // Enable Linklist, config and sync scrolling on Browse Map.
-            $('body')[0].style.setProperty('overflow', 'visible', 'important');
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
 
@@ -12932,26 +12937,83 @@ var mainGC = function() {
 // Hide Map Header.
     function hideHeaderOnBrowseMap() {
         try {
-            function checkMapLeaflet(waitCount) {
-                if ($('.leaflet-container')[0]) {
+            function checkMap(waitCount) {
+                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
                     if (settings_hide_map_header) hide_map_header();
-                    var sidebar = $('#searchtabs')[0];
-                    var link = document.createElement("a");
-                    link.appendChild(document.createTextNode("Hide/Show Header"));
-                    link.href = "#";
-                    link.addEventListener("click", hide_map_header, false);
-                    // Link in Sidebar rechts orientieren wegen möglichem GC Tour script.
-                    link.setAttribute("style", "float: right; padding-right: 3px;");
-                    sidebar.appendChild(link);
+                    $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
+                    $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
+                    var css = '';
+                    css += '.gclh_hideMapHeader {text-decoration-line: none;} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
+                    // Link in Sidebar rechts orientieren wegen möglichem GC Tour Icon.
+                    css += '.gclh_hideMapHeader {float: right; padding-right: 3px;}';
                     // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
-                    appendCssStyle("#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}");
+                    css += '#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}';
+                    appendCssStyle(css);
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
             }
-            if (settings_map_show_btn_hide_header) checkMapLeaflet(0);
+            if (settings_map_show_btn_hide_header) checkMap(0);
             gclh_GetGcAccessToken( function(r) {
                 all_map_layers["Geocaching"].accessToken = r.access_token;
             });
         } catch(e) {gclh_error("Hide Map Header",e);}
+    }
+
+// Compact layout sidebar Browse Map.
+    function compactLayoutSidebarBrowseMap(waitCount) {
+        if ($('#searchtabs')[0] && $('#searchtabs ul li a')[0]) {
+            $('#searchtabs')[0].style.setProperty('margin-top', '10px', 'important');
+            $('#searchtabs')[0].style.setProperty('margin-bottom', '10px', 'important');
+            $('#searchtabs')[0].style.setProperty('height', '38px', 'important');
+            $('#searchtabs ul li a').each(function () {
+                $(this)[0].style.setProperty('padding-top', '8px', 'important');
+                $(this)[0].style.setProperty('padding-bottom', '8px', 'important');
+            });
+        }
+        if ($('#scrollbar')[0]) $('#scrollbar')[0].style.setProperty('top', '58px', 'important');
+        if ($('#scrollbar')[0]) $('#scrollbar')[0].style.setProperty('bottom', '64px', 'important');
+        if ($('.Sidebar footer')[0]) $('.Sidebar footer')[0].style.setProperty('height', '54px', 'important');
+        if (settings_map_show_btn_hide_header) {
+            if ($('#searchtabs')[0] && $('#scrollbar')[0]) {
+                $('#searchtabs')[0].style.setProperty('margin-bottom', '0px', 'important');
+                $('#searchtabs')[0].style.setProperty('height', '60px', 'important');
+                $('#scrollbar')[0].style.setProperty('top', '70px', 'important');
+            }
+        }
+        if ($('#search .SearchBox')[0]) {
+            $('#search .SearchBox')[0].style.setProperty('margin-top', '0px', 'important');
+            $('#search .SearchBox')[0].style.setProperty('margin-bottom', '10px', 'important');
+            $('#search .SearchBox')[0].style.setProperty('margin-right', '10px', 'important');
+        }
+        if ($('#SearchBox_Text')[0]) $('#SearchBox_Text')[0].style.setProperty('outline', 'none', 'important');
+        $('#search .Filters p').each(function () {
+            $(this)[0].style.setProperty('margin-top', '10px', 'important');
+            $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
+        });
+        if ($('.Sidebar footer')[0]) $('.Sidebar footer')[0].style.setProperty('padding-right', '24px', 'important');
+        $('.Sidebar footer p').each(function () {
+            $(this)[0].style.setProperty('margin-top', '0px', 'important');
+            $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
+            $(this)[0].style.setProperty('line-height', '14px', 'important');
+        });
+        if ($('#lnkMapPreferences')[0]) {
+            $('#lnkMapPreferences')[0].style.setProperty('padding-top', '4px', 'important');
+            $('#lnkMapPreferences')[0].style.setProperty('padding-bottom', '4px', 'important');
+        }
+        $('.Sidebar footer .LinkField').remove();
+        $('.Sidebar br').each(function () { this.remove(); });
+        if (!$('#gclh_compactLayout')[0]) {
+            var css = '';
+            css += '.Sidebar h3, .Sidebar h4 {margin-top: 0px !important; padding-top: 5px !important; padding-bottom: 0px !important; margin-bottom: 5px !important; font-size: 16px; border-top: none;}';
+            if (settings_map_show_btn_hide_header) {
+                css += '#search > h3, #pq h3 {padding-top: 0px !important;}';
+            }
+            css += '#PQList ul li a {padding-top: 1px !important; padding-bottom: 1px !important;}';
+            css += '#PQDetails ul li a {padding-top: 0px !important; padding-bottom: 0px !important;}';
+            css += '#PQDetails ul li a img {height: 22px !important; width: 22px !important;}';
+            css += '.Sidebar input {outline: none !important;}';
+            appendCssStyle(css, null, 'gclh_compactLayout');
+        }
+        waitCount++; if (waitCount <= 500) setTimeout(function(){compactLayoutSidebarBrowseMap(waitCount);}, 10);
     }
 
 // Change map parameter and add homezone to map.
@@ -16432,8 +16494,10 @@ var mainGC = function() {
 // Alternative to event load on map. (Load event on map doesn't work always with open in new tab.)
     function isMapLoad(fkt) {
         if (waitCount == undefined) var waitCount = 0;
-        if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) fkt();
-        else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
+        if (($('.leaflet-container')[0] && $('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0]) ||
+            ($('.Map.Google')[0] && $('.gm-control-active')[0])) {
+            fkt();
+        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){isMapLoad(fkt);}, 200);}
     }
 
     function insertAfter(newNode, referenceNode) {
@@ -17697,6 +17761,9 @@ var mainGC = function() {
             html += "<div id='gclh_config_maps' class='gclh_block'>";
             html += checkboxy('settings_relocate_other_map_buttons', 'Relocate the buttons \"Search\" and \"Browse geocaches\" to other buttons above') + "<br>";
             html += checkboxy('settings_searchmap_autoupdate_after_dragging', 'Automatic search for new caches after dragging or zooming') + show_help("Displayed caches are automatically updated when the map is moved or zoomed, the 'Search this area' button no longer needs to be pressed. The behavior is therefore similar to that of the browse map.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_use_gclh_layercontrol_on_search_map\" title='Link to setting \"Replace map layers\"'>Replace map layers in Search Map</a> to be activated.") + onlySearchMap + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_browsemap_compact_layout_sidebar', 'Show compact layout on sidebar') + show_help("This option makes the areas \"Search for Geocaches\" and \"Filter Caches\" and the lists \"Your Pocket Queries\" and \"Caches in Advanced Search\" in the left sidebar of the browse map more compact. Both lists will then contain approximately twice as many pocket queries or caches.") + onlyBrowseMap + "<br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on cache detail screen') + show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
@@ -19785,6 +19852,7 @@ var mainGC = function() {
                 'settings_lists_back_to_top',
                 'settings_searchmap_autoupdate_after_dragging',
                 'settings_improve_character_counter',
+                'settings_browsemap_compact_layout_sidebar',
                 'settings_searchmap_compact_layout',
                 'settings_searchmap_disabled',
                 'settings_searchmap_disabled_strikethrough',
