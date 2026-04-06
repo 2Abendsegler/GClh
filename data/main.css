@@ -1,7 +1,13 @@
 /* Make GC header invisible. */
+#gc-header-root,
 #gc-header,
 #GCHeader,
 #gc-mobile-nav {
+    display: none;
+}
+
+/* Make dummy GS header invisible */
+.content-empty {
     display: none;
 }
 
@@ -65,6 +71,7 @@ gclh_nav .wrapper {
     padding-left: 32px;
     padding-right: 32px;
     width: 100%;
+    z-index: 2500;
 }
 gclh_nav ul {
     list-style: none;
@@ -456,7 +463,6 @@ gclh_nav .profile-panel ul::after {
     background-color: #e0b70a;
     font-weight: bold;
     position: absolute;
-    padding: 0 5px;
     border-radius: 15px;
 }
 .draft-indicator a {
@@ -464,6 +470,7 @@ gclh_nav .profile-panel ul::after {
     font-size: 14px;
     min-width: 10px;
     display: block;
+    padding: 0 5px;
     text-align: center;
     color: white;
 }
@@ -678,6 +685,11 @@ table .markdown-output~tr.AlternatingRow td {
     background-color: #e6f7ef;
 }
 
+/* Prevent overflows in preformatted text (HTML pre-tag). */
+pre {
+  white-space: pre-wrap;
+}
+
 /* Config, Sync. */
 .settings_overlay {
     width: 600px;
@@ -762,6 +774,7 @@ table .markdown-output~tr.AlternatingRow td {
     background: unset;
     background-image: none;
     margin: 0;
+    outline: none;
 }
 .gclh_content input,
 .gclh_content textarea,
