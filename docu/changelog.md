@@ -62,12 +62,11 @@
 		<img src="../images/0.18.3/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Cache Listing] Custom links in right sidebar doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3088" title="Issue 3088">3088</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3088" title="Issue 3088">3088</a>.<br><br>
-	</li>
-	<li>
 		<strong>Fix:</strong> [Browse Map] Prevent tooltip with cache name if cache detail pop-up is available. [<a href="https://github.com/2Abendsegler/GClh/issues/3082" title="Issue 3082">3082</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3082" title="Issue 3082">3082</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Custom links in right sidebar doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3088" title="Issue 3088">3088</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] The user menu does not disappear with a second click. [<a href="https://github.com/2Abendsegler/GClh/issues/3085" title="Issue 3085">3085</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
