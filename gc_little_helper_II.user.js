@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.2
+// @version      0.18.3
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -2850,8 +2850,8 @@ var mainGC = function() {
                 if ((settings_individual_links[i].listing == 'All') ||
                     (settings_individual_links[i].listing == 'Caches' && isEventInCacheListing() == false) ||
                     (settings_individual_links[i].listing == 'Events' && isEventInCacheListing() == true)     ) {
-                    if ($('.cache-icon use')[0] && $('.cache-icon use').attr('xlink:href')) {
-                        var icon = $('.cache-icon use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
+                    if ($('.cacheImage use')[0] && $('.cacheImage use').attr('xlink:href')) {
+                        var icon = $('.cacheImage use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
                     }
                     if (icon && icon[1] && (settings_individual_links[i].cachetype == 'All' || settings_individual_links[i].cachetype == icon[1])) {
                         $(".CacheDetailNavigation:first > ul:first").append('<li><a class="individualLink working" style="background-image: url(' + externalLink + ')" href="' + convertForHTML(settings_individual_links[i].href) + '"' + (settings_individual_links[i].newtab ? ' target="_blank"' : '') + '>' + settings_individual_links[i].name + '</a></li>');
@@ -3016,7 +3016,7 @@ var mainGC = function() {
                 el.value = el.value.replace(/#GCCode#/ig, GCCode);
                 el.value = el.value.replace(/#GCLink#/ig, GCLink);
                 el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
-                el.value = el.value.replace(/#GCType#/ig, ($('.cacheDetailsTitle a')[0] ? $('.cacheDetailsTitle a').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
+                el.value = el.value.replace(/#GCType#/ig, ($('.cacheImage')[0] ? $('.cacheImage').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
                 el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
                 el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
                 el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
@@ -16315,7 +16315,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/krb3/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/yYjY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -17678,7 +17678,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "30.03.2026";
+            var thanksLastUpdate = "09.04.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
