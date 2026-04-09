@@ -1,3 +1,4 @@
+<a href="#v0183" title="GClh II version 0.18.3 (09.04.2026)">v0.18.3</a> &nbsp;
 <a href="#v0182" title="GClh II version 0.18.2 (31.03.2026)">v0.18.2</a> &nbsp;
 <a href="#v0181" title="GClh II version 0.18.1 (23.03.2026)">v0.18.1</a> &nbsp;
 <a href="#v018" title="GClh II version 0.18 (15.03.2026)">v0.18</a> &nbsp;
@@ -40,6 +41,44 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.3:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Dashboard] Adjust the height of the links in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3092" title="Issue 3092">3092</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		With this three options you can choose the height of the links in the first link block "Quick access" in the left sidebar, in the further link blocks in the left sidebar such as "Geocaches", "Your hides", "Plan", "Community" and "Trackables" and in the GC little helper II link blocks in the left sidebar such as "All my VIPs", "All my VUPs", "Linklist" and "Default Links" from 20 up to 40 pixel.<br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_line_height_first_block_adjust_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.18.3/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Dashboard page has no GClh links and other stuff. [<a href="https://github.com/2Abendsegler/GClh/issues/3090" title="Issue 3090">3090</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Repair the GClh links in left sidebar.<br>
+		<img src="../images/0.18.3/Screen02.jpg" alt="Screen02.jpg"><br>
+		Repair the GClh link blocks in left sidebar.<br>
+		<img src="../images/0.18.3/Screen01.jpg" alt="Screen01.jpg"><br>
+		Repair the unpublished hides block in right sidebar.<br>
+		<img src="../images/0.18.3/Screen03.jpg" alt="Screen03.jpg"><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Prevent tooltip with cache name if cache detail pop-up is available. [<a href="https://github.com/2Abendsegler/GClh/issues/3082" title="Issue 3082">3082</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3082" title="Issue 3082">3082</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Custom links in right sidebar doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3088" title="Issue 3088">3088</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] The user menu does not disappear with a second click. [<a href="https://github.com/2Abendsegler/GClh/issues/3085" title="Issue 3085">3085</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Adjust color of the "Hide Header" button on the website. [<a href="https://github.com/2Abendsegler/GClh/issues/3083" title="Issue 3083">3083</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(09.04.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.2:
