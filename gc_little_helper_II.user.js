@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.2
+// @version      0.18.3
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -637,6 +637,12 @@ var variablesInit = function(c) {
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
     c.settings_row_hide_new_dashboard = getValue("settings_row_hide_new_dashboard", true);
+    c.settings_line_height_first_block_adjust_db = getValue("settings_line_height_first_block_adjust_db", true);
+    c.settings_line_height_first_block_db = getValue("settings_line_height_first_block_db", 28);
+    c.settings_line_height_other_blocks_adjust_db = getValue("settings_line_height_other_blocks_adjust_db", true);
+    c.settings_line_height_other_blocks_db = getValue("settings_line_height_other_blocks_db", 24);
+    c.settings_line_height_gclh_blocks_adjust_db = getValue("settings_line_height_gclh_blocks_adjust_db", true);
+    c.settings_line_height_gclh_blocks_db = getValue("settings_line_height_gclh_blocks_db", 20);
     c.settings_show_draft_indicator = getValue("settings_show_draft_indicator", true);
     c.settings_show_enhanced_map_popup = getValue("settings_show_enhanced_map_popup", true);
     c.settings_show_enhanced_map_coords = getValue("settings_show_enhanced_map_coords", true);
@@ -769,7 +775,6 @@ var variablesInit = function(c) {
     c.settings_dashboard_hide_tb_activity = getValue("settings_dashboard_hide_tb_activity", false);
     c.settings_dashboard_hide_right_sidebar = getValue("settings_dashboard_hide_right_sidebar", false);
     c.settings_dashboard_disable_all_features = getValue("settings_dashboard_disable_all_features", false);
-    c.settings_dashboard_build_menu_old_db_in_new_db = getValue("settings_dashboard_build_menu_old_db_in_new_db", false);
     c.settings_button_sort_tbs_by_name_log_form = getValue("settings_button_sort_tbs_by_name_log_form", true);
     c.settings_larger_content_width_log_form = getValue("settings_larger_content_width_log_form", true);
     c.settings_less_space_log_lines_log_form = getValue("settings_less_space_log_lines_log_form", true);
@@ -1545,6 +1550,9 @@ var mainGC = function() {
     var css = main_css;
     // Css for config, sync ... coloring.
     css += create_coloring_css();
+    // Css for config, sync ... select.
+    if (browser == 'firefox') css += '.gclh_content select {padding-left: 9px}';
+    else css += '.gclh_content select {padding-left: 2px}';
     // Special css for searchmap.
     if (is_page('searchmap')) {
         css += 'gclh_nav li input {height: unset !important;}';
@@ -1728,6 +1736,11 @@ var mainGC = function() {
                 tlc('START User profile');
                 $('#ctl00_uxLoginStatus_divSignedIn button.li-user-toggle')[0].addEventListener('click', function(){
                     $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh)').toggleClass('gclh_open');
+                    // At least on the Browse Map, the class 'user-expanded' is additionally set, but not removed, therefore the menu remains
+                    // when you click on it a second time.
+                    setTimeout(function(){
+                        $('#ctl00_uxLoginStatus_divSignedIn li.li-user:not(#pgc_gclh) ul.submenu').removeClass('user-expanded');
+                    }, 0);
                 });
                 // Disable user profile menu by clicking anywhere else.
                 $(document).click(function(){
@@ -2166,23 +2179,31 @@ var mainGC = function() {
         );
     }
 
-// Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt).
+// Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt) und aus den Blocks Linklist und Default Links im Dashboard.
     function buildSpecialLinklistLinks() {
         try {
-            // GClh Config, Sync und Find Player Aufrufe aus Linklist heraus.
-            if (checkTaskAllowed('Config', false) == true && document.getElementsByName("lnk_gclhconfig")[0]) {
-                document.getElementsByName("lnk_gclhconfig")[0].href = "#GClhShowConfig";
-                document.getElementsByName("lnk_gclhconfig")[0].addEventListener('click', gclh_showConfig, false);
+            if (checkTaskAllowed('Config', false) == true) {
+                $('a[name*="lnk_gclhconfig"]').each(function() {
+                    $(this)[0].href = "#GClhShowConfig";
+                    $(this)[0].removeEventListener('click', gclh_showConfig, false);
+                    $(this)[0].addEventListener('click', gclh_showConfig, false);
+                });
             }
-            if (checkTaskAllowed('Sync', false) == true && document.getElementsByName("lnk_gclhsync")[0]) {
-                document.getElementsByName("lnk_gclhsync")[0].href = "#GClhShowSync";
-                document.getElementsByName("lnk_gclhsync")[0].addEventListener('click', gclh_showSync, false);
+            if (checkTaskAllowed('Sync', false) == true) {
+                $('a[name*="lnk_gclhsync"]').each(function() {
+                    $(this)[0].href = "#GClhShowSync";
+                    $(this)[0].removeEventListener('click', gclh_showSync, false);
+                    $(this)[0].addEventListener('click', gclh_showSync, false);
+                });
             }
-            if (checkTaskAllowed("Find Player", false) == true && document.getElementsByName("lnk_findplayer")[0]) {
-                document.getElementsByName("lnk_findplayer")[0].href = "#GClhShowFindPlayer";
-                document.getElementsByName("lnk_findplayer")[0].addEventListener('click', createFindPlayerForm, false);
+            if (checkTaskAllowed("Find Player", false) == true) {
+                $('a[name*="lnk_findplayer"]').each(function() {
+                    $(this)[0].href = "#GClhShowFindPlayer";
+                    $(this)[0].removeEventListener('click', createFindPlayerForm, false);
+                    $(this)[0].addEventListener('click', createFindPlayerForm, false);
+                });
             }
-        } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt)",e);}
+        } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player aus Linklist (1. Schritt) und aus den Blocks Linklist und Default Links im Dashboard",e);}
     }
 
 // Special Links aus Linklist bzw. Default Links versorgen.
@@ -2829,8 +2850,8 @@ var mainGC = function() {
                 if ((settings_individual_links[i].listing == 'All') ||
                     (settings_individual_links[i].listing == 'Caches' && isEventInCacheListing() == false) ||
                     (settings_individual_links[i].listing == 'Events' && isEventInCacheListing() == true)     ) {
-                    if ($('.cacheImage use')[0] && $('.cacheImage use').attr('xlink:href')) {
-                        var icon = $('.cacheImage use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
+                    if ($('.cache-icon use')[0] && $('.cache-icon use').attr('xlink:href')) {
+                        var icon = $('.cache-icon use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
                     }
                     if (icon && icon[1] && (settings_individual_links[i].cachetype == 'All' || settings_individual_links[i].cachetype == icon[1])) {
                         $(".CacheDetailNavigation:first > ul:first").append('<li><a class="individualLink working" style="background-image: url(' + externalLink + ')" href="' + convertForHTML(settings_individual_links[i].href) + '"' + (settings_individual_links[i].newtab ? ' target="_blank"' : '') + '>' + settings_individual_links[i].name + '</a></li>');
@@ -2995,7 +3016,7 @@ var mainGC = function() {
                 el.value = el.value.replace(/#GCCode#/ig, GCCode);
                 el.value = el.value.replace(/#GCLink#/ig, GCLink);
                 el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
-                el.value = el.value.replace(/#GCType#/ig, ($('.cacheImage')[0] ? $('.cacheImage').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
+                el.value = el.value.replace(/#GCType#/ig, ($('.cacheDetailsTitle a')[0] ? $('.cacheDetailsTitle a').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
                 el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
                 el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
                 el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
@@ -7736,13 +7757,13 @@ var mainGC = function() {
              is_page("publicProfile")                                            ||      // Öffentliches Profil
              is_page("map")                                                      ||      // Browse Map (For enhanced Pop-up Informations)
              is_page("searchmap")                                                ||      // Search Map
+             is_page("dashboard")                                                ||      // Dashboard
              document.location.href.match(/\.com\/track\/details\.aspx/)         ||      // TB Listing
              document.location.href.match(/\.com\/(seek|track)\/log\.aspx/)      ||      // Post, Edit, View Cache und TB Logs
                                                                                          // Log form, log edit, log view redesigned new log page
              document.location.href.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i) ||
              document.location.href.match(/\.com\/email\//)                      ||      // Mail schreiben
              document.location.href.match(/\.com\/my\/inventory\.aspx/)          ||      // TB Inventar
-             document.location.href.match(/\.com\/account\/dashboard/)           ||      // Dashboard
              document.location.href.match(/\.com\/seek\/nearest\.aspx(.*)(\?ul|\?u|&ul|&u)=/) ||  // Nearest Lists mit User
              document.location.href.match(/\.com\/play\/(friendleague|leaderboard)/) ||  // Friend League, Leaderboard
              document.location.href.match(/\.com\/my\/myfriends\.aspx/)             )) { // Friends
@@ -8169,51 +8190,6 @@ var mainGC = function() {
                 };
                 gclh_build_vip_list();
 
-            // New Dashboard:
-            // ----------
-            } else if (document.location.href.match(/\.com\/account\/dashboard/) && !settings_dashboard_disable_all_features) {
-                function build_box_vipvup(desc) {
-                    buildBoxDashboard(desc, "All my " + desc.toUpperCase() + "s", "All my " + (desc == 'vip' ? 'very important persons':'very unimportant persons'));
-                }
-                function fill_box_vipvup(ary, desc) {
-                    var box = document.getElementsByName("box_" + desc)[0];
-                    if (!box) return false;
-                    box.innerHTML = "";
-                    for (var i = 0; i < ary.length; i++) {
-                        var user = ary[i];
-                        var li = document.createElement("li");
-                        var profile = document.createElement("a");
-                        profile.setAttribute("href", "/profile/?u=" + urlencode(user));
-                        profile.setAttribute("class", "no-underline rounded hover:text-gray-600 hover:underline focus:text-gray-600");
-                        profile.setAttribute("style", "margin-right: 4px;");
-                        profile.innerHTML = user;
-                        li.appendChild(profile);
-                        // Build VIP, VUP Icon.
-                        link = gclh_build_vipvup(user, ary, desc);
-                        li.appendChild(link);
-                        box.appendChild(li);
-                        if (settings_show_mail_in_allmyvips && settings_show_mail && settings_show_vip_list) buildSendIcons(li, user, "per u");
-                    }
-                }
-                function waitForLeftSidebarVip(waitCount) {
-                    if ($('#sidebar-nav-root > nav')[0]) {
-                        build_box_vipvup("vip");
-                        fill_box_vipvup(global_vips, "vip");
-                        if (settings_process_vup) {
-                            build_box_vipvup("vup");
-                            fill_box_vipvup(global_vups, "vup");
-                        }
-                        // Verarbeitung wird durch gclh_add... und gclh_del... angestoßen. Dadurch werden beide Listen hier neu aufgebaut.
-                        gclh_build_vip_list = function() {
-                            fill_box_vipvup(global_vips, "vip");
-                            if (settings_process_vup) fill_box_vipvup(global_vups, "vup");
-                        };
-                    } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebarVip(waitCount);}, 50);}
-                }
-                waitForLeftSidebarVip(0);
-                // To stop the expand icon from flickering because the actual CSS is built later.
-                buildDashboardCss();
-
             // Friends list:
             // ----------
             } else if (document.location.href.match(/\.com\/my\/myfriends\.aspx/)) {
@@ -8413,6 +8389,10 @@ var mainGC = function() {
                     } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkLeagueAvailable(waitCount);}, 200);}
                 }
                 checkLeagueAvailable(0);
+
+            // Dashboard:
+            // The VIP/VUP for the dashboard is in the dashboard section (function addLinkBlocksDB) because a mutation observer is required.
+            // ----------
 
             // Owner Dashbord:
             // The VIP/VUP for the Owner Dashboard is in the Owner Dashboard section because a mutation observer is required.
@@ -9530,33 +9510,673 @@ var mainGC = function() {
         }
     } catch(e) {gclh_error("Color lines in lists",e);}
 
-// Improve new dashboard.
+// Improve dashboard, improve new dashboard.
+    if (is_page('dashboard') && !settings_dashboard_disable_all_features) {
+        try {
+            // Specification of anchors for own coding and styles:
+            // - Linke Sidebar.
+            var leftSidebar = '#sidebar-left-root';
+            // - First Block - Profile Summary.
+            var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
+//->xxxx
+            // - Erster Bereich - Profile Cover Bild.
+            var profileCoverImage = ' > div > div > a';
+            // - Erster Bereich - Profile Avatar.
+            var profileAvatar = ' > div > div > div:nth-child(1)';
+            // - Erster Bereich - Username.
+            var userName = ' > div > div > div:nth-child(2) > div';
+            // - Erster Bereich - Liste mit Userdaten von joined bis hides.
+            var userDataArea = ' > div > div > div:nth-child(2) > ul';
+            var userDataEntries = ' > div > div > div:nth-child(2) > ul li';
+            // - Erster Bereich - View Profile Button.
+            var viewProfileButton = ' > div > div > div:nth-child(2) > a';
+//<-xxxx
+            // - All navigation blocks such as Quicklinks, Geocaches ... .
+            var allLinkblocks = ' nav';
+            // - One navigation blocks such as Quicklinks, Geocaches ... .
+            var linkblock = ' section';
+            // - Button containing the name and the icon toggle for the button.
+            var linkButton = ' button';
+            // - Button name containing the name for the button.
+            var linkButtonName = ' button > h2';
+            // - Button icon containing the toggle icon for the button.
+            var linkButtonIcon = ' button > svg';
+            // - Box containing the links within a navigation block.
+            var linkbox = ' > div > div > ul';
+
+            // Templates:
+            // - Template for a new block.
+            var newBlock = '<section class="w-full flex flex-col "></section>';
+            // - Template for a new button as part of a link block or others.
+            var newButt = '';
+            newButt += '<button class="flex w-full items-center justify-between gap-3 bg-white rounded-lg text-base/5 font-bold text-left cursor-pointer border-1 border-solid border-white hover:border-gray-100 focus:shadow-outline py-1 px-2" type="button">';
+            newButt += '  <h2 class="min-w-0 m-0 text-base/5"></h2>';
+            newButt += '  <svg class="size-5 shrink-0 text-gray-600 transition-transform duration-300 ease-in-out rotate-180">';
+            newButt += '    <use href="#chevron-small--inline"></use>';
+            newButt += '  </svg>';
+            newButt += '</button>';
+            // - Template for a new link box for links as part of a link block.
+            var newLinkbox = '';
+            newLinkbox += '<div>';
+            newLinkbox += '  <div class="flex flex-col gap-1 mt-1 ">';
+            newLinkbox += '    <ul class="p-0 my-1"></ul>';
+            newLinkbox += '  </div>';
+            newLinkbox += '</div>';
+            // - Template for a new link in a link box.
+            var newLink = '';
+            newLink += '<li class="leading-5">';
+            newLink += '  <div class="group rounded-lg px-2 transition-colors flex items-center gap-2 border-[2px] border-solid border-transparent has-[a:hover]:bg-white has-[a:hover]:border-white focus-within:border-gray-600 py-1">';
+            newLink += '    <a class="flex w-full cursor-pointer gap-2 items-center no-underline hover:text-gray-600 hover:no-underline focus:text-gray-600 focus:shadow-none">';
+            newLink += '      <span class="flex items-center gap-2"></span>';
+            newLink += '    </a>';
+            newLink += '  </div>';
+            newLink += '</li>';
+
+            // Mark as completed.
+            var done = 'groot';
+            // Is uid of own trackable saved.
+            var uidOfOwnTrackablesSaved = false;
+
+            function cssDB() {
+                try {
+                    if ($('#' + done)[0]) return;
+                    var css = '';
+                    // Compact layout.
+                    if (settings_compact_layout_new_dashboard) {
+//->xxxx
+                        // In the middle and in the right column.
+                        css += '.activity-item {padding: 5px 15px !important;}';
+                        css += '.activity-tray {padding: 5px 40px !important;}';
+                        // Latest Acitivity item images in the middle column.
+                        css += '.activity-image-summary {margin-top: 2px !important;}';
+                        // Events block in the right column.
+                        css += '.clndr-controls button {padding-top: 4px !important;}';
+                        css += '#eventsListSelectedDay {padding-top: 2px !important; padding-bottom: 5px !important;}';
+                        css += '.event-list-item {padding: 5px 0 5px 0 !important;}';
+                        css += '.event-list-item-details {padding-top: 0px !important; padding-bottom: 0px !important;}';
+                        css += '.event-list-item-map {margin-top: 5px !important;}';
+                        css += '.event-list-item > div:not(.event-list-item-details) > div:not(.event-list-item-map) {padding-top: 8px !important; padding-bottom: 3px !important;}';
+                        css += '#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}';
+                        // Hide tips and instruction container in the right column.
+                        css += '#sidebar-right-root a[href*="/sites/education/"] {display: none !important;}';
+//<-xxxx
+                    }
+                    // Hide areas.
+                    css += '.isHide {display: none !important;}';
+                    // Icon Search Map button.
+                    css += '#map--inline path {stroke-width: 2.0;}';
+                    // Icon Search button.
+                    css += '#search--inline path {stroke-width: 1.0; stroke: currentColor;}';
+                    // VIPs, VUPs, links not in blue color.
+                    css += leftSidebar + allLinkblocks + ' .gclh a {color: inherit !important;}';
+                    // Hide right sidebar.
+                    css += '#gclh_right_sidebar_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
+                    css += '@media (max-width: 950px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -5px;}}';
+                    css += '@media (max-width: 600px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -1px;}}';
+                    css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
+                    css += '.gclh_max_width_none {max-width: none !important;}';
+                    css += '.sidebar-right {overflow: visible !important;}';
+                    // Show unpublished hides.
+                    css += '#gclh_unpublishedCaches {margin-bottom: 0;}';
+                    css += '#gclh_unpublishedCaches_body {min-height: unset; margin-top: 3px !important;}';
+                    css += '#gclh_unpublishedCaches_body dt {margin: 0 3px 0 0; padding: 0;}';
+                    css += '#gclh_unpublishedCaches_body .left-separator {margin: 0 4px 0 -4px; padding: 0;}';
+                    css += '#gclh_unpublishedCaches_eventsList .left-separator {margin: 0 8px 0 0px; padding: 0;}';
+                    css += '#gclh_unpublishedCaches_body dl dd {margin: 0 8px 0 0; padding: 0;}';
+                    css += '#gclh_unpublishedCaches_body dl dd:last-child {margin-right: 0;}';
+                    css += '#gclh_unpublishedCaches_cachesList, #gclh_unpublishedCaches_eventsList {padding: 0; margin: 0;}';
+                    css += '#gclh_unpublishedCaches .panel-head.isActive svg {transform: rotate(180deg) !important;}';
+                    css += '#gclh_unpublishedCaches .panel-head svg {transform: rotate(0) !important;}';
+                    appendCssStyle(css, null, done);
+                } catch(e) {gclh_error('function cssDB',e);}
+            }
+
+            // Add Config, Sync and Changelog Links in first block of left sidebar.
+            function addGClhLinksDB() {
+                try {
+                    if (!$('#gclh_config_lnk')[0]) {
+                        var userDataAreaDef = leftSidebar + sectionProfile + ' ul';
+                        if ($(userDataAreaDef)[0] && $(userDataAreaDef + ' li')[0]) {
+                            var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
+                            var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
+                            var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
+                            var custIcon = "<svg class='size-[14px]'><use href='#settings--inline'></use></svg>";
+                            var row = '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>';
+                            if ($(userDataAreaDef + ' a[id="s2cg_open_sendList"]')[0]) {
+                                if (!$('#gclh_config_lnk')[0]) $($(userDataAreaDef + ' a[id="s2cg_open_sendList"]')[0].closest('li')).before(row);
+                            } else {
+                                if (!$('#gclh_config_lnk')[0]) $($(userDataAreaDef)[0]).append(row);
+                            }
+                            $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
+                            $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
+                        }
+                    }
+                } catch(e) {gclh_error('function addGClhLinksDB',e);}
+            }
+
+            // Add links as quick access link in left sidebar.
+            function addLinksAsQuickAccessLinksDB() {
+                try {
+                    var qlDef = leftSidebar + allLinkblocks + linkblock + ':nth-child(1)' + linkbox + ' li';
+                    if ($(qlDef)[0]) {
+                        var qlFirst = $(qlDef)[0];
+                        if (qlFirst && $(qlFirst).find('a span')[0] && $(qlFirst).find('a span')[0].childNodes[1] && $(qlFirst).find('a span')[0].childNodes[1].data && $(qlFirst).find('svg')[0]) {
+                            // Search link.
+                            if (settings_dashboard_show_search && !$('.gclh_searchLink')[0]) {
+                                var searchLink = $( $(qlFirst) ).clone()[0];
+                                $(searchLink).find('a').addClass('gclh_searchLink');
+                                $(searchLink).find('a')[0].href = '/play/search';
+                                $(searchLink).find('a')[0].target = settings_dashboard_show_search_new_tab ? "_blank" : "";
+                                $(searchLink).find('a span')[0].childNodes[1].data = 'Search';
+                                $(searchLink).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
+                                if (!$('.gclh_searchLink')[0]) qlFirst.before(searchLink);
+                            }
+                            // Browse Map link.
+                            if (settings_dashboard_show_browsemap && !$('.gclh_browsemapLink')[0]) {
+                                var browsemapLink = $( $(qlFirst) ).clone()[0];
+                                $(browsemapLink).find('a').addClass('gclh_browsemapLink');
+                                $(browsemapLink).find('a')[0].href = '/map';
+                                $(browsemapLink).find('a')[0].target = settings_dashboard_show_browsemap_new_tab ? "_blank" : "";
+                                $(browsemapLink).find('a span')[0].childNodes[1].data = 'Browse Map';
+                                $(browsemapLink).find('svg')[0].innerHTML = $(browse_map_icon)[0].innerHTML;
+                                $(browsemapLink).find('svg').attr('viewBox', '0 0 24 24');
+                                $(browsemapLink).find('path').attr('stroke-width', '1.2');
+                                if (!$('.gclh_browsemapLink')[0]) qlFirst.before(browsemapLink);
+                            }
+                            // Search Map link.
+                            if (settings_but_searchmap && !$('.gclh_searchmapLink')[0]) {
+                                var searchmapLink = $( $(qlFirst) ).clone()[0];
+                                $(searchmapLink).find('a').addClass('gclh_searchmapLink');
+                                $(searchmapLink).find('a')[0].href = '/play/map';
+                                $(searchmapLink).find('a')[0].target = settings_but_searchmap_new_tab ? "_blank" : "";
+                                $(searchmapLink).find('a span')[0].childNodes[1].data = 'Search Map';
+                                $(searchmapLink).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                                if (!$('.gclh_searchmapLink')[0]) qlFirst.before(searchmapLink);
+                            }
+                        }
+                    }
+                } catch(e) {gclh_error('function addLinksAsQuickAccessLinksDB',e);}
+            }
+
+            // Add links as secondary links in left sidebar.
+            function addLinksAsSecondaryLinksDB() {
+                try {
+                    // Add link to Ignore List after link Lists.
+                    if (settings_embedded_smartlink_ignorelist && !$('.gclh_ignorelistLink')[0]) {
+                        var lDef = leftSidebar + allLinkblocks + linkblock + ':not(:nth-child(1))' + linkbox + ' li a[href*="/plan/lists"]';
+                        if ($(lDef)[0]) {
+                            var l = $(lDef).closest('li');
+                            if (l && $(l).find('a span')[0] && $(l).find('a span')[0].childNodes[0] && $(l).find('a span')[0].childNodes[0].data) {
+                                var ignorelistLink = $( $(l) ).clone()[0];
+                                $(ignorelistLink).find('a').addClass('gclh_ignorelistLink');
+                                $(ignorelistLink).find('a')[0].href = '/plan/lists/ignored';
+                                $(ignorelistLink).find('a span')[0].childNodes[0].data = 'Ignore List';
+                                if (!$('.gclh_ignorelistLink')[0]) l.after(ignorelistLink);
+                            }
+                        }
+                    }
+                } catch(e) {gclh_error('function addLinksAsSecondaryLinksDB',e);}
+            }
+
+            // Add link blocks in left sidebar.
+            function addLinkBlocksDB() {
+                function showHideBoxDashboard() {
+                    if (!$(this.nextElementSibling)[0]) return;
+                    var ident = this.getAttribute('name');
+                    var cl = $(this).find('svg').attr('class');
+                    var box = $(this.nextElementSibling).find('.gclh_' + ident + 'Box');
+                    if (box) {
+                        (box.hasClass("isHide") ? setValue("show_box_dashboard_" + ident, true) : setValue("show_box_dashboard_" + ident, false));
+                        (box.hasClass("isHide") ? $(this).find('svg').attr('class', cl + ' rotate-180') : $(this).find('svg').attr('class', cl.replace(' rotate-180', '')));
+                        (box.hasClass("isHide") ? box.removeClass("isHide") : box.addClass("isHide"));
+                    }
+                }
+                function buildNewLinkblockDB(ident, name, title) {
+                    var defblocks = leftSidebar + allLinkblocks;
+                    if ($(defblocks)[0]) {
+                        var block = $(newBlock).append($(newButt)).append($(newLinkbox));
+                        if ($(block)[0] && $(block).find(linkButton)[0] && $(block).find(linkButtonName)[0] && $(block).find(linkButtonIcon)[0] && $(block).find(linkbox)[0]) {
+                            $(block).addClass('gclh gclh_' + ident + 'Block');
+                            $(block).find(linkButton).attr('name', ident);
+                            $(block).find(linkButtonIcon).attr('class', $(block).find(linkButtonIcon).attr('class').replace(' rotate-180', '').replace('rotate-180', ''));
+                            if (getValue("show_box_dashboard_" + ident, true)) {
+                                $(block).find(linkButtonIcon).attr('class', $(block).find(linkButtonIcon).attr('class') + ' rotate-180');
+                            }
+                            if (title) $(block).find(linkButton)[0].setAttribute("title", title);
+                            if (name) $(block).find(linkButtonName)[0].innerHTML = name;
+                            $(block).find(linkButton)[0].addEventListener('click', showHideBoxDashboard, false);
+                            $(block).find(linkbox).addClass('gclh_' + ident + 'Box');
+                            if (!getValue("show_box_dashboard_" + ident, true)) {
+                                $(block).find(linkbox).addClass('isHide');
+                            }
+                            if (!$('.gclh_' + ident + 'Block')[0]) $(defblocks).append(block);
+                        }
+                    }
+                }
+                function buildCopyOfBookmarks() {
+                    var bm_tmp = new Array();
+                    for (var i = 0; i < bookmarks.length; i++) {
+                        bm_tmp[i] = new Object();
+                        for (attr in bookmarks[i]) {bm_tmp[i][attr] = bookmarks[i][attr];}
+                    }
+                    return bm_tmp;
+                }
+                function addElementsLinklistDB(box) {
+                    for (var i = 0; i < settings_bookmarks_list.length; i++) {
+                        var x = settings_bookmarks_list[i];
+                        if (typeof(x) == "undefined" || x == "" || typeof(x) == "object") continue;
+                        var link = $(newLink);
+                        for (attr in bookmarks[x]) {
+                            if (attr == "custom" || attr == "title") continue;
+                            if (attr == "name" || attr == "id") {
+                                link.find('a')[0].setAttribute(attr, bookmarks[x][attr]+"_profile");
+                            } else {
+                                link.find('a')[0].setAttribute(attr, bookmarks[x][attr]);
+                            }
+                        }
+                        link.find('span')[0].innerHTML = bookmarks[x]['title'];
+                        $(box).append(link);
+                    }
+                }
+                function addElementsLinksDB(box, bm_tmp) {
+                    for (var i = 0; i < bm_tmp.length; i++) {
+                        if (bm_tmp[i]['origTitle'] == "(empty)" || bm_tmp[i]['href'] == "" || bm_tmp[i]['href'] == "#") continue;
+                        var link = $(newLink);
+                        for (attr in bm_tmp[i]) {
+                            if (attr == "custom" || attr == "title" || attr == "origTitle") continue;
+                            if (attr == "name" || attr == "id") {
+                                link.find('a')[0].setAttribute(attr, bm_tmp[i][attr]+"_profile");
+                            } else {
+                                link.find('a')[0].setAttribute(attr, bm_tmp[i][attr]);
+                            }
+                        }
+                        link.find('span')[0].innerHTML = bm_tmp[i]['origTitle'];
+                        $(box).append(link);
+                    }
+                }
+                function buildNewLinkblocksForVipVup(desc) {
+                    buildNewLinkblockDB(desc, "All my " + desc.toUpperCase() + "s", "All my " + (desc == 'vip' ? 'very important persons':'very unimportant persons'));
+                }
+                function addElementsVipVup(box, ary, desc) {
+                    if (!box) return false;
+                    box.innerHTML = "";
+                    for (var i = 0; i < ary.length; i++) {
+                        var user = ary[i];
+                        var link = $(newLink);
+                        link.find('a')[0].setAttribute("href", "/profile/?u=" + urlencode(user));
+                        link.find('span')[0].innerHTML = user;
+                        // Build VIP, VUP Icon.
+                        var icons = gclh_build_vipvup(user, ary, desc);
+                        link.find('a')[0].append(icons);
+                        $(box).append(link);
+                        if (settings_show_mail_in_allmyvips && settings_show_mail && settings_show_vip_list) buildSendIcons(link.find('a')[0], user, "per u");
+                    }
+                }
+                try {
+                    // Add VIPs and VUPs as link block.
+                    if (settings_show_vip_list && !$('.gclh_vipBlock')[0]) {
+                        buildNewLinkblocksForVipVup('vip');
+                        addElementsVipVup($('.gclh_vipBox')[0], global_vips, 'vip');
+                        if (settings_process_vup && !$('.gclh_vupBlock')[0]) {
+                            buildNewLinkblocksForVipVup("vup");
+                            addElementsVipVup($('.gclh_vupBox')[0], global_vups, "vup");
+                        }
+                        // Verarbeitung wird durch gclh_add... und gclh_del... angestoßen. Dadurch werden beide Listen hier neu aufgebaut.
+                        gclh_build_vip_list = function() {
+                            addElementsVipVup($('.gclh_vipBox')[0], global_vips, "vip");
+                            if (settings_process_vup) addElementsVipVup($('.gclh_vupBox')[0], global_vups, "vup");
+                        };
+                    }
+                    // Add Linklist as link block.
+                    if (settings_bookmarks_show && !$('.gclh_linklistBlock')[0]) {
+                        buildNewLinkblockDB("linklist", "Linklist");
+                        if ($('.gclh_linklistBox')[0] && !$('.gclh_linklistBox li')[0]) {
+                            addElementsLinklistDB($('.gclh_linklistBox')[0]);
+                        }
+                    }
+                    // Add Default Links as link block.
+                    if (settings_show_default_links && !$('.gclh_linksBlock')[0]) {
+                        var bm_tmp = buildCopyOfBookmarks();
+                        bm_tmp = sortBookmarksByDescription(true, bm_tmp);
+                        buildNewLinkblockDB("links", "Default Links", "Default Links for the Linklist");
+                        if ($('.gclh_linksBox')[0] && !$('.gclh_linksBox li')[0]) {
+                            addElementsLinksDB($('.gclh_linksBox')[0], bm_tmp);
+                        }
+                    }
+                    if (settings_bookmarks_show || settings_show_default_links) {
+                        // Prepare special links own trackables, nearest list.
+                        setSpecialLinks();
+                        // Prepare special links config, sync and find player.
+                        buildSpecialLinklistLinks();
+                    }
+                } catch(e) {gclh_error('function addLinkBlocksDB',e);}
+            }
+
+            // Hide right sidebar.
+            function hideRightSidebarDB() {
+                try {
+                    if ($('div.sidebar-right')[0] && !$('#gclh_right_sidebar_wrapper')[0]) {
+                        const $layoutFeed = $('#LayoutFeed');
+                        const $sidebar_right = $('div.sidebar-right');
+                        const $sidebar_right_max_width = $sidebar_right.css('max-width');
+                        $sidebar_right.css('width', $sidebar_right_max_width);
+                        const $wrapper = $('<div>', {
+                            id: 'gclh_right_sidebar_wrapper',
+                            height: 'fit-content'
+                        });
+                        $sidebar_right.wrap($wrapper);
+
+                        const title_hide = 'Click to hide all sections on the right side';
+                        const title_show = 'Click to show all sections on the right side';
+                        const $btn = $('<button>', {
+                            id: 'gclh_right_sidebar_toggle',
+                            type: 'button'
+                        }).html(`
+                            <svg>
+                                <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
+                            </svg>`);
+                        $sidebar_right.before($btn);
+
+                        const $svg = $btn.find('svg');
+                        $btn.click(function() {
+                            if ($sidebar_right.is(':visible')) hideSidebar();
+                            else showSidebar();
+                        });
+
+                        function hideSidebar() {
+                            $layoutFeed.addClass('gclh_max_width_none');
+                            $sidebar_right.removeClass('flex');
+                            $sidebar_right.hide('fast');
+                            $svg.css('transform', 'rotate(-90deg)');
+                            $btn.attr('title', title_show);
+                        }
+                        function showSidebar() {
+                            $sidebar_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
+                            $sidebar_right.addClass('flex');
+                            $svg.css('transform', 'rotate(90deg)');
+                            $btn.attr('title', title_hide);
+                        }
+
+                        if (settings_dashboard_hide_right_sidebar) hideSidebar();
+                        else showSidebar();
+                    }
+                } catch(e) {gclh_error('function hideRightSidebarDB',e);}
+            }
+
+            // Show unpublished hides.
+            var showUnpublishedHidesIsWorking = false;
+            function showUnpublishedHidesDB() {
+                try {
+                    if (!settings_showUnpublishedHides || showUnpublishedHidesIsWorking) return;
+                    if ($('#sidebar-right-root')[0] && $('.sidebar-right button')[0] && $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] &&
+                        $('.sidebar-right use[href*=#chevron-small--inline]').closest('button').find('h2')[0]) {
+                        showUnpublishedHidesIsWorking = true;
+                        var unpublishedCaches = false;
+                        var unpublishedEvents = false;
+                        var panel = '';
+                        panel += '<section id="gclh_unpublishedCaches" class="panel collapsible">';
+                        panel += '    <div class="panel-head isActive">';
+                        panel += '    </div>';
+                        panel += '    <div id="gclh_unpublishedCaches_body" class="panel-body activity-feed">';
+                        panel += '        <div class="loading">';
+                        panel += '        </div>';
+                        panel += '    </div>';
+                        panel += '</section>';
+                        $('#sidebar-right-root').after(panel);
+                        var button = $( $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] ).clone()[0];
+                        $(button).find('h2')[0].innerHTML = 'Unpublished Hides';
+                        $('#gclh_unpublishedCaches .panel-head')[0].append(button);
+                        if (!getValue('unpublishedCaches_visible', false)) {
+                            $('#gclh_unpublishedCaches .panel-head').removeClass('isActive');
+                            $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
+                        }
+                        $('#gclh_unpublishedCaches .panel-head').bind('click', function() {
+                            if (getValue('unpublishedCaches_visible', true)) {
+                                $('#gclh_unpublishedCaches .panel-head').removeClass('isActive');
+                                $('#gclh_unpublishedCaches .panel-body').fadeOut(300);
+                                setValue('unpublishedCaches_visible', false);
+                            } else {
+                                $('#gclh_unpublishedCaches .panel-head').addClass('isActive');
+                                $('#gclh_unpublishedCaches .panel-body').fadeIn(300);
+                                setValue('unpublishedCaches_visible', true);
+                            }
+                        });
+                        // Check if no unpublished hides are available and output message.
+                        function checkForNoHidesMess() {
+                            if (unpublishedCaches == 0 && unpublishedEvents == 0) {
+                                var mess = '<div class="activity-message"><img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100"><h3 class="h5 no-margin-bottom">You don\'t have any unpublished hides.</h3></div>';
+                                $('#gclh_unpublishedCaches_body').html(mess);
+                            }
+                        }
+                        // Build the area to list the unpublished caches and events.
+                        function buildListArea() {
+                            if ($('#gclh_unpublishedCaches_list')[0]) return;
+                            var list = '<div id="gclh_unpublishedCaches_list"><ul id="gclh_unpublishedCaches_cachesList"></ul><ul id="gclh_unpublishedCaches_eventsList"></ul></div>';
+                            $('#gclh_unpublishedCaches_body').html(list);
+                        }
+                        // Build the list of unpublished caches.
+                        function buildCachesList(caches) {
+                            buildListArea();
+                            if (settings_set_showUnpublishedHides_sort) {
+                                if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
+                                else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
+                                else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
+                            }
+                            var list = '';
+                            for (let i=0; i<caches.length; i++) {
+                                let name = caches[i].name.trim();
+                                let type = caches[i].geocacheTypeId;
+                                let gccode = caches[i].referenceCode;
+                                let d = caches[i].difficulty;
+                                let t = caches[i].terrain;
+                                let size = cache_sizes[caches[i].containerTypeId];
+                                list += '<li class="activity-item activity-item-head">';
+                                list += '    <div class="activity-type-icon">';
+                                list += '        <svg class="status-icon" role="img" height="22" width="22">';
+                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                list += '        </svg>';
+                                list += '        <svg class="icon" height="40" width="40" role="img">';
+                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                list += '        </svg>';
+                                list += '    </div>';
+                                list += '    <div class="activity-data">';
+                                list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                list += '            <dl class="activity-meta">';
+                                list += '                <dt title="Difficulty">';
+                                list += '                    <svg height="16" width="16" role="img">';
+                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
+                                list += '                    </svg>';
+                                list += '                </dt>';
+                                list += '                <dd title="Difficulty">' + d + '</dd>';
+                                list += '                <dt title="Terrain">';
+                                list += '                    <svg height="16" width="16" role="img">';
+                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
+                                list += '                    </svg>';
+                                list += '                </dt>';
+                                list += '                <dd title="Terrain">' + t + '</dd>';
+                                list += '                <dt title="Size">';
+                                list += '                    <svg height="16" width="16" role="img">';
+                                list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
+                                list += '                    </svg>';
+                                list += '                </dt>';
+                                list += '                <dd title="Size">' + size + '</dd>';
+                                list += '                <dt class="left-separator"></dt>';
+                                list += '                <dd>' + gccode + '</dd>';
+                                list += '            </dl>';
+                                list += '        </div>';
+                                list += '    </div>';
+                                list += '</li>';
+                            }
+                            $('#gclh_unpublishedCaches_cachesList').html(list);
+                            if ($('#gclh_unpublishedCaches_eventsList li')[0]) {
+                                $('#gclh_unpublishedCaches_eventsList li')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4;');
+                            }
+                        }
+                        // Build the list of unpublished events.
+                        function buildEventsList(events) {
+                            buildListArea();
+                            var list = '';
+                            for (let i=0; i<events.length; i++) {
+                                let name = events[i].name.trim();
+                                let type = events[i].geocacheTypeId;
+                                let gccode = events[i].referenceCode;
+                                let eventStartTime = events[i].eventStartTime;
+                                // Date and time format: window.navigator.language: There is the preferred language in the browser for displaying pages.
+                                let date = new Date(eventStartTime);
+                                let startDate;
+                                try {
+                                    const jqui_date_format = unsafeWindow.serverParameters["user:info"].dateFormat.replace(/yy/g, 'y').replace(/M/g, 'm').replace(/mmm/, 'M');
+                                    startDate = $.datepicker.formatDate(jqui_date_format, date);
+                                } catch {
+                                    startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'});
+                                }
+                                let startTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
+                                list += '<li class="activity-item activity-item-head">';
+                                list += '    <div class="activity-type-icon">';
+                                list += '        <svg class="status-icon" role="img" height="22" width="22">';
+                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
+                                list += '        </svg>';
+                                list += '        <svg class="icon" height="40" width="40" role="img">';
+                                list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
+                                list += '        </svg>';
+                                list += '    </div>';
+                                list += '    <div class="activity-data">';
+                                list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
+                                list += '            <dl class="activity-meta">';
+                                list += '                <dd>' + gccode + '</dd>';
+                                list += '                <dt class="left-separator"></dt>';
+                                list += '                <dd title="Start date">' + startDate + '</dd>';
+                                list += '                <dd title="Start time">' + startTime + '</dd>';
+                                list += '            </dl>';
+                                list += '        </div>';
+                                list += '    </div>';
+                                list += '</li>';
+                            }
+                            $('#gclh_unpublishedCaches_eventsList').html(list);
+                            if ($('#gclh_unpublishedCaches_cachesList li')[0]) {
+                                $('#gclh_unpublishedCaches_eventsList li')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4;');
+                            }
+                        }
+                        // Get a list of unpublished caches via api.
+                        $.ajax({
+                            type: "GET",
+                            cache: false,
+                            url: '/api/proxy/web/v1/cacheowner/geocaches/unpublished?skip=0&take=100',
+                            success: function(response) {
+                                unpublishedCaches = response.data.length;
+                                if (unpublishedCaches == 0) checkForNoHidesMess();
+                                else buildCachesList(response.data);
+                            }
+                        });
+                        // Get a list of unpublished events via api.
+                        $.ajax({
+                            type: "GET",
+                            cache: false,
+                            url: '/api/proxy/web/v1/cacheowner/events/unpublished?skip=0&take=100',
+                            success: function(response) {
+                                unpublishedEvents = response.data.length;
+                                if (unpublishedEvents == 0) checkForNoHidesMess();
+                                else buildEventsList(response.data);
+                            }
+                        });
+                    }
+                } catch(e) {gclh_error('function showUnpublishedHidesDB',e);}
+            }
+
+            // Set styles direct to elements.
+            function setStylesToLinksDB() {
+                try {
+                    if (settings_compact_layout_new_dashboard) {
+                        // Links in navigation blocks of the left sidebar.
+                        var lbs = $(leftSidebar + allLinkblocks + linkblock);
+                        for (var s = 0; s < lbs.length; s++) {
+                            // The distance between the button and the box should be determined by only one element, the ul element.
+                            if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
+                            if ($(lbs[s]).find('> div > div')[0]) $(lbs[s]).find('> div > div')[0].style.setProperty('margin-top', '0px', 'important');
+                            var uls = $(lbs[s]).find(linkbox);
+                            for (var i = 0; i < uls.length; i++) {
+                                var lis = $(uls[i]).children();
+                                for (var j = 0; j < lis.length; j++) {
+                                    // Adjust height of the link lines.
+                                    var p = false;
+                                    if (s == 0 && settings_line_height_first_block_adjust_db) var p = parseInt(settings_line_height_first_block_db);
+                                    if (s >= 1 && !$(lbs[s]).hasClass('gclh') && settings_line_height_other_blocks_adjust_db) var p = parseInt(settings_line_height_other_blocks_db);
+                                    if (s >= 1 && $(lbs[s]).hasClass('gclh') && settings_line_height_gclh_blocks_adjust_db) var p = parseInt(settings_line_height_gclh_blocks_db);
+                                    if (p) {
+                                        p = (p-20)/2;
+                                        if (!$(lis[j]).hasClass(done)) {
+                                            $(lis[j]).addClass(done);
+                                            $(lis[j])[0].style.setProperty('line-height', '16px', 'important');
+                                        }
+                                        if ($(lis[j]).find('> div a')[0]) {
+                                            if (!$(lis[j]).find('> div').hasClass(done)) {
+                                                $(lis[j]).find('> div').addClass(done);
+                                                $(lis[j]).find('> div')[0].style.setProperty('padding-top', p + 'px', 'important');
+                                                $(lis[j]).find('> div')[0].style.setProperty('padding-bottom', p + 'px', 'important');
+                                            }
+                                        }
+                                    }
+                                    // Reduce the top spacing of sublists in the links (information about favoriten, information about trackable inventory).
+                                    if ($(lis[j]).find('ul:first')[0] && !$(lis[j]).find('ul:first').hasClass(done)) {
+                                        $(lis[j]).find('ul:first').addClass(done);
+                                        $(lis[j]).find('ul:first')[0].style.setProperty('padding-top', '0px', 'important');
+                                    }
+                                    // Align your inventory icon.
+                                    if ($(lis[j]).find('button[aria-controls="trackableInventoryItems"] svg')[0] && !$(lis[j]).find('button[aria-controls="trackableInventoryItems"]').hasClass(done)) {
+                                        $(lis[j]).find('button[aria-controls="trackableInventoryItems"]').addClass(done);
+                                        $(lis[j]).find('button[aria-controls="trackableInventoryItems"] svg')[0].style.setProperty('margin-right', '11px', 'important');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch(e) {gclh_error('function setStylesToLinksDB',e);}
+            }
+
+            // Save uid of own trackables.
+            function saveUidOfOwnTrackablesDB() {
+                try {
+                    if (uidOfOwnTrackablesSaved) return;
+                    var link = $(leftSidebar + allLinkblocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
+                    if (link) {
+                        var uid = link.href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
+                        if (uid && uid[1]) {
+                            if (getValue('uid', '') != uid[1]) setValue('uid', uid[1]);
+                            uidOfOwnTrackablesSaved = true;
+                        }
+                    }
+                } catch(e) {gclh_error('Save uid of own trackables',e);}
+            }
+
+            const config = {childList: true, subtree: true};
+            const dbObserver = new MutationObserver(function(_, observer) {
+                observer.disconnect();
+                cssDB();
+                addGClhLinksDB();
+                addLinksAsQuickAccessLinksDB();
+                addLinksAsSecondaryLinksDB();
+                addLinkBlocksDB();
+                hideRightSidebarDB();
+                showUnpublishedHidesDB();
+                setStylesToLinksDB();
+                saveUidOfOwnTrackablesDB();
+                observer.observe(document.body, config);
+            });
+            dbObserver.observe(document.body, config);
+        } catch(e) {gclh_error('Improve dashboard',e);}
+    }
+
+// Improve dashboard, improve new dashboard (older block).
     if (is_page("dashboard") && !settings_dashboard_disable_all_features) {
         try {
             var css = '';
             // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-                // Main container same distance everywhere.
-                css += ".container {padding: 18px !important;}";
-                // Link at the top of the container.
-                if ($('.alert')[0]) {
-                    css += ".alert {padding: 6px 20px 0px 20px;}";
-                    css += ".container {padding-top: 8px !important;}";
-                }
+//->xxxx
                 // User block in the first block in the left column.
                 css += ".user-bio {padding-bottom: 0px !important;}";
                 css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
                 css += ".gclh_parent_profile_button a {margin-top: 8px !important; padding-top: 6px !important; padding-bottom: 6px !important;}";
-                // Primary navigation links (quick links) in the second block in the left column.
-                css += "#quickLinks ul:not(.link-block):not(.gclh) {padding-top: 3px !important;}";
-                css += "#quickLinks ul:not(.link-block):not(.gclh) li {padding: 1px 0 1px 0 !important;}";
-                css += "#quickLinks ul:not(.link-block):not(.gclh) li > a {padding: 4px 8px !important;}";
-                // Secondary navigation links in further blocks in the left column.
-                css += "#sidebar-nav-root > nav ul:not(.gclh) {margin-bottom: 0px !important; padding-bottom: 5px !important;}";
-                css += "#sidebar-nav-root > nav ul:not(.gclh) li {padding-top: 2px !important;}";
-                css += "#sidebar-nav-root > nav ul:not(.gclh) ul {padding-top: 0px !important; padding-bottom: 0px !important; margin-top: 0px !important; gap: 0px !important;}";
-                css += "button[aria-controls='trackableInventoryItems'] {margin-top: -2px !important;}";
-                css += "button[aria-controls='trackableInventoryItems'] svg {margin-right: 5px !important;}";
                 // clickSum button to display or hide the configuration to hide rows in left column.
                 css += ".clickSum {position: absolute; margin-top: -23px; margin-left: 1px; cursor: pointer;}";
                 css += ".clickSum svg {height: 20px; width: 20px; fill: #777; transition: all .3s ease; transform-origin: 50% 50%;}";
@@ -9578,120 +10198,11 @@ var mainGC = function() {
                 css += "#sidebar-nav-root nav {overflow: unset;}";
                 // Hide rows which are marked for hide in left column.
                 css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none !important;}";
-                // In the middle and in the right column.
-                css += ".activity-item, .panel-header {padding: 5px 15px !important;}";
-                css += ".activity-tray {padding: 5px 40px !important;}";
-                // Latest Acitivity item images in the middle column.
-                css += ".activity-image-summary {margin-top: 2px !important;}";
-                // Events block in the right column.
-                css += ".clndr-controls button {padding-top: 4px !important;}";
-                css += "#eventsListSelectedDay {padding-top: 2px !important; padding-bottom: 5px !important;}";
-                css += ".event-list-item {padding: 5px 0 5px 0 !important;}";
-                css += ".event-list-item-details {padding-top: 0px !important; padding-bottom: 0px !important;}";
-                css += ".event-list-item-map {margin-top: 5px !important;}";
-                css += ".event-list-item > div:not(.event-list-item-details) > div:not(.event-list-item-map) {padding-top: 8px !important; padding-bottom: 3px !important;}";
-                css += "#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}";
-                // Hide tips and instruction container in the right column.
-                css += "#sidebar-right-root a[href*='/sites/education/'] {display: none !important;}";
-            }
-
-            // Save uid of own trackables from new dashboard.
-            function saveUidOfOwnTrackables() {
-                try {
-                    var link = $('a[href*="/track/search.aspx?o=1&uid="]')[0];
-                    if (link) {
-                        var uid = link.href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
-                        if (uid && uid[1]) {
-                            if (getValue("uid", "") != uid[1]) setValue("uid", uid[1]);
-                        }
-                    }
-                } catch(e) {gclh_error("Save uid of own trackables from new dashboard",e);}
-            }
-
-            // Build menu under the header of the old dashboard in the new dashbaord.
-            if (settings_dashboard_build_menu_old_db_in_new_db) {
-                css += ".alert, .gclh_menu_old_db {padding: 6px 20px 0px 20px; text-align: center;}";
-                css += ".container {padding-top: 8px !important;}";
-            }
-            function buildMenuOfOldDBInNewDB() {
-                if (settings_dashboard_build_menu_old_db_in_new_db) {
-                    var html = '';
-                    html += '<div class="gclh_menu_old_db">';
-                    html += '<a href="/account/lists" title="Lists">Lists</a> | ';
-                    html += '<a href="/my/geocaches.aspx" title="Geocaches">Geocaches</a> (<a href="/my/owned.aspx" title="Your Geocaches">Yours</a>) (<a href="/my/recentlyviewedcaches.aspx" title="Your Recently Viewed Geocaches">Recently Viewed</a>) | ';
-                    html += '<a href="/my/travelbugs.aspx" title="Trackable Items">Trackable Items</a> (<a href="/track/search.aspx?o=1&uid=' + getValue("uid", "") + '" title="Your Trackable Items">Yours</a>) | ';
-                    html += '<a href="/my/inventory.aspx" title="Trackables Inventory">Trackables Inventory</a> | ';
-                    html += '<a href="/my/collection.aspx" title="Trackables Collection">Trackables Collection</a> | ';
-                    html += '<a href="/my/souvenirs.aspx" title="Souvenirs">Souvenirs</a> | ';
-                    html += '<a href="/my/statistics.aspx" title="Statistics">Statistics</a>&nbsp;| ';
-                    html += '<a href="/my/subscription.aspx" title="Member Features">Member Features</a> | ';
-                    html += '<a href="/my/myfriends.aspx" title="Your Friends">Your Friends</a>';
-                    html += '</div>';
-                    $('.container').before(html);
-                }
+//<-xxxx
             }
 
             // Improve left sidebar.
             function improveLeftSidebar() {
-
-                // Search / Browse Map buttons and Search Map button as quick links in left sidebar.
-                if ($('#quickLinks ul li')[0]) {
-                    if (settings_but_searchmap) { // Search Map
-                        var searchmapButt = $( $('#quickLinks ul li')[0] ).clone()[0];
-                    }
-                    if (settings_dashboard_show_browsemap) { // Browse Map
-                        var browsemapButt = $( $('#quickLinks ul li')[0] ).clone()[0];
-                    }
-                    if (settings_dashboard_show_search) { // Search
-                        var searchButt = $( $('#quickLinks ul li')[0] ).clone()[0];
-                    }
-                    if (searchmapButt && $(searchmapButt).find('a')[0] && $(searchmapButt).find('a')[0].childNodes[1] && $(searchmapButt).find('svg')[0]) {
-                        $(searchmapButt).find('a')[0].href = '/play/map';
-                        $(searchmapButt).find('a')[0].target = settings_but_searchmap_new_tab ? "_blank" : "";
-                        $(searchmapButt).find('a')[0].childNodes[1].innerText = 'Search Map';
-                        $(searchmapButt).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
-                        $('#quickLinks ul li')[0].before(searchmapButt);
-                        css += "#map--inline path {stroke-width: 2.0;}";
-                    }
-                    if (browsemapButt && $(browsemapButt).find('a')[0] && $(browsemapButt).find('a')[0].childNodes[1] && $(browsemapButt).find('svg')[0]) {
-                        $(browsemapButt).find('a')[0].href = '/map';
-                        $(browsemapButt).find('a')[0].target = settings_dashboard_show_browsemap_new_tab ? "_blank" : "";
-                        $(browsemapButt).find('a')[0].childNodes[1].innerText = 'Browse Map';
-                        $(browsemapButt).find('svg')[0].innerHTML = $(browse_map_icon)[0].innerHTML;
-                        $(browsemapButt).find('svg').attr('viewBox', '0 0 24 24');
-                        $(browsemapButt).find('path').attr('stroke-width', '1.2');
-                        $('#quickLinks ul li')[0].before(browsemapButt);
-                    }
-                    if (searchButt && $(searchButt).find('a')[0] && $(searchButt).find('a')[0].childNodes[1] && $(searchButt).find('svg')[0]) {
-                        $(searchButt).find('a')[0].href = '/play/search';
-                        $(searchButt).find('a')[0].target = settings_dashboard_show_search_new_tab ? "_blank" : "";
-                        $(searchButt).find('a')[0].childNodes[1].innerText = 'Search';
-                        $(searchButt).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
-                        $('#quickLinks ul li')[0].before(searchButt);
-                        css += "#search--inline path {stroke-width: 1.0; stroke: currentColor;}";
-                    }
-                }
-
-                // Add link to Ignore List into dashboard sidebar.
-                if (settings_embedded_smartlink_ignorelist && $("#user-bio-root")[0].innerHTML.match(/Premium/) && $('#sidebar-nav-root > nav ul:not(".gclh") li a[href*="/plan/lists"]')[0]) {
-                    var ignorelist = $( $('#sidebar-nav-root > nav ul:not(".gclh") li a[href*="/plan/lists"]').closest('li') ).clone()[0];
-                    $(ignorelist).find('a')[0].href = $(ignorelist).find('a')[0].href + '/ignored';
-                    $(ignorelist).find('a')[0].innerHTML = 'Ignore List';
-                    $('#sidebar-nav-root > nav ul:not(".gclh") li a[href*="/plan/lists"]').closest('li').after(ignorelist);
-                }
-
-                // Build Show/Hide buttons for areas in left column.
-                var list = $('#sidebar-nav-root > nav > h3:not(.gclh), #sidebar-nav-root > nav > ul:not(.gclh)');
-                var ident = 0;
-                for (var i = 0; i < list.length; i=i+2) {
-                    ident++;
-                    $(list[i]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "gclh" : "gclh isHide");
-                    $(list[i+1]).addClass(getValue("show_box_dashboard_" + ident, true) == true ? "" : "isHide");
-                    list[i].setAttribute("name", "head_" + ident);
-                    list[i].innerHTML += "<svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill' title=''></use></svg>";
-                    list[i].addEventListener("click", showHideBoxDashboard, false);
-                }
-
                 // Build configuration to Show/Hide rows in left column.
                 function setClickSumDB() {
                     if (getValue('show_box_dashboard_0', false) == true) {
@@ -9725,6 +10236,7 @@ var mainGC = function() {
                     else setValue($(this).attr('name'), true);
                     setClickPointDB(this);
                 }
+//xxxx Do not run.
                 if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.bio-data')[0] && $('#user-bio-root')[0] && $('#quickLinks ul li')[0] && $('#sidebar-nav-root > nav > ul li')[0]) {
                     // Build button to display or hide the configuration to hide rows.
                     if ($('#user-bio-root')[0]) {
@@ -9795,31 +10307,9 @@ var mainGC = function() {
                         setClickSumDB();
                     }
                 }
-
-                // Linklist, Default Links on new dashboard.
-                try {
-                    buildDashboardCss();
-                    if (settings_bookmarks_show) {
-                        buildBoxDashboard("linklist", "Linklist", "Linklist");
-                        var box = document.getElementsByName("box_linklist")[0];
-                        box.innerHTML = "";
-                        buildBoxElementsLinklist(box);
-                    }
-                    if (settings_show_default_links) {
-                        bm_tmp = buildCopyOfBookmarks();
-                        sortBookmarksByDescription(true, bm_tmp);
-                        buildBoxDashboard("links", "Default Links", "Default Links for the Linklist");
-                        var box = document.getElementsByName("box_links")[0];
-                        box.innerHTML = "";
-                        buildBoxElementsLinks(box, bm_tmp);
-                    }
-                } catch(e) {gclh_error("Linklist, Default Links on new dashboard",e);}
             }
-
             function waitForLeftSidebar(waitCount) {
                 if ($('.container')[0] && $('#DashboardSidebar')[0] && $('.user-bio')[0] && $('#user-bio-root')[0] && $('#quickLinks ul')[0] && $('#sidebar-nav-root > nav')[0]) {
-                    saveUidOfOwnTrackables();
-                    buildMenuOfOldDBInNewDB();
                     improveLeftSidebar();
                 } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebar(waitCount);}, 50);}
             }
@@ -9982,245 +10472,11 @@ var mainGC = function() {
                 startAF();
             }
 
-            // Show unpublished hides.
-            if (settings_showUnpublishedHides) {
-                function waitForUnpublishedPlace(waitCount) {
-                    if ($('#sidebar-right-root')[0] && $('.sidebar-right button')[0] && $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0]) {
-                        var panel = '<div id="gclh_unpublishedCaches" class="panel collapsible">';
-                        panel += '    <div class="panel-header isActive">';
-                        panel += '        <h1 class="h5 no-margin">Unpublished Hides</h1>';
-                        panel += '    </div>';
-                        panel += '    <div id="gclh_unpublishedCaches_body" class="panel-body activity-feed">';
-                        panel += '        <div class="loading">';
-                        panel += '        </div>';
-                        panel += '    </div>';
-                        panel += '</div>';
-                        $('#sidebar-right-root').after(panel);
-                        var button = $( $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] ).clone()[0];
-                        $('#gclh_unpublishedCaches .panel-header')[0].append(button);
-                        if (!getValue('unpublishedCaches_visible', false)) {
-                            $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
-                            $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
-                        }
-                        $('#gclh_unpublishedCaches .panel-header').bind('click', function() {
-                            if (getValue('unpublishedCaches_visible', true)) {
-                                $('#gclh_unpublishedCaches .panel-header').removeClass('isActive');
-                                $('#gclh_unpublishedCaches .panel-body').fadeOut(300);
-                                setValue('unpublishedCaches_visible', false);
-                            } else {
-                                $('#gclh_unpublishedCaches .panel-header').addClass('isActive');
-                                $('#gclh_unpublishedCaches .panel-body').fadeIn(300);
-                                setValue('unpublishedCaches_visible', true);
-                            }
-                        });
-                        // If the link to unpublished hides is shown in bold, there are some.
-                        if ($('a[href*="/play/owner/unpublished"]:has(> strong)')[0]) {
-                            // Build the area to list the unpublished caches and events.
-                            function buildListArea() {
-                                if ($('#gclh_unpublishedCaches_list')[0]) return;
-                                var list = '<div id="gclh_unpublishedCaches_list"><ul id="gclh_unpublishedCaches_cachesList"></ul><ul id="gclh_unpublishedCaches_eventsList"></ul></div>';
-                                $('#gclh_unpublishedCaches_body').html(list);
-                            }
-                            // Build the list of unpublished caches.
-                            function buildCachesList(caches) {
-                                buildListArea();
-                                if (settings_set_showUnpublishedHides_sort) {
-                                    if (settings_showUnpublishedHides_sort == 'abc') caches.sort(abc);
-                                    else if (settings_showUnpublishedHides_sort == 'gcNew') caches.sort(gcNew);
-                                    else if (settings_showUnpublishedHides_sort == 'gcOld') caches.sort(gcOld);
-                                }
-                                var list = '';
-                                for (let i=0; i<caches.length; i++) {
-                                    let name = caches[i].name.trim();
-                                    let type = caches[i].geocacheTypeId;
-                                    let gccode = caches[i].referenceCode;
-                                    let d = caches[i].difficulty;
-                                    let t = caches[i].terrain;
-                                    let size = cache_sizes[caches[i].containerTypeId];
-                                    list += '<li class="activity-item activity-item-head">';
-                                    list += '    <div class="activity-type-icon">';
-                                    list += '        <svg class="status-icon" role="img" height="22" width="22">';
-                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                                    list += '        </svg>';
-                                    list += '        <svg class="icon" height="40" width="40" role="img">';
-                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                                    list += '        </svg>';
-                                    list += '    </div>';
-                                    list += '    <div class="activity-data">';
-                                    list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                                    list += '            <dl class="activity-meta">';
-                                    list += '                <dt title="Difficulty">';
-                                    list += '                    <svg height="16" width="16" role="img">';
-                                    list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-difficulty-currentcolor"></use>';
-                                    list += '                    </svg>';
-                                    list += '                </dt>';
-                                    list += '                <dd title="Difficulty">' + d + '</dd>';
-                                    list += '                <dt title="Terrain">';
-                                    list += '                    <svg height="16" width="16" role="img">';
-                                    list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-terrain-currentcolor"></use>';
-                                    list += '                    </svg>';
-                                    list += '                </dt>';
-                                    list += '                <dd title="Terrain">' + t + '</dd>';
-                                    list += '                <dt title="Size">';
-                                    list += '                    <svg height="16" width="16" role="img">';
-                                    list += '                        <use xlink:href="/account/app/ui-icons/sprites/search.svg#icon-size-currentcolor"></use>';
-                                    list += '                    </svg>';
-                                    list += '                </dt>';
-                                    list += '                <dd title="Size">' + size + '</dd>';
-                                    list += '                <dt class="left-separator"></dt>';
-                                    list += '                <dd>' + gccode + '</dd>';
-                                    list += '            </dl>';
-                                    list += '        </div>';
-                                    list += '    </div>';
-                                    list += '</li>';
-                                }
-                                $('#gclh_unpublishedCaches_cachesList').html(list);
-                                if ($('#gclh_unpublishedCaches_eventsList li')[0]) {
-                                    $('#gclh_unpublishedCaches_eventsList li')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4;');
-                                }
-                            }
-                            // Build the list of unpublished events.
-                            function buildEventsList(events) {
-                                buildListArea();
-                                var list = '';
-                                for (let i=0; i<events.length; i++) {
-                                    let name = events[i].name.trim();
-                                    let type = events[i].geocacheTypeId;
-                                    let gccode = events[i].referenceCode;
-                                    let eventStartTime = events[i].eventStartTime;
-                                    // Date and time format: window.navigator.language: There is the preferred language in the browser for displaying pages.
-                                    let date = new Date(eventStartTime);
-                                    let startDate;
-                                    try {
-                                        const jqui_date_format = unsafeWindow.serverParameters["user:info"].dateFormat.replace(/yy/g, 'y').replace(/M/g, 'm').replace(/mmm/, 'M');
-                                        startDate = $.datepicker.formatDate(jqui_date_format, date);
-                                    } catch {
-                                        startDate = date.toLocaleDateString(window.navigator.language, {year: 'numeric', month: '2-digit', day: '2-digit'});
-                                    }
-                                    let startTime = date.toLocaleTimeString(window.navigator.language, {hour: '2-digit', minute: '2-digit'});
-                                    list += '<li class="activity-item activity-item-head">';
-                                    list += '    <div class="activity-type-icon">';
-                                    list += '        <svg class="status-icon" role="img" height="22" width="22">';
-                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-owned"></use>';
-                                    list += '        </svg>';
-                                    list += '        <svg class="icon" height="40" width="40" role="img">';
-                                    list += '            <use xlink:href="/account/app/ui-icons/sprites/cache-types.svg#icon-' + type + '"></use>';
-                                    list += '        </svg>';
-                                    list += '    </div>';
-                                    list += '    <div class="activity-data">';
-                                    list += '        <div class="activity-details"><a href="https://coord.info/' + gccode + '"><h3 class="activity-header">' + name + '</h3></a>';
-                                    list += '            <dl class="activity-meta">';
-                                    list += '                <dd>' + gccode + '</dd>';
-                                    list += '                <dt class="left-separator"></dt>';
-                                    list += '                <dd title="Start date">' + startDate + '</dd>';
-                                    list += '                <dd title="Start time">' + startTime + '</dd>';
-                                    list += '            </dl>';
-                                    list += '        </div>';
-                                    list += '    </div>';
-                                    list += '</li>';
-                                }
-                                $('#gclh_unpublishedCaches_eventsList').html(list);
-                                if ($('#gclh_unpublishedCaches_cachesList li')[0]) {
-                                    $('#gclh_unpublishedCaches_eventsList li')[0].setAttribute('style', 'border-top: 1px solid #e4e4e4;');
-                                }
-                            }
-                            // Get a list of unpublished caches via api.
-                            $.ajax({
-                                type: "GET",
-                                cache: false,
-                                url: '/api/proxy/web/v1/cacheowner/geocaches/unpublished?skip=0&take=100',
-                                success: function(response) {
-                                    if (response.data.length > 0) buildCachesList(response.data);
-                                }
-                            });
-                            // Get a list of unpublished events via api.
-                            $.ajax({
-                                type: "GET",
-                                cache: false,
-                                url: '/api/proxy/web/v1/cacheowner/events/unpublished?skip=0&take=100',
-                                success: function(response) {
-                                    if (response.data.length > 0) buildEventsList(response.data);
-                                }
-                            });
-                        } else {
-                            var dnfHtml = '<div class="activity-message">';
-                            dnfHtml += '    <img class="margin-center" src="/account/app/ui-images/premium/GTmap.svg" alt="" aria-hidden="true" width="190" height="100">';
-                            dnfHtml += '    <h3 class="h5 no-margin-bottom">You don\'t have any unpublished hides.</h3>';
-                            dnfHtml += '</div>';
-                            $('#gclh_unpublishedCaches_body').html(dnfHtml);
-                        }
-                    } else {waitCount++; if (waitCount <= 1000) setTimeout(function(){waitForUnpublishedPlace(waitCount);}, 100);}
-                }
-                waitForUnpublishedPlace(0);
-                css += '#gclh_unpublishedCaches {margin-bottom: 0;}';
-                css += '#gclh_unpublishedCaches_body {min-height: unset;}';
-                css += '#gclh_unpublishedCaches_body dt {margin: 0 3px 0 0; padding: 0;}';
-                css += '#gclh_unpublishedCaches_body .left-separator {margin: 0 4px 0 -4px; padding: 0;}';
-                css += '#gclh_unpublishedCaches_eventsList .left-separator {margin: 0 8px 0 0px; padding: 0;}';
-                css += '#gclh_unpublishedCaches_body dl dd {margin: 0 8px 0 0; padding: 0;}';
-                css += '#gclh_unpublishedCaches_body dl dd:last-child {margin-right: 0;}';
-                css += '#gclh_unpublishedCaches_cachesList, #gclh_unpublishedCaches_eventsList {padding: 0; margin: 0;}';
-                css += '#gclh_unpublishedCaches .panel-header.isActive svg {transform: rotate(180deg) !important;}';
-                css += '#gclh_unpublishedCaches .panel-header svg {transform: rotate(0) !important;}';
-            }
-
             // Latest Activity: Do not cut avatar image.
             css += '.activity-details > div > a {flex-shrink: 0;}';
 
-            // Hide right sidebar ("Events nearby" and "Geocaches nearby").
-            waitForElementThenRun('div.sidebar-right', function() {
-                const $layoutFeed = $('#LayoutFeed');
-                const $sidebar_right = $('div.sidebar-right');
-                const $sidebar_right_max_width = $sidebar_right.css('max-width');
-                $sidebar_right.css('width', $sidebar_right_max_width);
-                const $wrapper = $('<div>', {
-                    id: 'gclh_right_sidebar_wrapper',
-                    height: 'fit-content'
-                });
-                $sidebar_right.wrap($wrapper);
-
-                const title_hide = 'Click to hide all sections on the right side';
-                const title_show = 'Click to show all sections on the right side';
-                const $btn = $('<button>', {
-                    id: 'gclh_right_sidebar_toggle',
-                    type: 'button'
-                }).html(`
-                  <svg>
-                    <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
-                  </svg>`);
-                $sidebar_right.before($btn);
-                css += '#gclh_right_sidebar_toggle {position: absolute; margin-left: -19px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
-                css += '@media (max-width: 950px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -5px;}}';
-                css += '@media (max-width: 600px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -1px;}}';
-                css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
-
-                const $svg = $btn.find('svg');
-                $btn.click(function() {
-                    if ($sidebar_right.is(':visible')) hideSidebar();
-                    else showSidebar();
-                });
-
-                function hideSidebar() {
-                    $layoutFeed.addClass('gclh_max_width_none');
-                    $sidebar_right.removeClass('flex');
-                    $sidebar_right.hide('fast');
-                    $svg.css('transform', 'rotate(90deg)');
-                    $btn.attr('title', title_show);
-                }
-                function showSidebar() {
-                    $sidebar_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
-                    $sidebar_right.addClass('flex');
-                    $svg.css('transform', 'rotate(-90deg)');
-                    $btn.attr('title', title_hide);
-                }
-                css += '.gclh_max_width_none {max-width: none !important;}';
-
-                if (settings_dashboard_hide_right_sidebar) hideSidebar();
-                else showSidebar();
-            });
-
             appendCssStyle(css);
-        } catch(e) {gclh_error("Improve new dashboard",e);}
+        } catch(e) {gclh_error("Improve dashboard (older block)",e);}
     }
 
 // Improve Owner Dashboard.
@@ -12724,6 +12980,8 @@ var mainGC = function() {
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
+            // Prevent tooltip with cache name if cache detail pop-up is available.
+            css += '.leaflet-container:has(.leaflet-popup) .map-tooltip {display: none !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
@@ -12944,7 +13202,7 @@ var mainGC = function() {
                     $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
                     $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
                     var css = '';
-                    css += '.gclh_hideMapHeader {text-decoration-line: none;} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
+                    css += '.gclh_hideMapHeader {text-decoration-line: none; color: rgb(61, 118, 197);} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
                     // Link in Sidebar rechts orientieren wegen möglichem GC Tour Icon.
                     css += '.gclh_hideMapHeader {float: right; padding-right: 3px;}';
                     // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
@@ -14827,7 +15085,7 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide GC Avatar Option",e);}
     }
 
-// Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt). Und Changelog im Profile.
+// Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt).
     try {
         // (1. Schritt: Siehe function buildSpecialLinklistLinks.)
         // GClh Config, Sync und Find Player Aufrufe mit Zusatz #GClhShowConfig bzw. #GClhShowSync bzw. #GClhShowFindPlayer.
@@ -14844,26 +15102,6 @@ var mainGC = function() {
         if (document.location.href.match(/#GClhShowFindPlayer/)) {
             document.location.href = clearUrlAppendix(document.location.href, true);
             setTimeout(createFindPlayerForm, 5);
-        }
-        // New dashboard: Config, Sync and Changelog Links.
-        if (is_page("dashboard")) {
-            function waitForLeftSidebarForGClhLinks(waitCount) {
-                if ($('#user-bio-root ul li')[0]) {
-                    var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
-                    var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
-                    var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
-                    var custIcon = "<svg class='size-[14px]'><use href='#settings--inline'></use></svg>";
-                    var row = '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>';
-                    if ($('#user-bio-root ul li a[id="s2cg_open_sendList"]')[0]) {
-                        $($('#user-bio-root ul li a[id="s2cg_open_sendList"]')[0].closest('li')).before(row);
-                    } else {
-                        $('#user-bio-root ul').append('<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>');
-                    }
-                    $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
-                    $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebarForGClhLinks(waitCount);}, 50);}
-            }
-            waitForLeftSidebarForGClhLinks(0);
         }
     } catch(e) {gclh_error("Aufbau Links zum Aufruf von Config, Sync und Find Player (2. Schritt)",e);}
 
@@ -16077,7 +16315,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/krb3/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/yYjY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -16126,6 +16364,19 @@ var mainGC = function() {
             CONFIG['migration_task_10'] = true;
             GM_setValue("CONFIG", JSON.stringify(CONFIG));
             // The migrated parameters must be initialized to take effect immediately.
+            variablesInit(window);
+        }
+        // Delete parameter show_box_dashboard_... (zu v0.18.3).
+        if (getValue("migration_task_11", false) != true) {
+            var config_tmp = {};
+            for (key in CONFIG) {
+                if (!key.match(/^show_box_dashboard_/)) {
+                    config_tmp[key] = CONFIG[key];
+                }
+            }
+            CONFIG = config_tmp;
+            GM_setValue("CONFIG", JSON.stringify(CONFIG));
+            setValue("migration_task_11", true);
             variablesInit(window);
         }
     }
@@ -16273,85 +16524,6 @@ var mainGC = function() {
              (typeof unsafeWindow.mapLatLng.isUserDefined !== "undefined" || is_page("unpublished_cache"))) {
             return true;
         } else return false;
-    }
-
-// Build box for VIPS, VUPS, All Links, Linklist on dashboard and the standard boxes.
-    function buildDashboardCss() {
-        var css = "";
-        css += "#sidebar-nav-root > nav ul.gclh {padding-top: 2px !important;}";
-        css += "#sidebar-nav-root > nav ul.isHide {display: none !important} .link-block {border-bottom: unset;}";
-        css += "#sidebar-nav-root > nav h3.gclh {cursor: pointer; margin-top: 4px !important;}";
-        css += "#sidebar-nav-root > nav h3.gclh svg {height: 23px; width: 22px; fill: #777; float: right; margin-top: -3px; margin-right: -2px; transition: all .3s ease; transform-origin: 50% 50%;}";
-        css += "#sidebar-nav-root > nav h3.gclh.isHide svg {transform: rotate(90deg);}";
-        appendCssStyle(css);
-    }
-    function buildBoxDashboard(ident, name, title) {
-        var head = document.createElement("h3");
-        head.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-header gclh" : "link-header gclh isHide") + " bg-gray-50 text-xs py-1 px-2 m-0 mt-2 rounded");
-        head.setAttribute("name", "head_" + ident);
-        if (title) head.setAttribute("title", title);
-        if (name) head.innerHTML = name + " <svg><use xlink:href='/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill'></use></svg>";
-        head.addEventListener("click", showHideBoxDashboard, false);
-        var box = document.createElement("ul");
-        box.setAttribute("class", (getValue("show_box_dashboard_" + ident, true) == true ? "link-block gclh" : "link-block gclh isHide") + " pl-2");
-        box.setAttribute("name", "box_" + ident);
-        if (ident == 'vip') {
-            $("#sidebar-nav-root > nav > ul:not(.gclh)").last().after(box).after(head);
-        } else if (ident == 'vup') {
-            $("#sidebar-nav-root > nav > ul[name*='box_vip']").after(box).after(head);
-        } else {
-            $("#sidebar-nav-root > nav > ul").last().after(box).after(head);
-        }
-    }
-    function buildCopyOfBookmarks() {
-        var bm_tmp = new Array();
-        for (var i = 0; i < bookmarks.length; i++) {
-            bm_tmp[i] = new Object();
-            for (attr in bookmarks[i]) {bm_tmp[i][attr] = bookmarks[i][attr];}
-        }
-        return bm_tmp;
-    }
-    function buildBoxElementsLinklist(box) {
-        for (var i = 0; i < settings_bookmarks_list.length; i++) {
-            var x = settings_bookmarks_list[i];
-            if (typeof(x) == "undefined" || x == "" || typeof(x) == "object") continue;
-            var a = document.createElement("a");
-            a.setAttribute("class", "no-underline rounded hover:text-gray-600 hover:underline focus:text-gray-600");
-            for (attr in bookmarks[x]) {
-                if (attr == "custom" || attr == "title") continue;
-                if (attr == "name" || attr == "id") a.setAttribute(attr, bookmarks[x][attr]+"_profile");
-                else a.setAttribute(attr, bookmarks[x][attr]);
-            }
-            a.appendChild(document.createTextNode(bookmarks[x]['title']));
-            var li = document.createElement("li");
-            li.appendChild(a);
-            box.appendChild(li);
-        }
-    }
-    function buildBoxElementsLinks(box, bm_tmp) {
-        for (var i = 0; i < bm_tmp.length; i++) {
-            if (bm_tmp[i]['origTitle'] == "(empty)" || bm_tmp[i]['href'] == "" || bm_tmp[i]['href'] == "#") continue;
-            var a = document.createElement("a");
-            a.setAttribute("class", "no-underline rounded hover:text-gray-600 hover:underline focus:text-gray-600");
-            for (attr in bm_tmp[i]) {
-                if (attr == "custom" || attr == "title" || attr == "origTitle") continue;
-                if (attr == "name" || attr == "id") a.setAttribute(attr, bm_tmp[i][attr]+"_profile");
-                else a.setAttribute(attr, bm_tmp[i][attr]);
-            }
-            a.appendChild(document.createTextNode(bm_tmp[i]['origTitle']));
-            var li = document.createElement("li");
-            li.appendChild(a);
-            box.appendChild(li);
-        }
-    }
-
-// Show, Hide box on dashboard.
-    function showHideBoxDashboard() {
-        if (!$(this.nextElementSibling)) return;
-        var ident = this.getAttribute("name").replace("head_", "");
-        (this.className.match("isHide") ? setValue("show_box_dashboard_" + ident, true) : setValue("show_box_dashboard_" + ident, false));
-        (this.className.match("isHide") ? $(this.nextElementSibling).removeClass("isHide") : $(this.nextElementSibling).addClass("isHide"));
-        (this.className.match("isHide") ? $(this).removeClass("isHide") : $(this).addClass("isHide"));
     }
 
 // Show/hide upvotes with "Order by", "Great story" and "Helpful".
@@ -17372,9 +17544,9 @@ var mainGC = function() {
     var onlySearchMap = '<span title="This works only on the Search Map."> ' + search_map_icon + '</span>';
     var onlyBrowseMapBehindIcon = '<span class="browse_map_icon" title="This works only on the Browse Map.">' + browse_map_icon + '</span>';
 
-    function gclh_createSelectOptionCode(id, data, selectedValue) {
+    function gclh_createSelectOptionCode(id, style, data, selectedValue) {
         var html = "";
-        html += '<select class="gclh_form" id="'+id+'">';
+        html += '<select class="gclh_form" id="'+id+'" style="'+style+'">';
         for (var i = 0; i < data.length; i++) {
             html += "  <option value='" + data[i][1] + "' " + (selectedValue == data[i][1] ? "selected='selected'" : "") + "> " + data[i][0] + "</option>";
         }
@@ -17506,7 +17678,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "30.03.2026";
+            var thanksLastUpdate = "09.04.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17521,7 +17693,7 @@ var mainGC = function() {
             html += "<div id='gclh_config_global' class='gclh_block'>";
             html += "<label for='settings_home_lat_lng'>&nbsp;Home coordinates </label><input class='gclh_form' type='text' size='27' id='settings_home_lat_lng' value='" + DectoDeg(getValue("home_lat"), getValue("home_lng")) + "'>" + show_help("Your home coordinates are automatically updated if you change them on the geocaching page. You can also enter it here manually. These coordinates are used to show your home zone on the map and also for various links to find nearby caches.") + "<br>";
             html += checkboxy('settings_set_default_langu', 'Set default language ');
-            html += "<select class='gclh_form' id='settings_default_langu'>";
+            html += "<select class='gclh_form' id='settings_default_langu' style='width: 145px;'>";
             for (var i = 0; i < langus.length; i++) {
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
@@ -17662,7 +17834,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Pocket Query</b></div>";
             html += checkboxy('settings_pq_warning', "Show a message in case of wrong settings") + show_help("Show a message if one or more options are in conflict. This helps to avoid pocket queries without results.") + "<br>";
             html += checkboxy('settings_pq_previewmap','Show preview map for coordinates from origin') + "&nbsp;";
-            html += '<select class="gclh_form" id="settings_pq_previewmap_layer" style="width: 200px;">';
+            html += '<select class="gclh_form" id="settings_pq_previewmap_layer" style="width: 220px;">';
             for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_pq_previewmap_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
@@ -17675,8 +17847,8 @@ var mainGC = function() {
             html += checkboxy('settings_pq_option_ignorelist', "Enable option \"Are not on my ignore list\"") + "<br>";
             html += checkboxy('settings_pq_option_isenabled', "Enable option \"Is Enabled\"") + "<br>";
             html += checkboxy('settings_pq_option_filename', "Enable option \"Include pocket query name in download file name\"") + "<br>";
-            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ") + gclh_createSelectOptionCode("settings_pq_difficulty", dt_display, settings_pq_difficulty) + '&nbsp;' + gclh_createSelectOptionCode("settings_pq_difficulty_score", dt_score, settings_pq_difficulty_score) + "<br>";
-            html += checkboxy('settings_pq_set_terrain', "Set terrain ") + gclh_createSelectOptionCode("settings_pq_terrain", dt_display, settings_pq_terrain) + '&nbsp;' + gclh_createSelectOptionCode("settings_pq_terrain_score", dt_score, settings_pq_terrain_score) + "<br>";
+            html += checkboxy('settings_pq_set_difficulty', "Set difficulity ") + gclh_createSelectOptionCode("settings_pq_difficulty", "width: 204px;", dt_display, settings_pq_difficulty) + '&nbsp;' + gclh_createSelectOptionCode("settings_pq_difficulty_score", "width: 60px;", dt_score, settings_pq_difficulty_score) + "<br>";
+            html += checkboxy('settings_pq_set_terrain', "Set terrain ") + gclh_createSelectOptionCode("settings_pq_terrain", "width: 204px;", dt_display, settings_pq_terrain) + '&nbsp;' + gclh_createSelectOptionCode("settings_pq_terrain_score", "width: 60px;", dt_score, settings_pq_terrain_score) + "<br>";
             html += checkboxy('settings_pq_automatically_day', "Generate pocket query today") + show_help("The server time is used to determine the day of the week for the creation of the pocket query.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Pocket Query Caches List</b></div>";
@@ -17782,7 +17954,7 @@ var mainGC = function() {
             html += checkboxy('settings_browsemap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in browse map more compact and displays information about the lists that contain the cache.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_show_enhanced_map_popup\" title='Link to setting \"Show enhanced cache data\"'>Show enhanced cache data</a> to be activated.") + onlyBrowseMap + prem + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in search map more compact and displays information about the lists that contain the cache.<br><br>This feature requires <a class='gclh_ref_ht_int' href=\"#settings_show_enhanced_map_popup\" title='Link to setting \"Show enhanced cache data\"'>Show enhanced cache data</a> to be activated.") + onlySearchMap + prem + "<br>";
-            html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' >";
+            html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_searchmap_improve_add_to_list_height' style='width: 62px;'>";
             for (var i = 130; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_searchmap_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -17918,7 +18090,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Enhanced Cache Data</b>" + "</div>";
             html += checkboxy('settings_show_enhanced_map_popup', 'Show enhanced cache data') + show_help("With this option, additional cache data will be shown in the pop-up on the Browse Map and in the cache detail screen on the left side of the Search Map.<br><br>Additional cache data are for example the latest log symbols, the elevation data, the favorites in percentage, the number of the trackables, the personal cache note and further data.<br><br>The pop-up on the browse map displays a more compact layout for the entire pop-up.") + "<br>";
-            html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map'>";
+            html += " &nbsp; &nbsp;" + "Show the <select class='gclh_form' id='settings_show_latest_logs_symbols_count_map' style='width: 52px;'>";
             for (var i = 1; i <= 25; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count_map == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -17949,24 +18121,24 @@ var mainGC = function() {
             html += checkboxy('settings_count_own_matrix', 'Calculate your cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on your statistic page.") + "<br>";
             html += checkboxy('settings_count_foreign_matrix', 'Calculate other users cache matrix') + show_help("With this option the count of found difficulty and terrain combinations and the count of complete matrixes are calculated and shown above the cache matrix on other users statistic page.") + "<br>";
             html += checkboxy('settings_count_own_matrix_show_next', 'Mark D/T combinations for your next possible cache matrix') + show_help("With this option the necessary difficulty and terrain combinations to reach the next possible complete matrixes are marked in your cache matrix on your statistic page.") + "<br>";
-            html += " &nbsp; &nbsp;" + "Highlight next <select class='gclh_form' id='settings_count_own_matrix_show_count_next' >";
+            html += " &nbsp; &nbsp;" + "Highlight next <select class='gclh_form' id='settings_count_own_matrix_show_count_next' style='width: 42px;'>";
             for (var i = 1; i < 5; i++) {
                 html += "  <option value='" + i + "' " + (settings_count_own_matrix_show_count_next == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> matrixes in color <input class='gclh_form color' type='text' size=6 id='settings_count_own_matrix_show_color_next' style='margin-left: 0px;' value='" + getValue("settings_count_own_matrix_show_color_next", "5151FB") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_count_own_matrix_show_color_next' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the count and the color of highlighted next possible complete matrixes in your cache matrix on your statistic page.") + "<br>";
-            html += " &nbsp; &nbsp;" + "Generate cache search links with radius <select class='gclh_form' id='settings_count_own_matrix_links_radius' >";
+            html += " &nbsp; &nbsp;" + "Generate cache search links with radius <select class='gclh_form' id='settings_count_own_matrix_links_radius' style='width: 62px;'>";
             for (var i = 0; i < 501; i++) {
                 html += "  <option value='" + i + "' " + (settings_count_own_matrix_links_radius == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> km" + show_help("With this option cache search links with the inserted radius in km are generated for all difficulty and terrain combinations. With a radius of 0 km there are no links generated. The default radius is 25 km.") + "<br>";
-            html += " &nbsp; &nbsp;" + "Show the searched caches in a <select class='gclh_form' id='settings_count_own_matrix_links'>";
+            html += " &nbsp; &nbsp;" + "Show the searched caches in a <select class='gclh_form' id='settings_count_own_matrix_links' style='width: 64px;'>";
             html += "  <option value='map' " + (settings_count_own_matrix_links == "map" ? "selected=\"selected\"" : "") + ">map</option>";
             html += "  <option value='list' " + (settings_count_own_matrix_links == "list" ? "selected=\"selected\"" : "") + ">list</option>";
             html += "</select>" + "<br>";
             html += checkboxy('settings_log_statistic', 'Calculate number of cache and trackable logs for each logtype') + show_help("With this option, you can build a statistic for your own cache and trackable logs for each logtype on your own statistic pages.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_log_statistic_percentage', 'Show percentage column') + "<br>";
-            html += " &nbsp; &nbsp;" + "Automated load/reload after <select class='gclh_form' id='settings_log_statistic_reload' >";
+            html += " &nbsp; &nbsp;" + "Automated load/reload after <select class='gclh_form' id='settings_log_statistic_reload' style='width: 52px;'>";
             html += "  <option value='' " + (settings_log_statistic_reload == '' ? "selected=\"selected\"" : "") + "></option>";
             for (var i = 1; i < 49; i++) {
                 html += "  <option value='" + i + "' " + (settings_log_statistic_reload == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
@@ -17984,14 +18156,26 @@ var mainGC = function() {
             html += newParameterOn2;
             html += checkboxy('settings_dashboard_disable_all_features', 'Disable all features for dashboard') + show_help('The website operator has announced numerous dashboard changes in the coming months. This option allows you to quickly and easily disable all GC little helper II dashboard features without much effort. Only the line in the dashboard with the links to the Configurator, the Synchronizer and the Changelog should remain. This is only useful if the dashboard website changes conflict with the features of GC little helper II.<br>(Status as of 24.02.2026)') + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
-            html += newParameterOn1;
-            html += checkboxy('settings_dashboard_build_menu_old_db_in_new_db', 'Show menu under the header as in the old dashboard') + show_help('This option allows you to show a menu below the header, similar to what you know from the old dashboard.') + "<br>";
-            html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
             html += newParameterOn3;
             html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the navigation column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += newParameterOn2;
+            html += " &nbsp; " + checkboxy('settings_line_height_first_block_adjust_db', 'Height for links in link block \"Quick access\"') + " <select class='gclh_form' id='settings_line_height_first_block_db' style='width: 52px;'>";
+            for (var i = 20; i <= 40; i = i+2) {
+                html += "  <option value='" + i + "' " + (settings_line_height_first_block_db == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the height of the links in the first link block \"Quick access\" in the left sidebar from 20 up to 40 pixel.<br>The website default is 40 pixel. The suggestion is 28 pixel.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_line_height_other_blocks_adjust_db', 'Height for links in further link blocks such as \"Geocaches\"') + " <select class='gclh_form' id='settings_line_height_other_blocks_db' style='width: 52px;'>";
+            for (var i = 20; i <= 40; i = i+2) {
+                html += "  <option value='" + i + "' " + (settings_line_height_other_blocks_db == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the height of the links in the further link blocks in the left sidebar such as \"Geocaches\", \"Your hides\", \"Plan\", \"Community\" and \"Trackables\" from 20 up to 40 pixel.<br>The website default is 32 pixel. The suggestion is 24 pixel.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_line_height_gclh_blocks_adjust_db', 'Height for links in GClh II link blocks such as \"All my VIPs\"') + " <select class='gclh_form' id='settings_line_height_gclh_blocks_db' style='width: 52px;'>";
+            for (var i = 20; i <= 40; i = i+2) {
+                html += "  <option value='" + i + "' " + (settings_line_height_gclh_blocks_db == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the height of the links in the GC little helper II link blocks in the left sidebar such as \"All my VIPs\", \"All my VUPs\", \"Linklist\" and \"Default Links\" from 20 up to 40 pixel.<br>The suggestion is 20 pixel.") + "<br>";
             html += checkboxy('settings_dashboard_show_search', 'Show button "Search" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_dashboard_show_search_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_dashboard_show_browsemap', 'Show button "Browse Map" on your dashboard') + "<br>";
@@ -18013,7 +18197,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.17') + newParameterOff;
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
-            html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort'>";
+            html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort' style='width: 200px;'>";
             html += "  <option value='abc' " + (settings_showUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
             html += "  <option value='gcNew' " + (settings_showUnpublishedHides_sort == 'gcNew' ? "selected='selected'" : "") + "> GC-Code (Newest first)</option>";
@@ -18031,14 +18215,14 @@ var mainGC = function() {
             html += checkboxy('settings_show_eventtime_with_24_hours', 'Show event time in 24 hours format') + show_help("The start time and end time of an event are generated on the website using the language in which you are signed in. In English, the preferred language when using the GClh, but also in some other languages, the start time and end time of an event is shown in 12 hour format with AM and PM. If you want to change it to a 24 hour format, you can activate this parameter. It will then be changed in the header of the cache listing and in the event info at the beginning of the cache description.") + "<br>";
             html += newParameterOn2;
             html += checkboxy('settings_set_default_calendar_link_for_event', 'Set default calendar for event ');
-            html += "<select class='gclh_form' id='settings_default_calendar_link_for_event'>";
+            html += "<select class='gclh_form' id='settings_default_calendar_link_for_event' style='width: 130px;'>";
             for (var i = 0; i < eventCalendar.length; i++) {
                 html += "  <option value='" + eventCalendar[i] + "' " + (settings_default_calendar_link_for_event == eventCalendar[i] ? "selected='selected'" : "") + "> " + eventCalendar[i] + "</option>";
             }
             html += "</select>" + show_help("Here you can set the default calendar for an event listing. A selection in the calendar pop-up in the event listing is no longer necessary.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_show_latest_logs_symbols', 'Show the ');
-            html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count'>";
+            html += "<select class='gclh_form' id='settings_show_latest_logs_symbols_count' style='width: 52px;'>";
             for (var i = 1; i < 11; i++) {
                 html += "  <option value='" + i + "' " + (settings_show_latest_logs_symbols_count == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -18054,12 +18238,12 @@ var mainGC = function() {
             html += "&nbsp;" + "Highlight user changed coordinates with " + checkboxy('settings_highlight_usercoords', 'red textcolor ') + checkboxy('settings_highlight_usercoords_bb', 'underline ') + checkboxy('settings_highlight_usercoords_it', 'italic') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypoints', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">preferences</a>" + "<br>";
-            html += "&nbsp;&nbsp;&nbsp;" + "First service <select class='gclh_form' id='settings_primary_elevation_service' style='width: 160px;'>";
+            html += "&nbsp;&nbsp;&nbsp;" + "First service <select class='gclh_form' id='settings_primary_elevation_service' style='width: 175px;'>";
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select>";
-            html += "&nbsp;&nbsp;" + "Second service <select class='gclh_form' id='settings_secondary_elevation_service' style='width: 160px;'>";
+            html += "&nbsp;&nbsp;" + "Second service <select class='gclh_form' id='settings_secondary_elevation_service' style='width: 175px;'>";
             for (var i = 0; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
@@ -18073,7 +18257,7 @@ var mainGC = function() {
             html += checkboxy('settings_hide_disclaimer', 'Hide disclaimer') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Personal Cache Note</b>" + prem + "</div>";
-            html += "&nbsp;" + "Personal cache note minimum size <select class='gclh_form' id='settings_cache_notes_min_size'>";
+            html += "&nbsp;" + "Personal cache note minimum size <select class='gclh_form' id='settings_cache_notes_min_size' style='width: 62px;'>";
             for (var i = 54; i < 501; i++) {
                 html += "  <option value='" + i + "' " + (settings_cache_notes_min_size == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -18100,7 +18284,7 @@ var mainGC = function() {
             html += checkboxy('settings_log_inline', 'Log cache from listing (inline)') + show_help("With the inline log you can open a log form inside the listing, without loading a new page.<br><br>If you're using an ad-blocking add-on, such as uBlock, the embedded screen may not be allowed. To turn this off, you have to add \"www.geocaching.com\/geocache\/GC*\" to the whitelist, or something similar, of your add-on.") + "<br>";
             html += checkboxy('settings_prevent_watchclick_popup', 'Prevent pop-up when clicking on "Watch" or "Stop Watching"') + "<br>";
             html += checkboxy('settings_improve_add_to_list', 'Show compact layout in \"Add to list\" pop-up, show info to lists') + show_help("This option makes the \"Add to list\" pop-up in cache listing more compact and displays information about the lists that contain the cache.") + prem + "<br>";
-            html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_improve_add_to_list_height' >";
+            html += " &nbsp; &nbsp;" + "Maximum height of pop-up <select class='gclh_form' id='settings_improve_add_to_list_height' style='width: 62px;'>";
             for (var i = 100; i < 521; i++) {
                 html += "  <option value='" + i + "' " + (settings_improve_add_to_list_height == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -18147,7 +18331,7 @@ var mainGC = function() {
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_gpsvisualizer_typedesc', 'Transfer type of the waypoint as description') + show_help("Transfer for every waypoint the type as text in the description. If the URL is too long, disable this option.") + "<br>";
             html += checkboxy('settings_show_openrouteservice_link', 'Show Openrouteservice links in sidebar and under the "Add. Waypoints"') + "<br>";
             html += "&nbsp;&nbsp;" + checkboxy('settings_show_openrouteservice_home', 'Use home coordinates as start point') + show_help("You can use your home coordinates, here in the GClh II Config, as start point and first waypoint for the route calculation.") + "<br>";
-            html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 200px;'>";
+            html += "&nbsp;&nbsp;&nbsp;" + "Medium for locomotion <select class='gclh_form' id='settings_show_openrouteservice_medium' style='width: 212px;'>";
             html += "  <option value=\"0\" " + (settings_show_openrouteservice_medium == "0" ? "selected=\"selected\"" : "") + ">Car</option>";
             html += "  <option value=\"1a\" " + (settings_show_openrouteservice_medium == "1a" ? "selected=\"selected\"" : "") + ">Bike</option>";
             html += "  <option value=\"1b\" " + (settings_show_openrouteservice_medium == "1b" ? "selected=\"selected\"" : "") + ">Mountain bike</option>";
@@ -18192,12 +18376,12 @@ var mainGC = function() {
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Overview Map <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_map_overview_build', 'Show cache location in overview map') + show_help("With this option there will be an additional map top right in the cache listing as an overview of the cache location.") + "<br>";
-            html += ' &nbsp; &nbsp;Map layer <select class="gclh_form" id="settings_map_overview_layer">';
+            html += ' &nbsp; &nbsp;Map layer <select class="gclh_form" id="settings_map_overview_layer" style="width: 276px;">';
             for (name in all_map_layers) {
                 html += "  <option value='" + name + "' " + (settings_map_overview_layer == name ? "selected='selected'" : "") + "> " + name + "</option>";
             }
             html += '</select>';
-            html += " &nbsp;" + "Map zoom <select class='gclh_form' id='settings_map_overview_zoom'>";
+            html += " &nbsp;" + "Map zoom <select class='gclh_form' id='settings_map_overview_zoom' style='width: 52px;'>";
             for (var i = 1; i < 20; i++) {
                 html += "  <option value='" + i + "' " + (settings_map_overview_zoom == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -18244,12 +18428,12 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_driving_direction_parking_area', 'Only for parking area waypoints') + "<br>";
             html += checkboxy('settings_show_elevation_of_waypointsX0', 'Show elevations for listing coordinates and additional waypoints') + show_help("Shows the elevation of the listing coordinates and of every additional waypoint. Select the order of the elevation service or deactivate it. Queries to the Google Elevation service are limited. Hover of the elevation data of a waypoint shows a tooltip with the used service.") + "<br>";
             html += " &nbsp; &nbsp;" + "Measure unit can be set in <a href=\"/account/settings/preferences\">preferences</a>" + "<br>";
-            html += "&nbsp;&nbsp;&nbsp;" + "First service <select class='gclh_form' id='settings_primary_elevation_serviceX0' style='width: 160px;'>";
+            html += "&nbsp;&nbsp;&nbsp;" + "First service <select class='gclh_form' id='settings_primary_elevation_serviceX0' style='width: 175px;'>";
             for (var i = 1; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_primary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
             html += "</select>";
-            html += "&nbsp;&nbsp;" + "Second service <select class='gclh_form' id='settings_secondary_elevation_serviceX0' style='width: 160px;'>";
+            html += "&nbsp;&nbsp;" + "Second service <select class='gclh_form' id='settings_secondary_elevation_serviceX0' style='width: 175px;'>";
             for (var i = 0; i < elevationServicesData.length; i++) {
                 html += "  <option value='"+i+"' " + (settings_secondary_elevation_service == i ? "selected=\"selected\"" : "") + ">"+elevationServicesData[i]['name']+"</option>";
             }
@@ -18366,7 +18550,7 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += "<table><tbody>";
             html += "  <tr><td>&nbsp; Default log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype'>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype' style='width: 240px;'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"2\" " + (settings_default_logtype == "2" ? "selected=\"selected\"" : "") + ">Found it</option>";
             html += "    <option value=\"3\" " + (settings_default_logtype == "3" ? "selected=\"selected\"" : "") + ">Didn't find it</option>";
@@ -18374,14 +18558,14 @@ var mainGC = function() {
             html += "    <option value=\"45\" " + (settings_default_logtype == "45" ? "selected=\"selected\"" : "") + ">Owner attention requested</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
             html += "  <tr><td>&nbsp; Default event log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_event'>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_event' style='width: 240px;'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_event == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"9\" " + (settings_default_logtype_event == "9" ? "selected=\"selected\"" : "") + ">Will attend</option>";
             html += "    <option value=\"10\" " + (settings_default_logtype_event == "10" ? "selected=\"selected\"" : "") + ">Attended</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_event == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"7\" " + (settings_default_logtype_event == "7" ? "selected=\"selected\"" : "") + ">Reviewer attention requested</option></select></td>";
             html += "  <tr><td>&nbsp; Default owner log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_owner'>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_logtype_owner' style='width: 180px;'>";
             html += "    <option value=\"-1\" " + (settings_default_logtype_owner == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"46\" " + (settings_default_logtype_owner == "46" ? "selected=\"selected\"" : "") + ">Owner maintenance</option>";
             html += "    <option value=\"4\" " + (settings_default_logtype_owner == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
@@ -18389,7 +18573,7 @@ var mainGC = function() {
             html += "    <option value=\"5\" " + (settings_default_logtype_owner == "5" ? "selected=\"selected\"" : "") + ">Archive</option>";
             html += "    <option value=\"23\" " + (settings_default_logtype_owner == "23" ? "selected=\"selected\"" : "") + ">Enable listing</option></select></td>";
             html += "  <tr><td>&nbsp; Default trackable log type</td>";
-            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_tb_logtype'>";
+            html += "    <td>&nbsp; <select class='gclh_form' id='settings_default_tb_logtype' style='width: 180px;'>";
             html += "    <option value=\"-1\" " + (settings_default_tb_logtype == "-1" ? "selected=\"selected\"" : "") + ">- Select type of log -</option>";
             html += "    <option value=\"4\" " + (settings_default_tb_logtype == "4" ? "selected=\"selected\"" : "") + ">Write note</option>";
             html += "    <option value=\"48\" " + (settings_default_tb_logtype == "48" ? "selected=\"selected\"" : "") + ">Discovered it</option>";
@@ -18428,24 +18612,24 @@ var mainGC = function() {
             html += checkboxy('settings_menu_float_right', 'Arrange the menu right') + show_help("With this option you can arrange the navigation menu with the Linklist and the other dropdown lists in the right direction. The default is an orientation in the left direction.<br><br>" + t_reqChlSLoT) + "<br>";
             html += "&nbsp;" + "Font color at menu <input class='gclh_form color' type='text' size=6 id='settings_font_color_menu' value='" + getValue("settings_font_color_menu", "93B516") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menu' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the navigation menu.<br><br>" + t_reqChl) + "<br>";
-            html += "&nbsp;" + "Font size at menu <select class='gclh_form' id='settings_font_size_menu'>";
+            html += "&nbsp;" + "Font size at menu <select class='gclh_form' id='settings_font_size_menu' style='width: 52px;'>";
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the font size at the navigation menu in pixel. The default font size is 16 pixel.<br><br>" + t_reqChl) + "<br>";
-            html += "&nbsp;" + "Distance between menu entries <select class='gclh_form' id='settings_distance_menu'>";
+            html += "&nbsp;" + "Distance between menu entries <select class='gclh_form' id='settings_distance_menu' style='width: 52px;'>";
             for (var i = 0; i < 100; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the distance between the navigation menu entries in horizontal direction in pixel.<br><br>" + t_reqChl) + "<br>";
             html += "&nbsp;" + "Font color at dropdown lists <input class='gclh_form color' type='text' size=6 id='settings_font_color_submenu' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenu' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the dropdown lists.<br><br>" + t_reqChl) + "<br>";
-            html += "&nbsp;" + "Font size at dropdown lists <select class='gclh_form' id='settings_font_size_submenu'>";
+            html += "&nbsp;" + "Font size at dropdown lists <select class='gclh_form' id='settings_font_size_submenu' style='width: 52px;'>";
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the font size at the drop-down lists in pixel. The default font size is 15 pixel.<br><br>" + t_reqChl) + "<br>";
-            html += "&nbsp;" + "Distance between dropdown links <select class='gclh_form' id='settings_distance_submenu'>";
+            html += "&nbsp;" + "Distance between dropdown links <select class='gclh_form' id='settings_distance_submenu' style='width: 52px;'>";
             for (var i = 0; i < 33; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -18456,17 +18640,17 @@ var mainGC = function() {
             html += "<div id='box_top_menu_h' style='margin-left: 16px; height: 188px;' >";
             html += "&nbsp;" + "Font color at menu <input class='gclh_form color' type='text' size=6 id='settings_font_color_menuX0' value='" + getValue("settings_font_color_menu", "93B516") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_menuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the links.<br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Font size at the links: <select class='gclh_form' id='settings_font_size_menuX0'>";
+            html += "&nbsp;" + "Font size at the links: <select class='gclh_form' id='settings_font_size_menuX0' style='width: 52px;'>";
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the font size at the links in pixel. The default font size is 16 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Distance between the links <select class='gclh_form' id='settings_distance_menuX0'>";
+            html += "&nbsp;" + "Distance between the links <select class='gclh_form' id='settings_distance_menuX0' style='width: 52px;'>";
             for (var i = 0; i < 100; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_menu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can choose the distance between the links in horizontal direction in pixel. <br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Number of lines for all links <select class='gclh_form' id='settings_menu_number_of_lines'>";
+            html += "&nbsp;" + "Number of lines for all links <select class='gclh_form' id='settings_menu_number_of_lines' style='width: 42px;'>";
             html += "  <option value=\"1\" " + (settings_menu_number_of_lines == "1" ? "selected=\"selected\"" : "") + ">1</option>";
             html += "  <option value=\"2\" " + (settings_menu_number_of_lines == "2" ? "selected=\"selected\"" : "") + ">2</option>";
             html += "  <option value=\"3\" " + (settings_menu_number_of_lines == "3" ? "selected=\"selected\"" : "") + ">3</option>";
@@ -18474,12 +18658,12 @@ var mainGC = function() {
             html += "<input type='checkbox' " + (getValue('settings_menu_show_separator') ? "checked='checked'" : "" ) + " id='settings_menu_show_separator'>Show separator between the links" + show_help(t_reqChlSLoT) + "<br>";
             html += "&nbsp;" + "Font color at GC drop-down lists <input class='gclh_form color' type='text' size=6 id='settings_font_color_submenuX0' value='" + getValue("settings_font_color_submenu", "93B516") + "'>";
             html += "<img src=" + global_restore_icon + " id='restore_settings_font_color_submenuX0' title='back to default' style='width: 12px; cursor: pointer;'>" + show_help("With this option you can choose the font color at the GC drop-down lists.<br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Font size at GC drop-down lists <select class='gclh_form' id='settings_font_size_submenuX0'>";
+            html += "&nbsp;" + "Font size at GC drop-down lists <select class='gclh_form' id='settings_font_size_submenuX0' style='width: 52px;'>";
             for (var i = 6; i < 17; i++) {
                 html += "  <option value='" + i + "' " + (settings_font_size_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
             html += "</select> px" + show_help("With this option you can only choose the font size at the remaining GC drop-down lists in pixel. The default font size is 15 pixel.<br><br>" + t_reqChlSLoT) + "<br>";
-            html += "&nbsp;" + "Distance between GC drop-down links <select class='gclh_form' id='settings_distance_submenuX0'>";
+            html += "&nbsp;" + "Distance between GC drop-down links <select class='gclh_form' id='settings_distance_submenuX0' style='width: 52px;'>";
             for (var i = 0; i < 33; i++) {
                 html += "  <option value='" + i + "' " + (settings_distance_submenu == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
@@ -18555,7 +18739,7 @@ var mainGC = function() {
                 html += "    <img style='height: 12px; margin-right: 3px; cursor: grab;' title='' src='"+global_grab_it2_icon+"' />";
                 if (typeof(bookmarks[i]['custom']) != "undefined" && bookmarks[i]['custom'] == true) {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' type='text' title='Custom link' id='settings_custom_bookmark[" + cust + "]' value='" + repApo(bookmarks[i]['href']) + "' size='15'> ";
-                    html += "<input type='checkbox' style='margin-left: 1px;' title='Open in new window' " + (bookmarks[i]['target'] == "_blank" ? "checked='checked'" : "" ) + " id='settings_custom_bookmark_target[" + cust + "]'>";
+                    html += "<input type='checkbox' style='margin-left: 1px;' title='Open in new tab' " + (bookmarks[i]['target'] == "_blank" ? "checked='checked'" : "" ) + " id='settings_custom_bookmark_target[" + cust + "]'>";
                     cust++;
                 } else {
                     html += "<a class='gclh_ref' title='Standard link with description' ";
@@ -19347,6 +19531,15 @@ var mainGC = function() {
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
             setEvForDepPara("settings_set_default_calendar_link_for_event", "settings_default_calendar_link_for_event");
             setEvForDepPara("settings_compact_layout_new_dashboard", "settings_row_hide_new_dashboard");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_first_block_adjust_db");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_first_block_db");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_other_blocks_adjust_db");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_other_blocks_db");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_gclh_blocks_adjust_db");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_gclh_blocks_db");
+            setEvForDepPara("settings_line_height_first_block_adjust_db", "settings_line_height_first_block_db");
+            setEvForDepPara("settings_line_height_other_blocks_adjust_db", "settings_line_height_other_blocks_db");
+            setEvForDepPara("settings_line_height_gclh_blocks_adjust_db", "settings_line_height_gclh_blocks_db");
             setEvForDepPara("settings_add_cache_note_templates","settings_cache_note_template_name[0]");
             setEvForDepPara("settings_add_cache_note_templates","settings_cache_note_template[0]");
             setEvForDepPara("settings_add_cache_note_templates","settings_cache_note_template_name[1]");
@@ -19572,6 +19765,9 @@ var mainGC = function() {
             setValue("settings_download_pqs_file_name", removeNonFileNameSigns(document.getElementById('settings_download_pqs_file_name').value.replace(/‌/g, "").trim()));
             setValue("settings_download_pqs_file_name_founds", removeNonFileNameSigns(document.getElementById('settings_download_pqs_file_name_founds').value.replace(/‌/g, "").trim()));
             setValue("settings_default_calendar_link_for_event", document.getElementById('settings_default_calendar_link_for_event').value);
+            setValue("settings_line_height_first_block_db", document.getElementById('settings_line_height_first_block_db').value);
+            setValue("settings_line_height_other_blocks_db", document.getElementById('settings_line_height_other_blocks_db').value);
+            setValue("settings_line_height_gclh_blocks_db", document.getElementById('settings_line_height_gclh_blocks_db').value);
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -19819,6 +20015,9 @@ var mainGC = function() {
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
                 'settings_row_hide_new_dashboard',
+                'settings_line_height_first_block_adjust_db',
+                'settings_line_height_other_blocks_adjust_db',
+                'settings_line_height_gclh_blocks_adjust_db',
                 'settings_show_draft_indicator',
                 'settings_show_enhanced_map_popup',
                 'settings_show_enhanced_map_coords',
@@ -19929,7 +20128,6 @@ var mainGC = function() {
                 'settings_dashboard_hide_tb_activity',
                 'settings_dashboard_hide_right_sidebar',
                 'settings_dashboard_disable_all_features',
-                'settings_dashboard_build_menu_old_db_in_new_db',
                 'settings_button_sort_tbs_by_name_log_form',
                 'settings_larger_content_width_log_form',
                 'settings_less_space_log_lines_log_form',
@@ -20019,7 +20217,7 @@ var mainGC = function() {
 // 6.5.2 Config - Functions ($$cap) (Functions for GClh Config on the geocaching webpages.)
 ///////////////////////////////////
 // Highlight new parameters in GClh Config and set version info.
-    var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 2px 0px 2px 2px; margin-left: -2px;'>";
+    var d = "<div  class='gclh_new_para#' style='width: 100%; height: 100%; padding: 0px 0px 0px 2px; margin-left: -2px;'>";
     var s = "<span class='gclh_new_para#' style='float: right; padding-top: 25px; width: 100%; margin: -22px 2px 0px 0px;'></span>";
 //--> $$001
     newParameterOn1 = d.replace("#", "06");
