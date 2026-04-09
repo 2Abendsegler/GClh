@@ -2850,8 +2850,8 @@ var mainGC = function() {
                 if ((settings_individual_links[i].listing == 'All') ||
                     (settings_individual_links[i].listing == 'Caches' && isEventInCacheListing() == false) ||
                     (settings_individual_links[i].listing == 'Events' && isEventInCacheListing() == true)     ) {
-                    if ($('.cacheImage use')[0] && $('.cacheImage use').attr('xlink:href')) {
-                        var icon = $('.cacheImage use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
+                    if ($('.cache-icon use')[0] && $('.cache-icon use').attr('xlink:href')) {
+                        var icon = $('.cache-icon use').attr('xlink:href').match(/cache-types.svg#icon-(\d+)/);
                     }
                     if (icon && icon[1] && (settings_individual_links[i].cachetype == 'All' || settings_individual_links[i].cachetype == icon[1])) {
                         $(".CacheDetailNavigation:first > ul:first").append('<li><a class="individualLink working" style="background-image: url(' + externalLink + ')" href="' + convertForHTML(settings_individual_links[i].href) + '"' + (settings_individual_links[i].newtab ? ' target="_blank"' : '') + '>' + settings_individual_links[i].name + '</a></li>');
@@ -3016,7 +3016,7 @@ var mainGC = function() {
                 el.value = el.value.replace(/#GCCode#/ig, GCCode);
                 el.value = el.value.replace(/#GCLink#/ig, GCLink);
                 el.value = el.value.replace(/#GCNameLink#/ig, "[" + GCName + "](" + GCLink + ")");
-                el.value = el.value.replace(/#GCType#/ig, ($('.cacheImage')[0] ? $('.cacheImage').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
+                el.value = el.value.replace(/#GCType#/ig, ($('.cacheDetailsTitle a')[0] ? $('.cacheDetailsTitle a').attr('title').replace(/(\sgeocache|\scache|-cache|\shybrid)/i,'') : ''))
                 el.value = el.value.replace(/#Coords#/ig, determineListingCoords('CorrOrg'));
                 el.value = el.value.replace(/#Elevation#/ig, ($('#elevation-waypoint-0 span')[0] ? $('#elevation-waypoint-0 span')[0].innerHTML : ($('#elevation-waypoint-0')[0] ? $('#elevation-waypoint-0')[0].innerHTML : '')));
                 el.value = el.value.replace(/#Founds#/ig, ($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0] ? parseInt($('#ctl00_ContentBody_lblFindCounts img[src*="/2.png"]')[0].nextSibling.data.replace(/(,|\.)/g,'')) : 0));
