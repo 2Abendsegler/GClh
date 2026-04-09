@@ -54,9 +54,11 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Dashboard] Dashboard page has no GClh links and other stuff. [<a href="https://github.com/2Abendsegler/GClh/issues/3090" title="Issue 3090">3090</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Repair left sidebar with the GClh links and the GClh link blocks. Repair right sidebar with the unpublished hides block.<br>
+		Repair the GClh links in left sidebar.<br>
 		<img src="../images/0.18.3/Screen02.jpg" alt="Screen02.jpg"><br>
+		Repair the GClh link blocks in left sidebar.<br>
 		<img src="../images/0.18.3/Screen01.jpg" alt="Screen01.jpg"><br>
+		Repair the unpublished hides block in right sidebar.<br>
 		<img src="../images/0.18.3/Screen03.jpg" alt="Screen03.jpg"><br><br>
 	</li>
 	<li>
