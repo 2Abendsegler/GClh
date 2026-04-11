@@ -1,3 +1,4 @@
+<a href="#v0184" title="GClh II version 0.18.4 (11.04.2026)">v0.18.4</a> &nbsp;
 <a href="#v0183" title="GClh II version 0.18.3 (09.04.2026)">v0.18.3</a> &nbsp;
 <a href="#v0182" title="GClh II version 0.18.2 (31.03.2026)">v0.18.2</a> &nbsp;
 <a href="#v0181" title="GClh II version 0.18.1 (23.03.2026)">v0.18.1</a> &nbsp;
@@ -41,6 +42,19 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.4:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Global] User in header is not available. [<a href="https://github.com/2Abendsegler/GClh/issues/3099" title="Issue 3099">3099</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(11.04.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.3:
