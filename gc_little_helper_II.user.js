@@ -7285,7 +7285,6 @@ var mainGC = function() {
                 "  color:#00AA00;" +
                 "  text-decoration:none;} " +
                 "#invitation-button-root {display: flex;}" +
-                "#invitation-button-root button {padding: 8px; margin-left: 4px; line-height: 1.3; min-width: unset;}" +
                 ".AddFriendTextbox {" +
                 "  width:48%;}";
             appendCssStyle(myf);
@@ -7421,11 +7420,9 @@ var mainGC = function() {
             }
             function waitForInvitationButton(waitCount) {
                 if ($('#invitation-button-root button')[0] && $('#invitation-button-root button')[0].className) {
-                    var buttonClasses = $('#invitation-button-root button')[0].className;
-                    buttonClasses = buttonClasses.replace('disabled','');
-                    buttonClasses = buttonClasses + ' gclh_resetBtn';
+                    var buttonActivClasses = 'gclh_resetBtn' + ' border-1 border-solid rounded no-underline text-base font-input leading-[1.5] w-[auto] py-2.5 px-4 focus:outline-none focus:shadow-outline disabled:opacity-[.38] disabled:text-gray-600 disabled:cursor-not-allowed disabled:pointer-events-none bg-green-500 border-transparent text-white hover:bg-green-400 focus:bg-green-500 active:bg-green-700 disabled:bg-gray-200 h-[35px] ml-2 gap-1 inline-flex items-center cursor-pointer';
                     var button = document.createElement("button");
-                    button.setAttribute("class", buttonClasses);
+                    button.setAttribute("class", buttonActivClasses);
                     button.setAttribute("href", "javascript:void(0);");
                     button.addEventListener("click", gclh_reset_counter, false);
                     button.innerHTML = "Reset Counter";
