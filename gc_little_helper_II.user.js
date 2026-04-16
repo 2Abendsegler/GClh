@@ -9512,7 +9512,7 @@ var mainGC = function() {
         try {
             // Specification of anchors for own coding and styles:
             // - Linke Sidebar.
-            var leftSidebar = '#sidebar-left-root';
+            var leftSidebar = '#leftCol';
             // - First Block - Profile Summary.
             var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
 //->xxxx
