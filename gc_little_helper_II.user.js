@@ -1706,9 +1706,9 @@ var mainGC = function() {
                 tlc('Body found');
                 // Integrate old header.
                 $('body').prepend(header_old);
-                // Reduce z-index for old header on specific pages:
-                // My Lists: It must not be greater than 2000 because of the "more" pop-up.
-                if (is_page('lists')) appendCssStyle('gclh_nav .wrapper {z-index: 2000 !important;}');
+                // Set z-index for old header on specific pages to prevent header elements from disappearing behind page elements:
+                // Search Map and Treasures: Prevent menus from disappearing behind icons (with v0.18.5).
+                if (is_page('searchmap') || document.location.href.match(/\.com\/play\/treasure/)) appendCssStyle('gclh_nav .wrapper {z-index: 2500;}');
                 // Run header relevant features.
                 tlc('START setUserParameter');
                 setUserParameter();
