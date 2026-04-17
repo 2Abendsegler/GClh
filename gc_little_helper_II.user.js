@@ -9517,11 +9517,11 @@ var mainGC = function() {
     if (is_page('dashboard') && !settings_dashboard_disable_all_features) {
         try {
             // Specification of anchors for own coding and styles:
-            // 1. Linke Sidebar.
-            var leftSidebar = '#leftCol';
+            // Left column.
+            var leftCol = '#leftCol';
             // - First Block - Profile Summary.
             var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
-//->xxxx Dieser Bereich wird noch nicht verwendet. Geplant für Hide lines left sidebar.
+//->xxxx Dieser Bereich wird noch nicht verwendet. Geplant für Hide lines left column.
             // - Erster Bereich - Profile Cover Bild.
             var profileCoverImage = ' > div > div > a';
             // - Erster Bereich - Profile Avatar.
@@ -9546,8 +9546,10 @@ var mainGC = function() {
             var linkButtonIcon = ' button > svg';
             // - Box containing the links within a navigation block.
             var linkbox = ' > div > div > ul';
-            // 3. Rechte Sidebar.
-            var rightSidebar = '#rightCol';
+            // Center column.
+            var centerCol = '#centerCol';
+            // Right column.
+            var rightCol = '#rightCol';
 
             // Templates:
             // - Template for a new block.
@@ -9604,7 +9606,7 @@ var mainGC = function() {
                         css += '#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}';
 //<-xxxx
                         // Hide tips and instruction container in the right column.
-                        css += rightSidebar + ' a[href*="/sites/education/"] {display: none !important;}';
+                        css += rightCol + ' a[href*="/sites/education/"] {display: none !important;}';
                     }
                     // Hide areas.
                     css += '.isHide {display: none !important;}';
@@ -9613,14 +9615,14 @@ var mainGC = function() {
                     // Icon Search button.
                     css += '#search--inline path {stroke-width: 1.0; stroke: currentColor;}';
                     // VIPs, VUPs, links not in blue color.
-                    css += leftSidebar + allLinkblocks + ' .gclh a {color: inherit !important;}';
-                    // Hide right sidebar.
-                    css += '#gclh_right_sidebar_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
-                    css += '@media (max-width: 950px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -5px;}}';
-                    css += '@media (max-width: 600px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -1px;}}';
-                    css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
+                    css += leftCol + allLinkblocks + ' .gclh a {color: inherit !important;}';
+                    // Hide right column.
+                    css += '#gclh_right_column_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
+                    css += '@media (max-width: 950px) {#gclh_right_column_toggle {margin-left: 0px; margin-top: -5px;}}';
+                    css += '@media (max-width: 600px) {#gclh_right_column_toggle {margin-left: 0px; margin-top: -1px;}}';
+                    css += '#gclh_right_column_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
                     css += '.gclh_max_width_none {max-width: none !important;}';
-                    css += rightSidebar + ' {overflow: visible !important;}';
+                    css += rightCol + ' {overflow: visible !important;}';
                     // Show unpublished hides.
                     css += '#gclh_unpublishedCaches {margin-bottom: 0;}';
                     css += '#gclh_unpublishedCaches_body {min-height: unset; margin-top: 3px !important;}';
@@ -9636,11 +9638,11 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function cssDB',e);}
             }
 
-            // Add Config, Sync and Changelog Links in first block of left sidebar.
+            // Add Config, Sync and Changelog Links in first block of left column.
             function addGClhLinksDB() {
                 try {
                     if (!$('#gclh_config_lnk')[0]) {
-                        var userDataAreaDef = leftSidebar + sectionProfile + ' ul';
+                        var userDataAreaDef = leftCol + sectionProfile + ' ul';
                         if ($(userDataAreaDef)[0] && $(userDataAreaDef + ' li')[0]) {
                             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
                             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
@@ -9659,10 +9661,10 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addGClhLinksDB',e);}
             }
 
-            // Add links as quick access link in left sidebar.
+            // Add links as quick access link in left column.
             function addLinksAsQuickAccessLinksDB() {
                 try {
-                    var qlDef = leftSidebar + allLinkblocks + linkblock + ':nth-child(1)' + linkbox + ' li';
+                    var qlDef = leftCol + allLinkblocks + linkblock + ':nth-child(1)' + linkbox + ' li';
                     if ($(qlDef)[0]) {
                         var qlFirst = $(qlDef)[0];
                         if (qlFirst && $(qlFirst).find('a span')[0] && $(qlFirst).find('a span')[0].childNodes[1] && $(qlFirst).find('a span')[0].childNodes[1].data && $(qlFirst).find('svg')[0]) {
@@ -9703,12 +9705,12 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinksAsQuickAccessLinksDB',e);}
             }
 
-            // Add links as secondary links in left sidebar.
+            // Add links as secondary links in left column.
             function addLinksAsSecondaryLinksDB() {
                 try {
                     // Add link to Ignore List after link Lists.
                     if (settings_embedded_smartlink_ignorelist && !$('.gclh_ignorelistLink')[0]) {
-                        var lDef = leftSidebar + allLinkblocks + linkblock + ':not(:nth-child(1))' + linkbox + ' li a[href*="/plan/lists"]';
+                        var lDef = leftCol + allLinkblocks + linkblock + ':not(:nth-child(1))' + linkbox + ' li a[href*="/plan/lists"]';
                         if ($(lDef)[0]) {
                             var l = $(lDef).closest('li');
                             if (l && $(l).find('a span')[0] && $(l).find('a span')[0].childNodes[0] && $(l).find('a span')[0].childNodes[0].data) {
@@ -9723,7 +9725,7 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinksAsSecondaryLinksDB',e);}
             }
 
-            // Add link blocks in left sidebar.
+            // Add link blocks in left column.
             function addLinkBlocksDB() {
                 function showHideBoxDashboard() {
                     if (!$(this.nextElementSibling)[0]) return;
@@ -9737,7 +9739,7 @@ var mainGC = function() {
                     }
                 }
                 function buildNewLinkblockDB(ident, name, title) {
-                    var defblocks = leftSidebar + allLinkblocks;
+                    var defblocks = leftCol + allLinkblocks;
                     if ($(defblocks)[0]) {
                         var block = $(newBlock).append($(newButt)).append($(newLinkbox));
                         if ($(block)[0] && $(block).find(linkButton)[0] && $(block).find(linkButtonName)[0] && $(block).find(linkButtonIcon)[0] && $(block).find(linkbox)[0]) {
@@ -9857,55 +9859,55 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinkBlocksDB',e);}
             }
 
-            // Hide right sidebar.
-            function hideRightSidebarDB() {
+            // Hide right column.
+            function hideRightColumnDB() {
                 try {
-                    if ($(rightSidebar)[0] && !$('#gclh_right_sidebar_wrapper')[0]) {
+                    if ($(rightCol)[0] && !$('#gclh_right_column_wrapper')[0]) {
                         const $layoutFeed = $('#LayoutFeed');
-                        const $sidebar_right = $(rightSidebar);
-                        const $sidebar_right_max_width = $sidebar_right.css('max-width');
-                        $sidebar_right.css('width', $sidebar_right_max_width);
+                        const $column_right = $(rightCol);
+                        const $column_right_max_width = $column_right.css('max-width');
+                        $column_right.css('width', $column_right_max_width);
                         const $wrapper = $('<div>', {
-                            id: 'gclh_right_sidebar_wrapper',
+                            id: 'gclh_right_column_wrapper',
                             height: 'fit-content'
                         });
-                        $sidebar_right.wrap($wrapper);
+                        $column_right.wrap($wrapper);
 
                         const title_hide = 'Click to hide all sections on the right side';
                         const title_show = 'Click to show all sections on the right side';
                         const $btn = $('<button>', {
-                            id: 'gclh_right_sidebar_toggle',
+                            id: 'gclh_right_column_toggle',
                             type: 'button'
                         }).html(`
                             <svg>
                                 <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
                             </svg>`);
-                        $sidebar_right.before($btn);
+                        $column_right.before($btn);
 
                         const $svg = $btn.find('svg');
                         $btn.click(function() {
-                            if ($sidebar_right.is(':visible')) hideSidebar();
-                            else showSidebar();
+                            if ($column_right.is(':visible')) hideColumn();
+                            else showColumn();
                         });
 
-                        function hideSidebar() {
+                        function hideColumn() {
                             $layoutFeed.addClass('gclh_max_width_none');
-                            $sidebar_right.removeClass('flex');
-                            $sidebar_right.hide('fast');
+                            $column_right.removeClass('flex');
+                            $column_right.hide('fast');
                             $svg.css('transform', 'rotate(-90deg)');
                             $btn.attr('title', title_show);
                         }
-                        function showSidebar() {
-                            $sidebar_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
-                            $sidebar_right.addClass('flex');
+                        function showColumn() {
+                            $column_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
+                            $column_right.addClass('flex');
                             $svg.css('transform', 'rotate(90deg)');
                             $btn.attr('title', title_hide);
                         }
 
-                        if (settings_dashboard_hide_right_sidebar) hideSidebar();
-                        else showSidebar();
+                        if (settings_dashboard_hide_right_sidebar) hideColumn();
+                        else showColumn();
                     }
-                } catch(e) {gclh_error('function hideRightSidebarDB',e);}
+                } catch(e) {gclh_error('function hideRightColumnDB',e);}
             }
 
             // Show unpublished hides.
@@ -9913,7 +9915,7 @@ var mainGC = function() {
             function showUnpublishedHidesDB() {
                 try {
                     if (!settings_showUnpublishedHides || showUnpublishedHidesIsWorking) return;
-                    if ($(rightSidebar)[0]) {
+                    if ($(rightCol)[0]) {
                         showUnpublishedHidesIsWorking = true;
                         var unpublishedCaches = false;
                         var unpublishedEvents = false;
@@ -9926,7 +9928,7 @@ var mainGC = function() {
                         panel += '        </div>';
                         panel += '    </div>';
                         panel += '</section>';
-                        $(rightSidebar).append(panel);
+                        $(rightCol).append(panel);
                         var button = $(newButt);
                         $(button).find('h2')[0].innerHTML = 'Unpublished Hides';
                         $('#gclh_unpublishedCaches .panel-head').append(button);
@@ -10091,8 +10093,8 @@ var mainGC = function() {
             function setStylesToLinksDB() {
                 try {
                     if (settings_compact_layout_new_dashboard) {
-                        // Links in navigation blocks of the left sidebar.
-                        var lbs = $(leftSidebar + allLinkblocks + linkblock);
+                        // Links in navigation blocks of the left column.
+                        var lbs = $(leftCol + allLinkblocks + linkblock);
                         for (var s = 0; s < lbs.length; s++) {
                             // The distance between the button and the box should be determined by only one element, the ul element.
                             if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
@@ -10141,7 +10143,7 @@ var mainGC = function() {
             function saveUidOfOwnTrackablesDB() {
                 try {
                     if (uidOfOwnTrackablesSaved) return;
-                    var link = $(leftSidebar + allLinkblocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
+                    var link = $(leftCol + allLinkblocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
                     if (link) {
                         var uid = link.href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
                         if (uid && uid[1]) {
@@ -10161,7 +10163,7 @@ var mainGC = function() {
                 addLinksAsSecondaryLinksDB();
                 addLinkBlocksDB();
                 //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
-                //hideRightSidebarDB();
+                //hideRightColumnDB();
                 //<< Issue 3109
                 showUnpublishedHidesDB();
                 setStylesToLinksDB();
