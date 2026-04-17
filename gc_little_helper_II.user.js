@@ -9511,7 +9511,7 @@ var mainGC = function() {
     if (is_page('dashboard') && !settings_dashboard_disable_all_features) {
         try {
             // Specification of anchors for own coding and styles:
-            // - Linke Sidebar.
+            // 1. Linke Sidebar.
             var leftSidebar = '#leftCol';
             // - First Block - Profile Summary.
             var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
@@ -9540,6 +9540,8 @@ var mainGC = function() {
             var linkButtonIcon = ' button > svg';
             // - Box containing the links within a navigation block.
             var linkbox = ' > div > div > ul';
+            // 3. Rechte Sidebar.
+            var rightSidebar = '#rightCol';
 
             // Templates:
             // - Template for a new block.
@@ -9594,9 +9596,9 @@ var mainGC = function() {
                         css += '.event-list-item-map {margin-top: 5px !important;}';
                         css += '.event-list-item > div:not(.event-list-item-details) > div:not(.event-list-item-map) {padding-top: 8px !important; padding-bottom: 3px !important;}';
                         css += '#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}';
-                        // Hide tips and instruction container in the right column.
-                        css += '#sidebar-right-root a[href*="/sites/education/"] {display: none !important;}';
 //<-xxxx
+                        // Hide tips and instruction container in the right column.
+                        css += rightSidebar + ' a[href*="/sites/education/"] {display: none !important;}';
                     }
                     // Hide areas.
                     css += '.isHide {display: none !important;}';
@@ -9905,8 +9907,7 @@ var mainGC = function() {
             function showUnpublishedHidesDB() {
                 try {
                     if (!settings_showUnpublishedHides || showUnpublishedHidesIsWorking) return;
-                    if ($('#sidebar-right-root')[0] && $('.sidebar-right button')[0] && $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] &&
-                        $('.sidebar-right use[href*=#chevron-small--inline]').closest('button').find('h2')[0]) {
+                    if ($(rightSidebar)[0]) {
                         showUnpublishedHidesIsWorking = true;
                         var unpublishedCaches = false;
                         var unpublishedEvents = false;
@@ -9919,10 +9920,10 @@ var mainGC = function() {
                         panel += '        </div>';
                         panel += '    </div>';
                         panel += '</section>';
-                        $('#sidebar-right-root').after(panel);
-                        var button = $( $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] ).clone()[0];
+                        $(rightSidebar).append(panel);
+                        var button = $(newButt);
                         $(button).find('h2')[0].innerHTML = 'Unpublished Hides';
-                        $('#gclh_unpublishedCaches .panel-head')[0].append(button);
+                        $('#gclh_unpublishedCaches .panel-head').append(button);
                         if (!getValue('unpublishedCaches_visible', false)) {
                             $('#gclh_unpublishedCaches .panel-head').removeClass('isActive');
                             $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
