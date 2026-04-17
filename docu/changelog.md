@@ -65,7 +65,7 @@
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3108" title="Issue 3108">3108</a>.<br>
 	</li>
 	<li>
-		<strong>Remove:</strong> [Dashboard] Feature to hide right column disabled due to an error on the website. [<a href="https://github.com/2Abendsegler/GClh/issues/3113" title="Issue 3113">3113</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Remove:</strong> [Dashboard] Feature to hide right column disabled due to an error on the website. [<a href="https://github.com/2Abendsegler/GClh/issues/3113" title="Issue 3113">3113</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3113" title="Issue 3113">3113</a>.<br><br>
 	</li>
 	<li>
