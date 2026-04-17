@@ -9515,7 +9515,7 @@ var mainGC = function() {
             var leftSidebar = '#leftCol';
             // - First Block - Profile Summary.
             var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
-//->xxxx
+//->xxxx Dieser Bereich wird noch nicht verwendet. Geplant für Hide lines left sidebar.
             // - Erster Bereich - Profile Cover Bild.
             var profileCoverImage = ' > div > div > a';
             // - Erster Bereich - Profile Avatar.
@@ -9582,7 +9582,7 @@ var mainGC = function() {
                     var css = '';
                     // Compact layout.
                     if (settings_compact_layout_new_dashboard) {
-//->xxxx
+//->xxxx Dieser Bereich ist noch nicht geprüft und angepasst.
                         // In the middle and in the right column.
                         css += '.activity-item {padding: 5px 15px !important;}';
                         css += '.activity-tray {padding: 5px 40px !important;}';
@@ -9614,7 +9614,7 @@ var mainGC = function() {
                     css += '@media (max-width: 600px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -1px;}}';
                     css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
                     css += '.gclh_max_width_none {max-width: none !important;}';
-                    css += '.sidebar-right {overflow: visible !important;}';
+                    css += rightSidebar + ' {overflow: visible !important;}';
                     // Show unpublished hides.
                     css += '#gclh_unpublishedCaches {margin-bottom: 0;}';
                     css += '#gclh_unpublishedCaches_body {min-height: unset; margin-top: 3px !important;}';
@@ -10165,12 +10165,13 @@ var mainGC = function() {
     }
 
 // Improve dashboard, improve new dashboard (older block).
-    if (is_page("dashboard") && !settings_dashboard_disable_all_features) {
+//xxx deaktiviert. These features no longer work.
+    var run = false;
+    if (run && is_page("dashboard") && !settings_dashboard_disable_all_features) {
         try {
             var css = '';
             // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-//->xxxx
                 // User block in the first block in the left column.
                 css += ".user-bio {padding-bottom: 0px !important;}";
                 css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
@@ -10196,7 +10197,6 @@ var mainGC = function() {
                 css += "#sidebar-nav-root nav {overflow: unset;}";
                 // Hide rows which are marked for hide in left column.
                 css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none !important;}";
-//<-xxxx
             }
 
             // Improve left sidebar.
@@ -10234,7 +10234,6 @@ var mainGC = function() {
                     else setValue($(this).attr('name'), true);
                     setClickPointDB(this);
                 }
-//xxxx Do not run.
                 if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.bio-data')[0] && $('#user-bio-root')[0] && $('#quickLinks ul li')[0] && $('#sidebar-nav-root > nav > ul li')[0]) {
                     // Build button to display or hide the configuration to hide rows.
                     if ($('#user-bio-root')[0]) {
@@ -10469,7 +10468,6 @@ var mainGC = function() {
             if (settings_show_edit_links_for_logs || settings_dashboard_hide_tb_activity) {
                 startAF();
             }
-
             // Latest Activity: Do not cut avatar image.
             css += '.activity-details > div > a {flex-shrink: 0;}';
 
