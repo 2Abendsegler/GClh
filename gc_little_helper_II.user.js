@@ -9854,9 +9854,9 @@ var mainGC = function() {
             // Hide right sidebar.
             function hideRightSidebarDB() {
                 try {
-                    if ($('div.sidebar-right')[0] && !$('#gclh_right_sidebar_wrapper')[0]) {
+                    if ($(rightSidebar)[0] && !$('#gclh_right_sidebar_wrapper')[0]) {
                         const $layoutFeed = $('#LayoutFeed');
-                        const $sidebar_right = $('div.sidebar-right');
+                        const $sidebar_right = $(rightSidebar);
                         const $sidebar_right_max_width = $sidebar_right.css('max-width');
                         $sidebar_right.css('width', $sidebar_right_max_width);
                         const $wrapper = $('<div>', {
