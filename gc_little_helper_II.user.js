@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.4
+// @version      0.18.5
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -1706,9 +1706,9 @@ var mainGC = function() {
                 tlc('Body found');
                 // Integrate old header.
                 $('body').prepend(header_old);
-                // Reduce z-index for old header on specific pages:
-                // My Lists: It must not be greater than 2000 because of the "more" pop-up.
-                if (is_page('lists')) appendCssStyle('gclh_nav .wrapper {z-index: 2000 !important;}');
+                // Set z-index for old header on specific pages to prevent header elements from disappearing behind page elements:
+                // Search Map and Treasures: Prevent menus from disappearing behind icons (with v0.18.5).
+                if (is_page('searchmap') || document.location.href.match(/\.com\/play\/treasure/)) appendCssStyle('gclh_nav .wrapper {z-index: 2500;}');
                 // Run header relevant features.
                 tlc('START setUserParameter');
                 setUserParameter();
@@ -2019,10 +2019,16 @@ var mainGC = function() {
                             // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
                             css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth {width: 751px;}";
                             css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
+                            // Prevent that display of percentage of caches found in each country exceeds display area.
+                            css += "#StatsFlagLists {max-width: " + (new_width - 754) + "px;}";
+                            css += "#StatsFlagLists .Table td a {word-break: break-word;}";
                         } else {
                             // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
                             css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 790px;}";
                             css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
+                            // Prevent that display of percentage of caches found in each country exceeds display area.
+                            css += "#StatsFlagLists {max-width: " + (new_width - 715) + "px;}";
+                            css += "#StatsFlagLists .Table td a {word-break: break-word;}";
                         }
                         css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
                         css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth h3, #CacheTypesFound h3, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth h3, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth h3 {margin-left: 15px;}";
@@ -7285,7 +7291,6 @@ var mainGC = function() {
                 "  color:#00AA00;" +
                 "  text-decoration:none;} " +
                 "#invitation-button-root {display: flex;}" +
-                "#invitation-button-root button {padding: 8px; margin-left: 4px; line-height: 1.3; min-width: unset;}" +
                 ".AddFriendTextbox {" +
                 "  width:48%;}";
             appendCssStyle(myf);
@@ -7421,11 +7426,9 @@ var mainGC = function() {
             }
             function waitForInvitationButton(waitCount) {
                 if ($('#invitation-button-root button')[0] && $('#invitation-button-root button')[0].className) {
-                    var buttonClasses = $('#invitation-button-root button')[0].className;
-                    buttonClasses = buttonClasses.replace('disabled','');
-                    buttonClasses = buttonClasses + ' gclh_resetBtn';
+                    var buttonActivClasses = 'gclh_resetBtn' + ' border-1 border-solid rounded no-underline text-base font-input leading-[1.5] w-[auto] py-2.5 px-4 focus:outline-none focus:shadow-outline disabled:opacity-[.38] disabled:text-gray-600 disabled:cursor-not-allowed disabled:pointer-events-none bg-green-500 border-transparent text-white hover:bg-green-400 focus:bg-green-500 active:bg-green-700 disabled:bg-gray-200 h-[35px] ml-2 gap-1 inline-flex items-center cursor-pointer';
                     var button = document.createElement("button");
-                    button.setAttribute("class", buttonClasses);
+                    button.setAttribute("class", buttonActivClasses);
                     button.setAttribute("href", "javascript:void(0);");
                     button.addEventListener("click", gclh_reset_counter, false);
                     button.innerHTML = "Reset Counter";
@@ -9514,11 +9517,11 @@ var mainGC = function() {
     if (is_page('dashboard') && !settings_dashboard_disable_all_features) {
         try {
             // Specification of anchors for own coding and styles:
-            // - Linke Sidebar.
-            var leftSidebar = '#sidebar-left-root';
+            // Left column.
+            var leftCol = '#leftCol';
             // - First Block - Profile Summary.
             var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
-//->xxxx
+//->xxxx Dieser Bereich wird noch nicht verwendet. Geplant für Hide lines left column.
             // - Erster Bereich - Profile Cover Bild.
             var profileCoverImage = ' > div > div > a';
             // - Erster Bereich - Profile Avatar.
@@ -9543,6 +9546,10 @@ var mainGC = function() {
             var linkButtonIcon = ' button > svg';
             // - Box containing the links within a navigation block.
             var linkbox = ' > div > div > ul';
+            // Center column.
+            var centerCol = '#centerCol';
+            // Right column.
+            var rightCol = '#rightCol';
 
             // Templates:
             // - Template for a new block.
@@ -9583,7 +9590,7 @@ var mainGC = function() {
                     var css = '';
                     // Compact layout.
                     if (settings_compact_layout_new_dashboard) {
-//->xxxx
+//->xxxx Dieser Bereich ist noch nicht geprüft und angepasst.
                         // In the middle and in the right column.
                         css += '.activity-item {padding: 5px 15px !important;}';
                         css += '.activity-tray {padding: 5px 40px !important;}';
@@ -9597,9 +9604,9 @@ var mainGC = function() {
                         css += '.event-list-item-map {margin-top: 5px !important;}';
                         css += '.event-list-item > div:not(.event-list-item-details) > div:not(.event-list-item-map) {padding-top: 8px !important; padding-bottom: 3px !important;}';
                         css += '#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}';
-                        // Hide tips and instruction container in the right column.
-                        css += '#sidebar-right-root a[href*="/sites/education/"] {display: none !important;}';
 //<-xxxx
+                        // Hide tips and instruction container in the right column.
+                        css += rightCol + ' a[href*="/sites/education/"] {display: none !important;}';
                     }
                     // Hide areas.
                     css += '.isHide {display: none !important;}';
@@ -9608,14 +9615,14 @@ var mainGC = function() {
                     // Icon Search button.
                     css += '#search--inline path {stroke-width: 1.0; stroke: currentColor;}';
                     // VIPs, VUPs, links not in blue color.
-                    css += leftSidebar + allLinkblocks + ' .gclh a {color: inherit !important;}';
-                    // Hide right sidebar.
-                    css += '#gclh_right_sidebar_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
-                    css += '@media (max-width: 950px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -5px;}}';
-                    css += '@media (max-width: 600px) {#gclh_right_sidebar_toggle {margin-left: 0px; margin-top: -1px;}}';
-                    css += '#gclh_right_sidebar_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
+                    css += leftCol + allLinkblocks + ' .gclh a {color: inherit !important;}';
+                    // Hide right column.
+                    css += '#gclh_right_column_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
+                    css += '@media (max-width: 950px) {#gclh_right_column_toggle {margin-left: 0px; margin-top: -5px;}}';
+                    css += '@media (max-width: 600px) {#gclh_right_column_toggle {margin-left: 0px; margin-top: -1px;}}';
+                    css += '#gclh_right_column_toggle svg {height: 18px; width: 18px; pointer-events: none;}';
                     css += '.gclh_max_width_none {max-width: none !important;}';
-                    css += '.sidebar-right {overflow: visible !important;}';
+                    css += rightCol + ' {overflow: visible !important;}';
                     // Show unpublished hides.
                     css += '#gclh_unpublishedCaches {margin-bottom: 0;}';
                     css += '#gclh_unpublishedCaches_body {min-height: unset; margin-top: 3px !important;}';
@@ -9631,11 +9638,11 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function cssDB',e);}
             }
 
-            // Add Config, Sync and Changelog Links in first block of left sidebar.
+            // Add Config, Sync and Changelog Links in first block of left column.
             function addGClhLinksDB() {
                 try {
                     if (!$('#gclh_config_lnk')[0]) {
-                        var userDataAreaDef = leftSidebar + sectionProfile + ' ul';
+                        var userDataAreaDef = leftCol + sectionProfile + ' ul';
                         if ($(userDataAreaDef)[0] && $(userDataAreaDef + ' li')[0]) {
                             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
                             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
@@ -9654,10 +9661,10 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addGClhLinksDB',e);}
             }
 
-            // Add links as quick access link in left sidebar.
+            // Add links as quick access link in left column.
             function addLinksAsQuickAccessLinksDB() {
                 try {
-                    var qlDef = leftSidebar + allLinkblocks + linkblock + ':nth-child(1)' + linkbox + ' li';
+                    var qlDef = leftCol + allLinkblocks + linkblock + ':nth-child(1)' + linkbox + ' li';
                     if ($(qlDef)[0]) {
                         var qlFirst = $(qlDef)[0];
                         if (qlFirst && $(qlFirst).find('a span')[0] && $(qlFirst).find('a span')[0].childNodes[1] && $(qlFirst).find('a span')[0].childNodes[1].data && $(qlFirst).find('svg')[0]) {
@@ -9698,12 +9705,12 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinksAsQuickAccessLinksDB',e);}
             }
 
-            // Add links as secondary links in left sidebar.
+            // Add links as secondary links in left column.
             function addLinksAsSecondaryLinksDB() {
                 try {
                     // Add link to Ignore List after link Lists.
                     if (settings_embedded_smartlink_ignorelist && !$('.gclh_ignorelistLink')[0]) {
-                        var lDef = leftSidebar + allLinkblocks + linkblock + ':not(:nth-child(1))' + linkbox + ' li a[href*="/plan/lists"]';
+                        var lDef = leftCol + allLinkblocks + linkblock + ':not(:nth-child(1))' + linkbox + ' li a[href*="/plan/lists"]';
                         if ($(lDef)[0]) {
                             var l = $(lDef).closest('li');
                             if (l && $(l).find('a span')[0] && $(l).find('a span')[0].childNodes[0] && $(l).find('a span')[0].childNodes[0].data) {
@@ -9718,7 +9725,7 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinksAsSecondaryLinksDB',e);}
             }
 
-            // Add link blocks in left sidebar.
+            // Add link blocks in left column.
             function addLinkBlocksDB() {
                 function showHideBoxDashboard() {
                     if (!$(this.nextElementSibling)[0]) return;
@@ -9732,7 +9739,7 @@ var mainGC = function() {
                     }
                 }
                 function buildNewLinkblockDB(ident, name, title) {
-                    var defblocks = leftSidebar + allLinkblocks;
+                    var defblocks = leftCol + allLinkblocks;
                     if ($(defblocks)[0]) {
                         var block = $(newBlock).append($(newButt)).append($(newLinkbox));
                         if ($(block)[0] && $(block).find(linkButton)[0] && $(block).find(linkButtonName)[0] && $(block).find(linkButtonIcon)[0] && $(block).find(linkbox)[0]) {
@@ -9852,55 +9859,55 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinkBlocksDB',e);}
             }
 
-            // Hide right sidebar.
-            function hideRightSidebarDB() {
+            // Hide right column.
+            function hideRightColumnDB() {
                 try {
-                    if ($('div.sidebar-right')[0] && !$('#gclh_right_sidebar_wrapper')[0]) {
+                    if ($(rightCol)[0] && !$('#gclh_right_column_wrapper')[0]) {
                         const $layoutFeed = $('#LayoutFeed');
-                        const $sidebar_right = $('div.sidebar-right');
-                        const $sidebar_right_max_width = $sidebar_right.css('max-width');
-                        $sidebar_right.css('width', $sidebar_right_max_width);
+                        const $column_right = $(rightCol);
+                        const $column_right_max_width = $column_right.css('max-width');
+                        $column_right.css('width', $column_right_max_width);
                         const $wrapper = $('<div>', {
-                            id: 'gclh_right_sidebar_wrapper',
+                            id: 'gclh_right_column_wrapper',
                             height: 'fit-content'
                         });
-                        $sidebar_right.wrap($wrapper);
+                        $column_right.wrap($wrapper);
 
                         const title_hide = 'Click to hide all sections on the right side';
                         const title_show = 'Click to show all sections on the right side';
                         const $btn = $('<button>', {
-                            id: 'gclh_right_sidebar_toggle',
+                            id: 'gclh_right_column_toggle',
                             type: 'button'
                         }).html(`
                             <svg>
                                 <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
                             </svg>`);
-                        $sidebar_right.before($btn);
+                        $column_right.before($btn);
 
                         const $svg = $btn.find('svg');
                         $btn.click(function() {
-                            if ($sidebar_right.is(':visible')) hideSidebar();
-                            else showSidebar();
+                            if ($column_right.is(':visible')) hideColumn();
+                            else showColumn();
                         });
 
-                        function hideSidebar() {
+                        function hideColumn() {
                             $layoutFeed.addClass('gclh_max_width_none');
-                            $sidebar_right.removeClass('flex');
-                            $sidebar_right.hide('fast');
+                            $column_right.removeClass('flex');
+                            $column_right.hide('fast');
                             $svg.css('transform', 'rotate(-90deg)');
                             $btn.attr('title', title_show);
                         }
-                        function showSidebar() {
-                            $sidebar_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
-                            $sidebar_right.addClass('flex');
+                        function showColumn() {
+                            $column_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
+                            $column_right.addClass('flex');
                             $svg.css('transform', 'rotate(90deg)');
                             $btn.attr('title', title_hide);
                         }
 
-                        if (settings_dashboard_hide_right_sidebar) hideSidebar();
-                        else showSidebar();
+                        if (settings_dashboard_hide_right_sidebar) hideColumn();
+                        else showColumn();
                     }
-                } catch(e) {gclh_error('function hideRightSidebarDB',e);}
+                } catch(e) {gclh_error('function hideRightColumnDB',e);}
             }
 
             // Show unpublished hides.
@@ -9908,8 +9915,7 @@ var mainGC = function() {
             function showUnpublishedHidesDB() {
                 try {
                     if (!settings_showUnpublishedHides || showUnpublishedHidesIsWorking) return;
-                    if ($('#sidebar-right-root')[0] && $('.sidebar-right button')[0] && $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] &&
-                        $('.sidebar-right use[href*=#chevron-small--inline]').closest('button').find('h2')[0]) {
+                    if ($(rightCol)[0]) {
                         showUnpublishedHidesIsWorking = true;
                         var unpublishedCaches = false;
                         var unpublishedEvents = false;
@@ -9922,10 +9928,10 @@ var mainGC = function() {
                         panel += '        </div>';
                         panel += '    </div>';
                         panel += '</section>';
-                        $('#sidebar-right-root').after(panel);
-                        var button = $( $('.sidebar-right use[href*=#chevron-small--inline]').closest('button')[0] ).clone()[0];
+                        $(rightCol).append(panel);
+                        var button = $(newButt);
                         $(button).find('h2')[0].innerHTML = 'Unpublished Hides';
-                        $('#gclh_unpublishedCaches .panel-head')[0].append(button);
+                        $('#gclh_unpublishedCaches .panel-head').append(button);
                         if (!getValue('unpublishedCaches_visible', false)) {
                             $('#gclh_unpublishedCaches .panel-head').removeClass('isActive');
                             $('#gclh_unpublishedCaches .panel-body').fadeOut(0);
@@ -10087,8 +10093,8 @@ var mainGC = function() {
             function setStylesToLinksDB() {
                 try {
                     if (settings_compact_layout_new_dashboard) {
-                        // Links in navigation blocks of the left sidebar.
-                        var lbs = $(leftSidebar + allLinkblocks + linkblock);
+                        // Links in navigation blocks of the left column.
+                        var lbs = $(leftCol + allLinkblocks + linkblock);
                         for (var s = 0; s < lbs.length; s++) {
                             // The distance between the button and the box should be determined by only one element, the ul element.
                             if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
@@ -10137,7 +10143,7 @@ var mainGC = function() {
             function saveUidOfOwnTrackablesDB() {
                 try {
                     if (uidOfOwnTrackablesSaved) return;
-                    var link = $(leftSidebar + allLinkblocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
+                    var link = $(leftCol + allLinkblocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
                     if (link) {
                         var uid = link.href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
                         if (uid && uid[1]) {
@@ -10156,7 +10162,9 @@ var mainGC = function() {
                 addLinksAsQuickAccessLinksDB();
                 addLinksAsSecondaryLinksDB();
                 addLinkBlocksDB();
-                hideRightSidebarDB();
+                //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
+                //hideRightColumnDB();
+                //<< Issue 3109
                 showUnpublishedHidesDB();
                 setStylesToLinksDB();
                 saveUidOfOwnTrackablesDB();
@@ -10167,12 +10175,13 @@ var mainGC = function() {
     }
 
 // Improve dashboard, improve new dashboard (older block).
-    if (is_page("dashboard") && !settings_dashboard_disable_all_features) {
+//xxx deaktiviert. These features no longer work.
+    var run = false;
+    if (run && is_page("dashboard") && !settings_dashboard_disable_all_features) {
         try {
             var css = '';
             // Compact layout.
             if (settings_compact_layout_new_dashboard) {
-//->xxxx
                 // User block in the first block in the left column.
                 css += ".user-bio {padding-bottom: 0px !important;}";
                 css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
@@ -10198,7 +10207,6 @@ var mainGC = function() {
                 css += "#sidebar-nav-root nav {overflow: unset;}";
                 // Hide rows which are marked for hide in left column.
                 css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none !important;}";
-//<-xxxx
             }
 
             // Improve left sidebar.
@@ -10236,7 +10244,6 @@ var mainGC = function() {
                     else setValue($(this).attr('name'), true);
                     setClickPointDB(this);
                 }
-//xxxx Do not run.
                 if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.bio-data')[0] && $('#user-bio-root')[0] && $('#quickLinks ul li')[0] && $('#sidebar-nav-root > nav > ul li')[0]) {
                     // Build button to display or hide the configuration to hide rows.
                     if ($('#user-bio-root')[0]) {
@@ -10471,7 +10478,6 @@ var mainGC = function() {
             if (settings_show_edit_links_for_logs || settings_dashboard_hide_tb_activity) {
                 startAF();
             }
-
             // Latest Activity: Do not cut avatar image.
             css += '.activity-details > div > a {flex-shrink: 0;}';
 
@@ -10531,13 +10537,14 @@ var mainGC = function() {
                     $(user).after('<span class="gclh_name"></span>');
                     var target = $(user).closest('.finder-data').find('.gclh_name')[0];
                     $(user).appendTo(target);
+                    $(user).after('<span style="display: block;"></span>');
                     var item = $(user).closest('.activity-item');
                     var GCTBName = $(item).find('h3 a').html().trim();
                     var GCTBCode = $(item).find('.log-meta li')[0].childNodes[1].data;
                     global_name = GCTBName;
                     global_code = '('+GCTBCode+')';
                     global_link = '(https://coord.info/'+GCTBCode+')';
-                    gclh_build_vipvupmail(target, user.innerHTML);
+                    gclh_build_vipvupmail($(target).find('span')[0], user.innerHTML);
                 }
             }
 
@@ -10655,7 +10662,6 @@ var mainGC = function() {
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
             // Build VIP, Mail, Message icons.
             if (settings_show_vip_list) {
-                css += '.gclh_name a {margin-right: 5px;}';
                 css += '.log-item .gclh_name {margin-left: 5px; margin-top: -3px; padding-bottom: 2px; line-height: 1;}';
                 css += '.log-item .finder-username, .log-item .finder-type, .log-item .finder-find-count {line-height: 1.3 !important;}';
                 css += '.log-item .finder-username {display: block !important;}';
@@ -10663,7 +10669,7 @@ var mainGC = function() {
             }
             // Compact Layout
             if (settings_compact_layout_cod) {
-                css += '.owned-geocache-type-count, h1.page-header {margin: 0 !important}';
+                css += '.owned-geocache-count, .owned-geocache-type-count, h1.page-header {margin: 0 !important}';
                 css += '.widget {z-index: 1;}';
                 css += '.widget .widget-title a, .widget ul a, .widget > span {padding: 5px 10px !important;}';
                 css += '.widget ul {padding: 0 !important;}';
@@ -16315,7 +16321,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/4I6V/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/BUAD/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -17677,7 +17683,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "09.04.2026";
+            var thanksLastUpdate = "17.04.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -17697,7 +17703,7 @@ var mainGC = function() {
                 html += "  <option value='" + langus[i] + "' " + (settings_default_langu == langus[i] ? "selected='selected'" : "") + "> " + langus[i] + "</option>";
             }
             html += "</select>" + show_help("Here you can set the default language for the geocaching pages. In the case that apps change the language on the geocaching pages, the default language is automatically set again.") + "<br>";
-            html += "&nbsp;" + "Page width <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the page width on the geocaching pages. The default value on the geocaching pages is 950 pixels.") + "<br>";
+            html += "&nbsp;" + "Page width <input class='gclh_form' type='text' size='4' id='settings_new_width' value='" + getValue("settings_new_width", 1000) + "'> px" + show_help("With this option you can expand the page width on the geocaching pages. The default value on the geocaching pages is 950 pixels. This value should not be undercut.") + "<br>";
             html += checkboxy('settings_submit_log_button', 'Activate F2 key to finish certain operations') + show_help("With this option you are able to finish certain operations by pressing the F2 key or by pressing the Ctrl and s keys together, instead of scrolling to the button and pressing the button with the mouse.<br><br>Supported operations:<br>- Logging: Post new cache log<br>- Logging: Post changed cache log<br>- Logging: Post new trackable log<br>- Logging: Post changed trackable log<br>- Cache listing: Save Personal Cache Note<br>- Pocket Query: Save Pocket Query<br>- Search Map: Apply filters<br>- Search caches: Apply filters<br>- Hide a cache: Complete process<br>- Create a bookmark for a cache (old bookmark process)") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Header Layout</b>" + "</div>";
@@ -18191,9 +18197,11 @@ var mainGC = function() {
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
-            html += newParameterOn1;
-            html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide the sidebar on the far right (“Events nearby” etc.) by default') + show_help('This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
-            html += newParameterVersionSetzen('0.17') + newParameterOff;
+            //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
+            //html += newParameterOn1;
+            //html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide the sidebar on the far right (“Events nearby” etc.) by default') + show_help('This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
+            //html += newParameterVersionSetzen('0.17') + newParameterOff;
+            //<< Issue 3109
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort' style='width: 200px;'>";
@@ -21353,7 +21361,7 @@ var mainGC = function() {
                 var element = document.createElement('a');
                 var [year, month, day] = determineCurrentDate();
                 element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sync_getConfigData()));
-                element.setAttribute('download', year + "_" + month + "_" + day + "_" + "config.txt");
+                element.setAttribute('download', "Config " + year + "." + month + "." + day + ".txt");
                 element.style.display = 'none';
                 document.body.appendChild(element);
                 element.click();
