@@ -21361,7 +21361,7 @@ var mainGC = function() {
                 var element = document.createElement('a');
                 var [year, month, day] = determineCurrentDate();
                 element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(sync_getConfigData()));
-                element.setAttribute('download', year + "_" + month + "_" + day + "_" + "config.txt");
+                element.setAttribute('download', "Config " + year + "." + month + "." + day + ".txt");
                 element.style.display = 'none';
                 document.body.appendChild(element);
                 element.click();
