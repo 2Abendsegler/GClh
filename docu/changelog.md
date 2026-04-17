@@ -86,7 +86,7 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Sync] Change name for sync download of config data. [<a href="https://github.com/2Abendsegler/GClh/issues/3115" title="Issue 3115">3115</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3115" title="Issue 3115">3115</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3115" title="Issue 3115">3115</a>.<br>
 	</li>
 </ul>
 <br>
