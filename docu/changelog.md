@@ -1,3 +1,4 @@
+<a href="#v0185" title="GClh II version 0.18.5 (17.04.2026)">v0.18.5</a> &nbsp;
 <a href="#v0184" title="GClh II version 0.18.4 (11.04.2026)">v0.18.4</a> &nbsp;
 <a href="#v0183" title="GClh II version 0.18.3 (09.04.2026)">v0.18.3</a> &nbsp;
 <a href="#v0182" title="GClh II version 0.18.2 (31.03.2026)">v0.18.2</a> &nbsp;
@@ -42,6 +43,56 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.5:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Repair left sidebar after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3105" title="Issue 3105">3105</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3105" title="Issue 3105">3105</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Repair block Unpublished Hides after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3106" title="Issue 3106">3106</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3106" title="Issue 3106">3106</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Repair feature to hide right sidebar after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3107" title="Issue 3107">3107</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3107" title="Issue 3107">3107</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Prevent missing borders after redisplaying right sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3108" title="Issue 3108">3108</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3108" title="Issue 3108">3108</a>.<br>
+	</li>
+	<li>
+		<strong>Remove:</strong> [Dashboard] Feature to hide right column disabled due to an error on the website. [<a href="https://github.com/2Abendsegler/GClh/issues/3113" title="Issue 3113">3113</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3113" title="Issue 3113">3113</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Friends] Reset button doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3103" title="Issue 3103">3103</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3103" title="Issue 3103">3103</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Owner Dashboard] Align VIP, VUP, Mail icons and cache count. [<a href="https://github.com/2Abendsegler/GClh/issues/3112" title="Issue 3112">3112</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3112" title="Issue 3112">3112</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Display of percentage of caches found in each country exceeds display area. [<a href="https://github.com/2Abendsegler/GClh/issues/3111" title="Issue 3111">3111</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3111" title="Issue 3111">3111</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] Prevent header elements from disappearing behind page elements and vice versa. [<a href="https://github.com/2Abendsegler/GClh/issues/3110" title="Issue 3110">3110</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3110" title="Issue 3110">3110</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Sync] Change name for sync download of config data. [<a href="https://github.com/2Abendsegler/GClh/issues/3115" title="Issue 3115">3115</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3115" title="Issue 3115">3115</a>.<br><br>
+	</li>
+</ul>
+<br>
+(17.04.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.4:
