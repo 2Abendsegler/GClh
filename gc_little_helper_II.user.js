@@ -9543,7 +9543,6 @@ var mainGC = function() {
             // 3. Rechte Sidebar.
             var rightSidebar = '#rightCol';
 
-
             // Templates:
             // - Template for a new block.
             var newBlock = '<section class="w-full flex flex-col "></section>';
