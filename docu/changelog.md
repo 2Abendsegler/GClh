@@ -49,7 +49,7 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>Fix:</strong> [Dashboard] Repair left sidebar after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3105" title="Issue 3105">3105</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Dashboard] Repair left column after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3105" title="Issue 3105">3105</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3105" title="Issue 3105">3105</a>.<br><br>
 	</li>
 	<li>
@@ -57,11 +57,11 @@
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3106" title="Issue 3106">3106</a>.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Dashboard] Repair feature to hide right sidebar after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3107" title="Issue 3107">3107</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Dashboard] Repair feature to hide right column after latest website release. [<a href="https://github.com/2Abendsegler/GClh/issues/3107" title="Issue 3107">3107</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3107" title="Issue 3107">3107</a>.<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Dashboard] Prevent missing borders after redisplaying right sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3108" title="Issue 3108">3108</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Dashboard] Prevent missing borders after redisplaying right column. [<a href="https://github.com/2Abendsegler/GClh/issues/3108" title="Issue 3108">3108</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3108" title="Issue 3108">3108</a>.<br>
 	</li>
 	<li>
