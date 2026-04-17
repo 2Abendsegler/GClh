@@ -10160,7 +10160,9 @@ var mainGC = function() {
                 addLinksAsQuickAccessLinksDB();
                 addLinksAsSecondaryLinksDB();
                 addLinkBlocksDB();
-                hideRightSidebarDB();
+                //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
+                //hideRightSidebarDB();
+                //<< Issue 3109
                 showUnpublishedHidesDB();
                 setStylesToLinksDB();
                 saveUidOfOwnTrackablesDB();
@@ -18193,9 +18195,11 @@ var mainGC = function() {
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
-            html += newParameterOn1;
-            html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide the sidebar on the far right (“Events nearby” etc.) by default') + show_help('This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
-            html += newParameterVersionSetzen('0.17') + newParameterOff;
+            //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
+            //html += newParameterOn1;
+            //html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide the sidebar on the far right (“Events nearby” etc.) by default') + show_help('This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
+            //html += newParameterVersionSetzen('0.17') + newParameterOff;
+            //<< Issue 3109
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort' style='width: 200px;'>";
