@@ -10533,13 +10533,14 @@ var mainGC = function() {
                     $(user).after('<span class="gclh_name"></span>');
                     var target = $(user).closest('.finder-data').find('.gclh_name')[0];
                     $(user).appendTo(target);
+                    $(user).after('<span style="display: block;"></span>');
                     var item = $(user).closest('.activity-item');
                     var GCTBName = $(item).find('h3 a').html().trim();
                     var GCTBCode = $(item).find('.log-meta li')[0].childNodes[1].data;
                     global_name = GCTBName;
                     global_code = '('+GCTBCode+')';
                     global_link = '(https://coord.info/'+GCTBCode+')';
-                    gclh_build_vipvupmail(target, user.innerHTML);
+                    gclh_build_vipvupmail($(target).find('span')[0], user.innerHTML);
                 }
             }
 
@@ -10657,7 +10658,6 @@ var mainGC = function() {
             css += '.username a:hover {color:#02874d; text-decoration:underline;}';
             // Build VIP, Mail, Message icons.
             if (settings_show_vip_list) {
-                css += '.gclh_name a {margin-right: 5px;}';
                 css += '.log-item .gclh_name {margin-left: 5px; margin-top: -3px; padding-bottom: 2px; line-height: 1;}';
                 css += '.log-item .finder-username, .log-item .finder-type, .log-item .finder-find-count {line-height: 1.3 !important;}';
                 css += '.log-item .finder-username {display: block !important;}';
@@ -10665,7 +10665,7 @@ var mainGC = function() {
             }
             // Compact Layout
             if (settings_compact_layout_cod) {
-                css += '.owned-geocache-type-count, h1.page-header {margin: 0 !important}';
+                css += '.owned-geocache-count, .owned-geocache-type-count, h1.page-header {margin: 0 !important}';
                 css += '.widget {z-index: 1;}';
                 css += '.widget .widget-title a, .widget ul a, .widget > span {padding: 5px 10px !important;}';
                 css += '.widget ul {padding: 0 !important;}';
