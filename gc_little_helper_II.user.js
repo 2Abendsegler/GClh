@@ -9710,7 +9710,7 @@ var mainGC = function() {
                 try {
                     // Add link to Ignore List after link Lists.
                     if (settings_embedded_smartlink_ignorelist && !$('.gclh_ignorelistLink')[0]) {
-                        var lDef = leftCol + allLinkblocks + linkblock + ':not(:nth-child(1))' + linkbox + ' li a[href*="/plan/lists"]';
+                        var lDef = leftCol + allLinkblocks + linkblock + ':not(:nth-child(1)):not(.gclh)' + linkbox + ' li a[href*="/plan/lists"]';
                         if ($(lDef)[0]) {
                             var l = $(lDef).closest('li');
                             if (l && $(l).find('a span')[0] && $(l).find('a span')[0].childNodes[0] && $(l).find('a span')[0].childNodes[0].data) {
