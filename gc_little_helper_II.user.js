@@ -636,6 +636,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
+    c.settings_hide_heading_and_move_settings_button_db = getValue("settings_hide_heading_and_move_settings_button_db", true);
     c.settings_row_hide_new_dashboard = getValue("settings_row_hide_new_dashboard", true);
     c.settings_line_height_first_block_adjust_db = getValue("settings_line_height_first_block_adjust_db", true);
     c.settings_line_height_first_block_db = getValue("settings_line_height_first_block_db", 28);
@@ -9517,10 +9518,30 @@ var mainGC = function() {
     if (is_page('dashboard') && !settings_dashboard_disable_all_features) {
         try {
             // Specification of anchors for own coding and styles:
+            // Heading and settings button.
+            var heading = '#header-root';
+            // - Heading title.
+            var headingTitle = ' h1';
+            // - Button containing the toggle icon and the name for the settings button.
+            var headingButton = ' button';
+            // - Button icon containing the toggle icon for the settings button.
+            var headingButtonIcon = ' button > svg';
+            // - Button label containing the label for the settings button.
+            var headingButtonLabel = ' button > span';
+            // - Popup of the settings button.
+            var headingButtonPopup = '#dashboard-settings-popover';
             // Left column.
             var leftCol = '#leftCol';
             // - First Block - Profile Summary.
-            var sectionProfile = ' section:has(a[href*="account/settings/profile"])';
+            var profileBlock = ' section:first';
+            // - Button containing the name and the toggle icon for the button.
+            var profileButton = ' button';
+            // - Button name containing the name for the button.
+            var profileButtonName = ' button > h2';
+            // - Button icon containing the toggle icon for the button.
+            var profileButtonIcon = ' button > svg';
+            // - Box containing the entries.
+            var profileBox = ' > div > div > div';
 //->xxxx Dieser Bereich wird noch nicht verwendet. Geplant für Hide lines left column.
             // - Erster Bereich - Profile Cover Bild.
             var profileCoverImage = ' > div > div > a';
@@ -9535,17 +9556,17 @@ var mainGC = function() {
             var viewProfileButton = ' > div > div > div:nth-child(2) > a';
 //<-xxxx
             // - All navigation blocks such as Quicklinks, Geocaches ... .
-            var allLinkblocks = ' nav';
+            var allLinkBlocks = ' nav';
             // - One navigation blocks such as Quicklinks, Geocaches ... .
-            var linkblock = ' section';
+            var linkBlock = ' section';
             // - Button containing the name and the icon toggle for the button.
-            var linkButton = ' button';
+            var linkButton = profileButton;
             // - Button name containing the name for the button.
-            var linkButtonName = ' button > h2';
+            var linkButtonName = profileButtonName;
             // - Button icon containing the toggle icon for the button.
-            var linkButtonIcon = ' button > svg';
+            var linkButtonIcon = profileButtonIcon;
             // - Box containing the links within a navigation block.
-            var linkbox = ' > div > div > ul';
+            var linkBox = ' > div > div > ul';
             // Center column.
             var centerCol = '#centerCol';
             // Right column.
@@ -9555,20 +9576,20 @@ var mainGC = function() {
             // - Template for a new block.
             var newBlock = '<section class="w-full flex flex-col "></section>';
             // - Template for a new button as part of a link block or others.
-            var newButt = '';
-            newButt += '<button class="flex w-full items-center justify-between gap-3 bg-white rounded-lg text-base/5 font-bold text-left cursor-pointer border-1 border-solid border-white hover:border-gray-100 focus:shadow-outline py-1 px-2" type="button">';
-            newButt += '  <h2 class="min-w-0 m-0 text-base/5"></h2>';
-            newButt += '  <svg class="size-5 shrink-0 text-gray-600 transition-transform duration-300 ease-in-out rotate-180">';
-            newButt += '    <use href="#chevron-small--inline"></use>';
-            newButt += '  </svg>';
-            newButt += '</button>';
+            var newButton = '';
+            newButton += '<button class="flex w-full items-center justify-between gap-3 bg-white rounded-lg text-base/5 font-bold text-left cursor-pointer border-1 border-solid border-white hover:border-gray-100 focus:shadow-outline py-1 px-2" type="button">';
+            newButton += '  <h2 class="min-w-0 m-0 text-base/5"></h2>';
+            newButton += '  <svg class="size-5 shrink-0 text-gray-600 transition-transform duration-300 ease-in-out rotate-180">';
+            newButton += '    <use href="#chevron-small--inline"></use>';
+            newButton += '  </svg>';
+            newButton += '</button>';
             // - Template for a new link box for links as part of a link block.
-            var newLinkbox = '';
-            newLinkbox += '<div>';
-            newLinkbox += '  <div class="flex flex-col gap-1 mt-1 ">';
-            newLinkbox += '    <ul class="p-0 my-1"></ul>';
-            newLinkbox += '  </div>';
-            newLinkbox += '</div>';
+            var newLinkBox = '';
+            newLinkBox += '<div>';
+            newLinkBox += '  <div class="flex flex-col gap-1 mt-1 ">';
+            newLinkBox += '    <ul class="p-0 my-1"></ul>';
+            newLinkBox += '  </div>';
+            newLinkBox += '</div>';
             // - Template for a new link in a link box.
             var newLink = '';
             newLink += '<li class="leading-5">';
@@ -9590,6 +9611,10 @@ var mainGC = function() {
                     var css = '';
                     // Compact layout.
                     if (settings_compact_layout_new_dashboard) {
+                        // Pop-up of settings button from page heading.
+                        if (settings_hide_heading_and_move_settings_button_db) {
+                            css += headingButtonPopup + ' {visibility: hidden !important;}';
+                        }
 //->xxxx Dieser Bereich ist noch nicht geprüft und angepasst.
                         // In the middle and in the right column.
                         css += '.activity-item {padding: 5px 15px !important;}';
@@ -9615,7 +9640,7 @@ var mainGC = function() {
                     // Icon Search button.
                     css += '#search--inline path {stroke-width: 1.0; stroke: currentColor;}';
                     // VIPs, VUPs, links not in blue color.
-                    css += leftCol + allLinkblocks + ' .gclh a {color: inherit !important;}';
+                    css += leftCol + allLinkBlocks + ' .gclh a {color: inherit !important;}';
                     // Hide right column.
                     css += '#gclh_right_column_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
                     css += '@media (max-width: 950px) {#gclh_right_column_toggle {margin-left: 0px; margin-top: -5px;}}';
@@ -9638,11 +9663,51 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function cssDB',e);}
             }
 
+            // Hide page heading and move settings button into profile summary button.
+            function hideHeadingMoveSettingsButtonDB() {
+                try {
+                    if (settings_compact_layout_new_dashboard && settings_hide_heading_and_move_settings_button_db &&
+                        $(heading + headingTitle)[0] && $(heading + headingButton)[0] && $(heading + headingButtonLabel)[0] &&
+                        $(leftCol + profileBlock + profileButtonName)[0] && $(leftCol + profileBlock)[0].offsetTop) {
+                        // Hide page heading.
+                        $(heading + headingTitle)[0].parentNode.style.setProperty('margin', '0px', 'important');
+                        $(heading + headingTitle)[0].style.setProperty('display', 'none', 'important');
+                        // Hide the label of the settings button.
+                        $(heading + headingButtonLabel)[0].style.setProperty('display', 'none', 'important');
+                        // Create space in the profile summary button for the settings button.
+                        $(leftCol + profileBlock + profileButtonName)[0].style.setProperty('margin-left', '34px', 'important');
+                        // Display the settings button in the profile summary button.
+                        // (Problem: If no changes are made to the DOM, no observer is triggered. If only the screen size changes and only the line
+                        // containing the Quick links wraps, the settings button is in the wrong place.)
+                        $(heading + headingButton)[0].style.setProperty('position', 'absolute', 'important');
+                        $(heading + headingButton)[0].style.setProperty('border-style', 'none', 'important');
+                        $(heading + headingButton)[0].style.setProperty('padding', '4px 8px', 'important');
+                        $(heading + headingButton)[0].style.setProperty('margin', '3px', 'important');
+                        $(heading + headingButton)[0].style.setProperty('top', $(leftCol + profileBlock)[0].offsetTop + 'px', 'important');
+                        // Align the settings button pop-up.
+                        if ($(headingButtonPopup)[0]) {
+                            // To prevent an initial flickering of the pop-up until the "transform" is complete.
+                            function alignSettingsPopupDB(waitCount) {
+                                if ($(headingButtonPopup)[0] && $(leftCol + profileBlock)[0].offsetTop) {
+                                    var y = $(leftCol + profileBlock)[0].offsetTop + 35;
+                                    $(headingButtonPopup)[0].style.setProperty('transform', 'translate(16px, ' + y + 'px)', 'important');
+                                    setTimeout(function() {
+                                        if ($(headingButtonPopup)[0]) $(headingButtonPopup)[0].style.setProperty('visibility', 'visible', 'important');
+                                    }, 10);
+                                    waitCount++; if (waitCount <= 200) setTimeout(function(){alignSettingsPopupDB(waitCount);}, 10);
+                                }
+                            }
+                            alignSettingsPopupDB(0);
+                        }
+                    }
+                } catch(e) {gclh_error('function hideHeadingMoveSettingsButtonDB',e);}
+            }
+
             // Add Config, Sync and Changelog Links in first block of left column.
             function addGClhLinksDB() {
                 try {
                     if (!$('#gclh_config_lnk')[0]) {
-                        var userDataAreaDef = leftCol + sectionProfile + ' ul';
+                        var userDataAreaDef = leftCol + profileBlock + ' ul';
                         if ($(userDataAreaDef)[0] && $(userDataAreaDef + ' li')[0]) {
                             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
                             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
@@ -9664,7 +9729,7 @@ var mainGC = function() {
             // Add links as quick access link in left column.
             function addLinksAsQuickAccessLinksDB() {
                 try {
-                    var qlDef = leftCol + allLinkblocks + linkblock + ':nth-child(1)' + linkbox + ' li';
+                    var qlDef = leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' li';
                     if ($(qlDef)[0]) {
                         var qlFirst = $(qlDef)[0];
                         if (qlFirst && $(qlFirst).find('a span')[0] && $(qlFirst).find('a span')[0].childNodes[1] && $(qlFirst).find('a span')[0].childNodes[1].data && $(qlFirst).find('svg')[0]) {
@@ -9710,7 +9775,7 @@ var mainGC = function() {
                 try {
                     // Add link to Ignore List after link Lists.
                     if (settings_embedded_smartlink_ignorelist && !$('.gclh_ignorelistLink')[0]) {
-                        var lDef = leftCol + allLinkblocks + linkblock + ':not(:nth-child(1)):not(.gclh)' + linkbox + ' li a[href*="/plan/lists"]';
+                        var lDef = leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' li a[href*="/plan/lists"]';
                         if ($(lDef)[0]) {
                             var l = $(lDef).closest('li');
                             if (l && $(l).find('a span')[0] && $(l).find('a span')[0].childNodes[0] && $(l).find('a span')[0].childNodes[0].data) {
@@ -9739,10 +9804,10 @@ var mainGC = function() {
                     }
                 }
                 function buildNewLinkblockDB(ident, name, title) {
-                    var defblocks = leftCol + allLinkblocks;
+                    var defblocks = leftCol + allLinkBlocks;
                     if ($(defblocks)[0]) {
-                        var block = $(newBlock).append($(newButt)).append($(newLinkbox));
-                        if ($(block)[0] && $(block).find(linkButton)[0] && $(block).find(linkButtonName)[0] && $(block).find(linkButtonIcon)[0] && $(block).find(linkbox)[0]) {
+                        var block = $(newBlock).append($(newButton)).append($(newLinkBox));
+                        if ($(block)[0] && $(block).find(linkButton)[0] && $(block).find(linkButtonName)[0] && $(block).find(linkButtonIcon)[0] && $(block).find(linkBox)[0]) {
                             $(block).addClass('gclh gclh_' + ident + 'Block');
                             $(block).find(linkButton).attr('name', ident);
                             $(block).find(linkButtonIcon).attr('class', $(block).find(linkButtonIcon).attr('class').replace(' rotate-180', '').replace('rotate-180', ''));
@@ -9752,9 +9817,9 @@ var mainGC = function() {
                             if (title) $(block).find(linkButton)[0].setAttribute("title", title);
                             if (name) $(block).find(linkButtonName)[0].innerHTML = name;
                             $(block).find(linkButton)[0].addEventListener('click', showHideBoxDashboard, false);
-                            $(block).find(linkbox).addClass('gclh_' + ident + 'Box');
+                            $(block).find(linkBox).addClass('gclh_' + ident + 'Box');
                             if (!getValue("show_box_dashboard_" + ident, true)) {
-                                $(block).find(linkbox).addClass('isHide');
+                                $(block).find(linkBox).addClass('isHide');
                             }
                             if (!$('.gclh_' + ident + 'Block')[0]) $(defblocks).append(block);
                         }
@@ -9859,6 +9924,54 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function addLinkBlocksDB',e);}
             }
 
+            // Set styles direct to elements in left column.
+            function setStylesToleftColumnDB() {
+                try {
+                    if (settings_compact_layout_new_dashboard) {
+                        // Profile summary block of the left column.
+                        var box = $(leftCol + profileBlock + profileBox);
+                        if ($(box)[0]) {
+                            // The distance between the button and the box should be determined by only one element, the last div element.
+                            $(box)[0].parentNode.style.setProperty('margin', '0px', 'important');
+                        }
+                        // Link blocks of the left column.
+                        var lbs = $(leftCol + allLinkBlocks + linkBlock);
+                        for (var s = 0; s < lbs.length; s++) {
+                            // The distance between the button and the box should be determined by only one element, the ul element.
+                            if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
+                            if ($(lbs[s]).find('> div > div')[0]) $(lbs[s]).find('> div > div')[0].style.setProperty('margin-top', '0px', 'important');
+                            var uls = $(lbs[s]).find(linkBox);
+                            for (var i = 0; i < uls.length; i++) {
+                                var lis = $(uls[i]).children();
+                                for (var j = 0; j < lis.length; j++) {
+                                    // Adjust height of the link lines.
+                                    var p = false;
+                                    if (s == 0 && settings_line_height_first_block_adjust_db) var p = parseInt(settings_line_height_first_block_db);
+                                    if (s >= 1 && !$(lbs[s]).hasClass('gclh') && settings_line_height_other_blocks_adjust_db) var p = parseInt(settings_line_height_other_blocks_db);
+                                    if (s >= 1 && $(lbs[s]).hasClass('gclh') && settings_line_height_gclh_blocks_adjust_db) var p = parseInt(settings_line_height_gclh_blocks_db);
+                                    if (p) {
+                                        p = (p-20)/2;
+                                        $(lis[j])[0].style.setProperty('line-height', '16px', 'important');
+                                        if ($(lis[j]).find('> div a')[0]) {
+                                            $(lis[j]).find('> div')[0].style.setProperty('padding-top', p + 'px', 'important');
+                                            $(lis[j]).find('> div')[0].style.setProperty('padding-bottom', p + 'px', 'important');
+                                        }
+                                    }
+                                    // Reduce the top spacing of sublists in the links (information about favoriten, information about trackable inventory).
+                                    if ($(lis[j]).find('ul:first')[0]) {
+                                        $(lis[j]).find('ul:first')[0].style.setProperty('padding-top', '0px', 'important');
+                                    }
+                                    // Align your inventory icon.
+                                    if ($(lis[j]).find('button[aria-controls="trackableInventoryItems"] svg')[0]) {
+                                        $(lis[j]).find('button[aria-controls="trackableInventoryItems"] svg')[0].style.setProperty('margin-right', '11px', 'important');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch(e) {gclh_error('function setStylesToleftColumnDB',e);}
+            }
+
             // Hide right column.
             function hideRightColumnDB() {
                 try {
@@ -9929,7 +10042,7 @@ var mainGC = function() {
                         panel += '    </div>';
                         panel += '</section>';
                         $(rightCol).append(panel);
-                        var button = $(newButt);
+                        var button = $(newButton);
                         $(button).find('h2')[0].innerHTML = 'Unpublished Hides';
                         $('#gclh_unpublishedCaches .panel-head').append(button);
                         if (!getValue('unpublishedCaches_visible', false)) {
@@ -10089,61 +10202,11 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function showUnpublishedHidesDB',e);}
             }
 
-            // Set styles direct to elements.
-            function setStylesToLinksDB() {
-                try {
-                    if (settings_compact_layout_new_dashboard) {
-                        // Links in navigation blocks of the left column.
-                        var lbs = $(leftCol + allLinkblocks + linkblock);
-                        for (var s = 0; s < lbs.length; s++) {
-                            // The distance between the button and the box should be determined by only one element, the ul element.
-                            if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
-                            if ($(lbs[s]).find('> div > div')[0]) $(lbs[s]).find('> div > div')[0].style.setProperty('margin-top', '0px', 'important');
-                            var uls = $(lbs[s]).find(linkbox);
-                            for (var i = 0; i < uls.length; i++) {
-                                var lis = $(uls[i]).children();
-                                for (var j = 0; j < lis.length; j++) {
-                                    // Adjust height of the link lines.
-                                    var p = false;
-                                    if (s == 0 && settings_line_height_first_block_adjust_db) var p = parseInt(settings_line_height_first_block_db);
-                                    if (s >= 1 && !$(lbs[s]).hasClass('gclh') && settings_line_height_other_blocks_adjust_db) var p = parseInt(settings_line_height_other_blocks_db);
-                                    if (s >= 1 && $(lbs[s]).hasClass('gclh') && settings_line_height_gclh_blocks_adjust_db) var p = parseInt(settings_line_height_gclh_blocks_db);
-                                    if (p) {
-                                        p = (p-20)/2;
-                                        if (!$(lis[j]).hasClass(done)) {
-                                            $(lis[j]).addClass(done);
-                                            $(lis[j])[0].style.setProperty('line-height', '16px', 'important');
-                                        }
-                                        if ($(lis[j]).find('> div a')[0]) {
-                                            if (!$(lis[j]).find('> div').hasClass(done)) {
-                                                $(lis[j]).find('> div').addClass(done);
-                                                $(lis[j]).find('> div')[0].style.setProperty('padding-top', p + 'px', 'important');
-                                                $(lis[j]).find('> div')[0].style.setProperty('padding-bottom', p + 'px', 'important');
-                                            }
-                                        }
-                                    }
-                                    // Reduce the top spacing of sublists in the links (information about favoriten, information about trackable inventory).
-                                    if ($(lis[j]).find('ul:first')[0] && !$(lis[j]).find('ul:first').hasClass(done)) {
-                                        $(lis[j]).find('ul:first').addClass(done);
-                                        $(lis[j]).find('ul:first')[0].style.setProperty('padding-top', '0px', 'important');
-                                    }
-                                    // Align your inventory icon.
-                                    if ($(lis[j]).find('button[aria-controls="trackableInventoryItems"] svg')[0] && !$(lis[j]).find('button[aria-controls="trackableInventoryItems"]').hasClass(done)) {
-                                        $(lis[j]).find('button[aria-controls="trackableInventoryItems"]').addClass(done);
-                                        $(lis[j]).find('button[aria-controls="trackableInventoryItems"] svg')[0].style.setProperty('margin-right', '11px', 'important');
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch(e) {gclh_error('function setStylesToLinksDB',e);}
-            }
-
             // Save uid of own trackables.
             function saveUidOfOwnTrackablesDB() {
                 try {
                     if (uidOfOwnTrackablesSaved) return;
-                    var link = $(leftCol + allLinkblocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
+                    var link = $(leftCol + allLinkBlocks + ' a[href*="/track/search.aspx?o=1&uid="]')[0];
                     if (link) {
                         var uid = link.href.match(/\/track\/search\.aspx\?o=1\&uid=(.*)/);
                         if (uid && uid[1]) {
@@ -10158,15 +10221,16 @@ var mainGC = function() {
             const dbObserver = new MutationObserver(function(_, observer) {
                 observer.disconnect();
                 cssDB();
+                hideHeadingMoveSettingsButtonDB();
                 addGClhLinksDB();
                 addLinksAsQuickAccessLinksDB();
                 addLinksAsSecondaryLinksDB();
                 addLinkBlocksDB();
+                setStylesToleftColumnDB();
                 //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
                 //hideRightColumnDB();
                 //<< Issue 3109
                 showUnpublishedHidesDB();
-                setStylesToLinksDB();
                 saveUidOfOwnTrackablesDB();
                 observer.observe(document.body, config);
             });
@@ -18162,25 +18226,28 @@ var mainGC = function() {
             html += checkboxy('settings_dashboard_disable_all_features', 'Disable all features for dashboard') + show_help('The website operator has announced numerous dashboard changes in the coming months. This option allows you to quickly and easily disable all GC little helper II dashboard features without much effort. Only the line in the dashboard with the links to the Configurator, the Synchronizer and the Changelog should remain. This is only useful if the dashboard website changes conflict with the features of GC little helper II.<br>(Status as of 24.02.2026)') + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_compact_layout_new_dashboard', 'Show compact layout on your dashboard') + "<br>";
+            html += newParameterOn2;
+            html += " &nbsp; " + checkboxy('settings_hide_heading_and_move_settings_button_db', 'Hide page heading, move settings button to \"Profile summary\" button') + show_help("This feature allows you to hide the heading of the page with \"Player dashboard for\", your geocaching name and the \"Dashboard settings\" button. The \"Dashboard settings\" button will then be integrated into the \"Profile summary\" button in the left column of your dashboard.") + "<br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += newParameterOn3;
-            html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the navigation column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column (navigation column) of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_row_hide_new_dashboard', 'Hide individual rows in the left column of your dashboard') + show_help("This feature allows you to hide individual rows in the left column of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.") + "<br>";
             html += newParameterVersionSetzen('0.16') + newParameterOff;
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_line_height_first_block_adjust_db', 'Height for links in link block \"Quick access\"') + " <select class='gclh_form' id='settings_line_height_first_block_db' style='width: 52px;'>";
             for (var i = 20; i <= 40; i = i+2) {
                 html += "  <option value='" + i + "' " + (settings_line_height_first_block_db == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the height of the links in the first link block \"Quick access\" in the left sidebar from 20 up to 40 pixel.<br>The website default is 40 pixel. The suggestion is 28 pixel.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the height of the links in the first link block \"Quick access\" in the left column of your dashboard from 20 up to 40 pixel.<br>The website default is 40 pixel. The suggestion is 28 pixel.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_line_height_other_blocks_adjust_db', 'Height for links in further link blocks such as \"Geocaches\"') + " <select class='gclh_form' id='settings_line_height_other_blocks_db' style='width: 52px;'>";
             for (var i = 20; i <= 40; i = i+2) {
                 html += "  <option value='" + i + "' " + (settings_line_height_other_blocks_db == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the height of the links in the further link blocks in the left sidebar such as \"Geocaches\", \"Your hides\", \"Plan\", \"Community\" and \"Trackables\" from 20 up to 40 pixel.<br>The website default is 32 pixel. The suggestion is 24 pixel.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the height of the links in the further link blocks in the left column of your dashboard such as \"Geocaches\", \"Your hides\", \"Plan\", \"Community\" and \"Trackables\" from 20 up to 40 pixel.<br>The website default is 32 pixel. The suggestion is 24 pixel.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_line_height_gclh_blocks_adjust_db', 'Height for links in GClh II link blocks such as \"All my VIPs\"') + " <select class='gclh_form' id='settings_line_height_gclh_blocks_db' style='width: 52px;'>";
             for (var i = 20; i <= 40; i = i+2) {
                 html += "  <option value='" + i + "' " + (settings_line_height_gclh_blocks_db == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
             }
-            html += "</select> px" + show_help("With this option you can choose the height of the links in the GC little helper II link blocks in the left sidebar such as \"All my VIPs\", \"All my VUPs\", \"Linklist\" and \"Default Links\" from 20 up to 40 pixel.<br>The suggestion is 20 pixel.") + "<br>";
+            html += "</select> px" + show_help("With this option you can choose the height of the links in the GC little helper II link blocks in the left column of your dashboard such as \"All my VIPs\", \"All my VUPs\", \"Linklist\" and \"Default Links\" from 20 up to 40 pixel.<br>The suggestion is 20 pixel.") + "<br>";
             html += checkboxy('settings_dashboard_show_search', 'Show button "Search" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_dashboard_show_search_new_tab', 'Open links in new browser tab') + "<br>";
             html += checkboxy('settings_dashboard_show_browsemap', 'Show button "Browse Map" on your dashboard') + "<br>";
@@ -18190,20 +18257,20 @@ var mainGC = function() {
             html += checkboxy('settings_but_searchmap', 'Show button "Search Map" on your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_but_searchmap_new_tab', 'Open links in new browser tab') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
-            html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to ignore list in sidebar section \"Plan\" under link \"Lists\"') + show_help("Embedded a link in the section \"Plan\" under the link \"Lists\" to your Ignore List into the sidebar of the new dashboard.") + "<br>";
-            html += checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" list on your dashboard') + show_help("With this option there will be an small mail icon beside every user in the list with all your VIPs (All my VIPs) on your dashboard page. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)") + "<br>";
-            html += checkboxy('settings_bookmarks_show', "Show <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"' id='gclh_linklist_link_2'>Linklist</a> on your dashboard") + show_help("Show the Linklist at the sidebar on your dashboard. You can configure the links in the <a class='gclh_ref_ht_int' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"'>Linklist</a> at the end of this configuration page.") + "<br>";
-            html += checkboxy('settings_show_default_links', 'Show all default links on your dashboard') + show_help("Show all the default links for the Linklist sorted at the sidebar on your dashboard.") + "<br>";
+            html += checkboxy('settings_embedded_smartlink_ignorelist', 'Show link to ignore list in left column in section \"Plan\" under link \"Lists\"') + show_help("Add a link to your ignore list in the left column of your dashboard in section \"Plan\" under the link \"Lists\".") + "<br>";
+            html += checkboxy('settings_show_mail_in_allmyvips', 'Show mail link beside user in "All my VIPs/VUPs" section in left column') + show_help("With this option there will be an small mail icon beside every user in the section with all your VIPs (All my VIPs) in the left column of your dashboard. With this icon you get directly to the mail page to mail to this user.<br>(VIP: Very important person)<br><br>If VUP processing is activated, this also applies to your VUPs (All my VUPs).<br>(VUP: Very unimportant person)") + "<br>";
+            html += checkboxy('settings_bookmarks_show', "Show links in your <a class='gclh_ref' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"' id='gclh_linklist_link_2'>Linklist</a> as a section in left column") + show_help("Show the links in your Linklist as a section in the left column of your dashboard. You can configure the links in the <a class='gclh_ref_ht_int' href='#gclh_linklist' title='Link to topic \"Linklist and Navigation\"'>Linklist</a> at the end of this configuration page.") + "<br>";
+            html += checkboxy('settings_show_default_links', 'Show all default links as a section in left column') + show_help("Show all the default links for the Linklist sorted as a section in the left column of your dashboard.") + "<br>";
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
-            html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs on your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
+            html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs of your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
             //html += newParameterOn1;
-            //html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide the sidebar on the far right (“Events nearby” etc.) by default') + show_help('This option allows you to hide the sidebar on the far right by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
+            //html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide right column (“Events nearby” etc.) by default') + show_help('This option allows you to hide the right column of your dashboard by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
             //html += newParameterVersionSetzen('0.17') + newParameterOff;
             //<< Issue 3109
-            html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches on your dashboard') + "<br>";
-            html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches on your dashboard') + " ";
+            html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches in right column of your dashboard') + "<br>";
+            html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches') + " ";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort' style='width: 200px;'>";
             html += "  <option value='abc' " + (settings_showUnpublishedHides_sort == 'abc' ? "selected='selected'" : "") + "> Alphabetical</option>";
             html += "  <option value='gcOld' " + (settings_showUnpublishedHides_sort == 'gcOld' ? "selected='selected'" : "") + "> GC-Code (Oldest first)</option>";
@@ -19537,6 +19604,7 @@ var mainGC = function() {
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventdayX1");
             setEvForDepPara("settings_show_eventinfo_in_desc", "settings_show_eventtime_with_24_hoursX0");
             setEvForDepPara("settings_set_default_calendar_link_for_event", "settings_default_calendar_link_for_event");
+            setEvForDepPara("settings_compact_layout_new_dashboard", "settings_hide_heading_and_move_settings_button_db");
             setEvForDepPara("settings_compact_layout_new_dashboard", "settings_row_hide_new_dashboard");
             setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_first_block_adjust_db");
             setEvForDepPara("settings_compact_layout_new_dashboard", "settings_line_height_first_block_db");
@@ -20021,6 +20089,7 @@ var mainGC = function() {
                 'settings_show_bigger_avatars_but',
                 'settings_hide_feedback_icon',
                 'settings_compact_layout_new_dashboard',
+                'settings_hide_heading_and_move_settings_button_db',
                 'settings_row_hide_new_dashboard',
                 'settings_line_height_first_block_adjust_db',
                 'settings_line_height_other_blocks_adjust_db',
