@@ -10270,52 +10270,50 @@ var mainGC = function() {
             }
 
             // Hide right column.
+            let column_is_hidden = settings_dashboard_hide_right_sidebar || false;
             function hideRightColumnDB() {
                 try {
-                    if ($(rightCol)[0] && !$('#gclh_right_column_wrapper')[0]) {
-                        const $layoutFeed = $('#LayoutFeed');
-                        const $column_right = $(rightCol);
-                        const $column_right_max_width = $column_right.css('max-width');
-                        $column_right.css('width', $column_right_max_width);
-                        const $wrapper = $('<div>', {
-                            id: 'gclh_right_column_wrapper',
-                            height: 'fit-content'
+                    // On page load or switch between desktop and mobile view, restore last used visibility state.
+                    // Note: when switching between desktop and mobile view, right column gets deleted and regenerated without #rightCol.
+                    let $rightCol = $(rightCol);
+                    if ($rightCol[0] && column_is_hidden && !$rightCol.hasClass('isHide')) {
+                        hideColumn(true);
+                        return
+                    }
+
+                    // Add option to Dashboard settings, once they're open.
+                    if ($('[data-testid="dashboard-top-quick-links-toggle"]')[0] && !$('#gclh_hide_column')[0]) {
+                        const $div_gclh_hide_column = $(`
+                        <div id="gclh_hide_column" class="flex items-center justify-between gap-2">
+                          <span class="text-sm/5 text-gray-600 m-0">Hide right sidebar</span>
+                        </div> 
+                        `);
+                        const enabled = `
+                        <div class="gclh_hide_column_toggle enabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-green-500 hover:bg-green-600" role="button" tabindex="0" aria-pressed="true" aria-disabled="false">
+                          <svg aria-hidden="true" class="h-3 w-[14px] text-white absolute left-[6px]" focusable="false">
+                            <use xlink:href="#check-toggle"></use>
+                          </svg>
+                          <div class="size-[20px] rounded-full bg-white absolute right-[2px]"></div>
+                        </div>
+                        `;
+                        const disabled = `
+                        <div class="gclh_hide_column_toggle disabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-grey-500 hover:bg-grey-600" role="button" tabindex="0" aria-pressed="false" aria-disabled="false">
+                          <div class="size-[20px] rounded-full bg-white absolute left-[2px]"></div>
+                        </div>
+                        `;
+
+                        $div_gclh_hide_column.insertAfter($('[data-testid="dashboard-top-quick-links-toggle"]').parent());
+                        $div_gclh_hide_column.append(column_is_hidden ? enabled : disabled);
+                        $div_gclh_hide_column.click(function() {
+                            column_is_hidden = !column_is_hidden;
+                            $(this).find('.gclh_hide_column_toggle').replaceWith(column_is_hidden ? enabled : disabled);
+                            hideColumn(column_is_hidden);
+                            setValue('settings_dashboard_hide_right_sidebar', column_is_hidden);
                         });
-                        $column_right.wrap($wrapper);
+                    }
 
-                        const title_hide = 'Click to hide all sections on the right side';
-                        const title_show = 'Click to show all sections on the right side';
-                        const $btn = $('<button>', {
-                            id: 'gclh_right_column_toggle',
-                            type: 'button'
-                        }).html(`
-                            <svg>
-                                <use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill"></use>
-                            </svg>`);
-                        $column_right.before($btn);
-
-                        const $svg = $btn.find('svg');
-                        $btn.click(function() {
-                            if ($column_right.is(':visible')) hideColumn();
-                            else showColumn();
-                        });
-
-                        function hideColumn() {
-                            $layoutFeed.addClass('gclh_max_width_none');
-                            $column_right.removeClass('flex');
-                            $column_right.hide('fast');
-                            $svg.css('transform', 'rotate(-90deg)');
-                            $btn.attr('title', title_show);
-                        }
-                        function showColumn() {
-                            $column_right.show('fast', () => { $layoutFeed.removeClass('gclh_max_width_none'); });
-                            $column_right.addClass('flex');
-                            $svg.css('transform', 'rotate(90deg)');
-                            $btn.attr('title', title_hide);
-                        }
-
-                        if (settings_dashboard_hide_right_sidebar) hideColumn();
-                        else showColumn();
+                    function hideColumn(hidden) {
+                        $(rightCol).toggleClass('isHide', hidden);
                     }
                 } catch(e) {gclh_error('function hideRightColumnDB',e);}
             }
@@ -10523,9 +10521,7 @@ var mainGC = function() {
                 startHideRowsLeftColumnDB();
                 setStylesToleftColumnDB();
                 viewLargerLogImagesDB();
-                //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
-                //hideRightColumnDB();
-                //<< Issue 3109
+                hideRightColumnDB();
                 showUnpublishedHidesDB();
                 saveUidOfOwnTrackablesDB();
                 observer.observe(document.body, config);
@@ -18792,11 +18788,6 @@ var mainGC = function() {
             html += "&nbsp; Max height <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_height_db' value='" + settings_view_larger_log_images_max_height_db + "'> px <br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs of your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
-            //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
-            //html += newParameterOn1;
-            //html += checkboxy('settings_dashboard_hide_right_sidebar', 'Hide right column (“Events nearby” etc.) by default') + show_help('This option allows you to hide the right column of your dashboard by default. This hides, for example, “Events nearby”, “Geocaches nearby”, “Unpublished Hides”.') + "<br>";
-            //html += newParameterVersionSetzen('0.17') + newParameterOff;
-            //<< Issue 3109
             html += checkboxy('settings_showUnpublishedHides', 'Show unpublished caches in right column of your dashboard') + "<br>";
             html += " &nbsp; " + checkboxy('settings_set_showUnpublishedHides_sort', 'Sort unpublished caches') + " ";
             html += "<select class='gclh_form' id='settings_showUnpublishedHides_sort' style='width: 200px;'>";
