@@ -9523,41 +9523,34 @@ var mainGC = function() {
             // - Heading title.
             var headingTitle = ' h1';
             // - Button containing the toggle icon and the name for the settings button.
-            var headingButton = ' button';
-            // - Button icon containing the toggle icon for the settings button.
-            var headingButtonIcon = ' button > svg';
+            var settingsButton = ' button:first';
             // - Button label containing the label for the settings button.
-            var headingButtonLabel = ' button > span';
+            var settingsButtonLabel = ' button:first > span';
             // - Popup of the settings button.
-            var headingButtonPopup = '#dashboard-settings-popover';
+            var settingsButtonPopup = '#dashboard-settings-popover';
             // Left column.
             var leftCol = '#leftCol';
             // - First Block - Profile Summary.
-            var profileBlock = ' section:first';
+            var profileBlock = ':not(nav) section';
             // - Button containing the name and the toggle icon for the button.
             var profileButton = ' button';
             // - Button name containing the name for the button.
             var profileButtonName = ' button > h2';
             // - Button icon containing the toggle icon for the button.
             var profileButtonIcon = ' button > svg';
-            // - Box containing the entries.
+            // - Box containing all entries.
             var profileBox = ' > div > div > div';
-//->xxxx Dieser Bereich wird noch nicht verwendet. Geplant für Hide lines left column.
-            // - Erster Bereich - Profile Cover Bild.
-            var profileCoverImage = ' > div > div > a';
-            // - Erster Bereich - Profile Avatar.
-            var profileAvatar = ' > div > div > div:nth-child(1)';
-            // - Erster Bereich - Username.
-            var userName = ' > div > div > div:nth-child(2) > div';
-            // - Erster Bereich - Liste mit Userdaten von joined bis hides.
-            var userDataArea = ' > div > div > div:nth-child(2) > ul';
-            var userDataEntries = ' > div > div > div:nth-child(2) > ul li';
-            // - Erster Bereich - View Profile Button.
-            var viewProfileButton = ' > div > div > div:nth-child(2) > a';
-//<-xxxx
-            // - All navigation blocks such as Quicklinks, Geocaches ... .
+            // - Profile cover image and components.
+            var profileCover = ' > a';
+            // - Profile avatar image and components.
+            var profileAvatar = ' > div:has(img[src*=".com/square250/"],img[src*=".com/images/default_avatar"])';
+            // - List entries Joined, Renewal Date, finds, hides, gclh links and maybe foreign entries such as send2cgeo.
+            var profileList = ' > div > ul > li';
+            // - View profile button.
+            var profileViewButton = ' > div a[href*="/p/default.aspx"]';
+            // - All navigation blocks such as Quick access, Geocaches ... .
             var allLinkBlocks = ' nav';
-            // - One navigation blocks such as Quicklinks, Geocaches ... .
+            // - One navigation blocks such as Quick access, Geocaches ... .
             var linkBlock = ' section';
             // - Button containing the name and the icon toggle for the button.
             var linkButton = profileButton;
@@ -9599,6 +9592,13 @@ var mainGC = function() {
             newLink += '    </a>';
             newLink += '  </div>';
             newLink += '</li>';
+            // - Template for clickSum button.
+            var clickSumButton = '';
+            clickSumButton += '<button type="button" class="clickSum border-1 border-solid rounded cursor-pointer no-underline text-base font-input leading-[1.5] w-[auto] focus:outline-none focus:shadow-outline disabled:opacity-[.38] disabled:text-gray-600 disabled:cursor-not-allowed disabled:pointer-events-none text-gray-600 hover:bg-gray-100 active:bg-gray-200 disabled:bg-gray-50 bg-gray-50 border-gray-500 py-1.5 px-3 bg-white rounded-lg flex gap-2 items-center leading-[20px] justify-center">';
+            clickSumButton += '  <svg class="shrink-0 text-gray-600 transition-transform duration-300 ease-in-out rotate-180" width="18" height="20">';
+            clickSumButton += '    <use href="#chevron-small--inline"></use>';
+            clickSumButton += '  </svg>';
+            clickSumButton += '</button>';
 
             // Mark as completed.
             var done = 'groot';
@@ -9611,9 +9611,32 @@ var mainGC = function() {
                     var css = '';
                     // Compact layout.
                     if (settings_compact_layout_new_dashboard) {
-                        // Pop-up of settings button from page heading.
+                        // Hide page heading and move settings button into profile summary button.
                         if (settings_hide_heading_and_move_settings_button_db) {
-                            css += headingButtonPopup + ' {visibility: hidden !important;}';
+                            // To prevent an initial flickering of the settings button pop-up until the "transform" is complete.
+                            css += settingsButtonPopup + ':not(.' + done + ') {visibility: hidden !important;}';
+                        }
+                        // Hide rows in left column.
+                        if (settings_row_hide_new_dashboard) {
+                            // Buttons to mark rows for display or hide in left column.
+                            css += '.clickPoint {position: absolute; padding: 2px !important; cursor: pointer; color: rgb(110, 110, 110);}';
+                            css += '.clickPoint:hover {background-color: rgb(225, 225, 225);}';
+                            css += '.clickPoint svg {height: 12px !important; width: 12px !important; opacity: 0.4;}';
+                            css += '.clickPointHide svg {opacity: 1;}';
+                            css += '#gclh_wrapper_profile-cover .clickPoint  {margin: 54px 0px 0px -16px !important;}';
+                            css += leftCol + profileBlock + profileBox + profileAvatar + ' .clickPoint {margin: 35px 0px 0px -33px !important;}';
+                            css += leftCol + profileBlock + profileBox + profileList + ' .clickPoint {margin: 4px 0px 0px -32px !important;}';
+                            css += '#gclh_wrapper_profile-viewButton .clickPoint  {margin: 5px 0px 0px -32px !important;}';
+                            css += leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' > li .clickPoint {margin: ' + (1 + (settings_line_height_first_block_db - 20) / 2) + 'px 0px 0px -16px !important;}';
+                            css += leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' > li .clickPoint {margin: ' + (1 + (settings_line_height_other_blocks_db - 20) / 2) + 'px 0px 0px -16px !important;}';
+                            // Adjust position of avatar, if cover was hidden.
+                            css += '.clickSumHide .gclh_no_profile-cover {margin-top: 0px !important}';
+                            // Adjust the top spacing of the view button, if there were previously all list entries were hidden.
+                            css += '.clickSumHide .gclh_no_profile-list a {margin-top: 0px !important}';
+                            // Adjust the top and bottom spacing of the box with the list and the view button, if both were hidden.
+                            css += '.clickSumHide .gclh_no_profile-box {padding: 0px !important}';
+                            // Hide rows which are marked for hide and hide marks.
+                            css += '.clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none !important;}';
                         }
 //->xxxx Dieser Bereich ist noch nicht geprüft und angepasst.
                         // In the middle and in the right column.
@@ -9663,61 +9686,21 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function cssDB',e);}
             }
 
-            // Hide page heading and move settings button into profile summary button.
-            function hideHeadingMoveSettingsButtonDB() {
-                try {
-                    if (settings_compact_layout_new_dashboard && settings_hide_heading_and_move_settings_button_db &&
-                        $(heading + headingTitle)[0] && $(heading + headingButton)[0] && $(heading + headingButtonLabel)[0] &&
-                        $(leftCol + profileBlock + profileButtonName)[0] && $(leftCol + profileBlock)[0].offsetTop) {
-                        // Hide page heading.
-                        $(heading + headingTitle)[0].parentNode.style.setProperty('margin', '0px', 'important');
-                        $(heading + headingTitle)[0].style.setProperty('display', 'none', 'important');
-                        // Hide the label of the settings button.
-                        $(heading + headingButtonLabel)[0].style.setProperty('display', 'none', 'important');
-                        // Create space in the profile summary button for the settings button.
-                        $(leftCol + profileBlock + profileButtonName)[0].style.setProperty('margin-left', '34px', 'important');
-                        // Display the settings button in the profile summary button.
-                        // (Problem: If no changes are made to the DOM, no observer is triggered. If only the screen size changes and only the line
-                        // containing the Quick links wraps, the settings button is in the wrong place.)
-                        $(heading + headingButton)[0].style.setProperty('position', 'absolute', 'important');
-                        $(heading + headingButton)[0].style.setProperty('border-style', 'none', 'important');
-                        $(heading + headingButton)[0].style.setProperty('padding', '4px 8px', 'important');
-                        $(heading + headingButton)[0].style.setProperty('margin', '3px', 'important');
-                        $(heading + headingButton)[0].style.setProperty('top', $(leftCol + profileBlock)[0].offsetTop + 'px', 'important');
-                        // Align the settings button pop-up.
-                        if ($(headingButtonPopup)[0]) {
-                            // To prevent an initial flickering of the pop-up until the "transform" is complete.
-                            function alignSettingsPopupDB(waitCount) {
-                                if ($(headingButtonPopup)[0] && $(leftCol + profileBlock)[0].offsetTop) {
-                                    var y = $(leftCol + profileBlock)[0].offsetTop + 35;
-                                    $(headingButtonPopup)[0].style.setProperty('transform', 'translate(16px, ' + y + 'px)', 'important');
-                                    setTimeout(function() {
-                                        if ($(headingButtonPopup)[0]) $(headingButtonPopup)[0].style.setProperty('visibility', 'visible', 'important');
-                                    }, 10);
-                                    waitCount++; if (waitCount <= 200) setTimeout(function(){alignSettingsPopupDB(waitCount);}, 10);
-                                }
-                            }
-                            alignSettingsPopupDB(0);
-                        }
-                    }
-                } catch(e) {gclh_error('function hideHeadingMoveSettingsButtonDB',e);}
-            }
-
             // Add Config, Sync and Changelog Links in first block of left column.
             function addGClhLinksDB() {
                 try {
                     if (!$('#gclh_config_lnk')[0]) {
-                        var userDataAreaDef = leftCol + profileBlock + ' ul';
-                        if ($(userDataAreaDef)[0] && $(userDataAreaDef + ' li')[0]) {
+                        var lis = leftCol + profileBlock + profileBox + profileList;
+                        if ($(lis)[0]) {
                             var lnk_config = "<a href='#GClhShowConfig' id='gclh_config_lnk' name='gclh_config_lnk' title='GC little helper II Config v" + scriptVersion + (settings_f4_call_gclh_config ? " / Key F4":"") + "' >GClh II Config</a>";
                             var lnk_sync = " | <a href='#GClhShowSync' id='gclh_sync_lnk' name='gclh_sync_lnk' title='GC little helper II Sync v" + scriptVersion + (settings_f10_call_gclh_sync ? " / Key F10":"") + "' >GClh II Sync</a>";
                             var lnk_changelog = " | <a href='"+urlChangelog+"' title='Documentation of changes and new features\nin GC little helper II on GitHub'>Changelog</a>";
                             var custIcon = "<svg class='size-[14px]'><use href='#settings--inline'></use></svg>";
                             var row = '<li class="flex gap-1 items-center text-xs leading-4">' + custIcon + '<div>' + lnk_config + lnk_sync + lnk_changelog + '</div></li>';
-                            if ($(userDataAreaDef + ' a[id="s2cg_open_sendList"]')[0]) {
-                                if (!$('#gclh_config_lnk')[0]) $($(userDataAreaDef + ' a[id="s2cg_open_sendList"]')[0].closest('li')).before(row);
+                            if ($(lis + ' a[id="s2cg_open_sendList"]')[0]) {
+                                if (!$('#gclh_config_lnk')[0]) $($(lis + ' a[id="s2cg_open_sendList"]')[0].closest('li')).before(row);
                             } else {
-                                if (!$('#gclh_config_lnk')[0]) $($(userDataAreaDef)[0]).append(row);
+                                if (!$('#gclh_config_lnk')[0]) $($(lis)[0].closest('ul')).append(row);
                             }
                             $('#gclh_config_lnk')[0].addEventListener('click', gclh_showConfig, false);
                             $('#gclh_sync_lnk')[0].addEventListener('click', gclh_showSync, false);
@@ -9729,42 +9712,41 @@ var mainGC = function() {
             // Add links as quick access link in left column.
             function addLinksAsQuickAccessLinksDB() {
                 try {
-                    var qlDef = leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' li';
-                    if ($(qlDef)[0]) {
-                        var qlFirst = $(qlDef)[0];
-                        if (qlFirst && $(qlFirst).find('a span')[0] && $(qlFirst).find('a span')[0].childNodes[1] && $(qlFirst).find('a span')[0].childNodes[1].data && $(qlFirst).find('svg')[0]) {
-                            // Search link.
-                            if (settings_dashboard_show_search && !$('.gclh_searchLink')[0]) {
-                                var searchLink = $( $(qlFirst) ).clone()[0];
-                                $(searchLink).find('a').addClass('gclh_searchLink');
-                                $(searchLink).find('a')[0].href = '/play/search';
-                                $(searchLink).find('a')[0].target = settings_dashboard_show_search_new_tab ? "_blank" : "";
-                                $(searchLink).find('a span')[0].childNodes[1].data = 'Search';
-                                $(searchLink).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
-                                if (!$('.gclh_searchLink')[0]) qlFirst.before(searchLink);
-                            }
-                            // Browse Map link.
-                            if (settings_dashboard_show_browsemap && !$('.gclh_browsemapLink')[0]) {
-                                var browsemapLink = $( $(qlFirst) ).clone()[0];
-                                $(browsemapLink).find('a').addClass('gclh_browsemapLink');
-                                $(browsemapLink).find('a')[0].href = '/map';
-                                $(browsemapLink).find('a')[0].target = settings_dashboard_show_browsemap_new_tab ? "_blank" : "";
-                                $(browsemapLink).find('a span')[0].childNodes[1].data = 'Browse Map';
-                                $(browsemapLink).find('svg')[0].innerHTML = $(browse_map_icon)[0].innerHTML;
-                                $(browsemapLink).find('svg').attr('viewBox', '0 0 24 24');
-                                $(browsemapLink).find('path').attr('stroke-width', '1.2');
-                                if (!$('.gclh_browsemapLink')[0]) qlFirst.before(browsemapLink);
-                            }
-                            // Search Map link.
-                            if (settings_but_searchmap && !$('.gclh_searchmapLink')[0]) {
-                                var searchmapLink = $( $(qlFirst) ).clone()[0];
-                                $(searchmapLink).find('a').addClass('gclh_searchmapLink');
-                                $(searchmapLink).find('a')[0].href = '/play/map';
-                                $(searchmapLink).find('a')[0].target = settings_but_searchmap_new_tab ? "_blank" : "";
-                                $(searchmapLink).find('a span')[0].childNodes[1].data = 'Search Map';
-                                $(searchmapLink).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
-                                if (!$('.gclh_searchmapLink')[0]) qlFirst.before(searchmapLink);
-                            }
+                    var li = leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' > li:first';
+                    if ($(li)[0] && $(li).find('a span')[0] && $(li).find('a span')[0].childNodes[1] && $(li).find('a span')[0].childNodes[1].data && $(li).find('a span svg')[0]) {
+                        var liClean = $( $(li) ).clone()[0];
+                        $(liClean).find('.clickPoint').remove();
+                        // Search link.
+                        if (settings_dashboard_show_search && !$('.gclh_searchLink')[0]) {
+                            var searchLink = $( $(liClean) ).clone()[0];
+                            $(searchLink).find('a').addClass('gclh_searchLink');
+                            $(searchLink).find('a')[0].href = '/play/search';
+                            $(searchLink).find('a')[0].target = settings_dashboard_show_search_new_tab ? "_blank" : "";
+                            $(searchLink).find('a span')[0].childNodes[1].data = 'Search';
+                            $(searchLink).find('svg')[0].innerHTML = '<use href="#search--inline"></use>';
+                            if (!$('.gclh_searchLink')[0]) $(li).before(searchLink);
+                        }
+                        // Browse Map link.
+                        if (settings_dashboard_show_browsemap && !$('.gclh_browsemapLink')[0]) {
+                            var browsemapLink = $( $(liClean) ).clone()[0];
+                            $(browsemapLink).find('a').addClass('gclh_browsemapLink');
+                            $(browsemapLink).find('a')[0].href = '/map';
+                            $(browsemapLink).find('a')[0].target = settings_dashboard_show_browsemap_new_tab ? "_blank" : "";
+                            $(browsemapLink).find('a span')[0].childNodes[1].data = 'Browse Map';
+                            $(browsemapLink).find('svg')[0].innerHTML = $(browse_map_icon)[0].innerHTML;
+                            $(browsemapLink).find('svg').attr('viewBox', '0 0 24 24');
+                            $(browsemapLink).find('path').attr('stroke-width', '1.2');
+                            if (!$('.gclh_browsemapLink')[0]) $(li).before(browsemapLink);
+                        }
+                        // Search Map link.
+                        if (settings_but_searchmap && !$('.gclh_searchmapLink')[0]) {
+                            var searchmapLink = $( $(liClean) ).clone()[0];
+                            $(searchmapLink).find('a').addClass('gclh_searchmapLink');
+                            $(searchmapLink).find('a')[0].href = '/play/map';
+                            $(searchmapLink).find('a')[0].target = settings_but_searchmap_new_tab ? "_blank" : "";
+                            $(searchmapLink).find('a span')[0].childNodes[1].data = 'Search Map';
+                            $(searchmapLink).find('svg')[0].innerHTML = '<use href="#map--inline"></use>';
+                            if (!$('.gclh_searchmapLink')[0]) $(li).before(searchmapLink);
                         }
                     }
                 } catch(e) {gclh_error('function addLinksAsQuickAccessLinksDB',e);}
@@ -9775,15 +9757,16 @@ var mainGC = function() {
                 try {
                     // Add link to Ignore List after link Lists.
                     if (settings_embedded_smartlink_ignorelist && !$('.gclh_ignorelistLink')[0]) {
-                        var lDef = leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' li a[href*="/plan/lists"]';
-                        if ($(lDef)[0]) {
-                            var l = $(lDef).closest('li');
-                            if (l && $(l).find('a span')[0] && $(l).find('a span')[0].childNodes[0] && $(l).find('a span')[0].childNodes[0].data) {
-                                var ignorelistLink = $( $(l) ).clone()[0];
+                        var link = leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' > li a[href*="/plan/lists"]';
+                        if ($(link)[0]) {
+                            var li = $(link).closest('li');
+                            if ($(li)[0] && $(li).find('a span')[0] && $(li).find('a span')[0].childNodes[0] && $(li).find('a span')[0].childNodes[0].data) {
+                                var ignorelistLink = $( $(li) ).clone()[0];
+                                $(ignorelistLink).find('.clickPoint').remove();
                                 $(ignorelistLink).find('a').addClass('gclh_ignorelistLink');
                                 $(ignorelistLink).find('a')[0].href = '/plan/lists/ignored';
                                 $(ignorelistLink).find('a span')[0].childNodes[0].data = 'Ignore List';
-                                if (!$('.gclh_ignorelistLink')[0]) l.after(ignorelistLink);
+                                if (!$('.gclh_ignorelistLink')[0]) li.after(ignorelistLink);
                             }
                         }
                     }
@@ -9922,6 +9905,247 @@ var mainGC = function() {
                         buildSpecialLinklistLinks();
                     }
                 } catch(e) {gclh_error('function addLinkBlocksDB',e);}
+            }
+
+            // Offsets for top and left directions for a moved settings button, for a build clickSum button and for the name of the profile summary button
+            // for the case that the settings button and/or the clickSum button are located on the left in the area of the profile summary button.
+            var topOffsetSettingsButton = 0;
+            var leftOffsetSettingsButton = 0;
+            var topOffsetClickSumButton = 0;
+            var leftOffsetClickSumButton = 0;
+            var leftOffsetProfileSummaryButtonName = 0;
+            // Get offsets in profile summary button.
+            function getOffsetsInProfileSummaryButtonDB() {
+                if ($(leftCol + profileBlock)[0].offsetTop && $(leftCol + profileBlock)[0].offsetLeft) {
+                    var leftAdd = $(leftCol + profileBlock)[0].offsetLeft;
+                    if (settings_row_hide_new_dashboard) {
+                        topOffsetClickSumButton = $(leftCol + profileBlock)[0].offsetTop - 1;
+                        leftOffsetClickSumButton = leftAdd;
+                        leftAdd = leftOffsetClickSumButton + 32;
+                    }
+                    if (settings_hide_heading_and_move_settings_button_db) {
+                        topOffsetSettingsButton = $(leftCol + profileBlock)[0].offsetTop - 1;
+                        leftOffsetSettingsButton = leftAdd;
+                        leftAdd = leftOffsetSettingsButton + 32;
+                    }
+                    leftOffsetProfileSummaryButtonName = leftAdd - $(leftCol + profileBlock)[0].offsetLeft - 2;
+                    return true;
+                }
+                return false;
+            }
+
+            // Style the clickSum button or the settings button in profile summary button.
+            function styleButtonInProfileSummaryButtonDB(button, topOffset, leftOffset) {
+                // Create space in the profile summary button for the settings button.
+                $(leftCol + profileBlock + profileButtonName)[0].style.setProperty('margin-left', leftOffsetProfileSummaryButtonName + 'px', 'important');
+                // Display the button in the profile summary button.
+                button.style.setProperty('position', 'absolute', 'important');
+                button.style.setProperty('border-color', 'rgb(225 225 225)', 'important');
+                button.style.setProperty('padding', '4px 5px', 'important');
+                button.style.setProperty('margin', '3px', 'important');
+                button.style.setProperty('top', topOffset + 'px', 'important');
+                button.style.setProperty('left', leftOffset + 'px', 'important');
+            }
+
+            // Hide page heading and move settings button into profile summary button.
+            function hideHeadingMoveSettingsButtonDB() {
+                try {
+                    if (settings_compact_layout_new_dashboard && settings_hide_heading_and_move_settings_button_db &&
+                        $(heading + headingTitle)[0] && $(heading + settingsButton)[0] && $(heading + settingsButtonLabel)[0] &&
+                        $(leftCol + profileBlock + profileButtonName)[0]) {
+                        // Get offsets in profile summary button.
+                        var getOffsets = getOffsetsInProfileSummaryButtonDB();
+                        if (!getOffsets) return;
+                        // Hide page heading.
+                        $(heading + headingTitle)[0].parentNode.style.setProperty('margin', '0px', 'important');
+                        $(heading + headingTitle)[0].style.setProperty('display', 'none', 'important');
+                        // Hide the label of the settings button.
+                        $(heading + settingsButtonLabel)[0].style.setProperty('display', 'none', 'important');
+                        // Style settings button in profile summary button.
+                        styleButtonInProfileSummaryButtonDB($(heading + settingsButton)[0], topOffsetSettingsButton, leftOffsetSettingsButton);
+                        // Align the settings button pop-up.
+                        if ($(settingsButtonPopup)[0]) {
+                            // To prevent an initial flickering of the pop-up until the "transform" is complete.
+                            function alignSettingsPopupDB(waitCount) {
+                                if ($(settingsButtonPopup)[0]) {
+                                    $(settingsButtonPopup)[0].style.setProperty('transform', 'translate(' + (settings_row_hide_new_dashboard ? leftOffsetSettingsButton + 2 : leftOffsetSettingsButton) + 'px, ' + (topOffsetSettingsButton + 35) + 'px)', 'important');
+                                    setTimeout(function() {
+                                        $(settingsButtonPopup).addClass(done);
+                                    }, 10);
+                                    waitCount++; if (waitCount <= 100) setTimeout(function(){alignSettingsPopupDB(waitCount);}, 10);
+                                }
+                            }
+                            alignSettingsPopupDB(0);
+                        }
+                    }
+                } catch(e) {gclh_error('function hideHeadingMoveSettingsButtonDB',e);}
+            }
+
+            // Hide rows in left column.
+            // Adjust and align elements in special cases.
+            function adjustElementsInSpecialCases() {
+                // Adjust position of avatar, if cover was hidden.
+                if ($('#gclh_wrapper_profile-cover.clickPointHide')[0]) {
+                    $(leftCol + profileBlock + profileBox + profileAvatar).addClass('gclh_no_profile-cover');
+                } else {
+                    $(leftCol + profileBlock + profileBox + profileAvatar).removeClass('gclh_no_profile-cover');
+                }
+                // Adjust the top spacing of the view button, if there were previously all list entries were hidden.
+                if ($(leftCol + profileBlock + profileBox + profileList)[0] && $(leftCol + profileBlock + profileBox + profileList)[0].parentNode.offsetHeight == 0) {
+                    $('#gclh_wrapper_profile-viewButton').addClass('gclh_no_profile-list');
+                } else {
+                    $('#gclh_wrapper_profile-viewButton').removeClass('gclh_no_profile-list');
+                }
+                // Adjust the top and bottom spacing of the box with the list and the view button, if both were hidden.
+                if ($(leftCol + profileBlock + profileBox + profileList)[0] && $(leftCol + profileBlock + profileBox + profileViewButton)[0]) {
+                    if ($(leftCol + profileBlock + profileBox + profileList)[0].parentNode.offsetHeight == 0 && $(leftCol + profileBlock + profileBox + profileViewButton)[0].parentNode.offsetHeight == 0) {
+                        $('#gclh_wrapper_profile-viewButton').parent().addClass('gclh_no_profile-box');
+                    } else {
+                        $('#gclh_wrapper_profile-viewButton').parent().removeClass('gclh_no_profile-box');
+                    }
+                }
+            }
+            // Display the status for the clickSum button to hide rows.
+            function setClickSumDB() {
+                var cl = $('.clickSum').find('svg').attr('class');
+                $('.clickSum').find('svg').attr('class', cl.replace(/ rotate-180/g, '').replace(/rotate-180/g, ''));
+                // Show configuration, arrow points upwards, class rotate-180 available.
+                if (getValue('show_box_dashboard_clickSum', false) == true) {
+                    $(leftCol).removeClass('clickSumHide');
+                    $('.clickSum')[0].title = 'Click here to hide the configuration for hiding rows';
+                    $('.clickSum').find('svg').attr('class', cl + ' rotate-180');
+                // Hide configuration, arrow points downwards, class rotate-180 not available.
+                } else {
+                    $(leftCol).addClass('clickSumHide');
+                    $('.clickSum')[0].title = 'Click here to view the configuration for hiding rows';
+                }
+                adjustElementsInSpecialCases();
+            }
+            // Save the status for the clickSum button of whether the configuration to hide rows is shown or hidden by clicking on the button.
+            function saveClickSumDB() {
+                try {
+                    if ($('.clickSumHide')[0]) {
+                        setValue('show_box_dashboard_clickSum', true);
+                    } else {
+                        setValue('show_box_dashboard_clickSum', false);
+                    }
+                    setClickSumDB();
+                } catch(e) {gclh_error('function saveClickSumDB',e);}
+            }
+            // Build clickSum button to show or hide the configuration to hide rows.
+            function buildClickSumButtonDB() {
+                try {
+                    if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard &&
+                        $(heading + settingsButton)[0] && $(leftCol + profileBlock + profileButtonName)[0] &&
+                        $(leftCol + allLinkBlocks + linkBlock + ':nth-child(1)')[0] && $(leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)')[0]) {
+                        // Get offsets in profile summary button.
+                        var getOffsets = getOffsetsInProfileSummaryButtonDB();
+                        if (!getOffsets) return;
+                        // Build clickSum button.
+                        if (!$('.clickSum')[0]) {
+                            var button = $(clickSumButton);
+                            $(heading + settingsButton).after($(button));
+                            $('.clickSum')[0].addEventListener("click", saveClickSumDB, false);
+                            setClickSumDB();
+                        }
+                        // Style clickSum button in profile summary button.
+                        styleButtonInProfileSummaryButtonDB($('.clickSum')[0], topOffsetClickSumButton, leftOffsetClickSumButton);
+                    }
+                } catch(e) {gclh_error('function buildClickSumButtonDB',e);}
+            }
+            // Displays the status for a row of whether the row is shown or hidden.
+            function setClickPointDB(row) {
+                var name = $(row).attr('name')
+                if (getValue(name, false) == true) {
+                    $(row).parent().addClass('clickPointHide');
+                    $(row)[0].title = 'Click to mark the row for display\nAfter the configuration is complete, click the icon at the top of the column';
+                } else {
+                    $(row).parent().removeClass('clickPointHide');
+                    $(row)[0].title = 'Click to mark the row for hide\nAfter the configuration is complete, click the icon at the top of the column';
+                }
+            }
+            // Save the status of a row of whether the row is shown or hidden by clicking on the row.
+            function saveClickPointDB() {
+                try {
+                    if ($(this).parent().hasClass('clickPointHide')) setValue($(this).attr('name'), false);
+                    else setValue($(this).attr('name'), true);
+                    setClickPointDB(this);
+                } catch(e) {gclh_error('function saveClickPointDB',e);}
+            }
+            // Build button to mark row for display or hide.
+            function buildButtonToMarkRowDB(row, name) {
+                if (row && row.length == 1 && name && name != '' && !$(row).find('.clickPoint')[0]) {
+                    $(row).prepend('<span name="' + name + '" class="clickPoint"><svg><use href="#close--inline"></use></svg></span>');
+                    $(row).find('.clickPoint')[0].addEventListener("click", saveClickPointDB, false);
+                    setClickPointDB($(row).find('.clickPoint')[0]);
+                }
+            }
+            // Start feature to hide rows in left column.
+            function startHideRowsLeftColumnDB() {
+                try {
+                    // Build button to display or hide the configuration to hide rows.
+                    buildClickSumButtonDB();
+                    if (!$('.clickSum')[0]) return;
+                    // Build all buttons to mark rows for display or hide.
+                    // - Build button for profile cover image and components (has no usable parent).
+                    if (!$('#gclh_wrapper_profile-cover')[0]) {
+                        var row = $(leftCol + profileBlock + profileBox + profileCover);
+                        if (row && row.length == 1) {
+                            row.wrap($('<div id="gclh_wrapper_profile-cover" style="height: 128px;"></div>'));
+                            var row = $('#gclh_wrapper_profile-cover');
+                            buildButtonToMarkRowDB(row, 'set_switch_db_profile-cover');
+                        }
+                    }
+                    // - Build button for profile avatar image and components.
+                    var row = $(leftCol + profileBlock + profileBox + profileAvatar + ':not(:has(.clickPoint))');
+                    buildButtonToMarkRowDB(row, 'set_switch_db_profile-avatar');
+                    // - Build buttons for list entries Joined, Renewal Date, finds, hides, gclh links and maybe foreign entries such as send2cgeo.
+                    var rows = $(leftCol + profileBlock + profileBox + profileList + ':not(:has(.clickPoint))');
+                    for (var i = 0; i < rows.length; i++) {
+                        if ($(rows[i]).find('svg:first use')[0] && !$(rows[i]).find('svg:first use').attr('href') == '') {
+                            var name = 'set_switch_db_profile-' + $(rows[i]).find('svg:first use').attr('href').replace(/(#|_no-outline|-2--inline|--inline)/ig, '');
+                            buildButtonToMarkRowDB($(rows[i]), name);
+                        } else if ($(rows[i]).find('img:first')[0] && !$(rows[i]).find('img:first').attr('src') == '') {
+                            var name = 'set_switch_db_profile-' + $(rows[i]).find('img:first').attr('src').replace(/(http:|https:|www|\/|\.png|\.jpg|\.)/ig, '');
+                            buildButtonToMarkRowDB($(rows[i]), name);
+                        }
+                    }
+                    // - Build button for view profile button (has no usable parent).
+                    if (!$('#gclh_wrapper_profile-viewButton')[0]) {
+                        var row = $(leftCol + profileBlock + profileBox + profileViewButton);
+                        if (row && row.length == 1) {
+                            row.wrap($('<div id="gclh_wrapper_profile-viewButton"></div>'));
+                            var row = $('#gclh_wrapper_profile-viewButton');
+                            buildButtonToMarkRowDB(row, 'set_switch_db_profile-viewButton');
+                        }
+                    }
+                    // - Build buttons for primary links (Quick access) and build buttons for secondary links without gclh areas.
+                    function buildButtonsForLinksDB(rows, ident) {
+                        for (var i = 0; i < rows.length; i++) {
+                            if ($(rows[i]).find('a:first')[0] && $(rows[i]).find('a:first')[0].href) {
+                                // Links that point to the upgrade do not have a suitable link to create a name. These are premium features that
+                                // are not available to basic members. Therefore, such entries cannot be hidden using this feature.
+                                if (!$(rows[i]).find('a:first')[0].href.match(/\?upgrade=true/)) {
+                                    if ($(rows[i]).find('a:first')[0]) {
+                                        var rel = $(rows[i]).find('a:first')[0].href.match(/https:\/\/(www|payments)\.geocaching\.com\/(.*?)($|\.aspx)/)
+                                        if (rel && rel[2]) {
+                                            name = 'set_switch_db_' + ident + '-' + rel[2].replace(/\//ig, '');
+                                            // Link to my/inventory is not available if a list of trackables is shown.
+                                            name = name.replace(/trackdetails/, 'myinventory');
+                                            buildButtonToMarkRowDB($(rows[i]), name);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var rows = $(leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' > li:not(:has(.clickPoint))');
+                    buildButtonsForLinksDB(rows, 'prim');
+                    var rows = $(leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' > li:not(:has(.clickPoint))');
+                    buildButtonsForLinksDB(rows, 'second');
+                    // Consider dependencies between the rows again at the end.
+                    setClickSumDB();
+                } catch(e) {gclh_error('function startHideRowsLeftColumnDB',e);}
             }
 
             // Set styles direct to elements in left column.
@@ -10221,11 +10445,12 @@ var mainGC = function() {
             const dbObserver = new MutationObserver(function(_, observer) {
                 observer.disconnect();
                 cssDB();
-                hideHeadingMoveSettingsButtonDB();
                 addGClhLinksDB();
                 addLinksAsQuickAccessLinksDB();
                 addLinksAsSecondaryLinksDB();
                 addLinkBlocksDB();
+                hideHeadingMoveSettingsButtonDB();
+                startHideRowsLeftColumnDB();
                 setStylesToleftColumnDB();
                 //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
                 //hideRightColumnDB();
@@ -10235,6 +10460,13 @@ var mainGC = function() {
                 observer.observe(document.body, config);
             });
             dbObserver.observe(document.body, config);
+
+            // Monitor screen size changes to prevent wrong positions of the settings button and the clickSum button on the left in the area of
+            // the profile summary button because of missing observer if only the line containing the Quick links wraps.
+            window.addEventListener('resize', () => {
+                hideHeadingMoveSettingsButtonDB();
+                buildClickSumButtonDB();
+            });
         } catch(e) {gclh_error('Improve dashboard',e);}
     }
 
@@ -10244,147 +10476,6 @@ var mainGC = function() {
     if (run && is_page("dashboard") && !settings_dashboard_disable_all_features) {
         try {
             var css = '';
-            // Compact layout.
-            if (settings_compact_layout_new_dashboard) {
-                // User block in the first block in the left column.
-                css += ".user-bio {padding-bottom: 0px !important;}";
-                css += "#user-bio-root > div {margin-top: 0px !important; padding: 12px 16px !important;}";
-                css += ".gclh_parent_profile_button a {margin-top: 8px !important; padding-top: 6px !important; padding-bottom: 6px !important;}";
-                // clickSum button to display or hide the configuration to hide rows in left column.
-                css += ".clickSum {position: absolute; margin-top: -23px; margin-left: 1px; cursor: pointer;}";
-                css += ".clickSum svg {height: 20px; width: 20px; fill: #777; transition: all .3s ease; transform-origin: 50% 50%;}";
-                css += ".clickSumHide .clickSum svg {transform: rotate(90deg);}";
-                // Adjust position of clickSum button if cover/avatar (.bio_data) is hiding.
-                css += ".gclh_no_bio_data {padding-top: 12px !important;}";
-                css += ".gclh_no_bio_data .clickSum {margin-top: -11px !important;}";
-                // Buttons to mark rows for display or hide in left column.
-                css += ".clickPoint {position: absolute; padding: 2px 3px 0px 2px !important; cursor: pointer; color: rgb(110, 110, 110);}";
-                css += ".bio-data .clickPoint {margin: 120px 0px 0px -1px !important; display: block;}";
-                css += "#user-bio-root .clickPoint {margin: 1px 0px 0px -17px !important;}";
-                css += "#user-bio-root .gclh_parent_profile_button .clickPoint {margin: 15px 0px 0px -17px !important;}";
-                css += "#user-bio-root .gclh_parent_profile_button a {display: block !important;}";
-                css += "#quickLinks ul .clickPoint {margin: 3px 0px 0px -17px !important;}";
-                css += "#sidebar-nav-root > nav ul .clickPoint {margin: -1px 0px 0px -24px !important;}";
-                css += ".clickPoint:hover {background-color: rgb(245 245 245);}";
-                css += ".clickPoint svg {height: 12px !important; width: 12px !important; opacity: 0.4;}";
-                css += ".clickPointHide svg {opacity: 1;}";
-                css += "#sidebar-nav-root nav {overflow: unset;}";
-                // Hide rows which are marked for hide in left column.
-                css += ".clickSumHide .clickPointHide, .clickSumHide .clickPoint {display: none !important;}";
-            }
-
-            // Improve left sidebar.
-            function improveLeftSidebar() {
-                // Build configuration to Show/Hide rows in left column.
-                function setClickSumDB() {
-                    if (getValue('show_box_dashboard_0', false) == true) {
-                        $('.clickSum').closest('#DashboardSidebar').addClass('clickSumHide');
-                        $('.clickSum')[0].title = 'Click here to view the configuration for hiding rows';
-                    } else {
-                        $('.clickSum').closest('#DashboardSidebar').removeClass('clickSumHide');
-                        $('.clickSum')[0].title = 'Click here to hide the configuration for hiding rows';
-                    }
-                    // Adjust position of clickSum button if cover/avatar (.bio_data) is hiding.
-                    if ($('.clickSumHide')[0] && $('.bio-data.clickPointHide')[0]) $('.clickSum').parent().parent().addClass('gclh_no_bio_data');
-                    else $('.clickSum').parent().parent().removeClass('gclh_no_bio_data');
-                }
-                function saveClickSumDB() {
-                    if ($('.clickSumHide')[0]) setValue('show_box_dashboard_0', false);
-                    else setValue('show_box_dashboard_0', true);
-                    setClickSumDB();
-                }
-                function setClickPointDB(row) {
-                    var name = $(row).attr('name')
-                    if (getValue(name, false) == true) {
-                        $(row).parent().addClass('clickPointHide');
-                        $(row)[0].title = 'Click to mark the row for display\nAfter the configuration is complete, click the icon at the top of the column';
-                    } else {
-                        $(row).parent().removeClass('clickPointHide');
-                        $(row)[0].title = 'Click to mark the row for hide\nAfter the configuration is complete, click the icon at the top of the column';
-                    }
-                }
-                function saveClickPointDB() {
-                    if ($(this).parent().hasClass('clickPointHide')) setValue($(this).attr('name'), false);
-                    else setValue($(this).attr('name'), true);
-                    setClickPointDB(this);
-                }
-                if (settings_compact_layout_new_dashboard && settings_row_hide_new_dashboard && $('.bio-data')[0] && $('#user-bio-root')[0] && $('#quickLinks ul li')[0] && $('#sidebar-nav-root > nav > ul li')[0]) {
-                    // Build button to display or hide the configuration to hide rows.
-                    if ($('#user-bio-root')[0]) {
-                        $($('#user-bio-root')[0]).prepend('<span class="clickSum"><svg><use xlink:href="/account/app/ui-icons/sprites/global.svg#icon-expand-svg-fill" title=""</use></svg></span>');
-                        $('.clickSum')[0].addEventListener("click", saveClickSumDB, false);
-                        // Build buttons to mark rows for display or hide.
-                        function buildButtonToMarkRowDB(row, name) {
-                            if (row && row.length == 1 && name && name != '') {
-                                $(row).prepend('<span name="' + name + '" class="clickPoint"><svg><use href="#close--inline"></use></svg></span>');
-                                $(row).find('.clickPoint')[0].addEventListener("click", saveClickPointDB, false);
-                                setClickPointDB($(row).find('.clickPoint')[0]);
-                            }
-                        }
-                        // Build button for user cover image and profile image.
-                        var row = $('.bio-data');
-                        buildButtonToMarkRowDB(row, 'set_switch_db_bio-userImages');
-                        // Build button for user name.
-                        var row = $('#user-bio-root > div > div > h1:first').closest('div');
-                        buildButtonToMarkRowDB(row, 'set_switch_db_bio-userName');
-                        // Build button for user profile button (has no parent).
-                        var row = $('#user-bio-root > div > a[href*="/p/default.aspx"]');
-                        if (row && row.length == 1) {
-                            var div = document.createElement('div');
-                            div.setAttribute('class', 'gclh_parent_profile_button');
-                            row.after(div);
-                            $('.gclh_parent_profile_button').append($('#user-bio-root > div > a').remove().get().reverse());
-                            var row = $('.gclh_parent_profile_button');
-                            buildButtonToMarkRowDB(row, 'set_switch_db_bio-userProfile');
-                        }
-                        // Build buttons for user data in list like Joined, Renewal Date, finds and hides, and foreign data like gclh and send2cgeo.
-                        function buildButtonsForUserDataInList(waitCount) {
-                            var rows = $('#user-bio-root > div > ul > li');
-                            for (var i = 0; i < rows.length; i++) {
-                                if (!$(rows[i]).find('.clickPoint')[0]) {
-                                    if ($(rows[i]).find('svg:first use')[0] && !$(rows[i]).find('svg:first use').attr('href') == '') {
-                                        var name = 'set_switch_db_bio-' + $(rows[i]).find('svg:first use').attr('href').replace(/(#|_no-outline|--inline)/ig, '');
-                                        buildButtonToMarkRowDB($(rows[i]), name);
-                                    } else if ($(rows[i]).find('img:first')[0] && !$(rows[i]).find('img:first').attr('src') == '') {
-                                        var name = 'set_switch_db_bio-' + $(rows[i]).find('img:first').attr('src').replace(/(http:|https:|www|\/|\.png|\.jpg|\.)/ig, '');
-                                        buildButtonToMarkRowDB($(rows[i]), name);
-                                    }
-                                }
-                            }
-                            waitCount++; if (waitCount <= 1000) setTimeout(function(){buildButtonsForUserDataInList(waitCount);}, 10);
-                        }
-                        buildButtonsForUserDataInList(0);
-                        // Build buttons for primary links (quick links) and for secondary links (without gclh areas).
-                        var rows = $('#quickLinks ul > li, #sidebar-nav-root > nav > ul:not(.gclh) > li');
-                        if (rows) {
-                            for (var i = 0; i < rows.length; i++) {
-                                if ($(rows[i]).find('a:first')[0] && $(rows[i]).find('a:first')[0].href) {
-                                    if (!$(rows[i]).find('a:first')[0].href.match(/\?upgrade=true/)) {
-                                        if ($(rows[i]).find('a:first')[0]) {
-                                            var rel = $(rows[i]).find('a:first')[0].href.match(/https:\/\/(www|payments)\.geocaching\.com\/(.*?)($|\.aspx)/)
-                                            if (rel && rel[2]) {
-                                                if ($(rows[i]).closest('#quickLinks')[0]) var name = 'set_switch_db_prim-';
-                                                else var name = 'set_switch_db_second-';
-                                                name = name + rel[2].replace(/\//ig, '');
-                                                // Link to my/inventory is not available if a list of trackables is shown.
-                                                name = name.replace(/trackdetails/, 'myinventory');
-                                                buildButtonToMarkRowDB($(rows[i]), name);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        setClickSumDB();
-                    }
-                }
-            }
-            function waitForLeftSidebar(waitCount) {
-                if ($('.container')[0] && $('#DashboardSidebar')[0] && $('.user-bio')[0] && $('#user-bio-root')[0] && $('#quickLinks ul')[0] && $('#sidebar-nav-root > nav')[0]) {
-                    improveLeftSidebar();
-                } else {waitCount++; if (waitCount <= 200) setTimeout(function(){waitForLeftSidebar(waitCount);}, 50);}
-            }
-            waitForLeftSidebar(0);
 
             // Set real edit link in logs in area Latest Activity.
             // (Ich habe keinen Weg gefunden mit MutationObserver Logs beim Wechsel zwischen Community Logs und Your Logs abzugreifen.)
@@ -16400,8 +16491,9 @@ var mainGC = function() {
     }
 
 // Do migration tasks for new version.
-// Die Variablen dürfen nicht initialisiert werden, damit der gewünschte Effekt sofort eintritt, weil dabei auch die user parameter wie beispielsweise
-// global_me zurückgesetzt werden. Ein Aufruf von "variablesInit(window)" darf also nicht mehr erfolgen.
+// - Damit der gewünschte Effekt sofort eintritt, kann die Seite mit "location.reload();" aktualisiert werden.
+// - Die Variablen dürfen nicht initialisiert werden, damit der gewünschte Effekt sofort eintritt, weil dabei auch die user parameter wie beispielsweise
+//   global_me zurückgesetzt werden. Ein Aufruf von "variablesInit(window);" darf also nicht erfolgen.
     function migrationTasks() {
         // Delete older parameter set_switch_db... (zu v0.17.13).
         if (getValue("migration_task_09", false) != true) {
@@ -16447,6 +16539,19 @@ var mainGC = function() {
             CONFIG = config_tmp;
             GM_setValue("CONFIG", JSON.stringify(CONFIG));
             setValue("migration_task_11", true);
+        }
+        // Delete older parameter set_switch_db... (zu v0.18.6).
+        if (getValue("migration_task_12", false) != true) {
+            var config_tmp = {};
+            for (key in CONFIG) {
+                if (!key.match(/^set_switch_db_/)) {
+                    config_tmp[key] = CONFIG[key];
+                }
+            }
+            CONFIG = config_tmp;
+            CONFIG['migration_task_12'] = true;
+            GM_setValue("CONFIG", JSON.stringify(CONFIG));
+            location.reload();
         }
     }
 
