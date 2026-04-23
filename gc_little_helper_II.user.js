@@ -9627,8 +9627,10 @@ var mainGC = function() {
                             css += leftCol + profileBlock + profileBox + profileAvatar + ' .clickPoint {margin: 35px 0px 0px -33px !important;}';
                             css += leftCol + profileBlock + profileBox + profileList + ' .clickPoint {margin: 4px 0px 0px -32px !important;}';
                             css += '#gclh_wrapper_profile-viewButton .clickPoint  {margin: 5px 0px 0px -32px !important;}';
-                            css += leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' > li .clickPoint {margin: ' + (1 + (settings_line_height_first_block_db - 20) / 2) + 'px 0px 0px -16px !important;}';
-                            css += leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' > li .clickPoint {margin: ' + (1 + (settings_line_height_other_blocks_db - 20) / 2) + 'px 0px 0px -16px !important;}';
+                            var top = (settings_line_height_first_block_adjust_db == true ? 1 + (settings_line_height_first_block_db - 20) / 2 : 9);
+                            css += leftCol + allLinkBlocks + linkBlock + ':nth-child(1)' + linkBox + ' > li .clickPoint {margin: ' + top + 'px 0px 0px -16px !important;}';
+                            var top = (settings_line_height_other_blocks_adjust_db == true ? 1 + (settings_line_height_other_blocks_db - 20) / 2 : 5);
+                            css += leftCol + allLinkBlocks + linkBlock + ':not(:nth-child(1)):not(.gclh)' + linkBox + ' > li .clickPoint {margin: ' + top + 'px 0px 0px -16px !important;}';
                             // Adjust position of avatar, if cover was hidden.
                             css += '.clickSumHide .gclh_no_profile-cover {margin-top: 0px !important}';
                             // Adjust the top spacing of the view button, if there were previously all list entries were hidden.
@@ -9945,6 +9947,9 @@ var mainGC = function() {
                 button.style.setProperty('margin', '3px', 'important');
                 button.style.setProperty('top', topOffset + 'px', 'important');
                 button.style.setProperty('left', leftOffset + 'px', 'important');
+                button.style.setProperty('width', '29.33px', 'important');
+                button.style.setProperty('height', '29.33px', 'important');
+                button.style.setProperty('min-width', 'unset', 'important');
             }
 
             // Hide page heading and move settings button into profile summary button.
