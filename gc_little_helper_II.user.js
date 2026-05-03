@@ -636,7 +636,7 @@ var variablesInit = function(c) {
     c.settings_show_bigger_avatars_but = getValue("settings_show_bigger_avatars_but", true);
     c.settings_hide_feedback_icon = getValue("settings_hide_feedback_icon", false);
     c.settings_compact_layout_new_dashboard = getValue("settings_compact_layout_new_dashboard", true);
-    c.settings_hide_heading_and_move_settings_button_db = getValue("settings_hide_heading_and_move_settings_button_db", true);
+    c.settings_hide_heading_and_move_settings_button_db = getValue("settings_hide_heading_and_move_settings_button_db", false);
     c.settings_row_hide_new_dashboard = getValue("settings_row_hide_new_dashboard", true);
     c.settings_line_height_first_block_adjust_db = getValue("settings_line_height_first_block_adjust_db", true);
     c.settings_line_height_first_block_db = getValue("settings_line_height_first_block_db", 28);
@@ -762,6 +762,9 @@ var variablesInit = function(c) {
     c.settings_drafts_download_show_button = getValue("settings_drafts_download_show_button", true);
     c.settings_drafts_download_change_logdate = getValue("settings_drafts_download_change_logdate", false);
     c.settings_dashboard_show_logs_in_markdown = getValue("settings_dashboard_show_logs_in_markdown", true);
+    c.settings_view_larger_log_images_db = getValue("settings_view_larger_log_images_db", false);
+    c.settings_view_larger_log_images_max_width_db = getValue("settings_view_larger_log_images_max_width_db", 640);
+    c.settings_view_larger_log_images_max_height_db = getValue("settings_view_larger_log_images_max_height_db", 450);
     c.settings_public_profile_smaller_privacy_btn = getValue("settings_public_profile_smaller_privacy_btn", false);
     c.settings_searchmap_improve_add_to_list = getValue("settings_searchmap_improve_add_to_list", true);
     c.settings_searchmap_improve_add_to_list_height = getValue("settings_searchmap_improve_add_to_list_height", 130);
@@ -9518,52 +9521,64 @@ var mainGC = function() {
     if (is_page('dashboard') && !settings_dashboard_disable_all_features) {
         try {
             // Specification of anchors for own coding and styles:
+
             // Heading and settings button.
             var heading = '#header-root';
-            // - Heading title.
+            // > Heading title.
             var headingTitle = ' h1';
-            // - Button containing the toggle icon and the name for the settings button.
+            // > Button containing the toggle icon and the name for the settings button.
             var settingsButton = ' button:first';
-            // - Button label containing the label for the settings button.
+            // > Button label containing the label for the settings button.
             var settingsButtonLabel = ' button:first > span';
-            // - Popup of the settings button.
+            // > Popup of the settings button.
             var settingsButtonPopup = '#dashboard-settings-popover';
+
             // Left column.
             var leftCol = '#leftCol';
-            // - First Block - Profile Summary.
+
+            // > First Block - Profile Summary.
             var profileBlock = ':not(nav) section';
-            // - Button containing the name and the toggle icon for the button.
+            // >> Button containing the name and the toggle icon for the button.
             var profileButton = ' button';
-            // - Button name containing the name for the button.
+            // >> Button name containing the name for the button.
             var profileButtonName = ' button > h2';
-            // - Button icon containing the toggle icon for the button.
+            // >> Button icon containing the toggle icon for the button.
             var profileButtonIcon = ' button > svg';
-            // - Box containing all entries.
+            // >> Box containing all entries.
             var profileBox = ' > div > div > div';
-            // - Profile cover image and components.
+            // >>> Profile cover image and components.
             var profileCover = ' > a';
-            // - Profile avatar image and components.
+            // >>> Profile avatar image and components.
             var profileAvatar = ' > div:has(img[src*=".com/square250/"],img[src*=".com/images/default_avatar"])';
-            // - List entries Joined, Renewal Date, finds, hides, gclh links and maybe foreign entries such as send2cgeo.
+            // >>> List entries Joined, Renewal Date, finds, hides, gclh links and maybe foreign entries such as send2cgeo.
             var profileList = ' > div > ul > li';
-            // - View profile button.
+            // >>> View profile button.
             var profileViewButton = ' > div a[href*="/p/default.aspx"]';
-            // - All navigation blocks such as Quick access, Geocaches ... .
+
+            // > All navigation blocks such as Quick access, Geocaches ... .
             var allLinkBlocks = ' nav';
-            // - One navigation blocks such as Quick access, Geocaches ... .
+            // >> One navigation blocks such as Quick access, Geocaches ... .
             var linkBlock = ' section';
-            // - Button containing the name and the icon toggle for the button.
+            // >>> Button containing the name and the icon toggle for the button.
             var linkButton = profileButton;
-            // - Button name containing the name for the button.
+            // >>> Button name containing the name for the button.
             var linkButtonName = profileButtonName;
-            // - Button icon containing the toggle icon for the button.
+            // >>> Button icon containing the toggle icon for the button.
             var linkButtonIcon = profileButtonIcon;
-            // - Box containing the links within a navigation block.
+            // >>> Box containing the links within a navigation block.
             var linkBox = ' > div > div > ul';
-            // Center column.
+
+            // Center column. This anchor could also be removed in later releases for narrower screens. Use with caution.
             var centerCol = '#centerCol';
-            // Right column.
+            // > Latest activity Block.
+            var latestActBlock = 'section:has(#collapsible-section-activityFeed)';
+
+            // Right column. This anchor is not available on narrower screens. Use with caution.
             var rightCol = '#rightCol';
+            // > Events Block.
+            var eventsBlock = 'section:has(#collapsible-section-eventsWidget)';
+            // > Tips and instruction block.
+            var tipsBlock = 'a[href*="/sites/education/"]';
 
             // Templates:
             // - Template for a new block.
@@ -9655,8 +9670,8 @@ var mainGC = function() {
                         css += '.event-list-item > div:not(.event-list-item-details) > div:not(.event-list-item-map) {padding-top: 8px !important; padding-bottom: 3px !important;}';
                         css += '#EventsList > div > div:not(.events-list-container) {padding: 5px 40px !important;}';
 //<-xxxx
-                        // Hide tips and instruction container in the right column.
-                        css += rightCol + ' a[href*="/sites/education/"] {display: none !important;}';
+                        // Hide tips and instruction block in the right column.
+                        css += tipsBlock + ' {display: none !important;}';
                     }
                     // Hide areas.
                     css += '.isHide {display: none !important;}';
@@ -9666,6 +9681,17 @@ var mainGC = function() {
                     css += '#search--inline path {stroke-width: 1.0; stroke: currentColor;}';
                     // VIPs, VUPs, links not in blue color.
                     css += leftCol + allLinkBlocks + ' .gclh a {color: inherit !important;}';
+                    // View larger log images.
+                    if (settings_view_larger_log_images_db) {
+                        css += 'dialog.gclh_largerImage {padding: 10px 16px !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) {flex-flow: row !important; align-items: baseline !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) button {margin-top: 0px !important; margin-right: -3px !important; margin-left: 15px !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) h1 span {font-size: 16px !important;}';
+                        css += 'dialog.gclh_largerImage #modal-base-body > div > div {min-height: 50px !important;}';
+                        css += 'dialog.gclh_largerImage {width: '+ (parseInt(settings_view_larger_log_images_max_width_db) + 32) + 'px !important;}';
+                        css += 'dialog.gclh_largerImage img[src*="https://img.geocaching.com/"] {width: '+ parseInt(settings_view_larger_log_images_max_width_db) + 'px !important;}';
+                        css += 'dialog.gclh_largerImage img[src*="https://img.geocaching.com/"] {max-height: '+ parseInt(settings_view_larger_log_images_max_height_db) + 'px !important;}';
+                    }
                     // Hide right column.
                     css += '#gclh_right_column_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
                     css += '@media (max-width: 950px) {#gclh_right_column_toggle {margin-left: 0px; margin-top: -5px;}}';
@@ -9938,7 +9964,7 @@ var mainGC = function() {
 
             // Style the clickSum button or the settings button in profile summary button.
             function styleButtonInProfileSummaryButtonDB(button, topOffset, leftOffset) {
-                // Create space in the profile summary button for the settings button.
+                // Create space in the profile summary button for the clickSum button or the settings button.
                 $(leftCol + profileBlock + profileButtonName)[0].style.setProperty('margin-left', leftOffsetProfileSummaryButtonName + 'px', 'important');
                 // Display the button in the profile summary button.
                 button.style.setProperty('position', 'absolute', 'important');
@@ -10201,6 +10227,21 @@ var mainGC = function() {
                 } catch(e) {gclh_error('function setStylesToleftColumnDB',e);}
             }
 
+            // View larger log images.
+            // By default, images with a width of 640 pixels are provided. These are the links with "large". A higher resolution only makes sense
+            // if it can actually be displayed on the screen. The modified links contain the maximum resolution as they are stored.
+            function viewLargerLogImagesDB() {
+                if (settings_view_larger_log_images_db) {
+                    var images = $('#modal-base-body img[src*="img.geocaching.com/large/"]');
+                    for (var i = 0; i < images.length; i++) {
+                        if (parseInt(settings_view_larger_log_images_max_width_db) > 640) {
+                            images[i].src = images[i].src.replace(/\/large\//, '/');
+                        }
+                        $(images[i].closest('dialog')).addClass('gclh_largerImage');
+                    }
+                }
+            }
+
             // Hide right column.
             function hideRightColumnDB() {
                 try {
@@ -10253,12 +10294,9 @@ var mainGC = function() {
             }
 
             // Show unpublished hides.
-            var showUnpublishedHidesIsWorking = false;
             function showUnpublishedHidesDB() {
                 try {
-                    if (!settings_showUnpublishedHides || showUnpublishedHidesIsWorking) return;
-                    if ($(rightCol)[0]) {
-                        showUnpublishedHidesIsWorking = true;
+                    if (settings_showUnpublishedHides && $(eventsBlock)[0] && !$('#gclh_unpublishedCaches')[0]) {
                         var unpublishedCaches = false;
                         var unpublishedEvents = false;
                         var panel = '';
@@ -10270,7 +10308,7 @@ var mainGC = function() {
                         panel += '        </div>';
                         panel += '    </div>';
                         panel += '</section>';
-                        $(rightCol).append(panel);
+                        $(eventsBlock).after(panel);
                         var button = $(newButton);
                         $(button).find('h2')[0].innerHTML = 'Unpublished Hides';
                         $('#gclh_unpublishedCaches .panel-head').append(button);
@@ -10446,7 +10484,7 @@ var mainGC = function() {
                 } catch(e) {gclh_error('Save uid of own trackables',e);}
             }
 
-            const config = {childList: true, subtree: true};
+            const config = {childList: true, subtree: true, attributes: true};
             const dbObserver = new MutationObserver(function(_, observer) {
                 observer.disconnect();
                 cssDB();
@@ -10457,6 +10495,7 @@ var mainGC = function() {
                 hideHeadingMoveSettingsButtonDB();
                 startHideRowsLeftColumnDB();
                 setStylesToleftColumnDB();
+                viewLargerLogImagesDB();
                 //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
                 //hideRightColumnDB();
                 //<< Issue 3109
@@ -18373,6 +18412,11 @@ var mainGC = function() {
             html += checkboxy('settings_show_default_links', 'Show all default links as a section in left column') + show_help("Show all the default links for the Linklist sorted as a section in the left column of your dashboard.") + "<br>";
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
+            html += newParameterOn2;
+            html += checkboxy('settings_view_larger_log_images_db', 'View larger log images') + show_help("With this option, the log images are displayed larger and can be loaded in full resolution.<br><br>To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel.<br><br>If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.");
+            html += "&nbsp; Max width <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_width_db' value='" + settings_view_larger_log_images_max_width_db + "'> px";
+            html += "&nbsp; Max height <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_height_db' value='" + settings_view_larger_log_images_max_height_db + "'> px <br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_show_edit_links_for_logs', 'Show edit links for your own logs') + show_help("With this option direct edit links are shown in your own logs of your dashboard. If you choose such a link, you are immediately in edit mode in your log.") + "<br>";
             //>> Issue 3109 Feature to hide right column disabled due to an error on the website.
             //html += newParameterOn1;
@@ -19756,6 +19800,8 @@ var mainGC = function() {
             setEvForDepPara("settings_download_pqs", "settings_download_pqs_file_name_founds");
             setEvForDepPara("settings_download_pqs_replace_file_name", "settings_download_pqs_file_name");
             setEvForDepPara("settings_download_pqs_replace_file_name_founds", "settings_download_pqs_file_name_founds");
+            setEvForDepPara("settings_view_larger_log_images_db", "settings_view_larger_log_images_max_width_db");
+            setEvForDepPara("settings_view_larger_log_images_db", "settings_view_larger_log_images_max_height_db");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -19953,6 +19999,8 @@ var mainGC = function() {
             setValue("settings_line_height_first_block_db", document.getElementById('settings_line_height_first_block_db').value);
             setValue("settings_line_height_other_blocks_db", document.getElementById('settings_line_height_other_blocks_db').value);
             setValue("settings_line_height_gclh_blocks_db", document.getElementById('settings_line_height_gclh_blocks_db').value);
+            setValue("settings_view_larger_log_images_max_width_db", parseInt(document.getElementById('settings_view_larger_log_images_max_width_db').value));
+            setValue("settings_view_larger_log_images_max_height_db", parseInt(document.getElementById('settings_view_larger_log_images_max_height_db').value));
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -20300,6 +20348,7 @@ var mainGC = function() {
                 'settings_drafts_download_show_button',
                 'settings_drafts_download_change_logdate',
                 'settings_dashboard_show_logs_in_markdown',
+                'settings_view_larger_log_images_db',
                 'settings_public_profile_smaller_privacy_btn',
                 'settings_searchmap_improve_add_to_list',
                 'settings_searchmap_improve_add_to_list',
