@@ -13214,7 +13214,7 @@ var mainGC = function() {
                     // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
                     css += '#searchtabs {height: 63px !important; margin-top: 6px !important;} #searchtabs li a {padding: 0.625em 0.5em !important;}';
                     appendCssStyle(css);
-                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMapLeaflet(waitCount);}, 100);}
+                } else {waitCount++; if (waitCount <= 50) setTimeout(function(){checkMap(waitCount);}, 100);}
             }
             if (settings_map_show_btn_hide_header) checkMap(0);
             gclh_GetGcAccessToken( function(r) {
