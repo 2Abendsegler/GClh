@@ -271,7 +271,7 @@
   "settings_show_bigger_avatars_but": true,
   "settings_hide_feedback_icon": false,
   "settings_compact_layout_new_dashboard": true,
-  "settings_hide_heading_and_move_settings_button_db": true,
+  "settings_hide_heading_and_move_settings_button_db": false,
   "settings_row_hide_new_dashboard": true,
   "settings_line_height_first_block_adjust_db": true,
   "settings_line_height_first_block_db": 28,
