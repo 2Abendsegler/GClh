@@ -6571,10 +6571,10 @@ var mainGC = function() {
     if (settings_pq_previewmap && document.location.href.match(/\.com\/pocket\/gcquery\.aspx/) && !global_isBasic && $('.LatLongTable')[0]) {
         try {
             leafletInit();
-            $('.LatLongTable').after('<div style="position:absolute;top: 8px; left: 300px;height:330px;width:470px;" id="gclh_map" ></div>').parent().css("style", "relative");
+            $('.LatLongTable').after('<div style="position: absolute; top: 8px; left: 301px; height: 335px; width: 470px; border: 1px solid oklch(.7572 0 none);" id="gclh_map" ></div>').parent().css("style", "relative");
             var previewMap = L.map('gclh_map', {
-                  dragging: false,
-                  zoomControl: true,
+                  dragging: true,
+                  zoomControl: true
             }).setView([0, 0],0); // to avoid problems;
             var layer = (settings_pq_previewmap_layer == "" || settings_pq_previewmap_layer == "Geocaching") ? all_map_layers['OpenStreetMap Default'] : all_map_layers[settings_pq_previewmap_layer];
             var layerObj = L.tileLayer( layer.tileUrl, layer ).addTo(previewMap);
@@ -6597,7 +6597,7 @@ var mainGC = function() {
                 iconAnchor:   [11, 41], // point of the icon which will correspond to marker's location
                 shadowAnchor: [11, 41], // the same for the shadow
             })}).addTo(previewMap);
-            var radius = L.circle([0,0], 0).addTo(previewMap);
+            var radius = L.circle([0,0], 0, {weight: 2, fillOpacity: 0.1}).addTo(previewMap);
             var group = new L.featureGroup([marker, radius]);
             $('#ctl00_ContentBody_rbOriginNone').closest('fieldset')[0].id = "gclh_Origin";
             $('.LatLongTable input, #gclh_Origin, #ctl00_ContentBody_tbRadius, #ctl00_ContentBody_rbUnitType_0, #ctl00_ContentBody_rbUnitType_1').change(function() {
