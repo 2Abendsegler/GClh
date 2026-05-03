@@ -3461,7 +3461,7 @@ var mainGC = function() {
             appendCssStyle(css);
             var html = "";
             html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
-            html += "<div id='gclh_map_overview' class='WidgetBody' style='padding: 0; height: 248px; width: 248px;'>";
+            html += "<div id='gclh_map_overview' class='WidgetBody' style='padding: 0; height: 248px; width: 248px; background-color: rgb(221, 221, 221);'>";
             if (settings_map_overview_search_map_icon || settings_map_overview_browse_map_icon) {
                 if (settings_map_overview_search_map_icon && settings_map_overview_browse_map_icon) var bothIcons = true;
                 else var bothIcons = false;
