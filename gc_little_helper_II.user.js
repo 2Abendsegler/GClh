@@ -29,8 +29,8 @@
 // @resource maincss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/main.css
 // @resource headerhtml https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/header.html
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
-// @resource leafletjs https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.js
-// @resource leafletcss https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/leaflet.css
+// @resource leafletjs https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.js
+// @resource leafletcss https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.css
 // @connect      maps.googleapis.com
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
@@ -15936,7 +15936,9 @@ var mainGC = function() {
 // Leaflet init.
     function leafletInit() {
         try {
-            if ( typeof L == "undefined" ) {
+            // Make sure that only a specific Leaflet version is used.
+            const version = "0.7.2";
+            if ( typeof L == "undefined" || L.version != version ) {
                 if ( !$('#gclh_leafletjs').length ) {
                     var newCSS = GM_getResourceText ("leafletcss");
                     GM_addStyle (newCSS);
@@ -15944,8 +15946,24 @@ var mainGC = function() {
                     injectPageScript(newJS, "body", 'gclh_leafletjs');
                 }
             }
-            if ( L.version != "0.7.2" ) {
-                console.error("Unexpected version of leaflet. Version 0.7.2 required, version "+L.version+" is loaded.");
+
+            // Prevent the loaded Leaflet version from being overwritten by a different version loaded later.
+            const _L = unsafeWindow.L;
+            Object.defineProperty(unsafeWindow, 'L', {
+                // Use L as usual.
+                get() {return _L;},
+                // Protect L from any changes.
+                set() {},
+                // Prevent the protection from being disabled.
+                configurable: false,
+                enumerable: true
+            });
+
+            // Add hover and mouse effects to Leaflet markers (missing in 0.7.2).
+            if (L.version === "0.7.2") appendCssStyle('.leaflet-marker-pane img {cursor: pointer; pointer-events: auto;}');
+
+            if ( L.version != version ) {
+                console.error("Unexpected version of leaflet. Version "+version+" required, version "+L.version+" is loaded.");
             }
         } catch(e) {gclh_error("function leafletInit",e);}
     }
