@@ -17902,8 +17902,12 @@ var mainGC = function() {
             html += " &nbsp; " + checkboxy('settings_fav_proz_recviewed', 'Show favorites percentage') + "<br>";
             html += "</div>";
 
-            html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","bm")+"<label for='lnk_gclh_config_bm'>Bookmark List</label>" + prem + "</h4>";
-            html += "<div id='gclh_config_bm' class='gclh_block'>";
+            //>> Issue 2566 [My Lists, BML] The GClh features are no longer available (Tech migration).
+            //html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","bm")+"<label for='lnk_gclh_config_bm'>Bookmark List</label>" + prem + "</h4>";
+            //html += "<div id='gclh_config_bm' class='gclh_block'>";
+            html += "<h4 class='gclh_headline2' style='opacity: 0.5;'>"+prepareHideable.replace("#id#","bm")+"<label for='lnk_gclh_config_bm'>Bookmark List</label>" + prem + "</h4>";
+            html += "<div class='gclh_block' style='display: none !important;'>";
+            //<< Issue 2566 [My Lists, BML] The GClh features are no longer available (Tech migration).
             html += checkboxy('settings_lists_compact_layout', 'Show compact layout') + show_help("With this option the list of bookmark lists, the bookmark lists, the favorites list and the ignore list is displayed in compact layout.") + "<br>";
             var content_status_line = "If the name of disabled and archived caches are specially represented and the identifier of premium member only caches are shown in an own column, the cache status line above the cache name is hidden.";
             html += checkboxy('settings_lists_disabled', 'Show name of disabled caches ') + checkboxy('settings_lists_disabled_strikethrough', 'strike through, in color ');
