@@ -16898,8 +16898,8 @@ var mainGC = function() {
             css += '#create-new-list-textfield-header, #popover-portal-root input::placeholder, #popover-portal-root span[data-testid="existing-lists-header"] {color: #7e7d7a !important; font-size: 12px !important; font-weight: normal !important;}';
             css += '#popover-portal-root span[data-testid="existing-lists-header"] {height: 20px !important; border-bottom: 1px solid #dfdfdf !important;}';
             css += '#popover-portal-root section ul {max-height: ' + ((parseInt(settings_searchmap_improve_add_to_list_height) < 130) ? parseInt(130) : parseInt(settings_searchmap_improve_add_to_list_height)) + 'px !important;}';
-            css += '#popover-portal-root section ul li {padding-top: 2px !important; padding-bottom: 2px !important;}';
-            css += '#popover-portal-root section ul li button, #popover-portal-root section ul li .status-icon {line-height: 18px !important; height: 18px !important;}';
+            css += '#popover-portal-root section ul li {padding-top: 2px !important; padding-bottom: 2px !important; height: 22px !important; margin-top: 0px !important; margin-bottom: 0px !important;}';
+            css += '#popover-portal-root section ul li button, #popover-portal-root section ul li .status-icon {padding-top: 0px !important; padding-bottom: 0px !important; line-height: 18px !important; height: 18px !important; margin-top: 0px !important; margin-bottom: 0px !important;}';
         }
         if ((is_page("cache_listing") && settings_improve_add_to_list) || is_page("map")) {
             // Improve Add to List popup.
