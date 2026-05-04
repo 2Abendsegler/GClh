@@ -16913,6 +16913,7 @@ var mainGC = function() {
             css += '.qtip.pop-modal .add-list .status {font-size: 14px !important; width: unset !important;}';
             css += '.qtip.pop-modal .add-list .status.success, .qtip.pop-modal .add-list .success-message {right: 2px !important; padding: 0 15px 0px 5px !important; background-color: white !important; color: #E0B70A !important;}';
             css += '.qtip.pop-modal .add-list .status .loading {right: 12px !important;}';
+            css += '.qtip.pop-modal #newListName {outline: none !important;}';
         }
         if (!css == '' && !$('#gclh_addToList')[0]) appendCssStyle(css, null, 'gclh_addToList');
         // Determine cache guid.
