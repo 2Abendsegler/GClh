@@ -9532,6 +9532,8 @@ var mainGC = function() {
             var settingsButtonLabel = ' button:first > span';
             // > Popup of the settings button.
             var settingsButtonPopup = '#dashboard-settings-popover';
+            // >> Button "Hide setting label" in the popup of the settings button.
+            var settingsButtonPopupLabelButton = ' div:has(> div[data-testid="dashboard-settings-button-display-toggle"])';
 
             // Left column.
             var leftCol = '#leftCol';
@@ -9688,9 +9690,15 @@ var mainGC = function() {
                         css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) button {margin-top: 0px !important; margin-right: -3px !important; margin-left: 15px !important;}';
                         css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) h1 span {font-size: 16px !important;}';
                         css += 'dialog.gclh_largerImage #modal-base-body > div > div {min-height: 50px !important;}';
-                        css += 'dialog.gclh_largerImage {width: '+ (parseInt(settings_view_larger_log_images_max_width_db) + 32) + 'px !important;}';
-                        css += 'dialog.gclh_largerImage img[src*="https://img.geocaching.com/"] {width: '+ parseInt(settings_view_larger_log_images_max_width_db) + 'px !important;}';
-                        css += 'dialog.gclh_largerImage img[src*="https://img.geocaching.com/"] {max-height: '+ parseInt(settings_view_larger_log_images_max_height_db) + 'px !important;}';
+                        css += 'dialog.gclh_largerImage #modal-base-body form {margin-top: 4px !important; min-height: 24px !important; font-size: 16px !important;}';
+                        // Inner and outer frames span 32px and 34px in width. In total 66px.
+                        var w = Math.min(parseInt(settings_view_larger_log_images_max_width_db), document.documentElement.clientWidth - 66);
+                        // Inner and outer frames span 20px and 34px in height. Cache name above span 28px (one line). Image description below span estimated
+                        // 28px (one line). In total 110px.
+                        var h = Math.min(parseInt(settings_view_larger_log_images_max_height_db), document.documentElement.clientHeight - 110);
+                        css += 'dialog.gclh_largerImage {width: '+ (w + 32) + 'px !important;}';
+                        css += 'dialog.gclh_largerImage img[src*="https://img.geocaching.com/"] {width: '+ w + 'px !important;}';
+                        css += 'dialog.gclh_largerImage img[src*="https://img.geocaching.com/"] {max-height: '+ h + 'px !important;}';
                     }
                     // Hide right column.
                     css += '#gclh_right_column_toggle {position: absolute; margin-left: -21px; margin-top: 8px; padding: 0; border: none; cursor: pointer; background-color: unset;}';
@@ -9994,7 +10002,7 @@ var mainGC = function() {
                         $(heading + settingsButtonLabel)[0].style.setProperty('display', 'none', 'important');
                         // Style settings button in profile summary button.
                         styleButtonInProfileSummaryButtonDB($(heading + settingsButton)[0], topOffsetSettingsButton, leftOffsetSettingsButton);
-                        // Align the settings button pop-up.
+                        // Align and adjust the settings button pop-up.
                         if ($(settingsButtonPopup)[0]) {
                             // To prevent an initial flickering of the pop-up until the "transform" is complete.
                             function alignSettingsPopupDB(waitCount) {
@@ -10007,6 +10015,10 @@ var mainGC = function() {
                                 }
                             }
                             alignSettingsPopupDB(0);
+                            // Hide button "Hide settings label", because it no longer has any function.
+                            if ($(settingsButtonPopup + settingsButtonPopupLabelButton)[0]) {
+                                $(settingsButtonPopup + settingsButtonPopupLabelButton)[0].style.setProperty('display', 'none', 'important');
+                            }
                         }
                     }
                 } catch(e) {gclh_error('function hideHeadingMoveSettingsButtonDB',e);}
@@ -10506,7 +10518,7 @@ var mainGC = function() {
             dbObserver.observe(document.body, config);
 
             // Monitor screen size changes to prevent wrong positions of the settings button and the clickSum button on the left in the area of
-            // the profile summary button because of missing observer if only the line containing the Quick links wraps.
+            // the profile summary button because of missing observer if only the line containing the Quick links wraps or is built or is hidden.
             window.addEventListener('resize', () => {
                 hideHeadingMoveSettingsButtonDB();
                 buildClickSumButtonDB();
@@ -18413,7 +18425,8 @@ var mainGC = function() {
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterOn2;
-            html += checkboxy('settings_view_larger_log_images_db', 'View larger log images') + show_help("With this option, the log images are displayed larger and can be loaded in full resolution.<br><br>To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel.<br><br>If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.");
+            var text = 'With this option, the log images are displayed larger and can be loaded in full resolution.<br><br>To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel. If these values exceed the width or height of the screen, they will be determined automatically.<br><br>If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.';
+            html += checkboxy('settings_view_larger_log_images_db', 'View larger log images') + show_help(text);
             html += "&nbsp; Max width <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_width_db' value='" + settings_view_larger_log_images_max_width_db + "'> px";
             html += "&nbsp; Max height <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_height_db' value='" + settings_view_larger_log_images_max_height_db + "'> px <br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
