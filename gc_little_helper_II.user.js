@@ -12368,15 +12368,6 @@ var mainGC = function() {
                         all_logs += '</ul><br>';
                     }
 
-                    // Get number of trackables in cache.
-                    var trachables = 0;
-                    if ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0]) {
-                        trachables = $(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0].innerHTML.replace(/\D/g, '');
-                    }
-                    if ((trachables == 0 || trachables == '') && $(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel')[0]) {
-                        trachables = ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget')[0].innerHTML.match(/<li>/g)||[]).length;
-                    }
-
                     // Set dummy favorite score.
                     var fav_percent = ' ';
 
@@ -12406,8 +12397,8 @@ var mainGC = function() {
                         }
                     }
 
-                    // Number of trackables.
-                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm" style="margin-bottom: 1px;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span> | ';
+                    // Number of trackables with placeholder.
+                    new_text += '<span class="tackables" title="Number of trackables"><svg class="icon-sm" style="margin-bottom: 1px;"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg><span class="trackablesCount"></span></span> | ';
 
                     // Get link to image gallery and image count.
                     var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
@@ -12514,7 +12505,14 @@ var mainGC = function() {
                         if (locations && locations.length == 1) getElevations(0, locations, local_gc_code); // Elevation pass through field step 1.
                     }
 
-                    // Get favorite score.
+                    // Get number of trackables in cache and replace placeholder.
+                    getNumberOfTrackablesInCache(local_gc_code, function(total) {
+                        if (sidebar_enhancements_buffer[local_gc_code] && $(sidebar_enhancements_buffer[local_gc_code]).find('.trackablesCount')[0]) {
+                            $(sidebar_enhancements_buffer[local_gc_code]).find('.trackablesCount')[0].innerHTML = ' ' + total;
+                        }
+                    });
+
+                    // Get favorite score and replace placeholder.
                     getFavoriteScore(local_gc_code, function(score) {
                         if (sidebar_enhancements_buffer[local_gc_code] && $(sidebar_enhancements_buffer[local_gc_code]).find('.favi_points')[0]) {
                             $(sidebar_enhancements_buffer[local_gc_code]).find('.favi_points')[0].innerHTML = score + '%';
@@ -13772,15 +13770,6 @@ var mainGC = function() {
                                 all_logs += '</ul>';
                             }
 
-                            // Get number of trackables in cache.
-                            var trachables = 0;
-                            if ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0]) {
-                                trachables = $(text).find('#ctl00_ContentBody_uxTravelBugList_uxViewAllTrackableItems')[0].innerHTML.replace(/\D/g, '');
-                            }
-                            if ((trachables == 0 || trachables == '') && $(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel')[0]) {
-                                trachables = ($(text).find('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget')[0].innerHTML.match(/<li>/g)||[]).length;
-                            }
-
                             // Get the number of favorite points.
                             var fav_points = $(text).find('.favorite-value').html();
                             if (fav_points == null) {
@@ -13809,8 +13798,8 @@ var mainGC = function() {
                                 new_text += '<span class="premium_only" title="Premium Only Cache"><img src="/images/icons/16/premium_only.png" width="16" height="16" alt="Premium Only Cache" /></span> | ';
                             }
 
-                            // Number of trackables.
-                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg> ' + trachables + '</span> | ';
+                            // Number of trackables with placeholder.
+                            new_text += '<span class="tackables" title="Number of trackables"><svg height="16" width="16" class="icon-sm"><use xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="/account/app/ui-icons/sprites/global.svg#icon-travelbug-default"></use></svg><span class="trackablesCount"></span></span> | ';
 
                             // Get link to image gallery and image count.
                             var a = $(text).find('.CacheDetailNavigation ul li').find('a[href*="/seek/gallery.aspx?guid="]');
@@ -13901,7 +13890,13 @@ var mainGC = function() {
                                 addCopyToClipboardLink(coords, $('#popup_additional_info_' + local_gc_code + ' span.coordinates.current')[0], corrected+"Coordinates", 'vertical-align: bottom;');
                             }
 
-                            // Get favorite score.
+                            // Get number of trackables in cache and replace placeholder.
+                            getNumberOfTrackablesInCache(local_gc_code, function(total) {
+                                var id = '#popup_additional_info_' + local_gc_code + ' .trackablesCount';
+                                if ($(id)[0]) $(id)[0].innerHTML = ' ' + total;
+                            });
+
+                            // Get favorite score and replace placeholder.
                             getFavoriteScore(local_gc_code, function(score) {
                                 var id = '#popup_additional_info_' + local_gc_code + ' .favi_points';
                                 if ($(id)[0] && $(id)[0].childNodes[1]) $(id)[0].childNodes[1].data = " "+score+"%";
@@ -17201,6 +17196,13 @@ var mainGC = function() {
     function separator(output) {
         if (output == '') return '';
         else return ' | ';
+    }
+
+// Get number of trackables in cache and use in custom function.
+    function getNumberOfTrackablesInCache(gccode, func) {
+        $.get('https://www.geocaching.com/api/proxy/web/v1/trackables/geocache/'+gccode+'?skip=0&take=1', null, function(result) {
+            func( (result.total ? result.total : 0) );
+        });
     }
 
 // Get favorite score and use in custom function.
