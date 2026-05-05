@@ -11560,6 +11560,12 @@ var mainGC = function() {
 
                     // Styling.
                     const css = `
+                    .gclh_display_options_control:hover {
+                        background-color: rgb(230, 250, 235) !important;
+                    }
+                    .gclh_display_options_control:hover > svg {
+                        color: rgb(0, 178, 101) !important;
+                    }
                     .gclh_display_options_control > svg {
                         height: 1.9em !important;
                     }
