@@ -11551,11 +11551,11 @@ var mainGC = function() {
                         const divs = document.querySelectorAll('div.gclh_grid_container > div');
                         const checked = Array.from(divs).find(div => div.querySelector('input[type="checkbox"]:checked'));
                         if (checked) {
-                            $('#gclh_display_options_control').addClass('bg-green-500');
+                            $('#gclh_display_options_control').css('background-color', 'rgb(0, 125, 70)');
                             $('#gclh_display_options_control > svg').css('color', 'white');
                         } else {
-                            $('#gclh_display_options_control').removeClass('bg-green-500');
-                            $('#gclh_display_options_control > svg').css('color', 'rgb(0, 178, 101)');
+                            $('#gclh_display_options_control').css('background-color', 'white');
+                            $('#gclh_display_options_control > svg').css('color', 'rgb(0, 125, 70)');
                         }
                     };
 
@@ -11565,7 +11565,7 @@ var mainGC = function() {
                         background-color: rgb(230, 250, 235) !important;
                     }
                     .gclh_display_options_control:hover > svg {
-                        color: rgb(0, 178, 101) !important;
+                        color: rgb(0, 125, 70) !important;
                     }
                     .gclh_display_options_control > svg {
                         height: 1.9em !important;
