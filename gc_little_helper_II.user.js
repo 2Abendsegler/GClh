@@ -20306,7 +20306,7 @@ var mainGC = function() {
     newParameterLL3 = s.replace("#", "03");
 //<-- $$001
     function newParameterVersionSetzen(version) {
-        var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -14px; margin-right: 4px;' ";
+        var newParameterVers = "<span style='font-size: 70%; font-style: italic; float: right; margin-top: -15px; margin-right: 4px;' ";
         if (version != "") newParameterVers += "title='Implemented with version " + version + "'>" + version + "</span>";
         else newParameterVers += "></span>";
         if (settings_hide_colored_versions) newParameterVers = "";
