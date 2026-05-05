@@ -12254,16 +12254,16 @@ var mainGC = function() {
             // Build map buttons above.
             function buildMapButtonsAbove() {
                 if (!$('.leaflet-top.leaflet-right')[0]) return;
-                // Relocate browse button to other buttons above.
-                if (!$('#gclh_browse_map')[0] && settings_relocate_other_map_buttons && $('[data-testid="gc-button-link"]')[0] && $('[data-testid="gc-button-link"]')[0].childNodes[1]) {
-                    $('.leaflet-top.leaflet-right').append('<div id="gclh_browse_map" title="Browse geocaches"></div>');
-                    $('#gclh_browse_map').append($('[data-testid="gc-button-link"]').remove().get().reverse());
-                    $('#gclh_browse_map a')[0].childNodes[1].remove();
-                    $('#gclh_browse_map a').attr('class', '');
-                }
                 // Add button with links to Google, OSM, Flopp's, GeoHack, Komoot and Waymarked Trails map.
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map)) {
                     initGeoServiceControl();
+                }
+                // Relocate browse button to other buttons above.
+                if (!$('#gclh_browse_map')[0] && settings_relocate_other_map_buttons && $('.browse-map-link')[0] && $('.browse-map-link')[0].childNodes[1]) {
+                    $('.leaflet-top.leaflet-right').prepend('<div id="gclh_browse_map"></div>');
+                    $('#gclh_browse_map').append($('.browse-map-link:first').remove().get().reverse());
+                    $('#gclh_browse_map a')[0].childNodes[1].remove();
+                    $('#gclh_browse_map a').attr('class', '');
                 }
             }
 
@@ -12920,13 +12920,13 @@ var mainGC = function() {
             css += '.leaflet-top.leaflet-right > div {margin-right: 8px; margin-top: 8px;}';
             // - Adjust browse map button when we use it. Or leave enough space for our buttons.
             if (settings_relocate_other_map_buttons) {
-                css += '#gclh_browse_map a {height: 40px !important; width: 40px !important; padding: 7px; display: flex !important; color: #007d46 !important; background-color: rgb(255 255 255) !important; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
+                css += '#gclh_browse_map a {height: 40px !important; width: 40px !important; display: flex !important; justify-content: center !important; align-items: center !important; color: #007d46 !important; background-color: rgb(255 255 255) !important; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
                 css += '#gclh_browse_map a:hover {background-color: rgb(230, 250, 235) !important}';
             } else {
                 var mr = 0;
                 if (settings_use_gclh_layercontrol_on_search_map) mr += 48;
                 if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
-                css += '[data-testid="gc-button-link"] {margin-right: ' + mr + 'px;}';
+                css += '.browse-map-link {margin-right: ' + mr + 'px;}';
             }
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
@@ -13404,7 +13404,7 @@ var mainGC = function() {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
             // Increase z-index, otherwise buttons may overlap map control.
-            $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>').css('z-index', 2001);
+            $('.leaflet-top.leaflet-right').prepend('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>').css('z-index', 2001);
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
