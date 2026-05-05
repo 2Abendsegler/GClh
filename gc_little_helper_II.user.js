@@ -10252,6 +10252,8 @@ var mainGC = function() {
                             images[i].src = images[i].src.replace(/\/large\//, '/');
                         }
                         $(images[i].closest('dialog')).addClass('gclh_largerImage');
+                        // Close dialog containing log images also by clicking outside the dialog.
+                        $(images[i].closest('dialog')).attr('closedby', 'any');
                     }
                 }
             }
@@ -18495,7 +18497,8 @@ var mainGC = function() {
             html += checkboxy('settings_dashboard_hide_tb_activity', 'Hide all trackable logs in the Latest Activity') + "<br>";
             html += checkboxy('settings_dashboard_show_logs_in_markdown', 'Show log text in Markdown as it is in cache listing') + "<br>";
             html += newParameterOn2;
-            var text = 'With this option, the log images are displayed larger and can be loaded in full resolution.<br><br>To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel. If these values exceed the width or height of the screen, they will be determined automatically.<br><br>If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.';
+            var text = 'With this option, the dialog containing the log images are displayed larger and the log images can be loaded in full resolution. Using this option also simplifies closing such a dialog by clicking outside the dialog.<br><br>'
+                     + 'To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel. If these values exceed the width or height of the screen, they will be determined automatically.<br><br>If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.';
             html += checkboxy('settings_view_larger_log_images_db', 'View larger log images') + show_help(text);
             html += "&nbsp; Max width <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_width_db' value='" + settings_view_larger_log_images_max_width_db + "'> px";
             html += "&nbsp; Max height <input class='gclh_form' size=3 type='text' id='settings_view_larger_log_images_max_height_db' value='" + settings_view_larger_log_images_max_height_db + "'> px <br>";
