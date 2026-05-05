@@ -9682,8 +9682,9 @@ var mainGC = function() {
                     css += '#map--inline path {stroke-width: 2.0;}';
                     // Icon Search button.
                     css += '#search--inline path {stroke-width: 1.0; stroke: currentColor;}';
-                    // VIPs, VUPs, links not in blue color.
-                    css += leftCol + allLinkBlocks + ' .gclh a {color: inherit !important;}';
+                    // VIP, VUP, Mail links not in blue color, without border and smaller gap.
+                    css += leftCol + allLinkBlocks + ' .gclh a:has(img.gclh_send, img.gclh_vip, img.gclh_vup) {color: inherit !important; border: none !important; box-shadow: none !important;}';
+                    css += leftCol + allLinkBlocks + ' .gclh a {gap: 4px !important;}';
                     // View larger log images.
                     if (settings_view_larger_log_images_db) {
                         css += 'dialog.gclh_largerImage {padding: 10px 16px !important;}';
