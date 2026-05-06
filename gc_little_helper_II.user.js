@@ -683,6 +683,7 @@ var variablesInit = function(c) {
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_compact_layout_cachePreviewHeader = getValue("settings_searchmap_compact_layout_cachePreviewHeader", true);
     c.settings_searchmap_compact_layout_cachePreviewActionMenu = getValue("settings_searchmap_compact_layout_cachePreviewActionMenu", true);
+    c.settings_searchmap_compact_layout_cachePreviewAttributes = getValue("settings_searchmap_compact_layout_cachePreviewAttributes", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
     c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
     c.settings_searchmap_disabled_color = getValue("settings_searchmap_disabled_color", '4A4A4A');
@@ -12350,6 +12351,38 @@ var mainGC = function() {
                 }
             }
 
+            function compactLayout_cachePreviewAttributes() {
+                function cssTopBottom(elem, marTop, marBot, padTop, padBot) {
+                    elem.each(function() { $(this)[0].style.setProperty('margin-top', marTop + 'px', 'important'); });
+                    elem.each(function() { $(this)[0].style.setProperty('margin-bottom', marBot + 'px', 'important'); });
+                    elem.each(function() { $(this)[0].style.setProperty('padding-top', padTop + 'px', 'important'); });
+                    elem.each(function() { $(this)[0].style.setProperty('padding-bottom', padBot + 'px', 'important'); });
+                }
+                if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewAttributes) {
+                    if ($('.cache-preview-attributes ul.attributes > div .attribute-val')[0] && $('.cache-preview-attributes .favorites-points svg')[0] &&
+                        $('.cache-preview-attributes .geocache-owner span')[0]) {
+                        cssTopBottom($('.cache-preview-attributes'), 0, 0, 4, 4);
+                        cssTopBottom($('.cache-preview-attributes ul.attributes'), 0, 0, 4, 4);
+                        $('.cache-preview-attributes ul.attributes > div').each(function() {
+                            $(this)[0].style.setProperty('gap', '2px', 'important');
+                        });
+                        $('.cache-preview-attributes ul.attributes > div .attribute-val').each(function() {
+                            $(this)[0].style.setProperty('font-size', '12px', 'important');
+                        });
+                        $('.cache-preview-attributes .favorites-points svg')[0].style.setProperty('width', '24px', 'important');
+                        $('.cache-preview-attributes .favorites-points svg')[0].style.setProperty('height', '24px', 'important');
+                        cssTopBottom($('.cache-preview-attributes .geocache-owner'), 0, 0, 4, 4);
+                        $('.cache-preview-attributes .geocache-owner')[0].style.setProperty('gap', '2px', 'important');
+                        $('.cache-preview-attributes .geocache-owner span').each(function() {
+                            $(this)[0].style.setProperty('font-size', '12px', 'important');
+                        });
+                        cssTopBottom($('#searchmap_sidebar_enhancements'), 0, 0, 4, 4);
+                        // Description Button korrigieren
+                        if ($('.preview-main-inner > button')[0]) $('.preview-main-inner > button')[0].style.setProperty('margin-bottom', '0px', 'important');
+                    }
+                }
+            }
+
 //xxx deaktiviert
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
@@ -12946,6 +12979,7 @@ var mainGC = function() {
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout_cachePreviewHeader();
                 compactLayout_cachePreviewActionMenu();
+                compactLayout_cachePreviewAttributes();
 //xxx deaktiviert
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
@@ -18280,8 +18314,9 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on sidebar') + show_help("This option display the areas in the left sidebar of the search map more compact.") + onlySearchMap + "<br>";
             html += newParameterOn2;
-            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewHeader', 'For cache preview header') + show_help("This option display the cache preview header area in the left sidebar of the search map more compact.<br><br>The cache preview header contains for example the cache status, the cache type, the cache link, the cache name, the last logged date, the cache code and in case of events for example the start date and time and the location.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewActionMenu', 'For cache preview action menu') + show_help("This option display the cache preview action menu in the left sidebar of the search map more compact.<br><br>The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and could be contain foreign buttons for example for send to c:geo.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewHeader', 'For cache preview header') + show_help("This option display the cache preview header area in the left sidebar of the search map more compact.<br><br>The cache preview header contains the most important data about the cache, such as cache status, cache type, cache link, cache name, last logged date, cache code and in case of events further data such as start date and time and location.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewActionMenu', 'For cache preview action menu') + show_help("This option display the cache preview action menu in the left sidebar of the search map more compact.<br><br>The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and may contain foreign buttons such as a button to send to c:geo.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewAttributes', 'For cache preview attributes') + show_help("This option display the cache preview attributes in the left sidebar of the search map more compact.<br><br>The cache preview attributes contains further details about the cache, such as difficulty, terrain, size, favorite points, owner and placed date, and may contain additional attributes such as the enhanced cache data block.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
@@ -19866,6 +19901,7 @@ var mainGC = function() {
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewHeader");
             setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewActionMenu");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewAttributes");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_latest_logs_symbols_count_map");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
@@ -20421,6 +20457,7 @@ var mainGC = function() {
                 'settings_searchmap_compact_layout',
                 'settings_searchmap_compact_layout_cachePreviewHeader',
                 'settings_searchmap_compact_layout_cachePreviewActionMenu',
+                'settings_searchmap_compact_layout_cachePreviewAttributes',
                 'settings_searchmap_disabled',
                 'settings_searchmap_disabled_strikethrough',
                 'settings_searchmap_show_hint',
