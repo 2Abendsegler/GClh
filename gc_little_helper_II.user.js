@@ -1579,7 +1579,7 @@ var mainGC = function() {
     tlc('START Set language');
     try {
         var langu_string = langus_code[langus.indexOf(settings_default_langu)] + '-';
-        if (settings_set_default_langu && !global_locale.match(langu_string)) {
+        if (settings_set_default_langu && !global_locale.match(langu_string) && !is_page("map") && !is_page("searchmap")) {
             function waitForLanguageSelector(waitCount) {
                 if ($('.language-selector button')[0]) {
                     $('.language-selector button')[0].click();
@@ -1594,6 +1594,9 @@ var mainGC = function() {
                         window.scroll(0, 0);
                     }
                     waitForLanguagePopover(0);
+                } else if ($('#footer-placeholder')[0]) {
+                    window.scrollTo(0, document.body.scrollHeight);
+                    waitCount++; if (waitCount <= 500) setTimeout(function(){waitForLanguageSelector(waitCount);}, 10);
                 } else {waitCount++; if (waitCount <= 500) setTimeout(function(){waitForLanguageSelector(waitCount);}, 10);}
             }
             waitForLanguageSelector(0);
