@@ -11269,7 +11269,7 @@ var mainGC = function() {
                 if (unsafeWindow.MapSettings?.Map?._mapPane) return;
 
                 // Leaflet map only.
-                if (state[0].map) {
+                if (typeof state[0]?.map === 'object') {
                     unsafeWindow.MapSettings.Map = state[0].map;
                 }
             }
