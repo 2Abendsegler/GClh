@@ -682,6 +682,7 @@ var variablesInit = function(c) {
     c.settings_browsemap_compact_layout_sidebar = getValue("settings_browsemap_compact_layout_sidebar", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
     c.settings_searchmap_compact_layout_cachePreviewHeader = getValue("settings_searchmap_compact_layout_cachePreviewHeader", true);
+    c.settings_searchmap_compact_layout_cachePreviewActionMenu = getValue("settings_searchmap_compact_layout_cachePreviewActionMenu", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
     c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
     c.settings_searchmap_disabled_color = getValue("settings_searchmap_disabled_color", '4A4A4A');
@@ -12309,6 +12310,46 @@ var mainGC = function() {
                 }
             }
 
+            function compactLayout_cachePreviewActionMenu() {
+                if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewActionMenu) {
+                    if ($('.cache-preview-action-menu a.log-geocache')[0] && $('.cache-preview-action-menu ul > li button svg')[0] &&
+                        $('.cache-preview-action-menu ul > li span')[0]) {
+                        if (!$('#gclh_css_cachePreviewActionMenu')[0]) {
+                            var css = '';
+                            css += '.cache-preview-action-menu {padding-top: 6px !important; padding-bottom: 6px !important; margin: 0px !important;}';
+                            css += '.cache-preview-action-menu a.log-geocache {padding-top: 8px !important; padding-bottom: 8px !important; margin: 0px 0px 6px 0px !important;}';
+                            css += '.cache-preview-action-menu ul {padding: 0px !important; margin: 0px !important; gap: 6px !important;}';
+                            css += '.cache-preview-action-menu ul > li button, .cache-preview-action-menu ul > li a {padding-top: 6px !important; padding-bottom: 6px !important;}';
+                            css += '.cache-preview-action-menu ul > li svg, .cache-preview-action-menu ul > li img {margin: 0px auto 0px auto !important;}';
+                            css += '.cache-preview-action-menu ul > li span:not(:has(> span.gclh_ownBMLs_count)):not(.gclh_ownBMLs_count) {display: none !important;}';
+                            css += '.cache-preview-action-menu ul > li span.gclh_ownBMLs_count {position: absolute; margin: -12px 0px 0px 12px;}';
+                            appendCssStyle(css, null, 'gclh_css_cachePreviewActionMenu');
+                        }
+                        // Number of items want to display in the buttons line.
+                        var numberItems = 0;
+                        $('.cache-preview-action-menu ul > li').each(function() {
+                            var li = this;
+                            // When this item is displayed, the number of items to be displayed will be increased by one.
+                            if ($(this).css('display') != 'none') numberItems++;
+                            // Determine the labels of the buttons.
+                            $(this).find('button, a').each(function() {
+                                if (!$(this).attr('title') && $(this).find('span')[0] && $(this).find('span')[0] && $(this).find('span')[0].childNodes[0] &&
+                                    $(this).find('span')[0].childNodes[0].data && $(this).find('span')[0].childNodes[0].data.trim() != '') {
+                                    // The button's label is stored in the title, so the information is displayed when the mouse hovers over it.
+                                    $(this).attr('title', $(this).find('span')[0].childNodes[0].data.trim());
+                                    // The label for the "Add to list" button must be removed because we couldn't hide it due to the number of BMLs still required.
+                                    if ($(li).hasClass('add-to-list')) {
+                                        $(this).find('span')[0].childNodes[0].data = '';
+                                    }
+                                }
+                            });
+                        });
+                        // Build space in the buttons line for all the items want to display.
+                        if (numberItems > 0) $('.cache-preview-action-menu ul')[0].style.setProperty('grid-template-columns', 'repeat(' + numberItems + ', 1fr)', 'important');
+                    }
+                }
+            }
+
 //xxx deaktiviert
             function compactLayout() {
                 if (settings_searchmap_compact_layout) {
@@ -12904,6 +12945,7 @@ var mainGC = function() {
                 scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout_cachePreviewHeader();
+                compactLayout_cachePreviewActionMenu();
 //xxx deaktiviert
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
@@ -17041,7 +17083,7 @@ var mainGC = function() {
             text = 'Currently available in ' + count + (count == 1 ? ' own list' : ' own lists');
             if (is_page("searchmap")) {
                 if (typeof(sidebar_enhancements_addToList_buffer) == 'object' && $(sidebar_enhancements_addToList_buffer[gcCode])[0]) {
-                    $(sidebar_enhancements_addToList_buffer[gcCode])[0].title = list;
+                    $(sidebar_enhancements_addToList_buffer[gcCode])[0].title = text + (list == '' ? '' : ':\n' + list);
                     $(sidebar_enhancements_addToList_buffer[gcCode])[0].innerHTML = ' (' + count + ')';
                 }
             } else if (is_page("map")) {
@@ -18239,6 +18281,7 @@ var mainGC = function() {
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on sidebar') + show_help("This option display the areas in the left sidebar of the search map more compact.") + onlySearchMap + "<br>";
             html += newParameterOn2;
             html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewHeader', 'For cache preview header') + show_help("This option display the cache preview header area in the left sidebar of the search map more compact.<br><br>The cache preview header contains for example the cache status, the cache type, the cache link, the cache name, the last logged date, the cache code and in case of events for example the start date and time and the location.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewActionMenu', 'For cache preview action menu') + show_help("This option display the cache preview action menu in the left sidebar of the search map more compact.<br><br>The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and could be contain foreign buttons for example for send to c:geo.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
@@ -19822,6 +19865,7 @@ var mainGC = function() {
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
             setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewHeader");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewActionMenu");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_latest_logs_symbols_count_map");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
@@ -20376,6 +20420,7 @@ var mainGC = function() {
                 'settings_browsemap_compact_layout_sidebar',
                 'settings_searchmap_compact_layout',
                 'settings_searchmap_compact_layout_cachePreviewHeader',
+                'settings_searchmap_compact_layout_cachePreviewActionMenu',
                 'settings_searchmap_disabled',
                 'settings_searchmap_disabled_strikethrough',
                 'settings_searchmap_show_hint',
