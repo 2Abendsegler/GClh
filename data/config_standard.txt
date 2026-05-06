@@ -320,6 +320,7 @@
   "settings_searchmap_compact_layout": true,
   "settings_searchmap_compact_layout_cachePreviewHeader": true,
   "settings_searchmap_compact_layout_cachePreviewActionMenu": true,
+  "settings_searchmap_compact_layout_cachePreviewAttributes": true,
   "settings_searchmap_disabled": false,
   "settings_searchmap_disabled_strikethrough": true,
   "settings_searchmap_disabled_color": "4A4A4A",
