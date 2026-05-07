@@ -12056,11 +12056,11 @@ var mainGC = function() {
 
             // Handle toggle between search results and bookmark lists (if automatic search is active).
             function handleToggleBetweenSearchAndBMLTab() {
-                const $searchTab = $('button[data-testid="search-mode-toggle"]');
+                const $searchTab = $('button[data-testid="gc-button-group-option-0"]');
                 if (!$searchTab[0]) return;
 
                 const $meta = $('meta#GClh_II_running');
-                if ($searchTab.attr('aria-selected') === 'true') {
+                if ($searchTab.attr('aria-checked') === 'true') {
                     // Search tab is active.
                     if ($meta.hasClass('gclh_search_map_bml')) {
                         // Returning from list to search tab and a BML had been selected.
@@ -12168,11 +12168,13 @@ var mainGC = function() {
                 });
 
                 // Set blocker variable if a search is started. This prevents an unnecessary searchThisArea call directly after search is finished.
-                waitForElementThenRun('button[data-testid="search-button"]', () => {
-                    $('button[data-testid="search-button"]').click(() => {
-                        filterSearchWasRunning = true;
-                    });
-                }, 10000);
+                if (!getURLParam('bmCode')) {
+                    waitForElementThenRun('button[data-testid="search-button"]', () => {
+                        $('button[data-testid="search-button"]').click(() => {
+                            filterSearchWasRunning = true;
+                        });
+                    }, 10000);
+                }
 
                 // Unset blocker variables if any search is finished (trigger: zoom buttons disabled/enabled).
                 waitForElementThenRun('[data-event-label="Map - Zoom In"]', () => {
