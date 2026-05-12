@@ -13001,13 +13001,6 @@ var mainGC = function() {
 
             // Observer callback for body and checking existence of sidebar.
             var cb_body = function() {
-                // Leaflet wird zeitverzögert geladen. Deshalb ist nicht sichergestellt, dass die GClh Buttons auf der Karte schon aufgebaut sind bevor
-                // ein Body Observer ohne "subtree" schon keine Mutationen mehr registriert. Deshalb wird der Body Observer zuerst so lange mit "subtree"
-                // betrieben, bis Leaflet aufgebaut ist und die GClh Buttons aufgebaut werden können.
-                if ($('.leaflet-top.leaflet-right')[0]) {
-                    observer_body.disconnect();
-                    observer_body.observe(target_body, config_body);
-                }
                 processAllSearchMap();
                 if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
                     $('div#sidebar').addClass('gclh_sidebar_observer');
@@ -13039,12 +13032,7 @@ var mainGC = function() {
                 childList: true,
                 attributes: true
             };
-            var config_body_subtree = {
-                childList: true,
-                subtree: true,
-                attributes: true
-            };
-            observer_body.observe(target_body, config_body_subtree);
+            observer_body.observe(target_body, config_body);
             processAllSearchMap();
 //xxx deaktiviert
 //            compactLayoutWait(0);
@@ -13450,6 +13438,9 @@ var mainGC = function() {
                                     document.querySelector('.mapboxgl-canvas').remove();
                                 }, 0);
                             }
+                            // Issue #3148: Trigger the body observer on search map by adding/removing a dummy element, otherwise
+                            // the call of buildMapButtonsAbove() will not be triggered always and the gclh buttons will be missing.
+                            document.body.appendChild(document.createElement('div')).remove();
                         }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
