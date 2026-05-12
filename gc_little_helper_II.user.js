@@ -13628,6 +13628,9 @@ var mainGC = function() {
                                     document.querySelector('.mapboxgl-canvas').remove();
                                 }, 0);
                             }
+                            // Issue #3148: Trigger the body observer on search map by adding/removing a dummy element, otherwise
+                            // the call of buildMapButtonsAbove() will not be triggered always and the gclh buttons will be missing.
+                            document.body.appendChild(document.createElement('div')).remove();
                         }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
