@@ -100,18 +100,24 @@
 ### Search Map:
 <ul>
 	<li>
-		<strong>New:</strong> [Search Map] Compact layout in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		...<br>
-		<img src="../images/0.18.6/Screen01.jpg" alt="Screen01.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#...(PARAMETER EINTRAGEN)" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
-		...<br>
-		If you want to use this feature, you have to activate it.<br><br>
-		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
-		If you want to use this feature, you may need to do some customization.<br><br>
-		If you want to optimize the settings, you may need to change something.<br><br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a>.<br><br>
-		Further examples can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a>.<br><br>
+		<strong>New:</strong> [Search Map] Compact layout in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<strong>Overview of settings for compact layout in the left sidebar of Search Map:</strong><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout" title="Link to your GClh II Config">Settings -> Search Map:<br>
+		<img src="../images/0.18.6/Screen18.jpg" alt="Screen18.jpg"></a><br><br>
+		<strong>Compact layout in the left sidebar of Search Map for header:</strong><br>
+		This option display the header area in the left sidebar of the search map more compact.<br>
+		The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
+		With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
+		With compact layout and without:<br>
+		<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+		<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+		<strong>Compact layout in the left sidebar of Search Map for list of caches:</strong><br>
+		This option display the list of caches in the left sidebar of the search map more compact.<br><br>
+		With compact layout and without:<br>
+		<img src="../images/0.18.6/Screen22.jpg" alt="Screen22.jpg"> <img src="../images/0.18.6/Screen23.jpg" alt="Screen23.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfCaches" title="Link to your GClh II Config">Settings -> Search Map:<br>
+		<img src="../images/0.18.6/Screen24.jpg" alt="Screen24.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>Remove:</strong> [Search Map] Remove older code that no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
