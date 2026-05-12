@@ -11243,12 +11243,16 @@ var mainGC = function() {
                             if (key) {
                                 // Save in global context.
                                 unsafeWindow.GCLH.getLayout = moduleFunctions[index][key];
+
+                                // Get key from unsafeWindow.GCLH.getLayout.<key>.getLayout (this key already changed during GS updates).
+                                key = Object.keys(unsafeWindow.GCLH.getLayout ?? {}).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
+
                                 // Add proxy to modify cache properties.
-                                if (unsafeWindow.GCLH?.getLayout?.default?.getLayout && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                                if (key && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                                     // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
                                     // (if "show at corrected coords" is active on page load)
                                     setTimeout(() => {
-                                        unsafeWindow.GCLH.getLayout.default.getLayout = new Proxy(unsafeWindow.GCLH.getLayout.default.getLayout, {
+                                        unsafeWindow.GCLH.getLayout[key].getLayout = new Proxy(unsafeWindow.GCLH.getLayout[key].getLayout, {
                                             apply: (target, thisArg, argArray) => {
                                                 processCaches(argArray[0]);
                                                 return target.apply(thisArg, argArray);
