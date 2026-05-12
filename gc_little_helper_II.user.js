@@ -690,9 +690,6 @@ var variablesInit = function(c) {
     c.settings_searchmap_compact_layout_listOfCaches = getValue("settings_searchmap_compact_layout_listOfCaches", true);
     c.settings_searchmap_compact_layout_listOfLists = getValue("settings_searchmap_compact_layout_listOfLists", true);
     c.settings_searchmap_compact_layout_sidebarFooter = getValue("settings_searchmap_compact_layout_sidebarFooter", true);
-    c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
-    c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
-    c.settings_searchmap_disabled_color = getValue("settings_searchmap_disabled_color", '4A4A4A');
     c.settings_searchmap_show_hint = getValue("settings_searchmap_show_hint", false);
     c.settings_show_copydata_own_stuff_show = getValue("settings_show_copydata_own_stuff_show", false);
     c.settings_show_copydata_own_stuff_name = getValue("settings_show_copydata_own_stuff_name", 'Photo file name');
@@ -12285,16 +12282,6 @@ var mainGC = function() {
             var cache_list_premium = '<span><img class="gclh_cache_list_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png"></span>';
             var enhancement_premium = '<span><img class="gclh_enhancement_premium" title="Premium member only cache" src="/images/icons/16/premium_only.png" style="height: 16px; width: 16px;"></span>';
 
-//xxx deaktiviert
-            function compactLayoutWait(waitCount) {
-                if ($('#geocache-list')[0]) {
-                    compactLayout();
-                } else {
-                    waitCount++;
-                    if (waitCount <= 100) setTimeout(function(){compactLayoutWait(waitCount);}, 50);
-                }
-            }
-
             // Compact layout on sidebar.
             function cssTopBottom(elem, marTop, marBot, padTop, padBot) {
                 elem.each(function() { $(this)[0].style.setProperty('margin-top', marTop + 'px', 'important'); });
@@ -12568,125 +12555,6 @@ var mainGC = function() {
                 }
             }
 
-//xxx deaktiviert
-            function compactLayout() {
-                if (settings_searchmap_compact_layout) {
-                    // Filter
-                    if (document.querySelector('#search-filters') && document.querySelector('.text-field')) {
-                        document.querySelector('.text-field').setAttribute('class', 'chip-field-input');
-                    }
-                    if ($('.search-filters-attributes .promo-filters .label span strong')[0]) {
-                        $('.search-filters-attributes .promo-filters .label span')[0].innerHTML = $('.search-filters-attributes .promo-filters .label span strong')[0].innerHTML;
-                    }
-                    // Cache details.
-                    if (document.querySelector('.cache-preview-header')) {
-                        if ($('.more-info-link')[0]) document.querySelector('.more-info-link').getElementsByTagName('span')[1].style = 'display: none;';
-                        var buttons = document.querySelectorAll('.cache-preview-action-menu ul li');
-                        for (let i=0; i<buttons.length; i++) {
-                            buttons[i].title = buttons[i].getElementsByTagName('span')[0].innerHTML;
-                        }
-                        if (!$('.gclhOwner')[0]) {
-                            let span = document.createElement('span');
-                            span.setAttribute('class', 'gclhOwner');
-                            if ($('.geocache-owner-name')[0] && $('.geocache-placed-date')[0] && $('.geocache-owner')[0]) {
-                                span.innerHTML = document.querySelector('.geocache-owner-name').innerHTML.replace('<span><a id=', '<span> <a id=') + ' ' + document.querySelector('.geocache-placed-date').innerHTML;
-                                document.querySelector('.geocache-owner').appendChild(span);
-                            }
-                        }
-                        if ($('.cache-metadata .vertical-spacer')[0]) {
-                            $('.cache-metadata .vertical-spacer').after('<span class="dot"></span>');
-                            $('.cache-metadata .vertical-spacer').remove();
-                        }
-                        if (global_cache_premium == true && !$('.gclh_cache_details_premium')[0]) {
-                            regroupCacheDataSearchmap($('.cache-preview-header')[0], 'dot', '', '.cache-metadata:last', cache_details_premium);
-                            global_cache_premium = false;
-                        }
-                        if ($('.header-top-left')[0] && $('.header-top-left h1')[0] && $('.status-and-type')[0] && $('.status-and-type')[0].childNodes && $('.more-info-link')[0]) {
-                            if (!$('.header-top-left .gclh-cache-link')[0]) {
-                                var cacheTypeChildNode = $('.status-and-type')[0].childNodes.length - 1;
-                                if (cacheTypeChildNode >= 0 && $('.status-and-type')[0].childNodes[cacheTypeChildNode]) {
-                                    var cacheType = $('.status-and-type')[0].childNodes[cacheTypeChildNode].data;
-                                    var cacheSymbol = convertCachetypeToCachesymbol(cacheType);
-                                    if (cacheSymbol != '') {
-                                        if (global_cache_disabled == true) {
-                                            global_cache_disabled = false;
-                                            cacheSymbol += '_disabled';
-                                            setStrikeDisabledInDetails();
-                                        }
-                                        $('.header-top-left h1')[0].innerHTML = '<a class="gclh-cache-link" href="' + $('.more-info-link')[0].href + '" target="_blank"><svg class="gclh_cache_type"><use xlink:href="'+cacheSymbol+'"></use></svg>' + $('.header-top-left h1')[0].innerHTML + '</a>';
-                                        $('.status-and-type')[0].style.display = 'none';
-                                    }
-                                }
-                            }
-                        }
-                        $('.cache-preview-activities .avatar-img').each(function() {
-                            $(this)[0].alt = '';
-                        });
-                    }
-                    // Cache list.
-                    if ($('#geocache-list')[0]) {
-                        $('.geocache-list-container li').each(function () {
-                            if ($(this).find('.geocache-item-info .geocache-item-code')[0]) {
-                                regroupCacheDataSearchmap(this, '|', '.geocache-item-info .geocache-item-code', '.geocache-item-data');
-                                $(this).find('.geocache-item-info')[0].style.display = 'none';
-                            }
-                            // (Das ursprüngliche Löschen der Favoriten verursachte den weißen Bildschirm. Nun wird nur noch geclont.)
-                            if ($(this).find('.geocache-item-info .geocache-item-favorites')[0] && !$(this).find('.geocache-item-data .geocache-item-favorites')[0]) {
-                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', $(this).find('.geocache-item-info .geocache-item-favorites').clone());
-                            }
-                            if ($(this).find('.geocache-item-premium')[0] && !$(this).find('.gclh_cache_list_premium')[0]) {
-                                regroupCacheDataSearchmap(this, '|', '', '.geocache-item-data', cache_list_premium);
-                            }
-                            if (!$(this).find('.gclh_click_event')[0] && $(this).find('.geocache-item')[0]) {
-                                $(this).find('.geocache-item').addClass('gclh_click_event');
-                                $(this).find('.geocache-item')[0].addEventListener('click', function() {
-                                    if ($(this).hasClass('geocache-item-disabled')) global_cache_disabled = true;
-                                    else global_cache_disabled = false;
-                                    if ($(this).hasClass('geocache-item-premium')) global_cache_premium = true;
-                                    else global_cache_premium = false;
-                                });
-                            }
-                        });
-                        if ($('#geocache-list')[0]) {
-                            if ($('.dismiss-active-list-button')[0]) {
-                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 60px !important;");
-                            } else {
-                                $('#geocache-list')[0].setAttribute("style", "margin-bottom: 68px !important;");
-                            }
-                        }
-                    }
-                }
-            }
-            // Regroup cache data in cache list and cache details for compact layout.
-            // (Diese Ersetzungen sind nicht sauber. Eigentlich sollten die Originale nur ausgeblendet werden und nicht gelöscht werden.)
-            // (Das ursprüngliche Löschen der Favoriten verursachte den weißen Bildschirm. Nun wird nur noch geclont.)
-            function regroupCacheDataSearchmap(cache, separator, from, to, build) {
-                if (separator == '|') $(cache).find(to).append('<span>|</span>');
-                else if (separator == 'dot') $(cache).find(to).append('<span class="dot"></span>');
-                if (from == '') $(cache).find(to).append(build);
-                else $(cache).find(to).append($(cache).find(from).remove().get().reverse());
-            }
-            // Set name of disabled caches in cache details as disabled, strikethrough.
-            function setStrikeDisabledInDetails() {
-                if (!$('.header-top-left h1').hasClass('gclh_disabled')) {
-                    $('.header-top-left h1').addClass('gclh_disabled');
-                    if (settings_searchmap_disabled && settings_searchmap_disabled_strikethrough) $('.header-top-left h1').addClass('gclh_strikethrough');
-                }
-            }
-
-            // Set name of disabled caches in cache list strike through in special color.
-//xxx deaktiviert
-            function setStrikeDisabledInList() {
-                if (settings_searchmap_disabled && $('#geocache-list')[0]) {
-                    $('.geocache-item-disabled').each(function() {
-                        if (!$(this).find('.gclh_disabled')[0]) {
-                            $(this).find('.geocache-item-name').addClass('gclh_disabled');
-                            if (settings_searchmap_disabled_strikethrough) $(this).find('.geocache-item-name').addClass('gclh_strikethrough');
-                        }
-                    });
-                }
-            }
-
             // Show hint automatically.
             function showHint() {
                 if (settings_searchmap_show_hint && $('.cache-hint-toggle')[0] && !$('.cache-hint-toggle.gclh-show-hint')[0]) {
@@ -12780,11 +12648,6 @@ var mainGC = function() {
                     }
                     if ($('#searchmap_sidebar_enhancements .gclh_enhancement_premium')[0] && !$('.gclh_cache_details_premium')[0]) {
                         $('.cache-preview-header .cache-metadata-code').after(cache_details_premium);
-                    }
-                    if ($('#searchmap_sidebar_enhancements .gclh_enhancement_disabled')[0] &&
-                        $('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
-                        $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
-                        setStrikeDisabledInDetails();
                     }
                     // VIP, VUP icons have to be rebuilt, something could have changed in the meantime.
                     addVipVupMailToOwner();
@@ -12890,15 +12753,6 @@ var mainGC = function() {
                     var new_text = all_logs;
                     new_text += $(last_logs).prop('outerHTML');
                     new_text += '<div id="gclh_third_line">';
-
-                    // Marker for disabled.
-                    if ($(text).find('#ctl00_ContentBody_disabledMessage')[0]) {
-                        new_text += '<span class="gclh_enhancement_disabled"></span>';
-                        if ($('.gclh_cache_type use')[0] && !$('.gclh_cache_type use')[0].getAttribute('xlink:href').match('_disabled')) {
-                            $('.gclh_cache_type use')[0].setAttribute('xlink:href', $('.gclh_cache_type use')[0].getAttribute('xlink:href') + '_disabled');
-                            setStrikeDisabledInDetails();
-                        }
-                    }
 
                     // Premium icon.
                     if (premium_only) {
@@ -13169,11 +13023,7 @@ var mainGC = function() {
                 compactLayout_listOfCaches();
                 compactLayout_listOfLists();
                 compactLayout_sidebarFooter();
-//xxx deaktiviert
-//                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
-//xxx deaktiviert
-//                setStrikeDisabledInList();
                 showHint();
                 scrollUpInDescription();
                 collapseActivity();
@@ -13220,8 +13070,6 @@ var mainGC = function() {
             };
             observer_body.observe(target_body, config_body);
             processAllSearchMap();
-//xxx deaktiviert
-//            compactLayoutWait(0);
 
             var css = '';
             // Hide button search this area and icon loading, if not link from matrix.
@@ -13232,166 +13080,11 @@ var mainGC = function() {
             // Set link to owner.
             css += '.gclhOwner a:hover {color: #02874d !important;}';
             css += '.gclhOwner a {color: #4a4a4a !important; text-decoration: none !important;}';
-/*
-            if (settings_searchmap_compact_layout) {
-                css += '#gc-search-typeahead-form, #gc-search-typeahead-form .gc-search-typeahead-submit, #gc-search-typeahead-form .inner-wrapper, .search-bar.v3, #search-term-input {height: 34px !important;}';
-                css += '.search-bar.v3 .gc-filter-toggle {height: 35.5px !important;}';
-                css += '#gc-search-typeahead-form .gc-autocomplete .inner-wrapper {box-shadow: 0 0 0 0.9px #9b9b9b !important;}';
-                css += '.gc-filter-toggle-icon {height: 18px !important; width: 18px !important;}';
-                css += '.geocache-item-name {font-size: 14px !important;}';
-                css += 'a:focus, button:focus {outline: unset !important;}';
-                css += '.search-bar-inner {margin-right: 10px !important;}';
-                css += '.search-bar, .cache-preview-header, .cache-preview-attributes, .cache-preview-action-menu, .cache-open-text-cta, .cache-preview-description, .cache-preview-activities .view-all-row, .cache-preview-activities header {padding: 5px 12px !important;}';
-                css += '.sidebar-control .checkbox {margin-right: 2px;}';
-                css += '#sidebar div:nth-child(1).sidebar-control.sidebar-search-container > div {padding: 5px 13px 6px 12px; gap: 4px;}';
-                css += '#sidebar .sidebar-control.sidebar-search-container > div {padding: 0px 13px 3px 12px; gap: 4px;}';
-                // Cache list and cache details.
-                css += '.header-top {display: none !important;}';
-                css += '.search-bar-back-cta {height: 24px; width: 24px; padding: 6px 0px; margin-left: -2px;}';
-                css += '.search-bar-back-cta svg {height: 24px; width: 24px;}';
-                css += '.search-term-input, .search-term-form button, .cache-preview-activities .view-all-row {font-size: 14px !important; height: 35px !important;}';
-                css += '.search-term-form svg {padding-top: 4px;}';
-                css += '.cache-detail-preview:not(.list-cache) {height: calc(100% - 22px) !important; margin-top: -24px;}';
-                css += '.geocache-action-bar {padding: 0 12px 5px !important;}';
-                css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 48px !important;}';
-                css += '.geocache-item {padding: 6px 10px !important;}';
-                css += '.geocache-item-data span {margin-right: 2px;}';
-                css += '.geocache-item-data span img, .cache-metadata span img {vertical-align: bottom; height: 14px; opacity: 0.8;}';
-                css += '.geocache-item-details {margin: 0 6px !important;}';
-                css += '.geocache-item-icon {flex: 0 0 36px !important; height: 36px !important;}';
-                css += '.geocache-item {height: 36px !important;}';
-                css += '.geocache-item-name {height: 21px; color: #4a4a4a;}';
-                css += '.geocache-item-data {height: 16px;}';
-                if (settings_searchmap_disabled) css += '.geocache-item-status-icon {height: 18px; width: 18px;}';
-                css += '.cache-preview-activities h2 {margin: 0;}';
-                css += '.cache-preview-activities header {margin: 0; color: #4a4a4a;}';
-                css += '.cache-preview-activities ul {margin: 0; padding: 0;}';
-                css += '.gclh-cache-link {display: flex;}';
-                css += '.gclh_cache_type {flex: 0 0 24px; height: 24px; width: 24px; margin-left: -2px; margin-right: 8px; margin-top: -1px;}';
-                css += '.cache-preview-header h1 {font-size: 16px !important; margin-top: 0px;}';
-                if (settings_searchmap_disabled) css += '.cache-preview-header .more-info {top: 0px !important;}';
-                else css += '.cache-preview-header .more-info {top: 8px !important;}';
-                css += '.cache-preview-header .more-info-link {width: 52px; min-width: unset;}';
-                css += '.cache-preview-header .gclh-cache-link {text-decoration: none; color: #4a4a4a;}';
-                css += '.cache-preview-header .gclh-cache-link:hover {color: #02874d !important;}';
-                css += '.cache-preview-header > p.cache-metadata {margin-top: -3px; margin-bottom: 2px;}';
-                css += '.cache-preview-header .arrow-icon {height: 40px !important; width: 40px !important;}';
-                css += '.cache-preview-action-menu ul {margin-bottom: -4px;}';
-                css += '.cache-preview-action-menu .log-geocache, .cache-preview-action-menu .log-geocache:visited {margin-bottom: 6px !important; padding: 8px !important;}';
-                css += '.cache-preview-action-menu .action-icon {margin: 0;}';
-                css += '.cache-preview-action-menu ul li button span, .cache-preview-action-menu ul li a span {display: none; !important;}';
-                css += '.add_to_list_count {font-size: 12px; color: #4a4a4a; position: absolute; margin-top: 9px; margin-left: -5px; cursor: default;}';
-                css += '.cache-preview-attributes, .cache-open-text-cta {margin-bottom: 5px !important;}';
-                css += '.cache-preview-attributes > ul {font-size: 12px; margin-bottom: 0 !important;}';
-                css += '.favorites-points {border-top: 1px solid #e4e4e4; margin-top: 5px;}';
-                css += '.cache-preview-attributes .favorites-icon {height: 24px !important; width: 24px !important;}';
-                css += '.cache-preview-attributes .attribute-val {color: #4a4a4a;}';
-                css += '.cache-preview-attributes .attribute-label {color: #777777;}';
-                css += '.gclhOwner {color: #9b9b9b;}';
-                css += '.cache-preview-attributes .geocache-owner {font-size: 12px !important; margin-top: 0px !important; padding-top: 4px !important;}';
-                css += '.cache-preview-attributes .geocache-owner-name, .cache-preview-attributes .geocache-placed-date {display: none !important;}';
-                css += '.cache-open-text-cta {font-size: 14px; color: #4a4a4a;}';
-                css += '.cache-open-text-cta span, .cache-preview-activities h2 {font-size: 14px !important;}';
-                css += '.cache-open-text-cta:hover, .cache-preview-activities header:hover, .cache-activity-log .username:hover {color: #02874d !important; text-decoration: none !important;}';
-                css += '.cache-open-text-cta span {margin-right: -2px; margin-left: -2px;}';
-                css += '.cache-preview-activities {margin-bottom: 1px !important;}';
-                css += '.cache-preview-activities > header {padding: unset;}';
-                css += '.cache-preview-activities .button.primary {padding: 8px;}';
-                css += '.cache-activity-log {padding: 5px 12px !important;}';
-                css += '.cache-activity-log header {padding: 0px !important;}';
-                css += '.cache-activity-log .username {font-size: 12px !important; padding-bottom: 2px;}';
-                css += '.cache-preview-description h2 {margin-bottom: 6px;}';
-                css += '.cache-preview-description .close-cta-row {top: 0px; right: 5px;}';
-                css += '#geocache-list-pagination {padding: 5px 0 0 0 !important;}';
-                css += '#geocache-list .label {padding: 8px 24px !important; border-top: 1px solid #e4e4e4 !important; font-size: 12px !important;}';
-                css += '#sidebar footer {padding: 2px 0;}';
-                css += '#sidebar.has-selected-caches footer {margin-top: unset; padding: 12px 0;}';
-                css += '#add-to-list-control {padding: 22px 0 24px 0;}';
-                css += '#add-to-list-menu {padding: 0px !important; border-top: unset !important; margin-bottom: 5px !important;}';
-                css += '#add-to-list-menu button {padding: 6px 24px !important; margin-right: 16px !important;}';
-                css += '.existing-list {margin-bottom: 0 !important;}';
-                css += '.geocache-item-stats svg {margin-top: -2px;}';
-                // Change cursor from not allowed to default.
-                css += '.gc-button.gc-button-disabled {cursor: default;}';
-                // BML.
-                css += '.list-cache-navigation.has-label {padding: 5px 0 6px !important;}';
-                css += '.mode-toggle-container {padding: 5px 14px 5px 12px !important;} .mode-toggle {padding: 6px !important;}';
-                css += '.dismiss-list-cache-button {margin: 2px !important;}';
-                css += '.dismiss-active-list-button-label {height: 34px !important; margin-right: 5px;}';
-                css += '.dismiss-active-list-button-icon svg {height: 24px !important; width: 24px !important; margin-left: 6px; display: flex;}';
-                css += '.dismiss-list-cache-button svg {height: 24px !important; width: 24px !important; margin-left: 4px; display: flex; color: #4a4a4a !important;}';
-                css += '.list-hub {padding-bottom: 0px !important; overflow: auto !important; margin-bottom: 22px;}';
-                css += '.list-hub ul li {height: 48px !important;}';
-                css += '.list-hub ul li + li {border-top: 1px solid #e4e4e4;}';
-                css += '.list-details {padding: 6px 10px !important; border: none !important;}';
-                css += '.list-details-left, .list-details-right {height: 36px !important; margin: 0px !important;}';
-                css += '.list-details-left .list-name, .list-details-right .list-counts {padding-bottom: 2px !important;}';
-                css += '.list-details-left .list-name {overflow: hidden; text-overflow: ellipsis; max-width: 285px;}';
-                css += '.geocache-list-container.lom-ld-flag-padding {padding-bottom: 0px !important;}';
-                css += '.geocache-list-container .pagination-label {padding: 0 0 5px 0 !important;}';
-                css += '.cache-detail-preview.list-cache {height: calc(100% + 24px) !important;}';
-                css += '.cache-detail-preview.list-cache > div {padding: 0px !important}';
-                css += '.cache-detail-preview.list-cache .dismiss-active-list-button {padding: 5px 8px 5px 0px !important}';
-                css += '#map-chip {display: none !important;}';
-                // Filter
-                css += 'body.default_settings_running .gc-filter-modal {z-index: -1 !important;}';
-                css += '#search-filter-type .type-label.focused, .search-filters-attributes ul.wonders .focused label {outline: unset !important;}';
-                css += '#search-filters-controls {padding: 0px 10px 5px 10px !important;}';
-                css += '#search-filters-controls .gc-button {padding: 0px 10px; margin-right: 10px !important; border: 1px solid #9b9b9b; border-radius: 4px;}';
-                css += '#search-filters-controls .gc-button:hover {border-color: #02874d; color: #02874d; text-decoration: none;}';
-                css += '#search-filters-controls .control-apply {width: unset !important; padding-right: 11px !important; margin-right: 2px !important;}';
-                css += '#search-filters-content {margin-top: 16px !important; color: #4a4a4a; font-size: 14px;}';
-                css += '.search-filters-block {padding: 6px 14px 4px 14px !important; margin: 0px !important;}';
-                css += '.search-filters-attributes .toggle-filter button.toggle-handle span {display: none;}';
-                css += '.search-filters-attributes {padding-top: 4px !important;}';
-                css += '.search-filters-text .search-filters-number {padding: 6px 0px 0px 0px !important;}';
-                css += '.search-filters-block > div {padding: 0px 10px 0px 10px; margin: 0px !important;}';
-                css += '.search-filters-attributes .promo-filters .toggle-filter, .search-filters-status .trinary-control:nth-child(1), .search-filters-text .text-filter:nth-child(1) {padding-top: 4px !important;}';
-                css += '.search-filters-attributes .promo-filters .checkbox-toggle-controls-container:nth-child(3) {padding-top: 6px !important;}';
-                css += '.search-filters-attributes .toggle-filter, #search-filter-type, .search-filters-attributes .promo-filters, .search-filters-attributes .trinary-control, .search-filters-attributes .text-filter, #search-filter-difficulty, #search-filter-terrain, #search-filter-size, .search-filters-status .trinary-control, .search-filters-text .text-filter {padding-top: 10px !important;}';
-                css += '.search-filters-block > div > div, .search-filters-block > div > ul, .search-filters-block > div > span, .search-filters-block > div > label {margin: 0px !important;}';
-                css += '.search-filters-block .gc-radio-control {padding-bottom: 2px;}';
-                css += '.search-filters-block .gc-radio-control:hover i {box-shadow: 0 0 0 3px #e4e4e4;}';
-                css += '.search-filters-block .label-text-field, .search-filters-block .text-filter .label, .search-filters-block .gc-form-label {margin: 0px !important; padding-bottom: 2px !important;}';
-                css += '.search-filters-block .input-set label span {margin: 0px !important; padding-bottom: 2px !important; padding-top: 4px !important;}';
-                css += '.trinary-control {width: unset !important}';
-                css += '.search-filters-block .chip-field-container {min-height: unset; padding: 0px; width: 100%;}';
-                css += '.gc-date-filter select, .gc-date-filter input {height: 30px; margin-top: 0px; padding: 0 0 0 4px !important;}';
-                css += '.gc-date-filter svg {bottom: 5px !important; height: 20px !important;}';
-                css += '.gc-labeled-select .gc-select select:active, .gc-labeled-select .gc-select select:focus {border-color: unset !important; box-shadow: unset !important;}';
-                css += '.gc-labeled-select .gc-select select + svg {top: 6px !important;}';
-                css += '.search-filters-block .chip-field-input {height: 30px; margin-top: 0px; font-size: 14px; padding-left: 4px;}';
-                css += '.search-filters-block .chip {margin-bottom: 0px;}';
-                css += '.search-filters-block .user-typeahead-list-item {font-size: 14px;}';
-                css += '.search-filters-block .label.min, .search-filters-block .label.max {font-size: 14px;}';
-                css += '.search-filters-block .rc-slider-handle:focus {box-shadow: 0 0 0 0px;}';
-                css += '#search-filter-type ul label, .search-filters-attributes ul.wonders label {padding: 3px 10px !important;}';
-                css += '#search-filter-size li label {line-height: 30px !important;}';
-                css += '.search-filters-block .number-filter .label {text-transform: none !important;}';
-                css += '.search-filters-block .number-filter input, .search-filters-block .number-filter input:focus {height: 30px; font-size: 14px; padding-left: 4px; box-shadow: 0 0 0 0px !important;}';
-                // Pop up by right mouse click to a cache in the map.
-                css += '.leaflet-popup-content {margin: 5px 8px !important;}';
-                css += '.cache-action-log-geocache, .cache-action-add-to-list, .cache-action-download-gpx, .cache-action-open-cache {padding: 5px 0 !important;}';
-            // No compact layout.
-            } else {
-                css += '.geocache-list-container ul li, .LazyLoad.is-visible {height: 84px !important}';
-            }
-            // The checkboxes in the cache list are no longer one below the other on the right edge. (GS Bug)
-            css += '.geocache-item-details-container {width: calc(100% - 18px);}';
-            // No unsuitably field border if field focused.
-            css += '#main a:focus {outline: none !important;}';
-            // Adapt the width of the pop up by right mouse click to a cache in the map.
-            css += '.leaflet-popup.context-menu.geocache-context-menu.leaflet-zoom-animated {width: auto !important; min-width: 300px;}';;
-            css += '.leaflet-popup-content {width: auto !important;}';
-*/
             // Show button to collapse activity.
             css += '.cache-preview-activities > header > div {display: flex; flex-flow: row wrap; justify-content: space-between; align-items: center; cursor: pointer;}';
             css += '.cache-preview-activities .opener {height: 22px; width: 22px; transition: all .3s ease; transform-origin: 50% 50%;}';
             css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
             css += '.cache-preview-activities.isHide > header > ul {display: none;}';
-            // Show name of disabled caches strike through in special color.
-            css += '.gclh_disabled, .gclh_disabled a {color: #' + settings_searchmap_disabled_color + ' !important;}';
-            css += '.gclh_disabled.gclh_strikethrough, .gclh_disabled.gclh_strikethrough a {text-decoration: line-through;}';
             // Map buttons above.
             // - All top buttons next to each other.
             css += '.leaflet-top.leaflet-right {display: flex;}';
@@ -18524,10 +18217,6 @@ var mainGC = function() {
             html += "</select> px" + show_help("With this option you can choose the height of the buttons in the cache preview action menu in the left sidebar of the search map from 30 up to 46 pixel.<br>The website default for the log button is 46 pixel and for the action buttons 62 pixel. The suggestion is 36 pixel.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewAttributes', 'For cache preview attributes') + show_help("This option displays the cache preview attributes in the left sidebar of the search map more compact.<br><br>The cache preview attributes contain further details about the cache, such as difficulty, terrain, size, favorite points, owner and placed date, and may contain additional attributes such as the enhanced cache data block.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
-            html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
-            html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
-            html += "<img src=" + global_restore_icon + " id='restore_settings_searchmap_disabled_color' title='back to default' style='width: 12px; cursor: pointer;'>";
-            html += show_help("If compact layout is enabled and the name of disabled caches are specially represented, the cache status line above the cache name is hidden.") + onlySearchMap + '<br>';
             html += checkboxy('settings_searchmap_show_hint', 'Show hint of cache automatically on cache detail screen') + onlySearchMap + "<br>";
             html += checkboxy('settings_searchmap_show_btn_save_as_pq', 'Show button "Save as Pocket Query"') + show_help("Adds a button in the sidebar of the Search Map to save the actual map view as a pocket query (like on the Browse Map).<br>Note that not all filters on the map are also available on Pocket Query.") + onlySearchMap + "<br>";
             html += " &nbsp; " + checkboxy('settings_save_as_pq_set_all', 'Set filter values "All"') + show_help("If filter values \"All\" are set and the map parameter \"Set defaults\" is enabled, the default values are still prevented from asserting themselves. Otherwise, the defaults prevail. This makes it possible, for example, to see caches found and not found on the map, this is \"All\". So you can see on the map whether you have been around here before. At the same time, however, a default value for \"I haven't found\" may be set in the PQ. After all, the caches found are of little interest in the PQ. That might sound complicated, but it can be valuable if you understand it because you don't have to make any more changes to the map's filter before generating the PQ.") + "<br>";
@@ -19845,7 +19534,6 @@ var mainGC = function() {
             $('#settings_process_vup')[0].addEventListener("click", alert_settings_process_vup, false);
             $('#restore_settings_lists_disabled_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_lists_archived_color')[0].addEventListener("click", restoreField, false);
-            $('#restore_settings_searchmap_disabled_color')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_show_copydata_own_stuff_name')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_show_copydata_own_stuff_value')[0].addEventListener("click", restoreField, false);
             $('#restore_settings_show_copydata_separator')[0].addEventListener("click", restoreField, false);
@@ -20049,9 +19737,6 @@ var mainGC = function() {
             setEvForDepPara("settings_lists_archived","settings_lists_archived_strikethrough");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_log_status_icons_visible");
             setEvForDepPara("settings_lists_icons_visible","settings_lists_cache_type_icons_visible");
-            setEvForDepPara("settings_searchmap_disabled","settings_searchmap_disabled_strikethrough");
-            setEvForDepPara("settings_searchmap_disabled","settings_searchmap_disabled_color");
-            setEvForDepPara("settings_searchmap_disabled","restore_settings_searchmap_disabled_color");
             setEvForDepPara("settings_show_copydata_menu","settings_show_copydata_own_stuff_show");
             setEvForDepPara("settings_show_copydata_menu","settings_show_copydata_plus");
             setEvForDepPara("settings_show_copydata_menu","settings_show_copydata_separator");
@@ -20356,7 +20041,6 @@ var mainGC = function() {
             setValue("settings_showUnpublishedHides_sort", document.getElementById('settings_showUnpublishedHides_sort').value);
             setValue("settings_lists_disabled_color", document.getElementById('settings_lists_disabled_color').value.replace("#",""));
             setValue("settings_lists_archived_color", document.getElementById('settings_lists_archived_color').value.replace("#",""));
-            setValue("settings_searchmap_disabled_color", document.getElementById('settings_searchmap_disabled_color').value.replace("#",""));
             setValue("settings_show_copydata_own_stuff_name", document.getElementById('settings_show_copydata_own_stuff_name').value);
             setValue("settings_show_copydata_own_stuff_value", document.getElementById('settings_show_copydata_own_stuff_value').value);
             setValue("settings_show_copydata_separator", document.getElementById('settings_show_copydata_separator').value);
@@ -20673,8 +20357,6 @@ var mainGC = function() {
                 'settings_searchmap_compact_layout_listOfCaches',
                 'settings_searchmap_compact_layout_listOfLists',
                 'settings_searchmap_compact_layout_sidebarFooter',
-                'settings_searchmap_disabled',
-                'settings_searchmap_disabled_strikethrough',
                 'settings_searchmap_show_hint',
                 'settings_relocate_other_map_buttons',
                 'settings_show_radius_on_flopps',
@@ -21163,7 +20845,6 @@ var mainGC = function() {
             else if (fieldId == "settings_lines_color_vip") field.value = "F0F0A0";
             else if (fieldId == "settings_lists_disabled_color") field.value = "4A4A4A";
             else if (fieldId == "settings_lists_archived_color") field.value = "8C0B0B";
-            else if (fieldId == "settings_searchmap_disabled_color") field.value = "4A4A4A";
             else if (fieldId == "settings_font_color_menu") restoreColor("settings_font_color_menuX0", "restore_settings_font_color_menuX0", field.value);
             else if (fieldId == "settings_font_color_menuX0") restoreColor("settings_font_color_menu", "restore_settings_font_color_menu", field.value);
             else if (fieldId == "settings_font_color_submenu") restoreColor("settings_font_color_submenuX0", "restore_settings_font_color_submenuX0", field.value);
