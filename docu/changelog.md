@@ -62,7 +62,7 @@
 	<li>
 		<strong>Change:</strong> [Dashboard] Re-enable feature to hide right column. [<a href="https://github.com/2Abendsegler/GClh/issues/3124" title="Issue 3124">3124</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 		This feature allows you to hide the right column of your dashboard. The feature is integrated in the standard "Dashboard settings" button.<br>
-		<img src="../images/0.18.6/Screen31.jpg" alt="Screen31.jpg"><br><br>
+		<img src="../images/0.18.6/Screen31.jpg" alt="Screen31.jpg"><br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Dashboard] View larger log images. [<a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
@@ -72,11 +72,11 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_view_larger_log_images_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.18.6/Screen06.jpg" alt="Screen06.jpg"></a><br>
 		If you want to use this feature, you have to activate and customize it.<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a>.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Dashboard] Close dialog containing log images also by clicking outside the dialog. [<a href="https://github.com/2Abendsegler/GClh/issues/3141" title="Issue 3141">3141</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3141" title="Issue 3141">3141</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3141" title="Issue 3141">3141</a>.<br><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Dashboard] Hide heading and reposition settings button. [<a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -86,7 +86,7 @@
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_heading_and_move_settings_button_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.18.6/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		If you want to use this feature, you have to activate it.<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a>.<br><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Dashboard] Link to "Ignore list" in left column is missing. [<a href="https://github.com/2Abendsegler/GClh/issues/3120" title="Issue 3120">3120</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
