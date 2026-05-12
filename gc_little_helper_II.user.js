@@ -681,9 +681,15 @@ var variablesInit = function(c) {
     c.settings_improve_character_counter = getValue("settings_improve_character_counter", true);
     c.settings_browsemap_compact_layout_sidebar = getValue("settings_browsemap_compact_layout_sidebar", true);
     c.settings_searchmap_compact_layout = getValue("settings_searchmap_compact_layout", true);
+    c.settings_searchmap_compact_layout_sidebarHeader = getValue("settings_searchmap_compact_layout_sidebarHeader", true);
+    c.settings_searchmap_compact_layout_sidebarHeader_buttonHeight = getValue("settings_searchmap_compact_layout_sidebarHeader_buttonHeight", 36);
     c.settings_searchmap_compact_layout_cachePreviewHeader = getValue("settings_searchmap_compact_layout_cachePreviewHeader", true);
     c.settings_searchmap_compact_layout_cachePreviewActionMenu = getValue("settings_searchmap_compact_layout_cachePreviewActionMenu", true);
+    c.settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight = getValue("settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight", 36);
     c.settings_searchmap_compact_layout_cachePreviewAttributes = getValue("settings_searchmap_compact_layout_cachePreviewAttributes", true);
+    c.settings_searchmap_compact_layout_listOfCaches = getValue("settings_searchmap_compact_layout_listOfCaches", true);
+    c.settings_searchmap_compact_layout_listOfLists = getValue("settings_searchmap_compact_layout_listOfLists", true);
+    c.settings_searchmap_compact_layout_sidebarFooter = getValue("settings_searchmap_compact_layout_sidebarFooter", true);
     c.settings_searchmap_disabled = getValue("settings_searchmap_disabled", false);
     c.settings_searchmap_disabled_strikethrough = getValue("settings_searchmap_disabled_strikethrough", true);
     c.settings_searchmap_disabled_color = getValue("settings_searchmap_disabled_color", '4A4A4A');
@@ -11149,6 +11155,9 @@ var mainGC = function() {
 // Improve Search Map, improve new map.
     if (is_page('searchmap')) {
         try {
+            // Mark as completed.
+            var done = 'groot';
+
             // Initialize Map object.
             unsafeWindow.MapSettings = {'Map': null};
 
@@ -12284,6 +12293,91 @@ var mainGC = function() {
                 }
             }
 
+            // Compact layout on sidebar.
+            function cssTopBottom(elem, marTop, marBot, padTop, padBot) {
+                elem.each(function() { $(this)[0].style.setProperty('margin-top', marTop + 'px', 'important'); });
+                elem.each(function() { $(this)[0].style.setProperty('margin-bottom', marBot + 'px', 'important'); });
+                elem.each(function() { $(this)[0].style.setProperty('padding-top', padTop + 'px', 'important'); });
+                elem.each(function() { $(this)[0].style.setProperty('padding-bottom', padBot + 'px', 'important'); });
+            }
+            function compactLayout_sidebarHeader() {
+                if (settings_searchmap_compact_layout) {
+                    if (!$('#gclh_css_compactLayout')[0]) {
+                        var css = '';
+                        // Smaller loading spinner.
+                        css += '.preview-loading-spinner svg {width: 40px !important; height: 40px !important;}';
+                        appendCssStyle(css, null, 'gclh_css_compactLayout');
+                    }
+                }
+                if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_sidebarHeader) {
+                    if ($('#sidebar > div:first > div:first')[0]) {
+                        var buttonLineHeight = parseInt(settings_searchmap_compact_layout_sidebarHeader_buttonHeight);
+                        var pad = 8 - ( 40 - buttonLineHeight ) / 2;
+                        if (!$('#gclh_css_sidebarHeader')[0]) {
+                            var css = '';
+                            // BML button on map if sidebar is hide.
+                            css += '#map-chip {max-height: ' + buttonLineHeight + 'px !important;}';
+                            // Back button in front of BML button, search button in search bar.
+                            css += '#active-list-toggle-button svg, .hero-search-bar-control button svg {vertical-align: middle !important;}';
+                            // Adjust text color for Sort by.
+                            css += '#search-map-sort-toggle {color: rgb(74 74 74);}';
+                            appendCssStyle(css, null, 'gclh_css_sidebarHeader');
+                        }
+                        // Sidebar header area.
+                        cssTopBottom($('#sidebar > div:first'), 0, 0, 5, 5);
+                        // All sidebar header lines (header buttons, search bar and filter button, BML button, Hide header and Save as PQ, sort by and select all checkbox).
+                        var numberLines = 0;
+                        $('#sidebar > div:first > div').each(function() {
+                            cssTopBottom($(this), 0, 0, 0, 0);
+                            if ($(this)[0].children.length > 0) numberLines++;
+                        });
+                        $('#sidebar > div:first')[0].style.setProperty('gap', (numberLines > 1 ? 5 : 0) + 'px', 'important');
+                        var numberLines = 0;
+                        $('#sidebar > div:first > div:first > div').each(function() {
+                            if ($(this)[0].children.length > 0) numberLines++;
+                        });
+                        $('#sidebar > div:first > div:first')[0].style.setProperty('gap', (numberLines > 1 ? 5 : 0) + 'px', 'important');
+                        // Line with header buttons.
+                        if ($('#sidebar > div:first ul.gc-button-group')[0]) {
+                            $('#sidebar > div:first ul.gc-button-group')[0].style.setProperty('height', buttonLineHeight + 'px', 'important');
+                        }
+                        // Search bar.
+                        if ($('.search-bar .hero-search-bar-control button')[0]) {
+                            $('.search-bar')[0].parentNode.parentNode.style.setProperty('justify-content', 'unset', 'important');
+                            $('.search-bar')[0].parentNode.parentNode.style.setProperty('grid-template-columns', 'unset', 'important');
+                            $('.search-bar')[0].parentNode.style.setProperty('gap', '6px', 'important');
+                            $('.hero-search-bar-control')[0].parentNode.style.setProperty('gap', '5px', 'important');
+                            $('.hero-search-bar-control')[0].style.setProperty('min-height', buttonLineHeight + 'px', 'important');
+                            $('.hero-search-bar-control')[0].style.setProperty('height', buttonLineHeight + 'px', 'important');
+                            $('.hero-search-bar-control button')[0].style.setProperty('width', '100%', 'important');
+                            $('.hero-search-bar-control button')[0].style.setProperty('height', '100%', 'important');
+                            $('.hero-search-bar-control button')[0].style.setProperty('padding-right', (pad - 1) + 'px', 'important');
+                            $('.hero-search-bar-control button')[0].style.setProperty('padding-left', pad + 'px', 'important');
+                            cssTopBottom($('.hero-search-bar-control button'), 0, 0, 0, 0);
+                        }
+                        // Filter button.
+                        if ($('.filter-toggle-container button span')[0]) {
+                            $('.filter-toggle-container')[0].style.setProperty('min-height', buttonLineHeight + 'px', 'important');
+                            $('.filter-toggle-container')[0].style.setProperty('height', buttonLineHeight + 'px', 'important');
+                            $('.filter-toggle-container button')[0].style.setProperty('min-height', buttonLineHeight + 'px', 'important');
+                            $('.filter-toggle-container button')[0].style.setProperty('height', buttonLineHeight + 'px', 'important');
+                            $('.filter-toggle-container button')[0].style.setProperty('padding-left', pad + 'px', 'important');
+                            $('.filter-toggle-container button')[0].style.setProperty('border-color', 'rgb(204, 204, 204)', 'important');
+                            $('.filter-toggle-container button span')[0].style.setProperty('width', '23px', 'important');
+                            $('.filter-toggle-container button span')[0].style.setProperty('height', '23px', 'important');
+                        }
+                        // Sidebar header line with BML button.
+                        if ($('.dismiss-active-list-button label')[0]) {
+                            $('.dismiss-active-list-button').children().each(function() {
+                                $(this)[0].style.setProperty('max-height', buttonLineHeight + 'px', 'important');
+                            });
+                            if ($('.dismiss-active-list-button label')[0]) {
+                                $('.dismiss-active-list-button label')[0].style.setProperty('line-height', '18px', 'important');
+                            }
+                        }
+                    }
+                }
+            }
             function compactLayout_cachePreviewHeader() {
                 if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewHeader) {
                     if ($('.cache-preview-header .filler')[0] && $('.cache-preview-header .header-top')[0] &&
@@ -12313,17 +12407,18 @@ var mainGC = function() {
                     }
                 }
             }
-
             function compactLayout_cachePreviewActionMenu() {
                 if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewActionMenu) {
                     if ($('.cache-preview-action-menu a.log-geocache')[0] && $('.cache-preview-action-menu ul > li button svg')[0] &&
                         $('.cache-preview-action-menu ul > li span')[0]) {
                         if (!$('#gclh_css_cachePreviewActionMenu')[0]) {
+                            var buttonLineHeight = parseInt(settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight);
+                            var pad = 12 - ( 46 - buttonLineHeight ) / 2;
                             var css = '';
-                            css += '.cache-preview-action-menu {padding-top: 6px !important; padding-bottom: 6px !important; margin: 0px !important;}';
-                            css += '.cache-preview-action-menu a.log-geocache {padding-top: 8px !important; padding-bottom: 8px !important; margin: 0px 0px 6px 0px !important;}';
-                            css += '.cache-preview-action-menu ul {padding: 0px !important; margin: 0px !important; gap: 6px !important;}';
-                            css += '.cache-preview-action-menu ul > li button, .cache-preview-action-menu ul > li a {padding-top: 6px !important; padding-bottom: 6px !important;}';
+                            css += '.cache-preview-action-menu {padding-top: 5px !important; padding-bottom: 5px !important; margin: 0px !important;}';
+                            css += '.cache-preview-action-menu a.log-geocache {padding-top: ' + pad + 'px !important; padding-bottom: ' + pad + 'px !important; margin: 0px 0px 5px 0px !important;}';
+                            css += '.cache-preview-action-menu ul {padding: 0px !important; margin: 0px !important; gap: 5px !important;}';
+                            css += '.cache-preview-action-menu ul > li button, .cache-preview-action-menu ul > li a {padding-top: ' + (pad - 2) + 'px !important; padding-bottom: ' + (pad - 2) + 'px !important;}';
                             css += '.cache-preview-action-menu ul > li svg, .cache-preview-action-menu ul > li img {margin: 0px auto 0px auto !important;}';
                             css += '.cache-preview-action-menu ul > li span:not(:has(> span.gclh_ownBMLs_count)):not(.gclh_ownBMLs_count) {display: none !important;}';
                             css += '.cache-preview-action-menu ul > li span.gclh_ownBMLs_count {position: absolute; margin: -12px 0px 0px 12px;}';
@@ -12353,35 +12448,120 @@ var mainGC = function() {
                     }
                 }
             }
-
             function compactLayout_cachePreviewAttributes() {
-                function cssTopBottom(elem, marTop, marBot, padTop, padBot) {
-                    elem.each(function() { $(this)[0].style.setProperty('margin-top', marTop + 'px', 'important'); });
-                    elem.each(function() { $(this)[0].style.setProperty('margin-bottom', marBot + 'px', 'important'); });
-                    elem.each(function() { $(this)[0].style.setProperty('padding-top', padTop + 'px', 'important'); });
-                    elem.each(function() { $(this)[0].style.setProperty('padding-bottom', padBot + 'px', 'important'); });
-                }
                 if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewAttributes) {
                     if ($('.cache-preview-attributes ul.attributes > div .attribute-val')[0] && $('.cache-preview-attributes .favorites-points svg')[0] &&
                         $('.cache-preview-attributes .geocache-owner span')[0]) {
-                        cssTopBottom($('.cache-preview-attributes'), 0, 0, 4, 4);
-                        cssTopBottom($('.cache-preview-attributes ul.attributes'), 0, 0, 4, 4);
-                        $('.cache-preview-attributes ul.attributes > div').each(function() {
-                            $(this)[0].style.setProperty('gap', '2px', 'important');
+                        if (!$('#gclh_css_cachePreviewAttributes')[0]) {
+                            var css = '';
+                            css += '#searchmap_sidebar_enhancements {margin-top: 0px; margin-bottom: 0px; padding-top: 4px; padding-bottom: 4px;}';
+                            appendCssStyle(css, null, 'gclh_css_cachePreviewAttributes');
+                        }
+                        if (!$('.gclh_html_cachePreviewAttributes')[0]) {
+                            $('.cache-preview-header').addClass('gclh_html_cachePreviewAttributes');
+                            cssTopBottom($('.cache-preview-attributes'), 0, 0, 4, 4);
+                            cssTopBottom($('.cache-preview-attributes ul.attributes'), 0, 0, 4, 4);
+                            $('.cache-preview-attributes ul.attributes > div').each(function() {
+                                $(this)[0].style.setProperty('gap', '2px', 'important');
+                            });
+                            $('.cache-preview-attributes ul.attributes > div .attribute-val').each(function() {
+                                $(this)[0].style.setProperty('font-size', '12px', 'important');
+                            });
+                            $('.cache-preview-attributes .favorites-points svg')[0].style.setProperty('width', '24px', 'important');
+                            $('.cache-preview-attributes .favorites-points svg')[0].style.setProperty('height', '24px', 'important');
+                            cssTopBottom($('.cache-preview-attributes .geocache-owner'), 0, 0, 4, 4);
+                            $('.cache-preview-attributes .geocache-owner')[0].style.setProperty('gap', '2px', 'important');
+                            $('.cache-preview-attributes .geocache-owner span').each(function() {
+                                $(this)[0].style.setProperty('font-size', '12px', 'important');
+                            });
+                            // Fix align of Description button.
+                            if ($('.preview-main-inner > button')[0]) $('.preview-main-inner > button')[0].style.setProperty('margin-bottom', '0px', 'important');
+                        }
+                    }
+                }
+            }
+            function compactLayout_listOfCaches() {
+                if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_listOfCaches) {
+                    if ($('div > div > .gc-map-geocache-list-item')[0] && $('div > .results-label')[0]) {
+                        // Caches in the list.
+                        $('.gc-map-geocache-list-item:not(.' + done + ')').parent().parent().each(function() {
+                            $(this).find('.gc-map-geocache-list-item').addClass(done);
+                            // - Cache items header.
+                            cssTopBottom($(this), 0, 0, 4, 4);
+                            cssTopBottom($(this).find('> div'), 0, 0, 0, 0);
+                            // - Cache items texts.
+                            $(this).find('span').each(function() {
+                                $(this)[0].style.setProperty('font-size', '12px', 'important');
+                                $(this)[0].style.setProperty('line-height', '16px', 'important');
+                            });
+                            // - Cache items cache name.
+                            $(this).find('.geocache-name').each(function() {
+                                $(this)[0].style.setProperty('max-width', 'unset', 'important');
+                            });
+                            // - Align checkboxes.
+                            $(this).find('input[type="checkbox"]').parent().parent().each(function() {
+                                $(this)[0].style.setProperty('padding-right', '14px', 'important');
+                            });
                         });
-                        $('.cache-preview-attributes ul.attributes > div .attribute-val').each(function() {
+                        // - Align related select all checkbox in sidebar header.
+                        $('#sidebar > div div > div > input[type="checkbox"]:not(.' + done + ')').parent().parent().each(function() {
+                            $(this).find('input[type="checkbox"]').addClass(done);
+                            $(this)[0].style.setProperty('padding-right', '6px', 'important');
+                        });
+                        // Results line and pagination line in the list.
+                        // - Determine padding bottom for results and pagination header depending on whether add to list is available.
+                        if ($('div:has(button[data-event-label="Add to List"]')[0]) {
+                            if ($('.gc-pagination')[0]) var padBot = 30;
+                            else var padBot = 22;
+                        } else var padBot = 4;
+                        // - Results header.
+                        cssTopBottom($('.results-label').parent(), 0, 0, 2, padBot);
+                        // - Pagination header.
+                        if ($('.gc-pagination')[0]) {
+                            $('.gc-pagination')[0].style.setProperty('padding-right', '14px', 'important');
+                            cssTopBottom($('.gc-pagination'), 2, 0, 0, 0);
+                            // - Pagination buttons.
+                            $('.gc-pagination button').each(function() {
+                                $(this)[0].style.setProperty('font-size', '12px', 'important');
+                                $(this)[0].style.setProperty('width', '24px', 'important');
+                                $(this)[0].style.setProperty('height', '24px', 'important');
+                                $(this)[0].style.setProperty('flex-basis', '24px', 'important');
+                            });
+                        }
+                        // - Results line.
+                        cssTopBottom($('.results-label'), 2, 0, 0, 0);
+                        $('.results-label').each(function() {
                             $(this)[0].style.setProperty('font-size', '12px', 'important');
                         });
-                        $('.cache-preview-attributes .favorites-points svg')[0].style.setProperty('width', '24px', 'important');
-                        $('.cache-preview-attributes .favorites-points svg')[0].style.setProperty('height', '24px', 'important');
-                        cssTopBottom($('.cache-preview-attributes .geocache-owner'), 0, 0, 4, 4);
-                        $('.cache-preview-attributes .geocache-owner')[0].style.setProperty('gap', '2px', 'important');
-                        $('.cache-preview-attributes .geocache-owner span').each(function() {
-                            $(this)[0].style.setProperty('font-size', '12px', 'important');
+                        // Add to list line after the list.
+                        // - Add to list header.
+                        cssTopBottom($('#sidebar > section button[data-event-label="Add to List"]').parent().parent(), 0, 0, 4, 4);
+                        cssTopBottom($('#sidebar > section button[data-event-label="Add to List"]').parent(), 0, 0, 0, 0);
+                        // - Add to list button.
+                        cssTopBottom($('#sidebar > section button[data-event-label="Add to List"]'), 0, 0, 6, 6);
+                    }
+                }
+            }
+            function compactLayout_listOfLists() {
+                if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_listOfLists) {
+                    if ($('.list-of-lists li button')[0]) {
+                        $('.list-of-lists li button:not(.' + done + ')').each(function() {
+                            $(this).addClass(done);
+                            cssTopBottom($(this), 0, 0, 4, 4);
+                            $(this).find('span:has(span)').each(function() {
+                                $(this)[0].style.setProperty('gap', '1px', 'important');
+                            });
                         });
-                        cssTopBottom($('#searchmap_sidebar_enhancements'), 0, 0, 4, 4);
-                        // Description Button korrigieren
-                        if ($('.preview-main-inner > button')[0]) $('.preview-main-inner > button')[0].style.setProperty('margin-bottom', '0px', 'important');
+                    }
+                }
+            }
+            function compactLayout_sidebarFooter() {
+                if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_sidebarFooter) {
+                    if ($('#sidebar footer a')[0] && $('#sidebar footer:not(.' + done + ')')[0]) {
+                        $('#sidebar footer').addClass(done);
+                        cssTopBottom($('#sidebar footer'), 0, 0, 4, 2);
+                        $('#sidebar footer')[0].style.setProperty('font-size', '10px', 'important');
+                        $('#sidebar footer a')[0].style.setProperty('font-size', '10px', 'important');
                     }
                 }
             }
@@ -12958,8 +13138,8 @@ var mainGC = function() {
                 }
                 if ((settings_searchmap_show_btn_save_as_pq || settings_map_show_btn_hide_header)) {
                     if (!$('#gclh_action_bar')[0]) {
-                        $('[data-testid="sidebar-header-container"]').append('<hr class="gclh_action_bar" style="margin: -5px;opacity: 0.2">');
-                        $('[data-testid="sidebar-header-container"]').append('<div id="gclh_action_bar" class="gclh_action_bar"></div>');
+                        $('#search-map-sort-toggle').parent().parent().before('<div id="gclh_action_bar" class="gclh_action_bar"></div>');
+                        $('#gclh_action_bar').after('<hr class="gclh_action_bar" style="margin: -1px 0px -1px 0px !important; opacity: 0.2">');
                     }
                     if (settings_map_show_btn_hide_header) addHideHeaderButton();
                     if (settings_searchmap_show_btn_save_as_pq) addCreatePQButton();
@@ -12980,9 +13160,13 @@ var mainGC = function() {
             function processAllSearchMap() {
                 scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
+                compactLayout_sidebarHeader();
                 compactLayout_cachePreviewHeader();
                 compactLayout_cachePreviewActionMenu();
                 compactLayout_cachePreviewAttributes();
+                compactLayout_listOfCaches();
+                compactLayout_listOfLists();
+                compactLayout_sidebarFooter();
 //xxx deaktiviert
 //                compactLayout();
                 addVipVupMailToOwner(); // Has to be run after compactLayout.
@@ -18317,9 +18501,23 @@ var mainGC = function() {
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_compact_layout', 'Show compact layout on sidebar') + show_help("This option display the areas in the left sidebar of the search map more compact.") + onlySearchMap + "<br>";
             html += newParameterOn2;
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_sidebarHeader', 'For header') + show_help("This option display the header area in the left sidebar of the search map more compact.<br><br>The header area can contain buttons such as \"Search\", \"My Lists\" and \"Filters\", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.");
+            html += " Height of buttons <select class='gclh_form' id='settings_searchmap_compact_layout_sidebarHeader_buttonHeight' style='width: 52px;'>";
+            for (var i = 30; i <= 40; i = i+2) {
+                html += "  <option value='" + i + "' " + (settings_searchmap_compact_layout_sidebarHeader_buttonHeight == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel.<br>The website default is 40 pixel. The suggestion is 36 pixel.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewHeader', 'For cache preview header') + show_help("This option display the cache preview header area in the left sidebar of the search map more compact.<br><br>The cache preview header contains the most important data about the cache, such as cache status, cache type, cache link, cache name, last logged date, cache code and in case of events further data such as start date and time and location.") + "<br>";
-            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewActionMenu', 'For cache preview action menu') + show_help("This option display the cache preview action menu in the left sidebar of the search map more compact.<br><br>The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and may contain foreign buttons such as a button to send to c:geo.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewActionMenu', 'For cache preview action menu') + show_help("This option display the cache preview action menu in the left sidebar of the search map more compact.<br><br>The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and may contain foreign buttons such as a button to send to c:geo.");
+            html += " Height of buttons <select class='gclh_form' id='settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight' style='width: 52px;'>";
+            for (var i = 30; i <= 46; i = i+2) {
+                html += "  <option value='" + i + "' " + (settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight == i ? "selected=\"selected\"" : "") + ">" + i + "</option>";
+            }
+            html += "</select> px" + show_help("With this option you can choose the height of the buttons in the cache preview action menu in the left sidebar of the search map from 30 up to 46 pixel.<br>The website default for the log button is 46 pixel and for the action buttons 62 pixel. The suggestion is 36 pixel.") + "<br>";
             html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_cachePreviewAttributes', 'For cache preview attributes') + show_help("This option display the cache preview attributes in the left sidebar of the search map more compact.<br><br>The cache preview attributes contains further details about the cache, such as difficulty, terrain, size, favorite points, owner and placed date, and may contain additional attributes such as the enhanced cache data block.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_listOfCaches', 'For list of caches') + show_help("This option display the list of caches in the left sidebar of the search map more compact.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_listOfLists', 'For list of My Lists') + show_help("This option display the list of bookmark lists (My Lists) in the left sidebar of the search map more compact.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_searchmap_compact_layout_sidebarFooter', 'For footer') + show_help("This option display the footer in the left sidebar of the search map more compact.") + "<br>";
             html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += checkboxy('settings_searchmap_disabled', 'Show name of disabled caches ') + checkboxy('settings_searchmap_disabled_strikethrough', 'strike through, in color ');
             html += "<input class='gclh_form color' type='text' size=6 id='settings_searchmap_disabled_color' style='margin-left: 0px;' value='" + getValue("settings_searchmap_disabled_color", "4A4A4A") + "'>";
@@ -19902,9 +20100,17 @@ var mainGC = function() {
             setEvForDepPara("settings_default_logtype_control","settings_default_tb_logtype");
             setEvForDepPara("settings_map_overview_search_map_icon", "settings_map_overview_search_map_icon_new_tab");
             setEvForDepPara("settings_map_show_btn_hide_header","settings_hide_map_header");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_sidebarHeader");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_sidebarHeader_buttonHeight");
             setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewHeader");
             setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewActionMenu");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight");
             setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_cachePreviewAttributes");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_listOfCaches");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_listOfLists");
+            setEvForDepPara("settings_searchmap_compact_layout","settings_searchmap_compact_layout_sidebarFooter");
+            setEvForDepPara("settings_searchmap_compact_layout_sidebarHeader","settings_searchmap_compact_layout_sidebarHeader_buttonHeight");
+            setEvForDepPara("settings_searchmap_compact_layout_cachePreviewActionMenu","settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight");
             setEvForDepPara("settings_searchmap_show_btn_save_as_pq","settings_save_as_pq_set_all");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_latest_logs_symbols_count_map");
             setEvForDepPara("settings_show_enhanced_map_popup","settings_show_country_in_place");
@@ -20171,6 +20377,8 @@ var mainGC = function() {
             setValue("settings_line_height_gclh_blocks_db", document.getElementById('settings_line_height_gclh_blocks_db').value);
             setValue("settings_view_larger_log_images_max_width_db", parseInt(document.getElementById('settings_view_larger_log_images_max_width_db').value));
             setValue("settings_view_larger_log_images_max_height_db", parseInt(document.getElementById('settings_view_larger_log_images_max_height_db').value));
+            setValue("settings_searchmap_compact_layout_sidebarHeader_buttonHeight", parseInt(document.getElementById('settings_searchmap_compact_layout_sidebarHeader_buttonHeight').value));
+            setValue("settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight", parseInt(document.getElementById('settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight').value));
 
             // Map Layers in vorgegebener Reihenfolge übernehmen.
             var new_map_layers_available = document.getElementById('settings_maplayers_available');
@@ -20458,9 +20666,13 @@ var mainGC = function() {
                 'settings_improve_character_counter',
                 'settings_browsemap_compact_layout_sidebar',
                 'settings_searchmap_compact_layout',
+                'settings_searchmap_compact_layout_sidebarHeader',
                 'settings_searchmap_compact_layout_cachePreviewHeader',
                 'settings_searchmap_compact_layout_cachePreviewActionMenu',
                 'settings_searchmap_compact_layout_cachePreviewAttributes',
+                'settings_searchmap_compact_layout_listOfCaches',
+                'settings_searchmap_compact_layout_listOfLists',
+                'settings_searchmap_compact_layout_sidebarFooter',
                 'settings_searchmap_disabled',
                 'settings_searchmap_disabled_strikethrough',
                 'settings_searchmap_show_hint',
