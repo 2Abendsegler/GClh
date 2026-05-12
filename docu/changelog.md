@@ -57,7 +57,7 @@
 		<img src="../images/0.18.6/Screen04.gif" alt="Screen04.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.18.6/Screen05.jpg" alt="Screen05.jpg"></a><br>
-		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br><br>
 	</li>
 	<li>
 		<strong>Change:</strong> [Dashboard] Re-enable feature to hide right column. [<a href="https://github.com/2Abendsegler/GClh/issues/3124" title="Issue 3124">3124</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
