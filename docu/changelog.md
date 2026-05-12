@@ -56,7 +56,7 @@
 		This feature allows you to hide individual rows in the left column of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br><br>
 		<img src="../images/0.18.6/Screen04.gif" alt="Screen04.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
-		<img src="../images/0.18.6/Screen05.jpg" alt="Screen05.jpg"></a><br><br>
+		<img src="../images/0.18.6/Screen05.jpg" alt="Screen05.jpg"></a><br>
 		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
 	</li>
 	<li>
@@ -68,7 +68,7 @@
 		<strong>New:</strong> [Dashboard] View larger log images. [<a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		With this option, the dialog containing the log images are displayed larger and the log images can be loaded in full resolution. Using this option also simplifies closing such a dialog by clicking outside the dialog.<br>
 		To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel. If these values exceed the width or height of the screen, they will be determined automatically.<br>
-		If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.<br><br>
+		If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_view_larger_log_images_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.18.6/Screen06.jpg" alt="Screen06.jpg"></a><br>
 		If you want to use this feature, you have to activate and customize it.<br>
@@ -80,7 +80,7 @@
 	</li>
 	<li>
 		<strong>New:</strong> [Dashboard] Hide heading and reposition settings button. [<a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		This feature allows you to hide the heading of the page with "Player dashboard for", your geocaching name and the "Dashboard settings" button.<br>
+		This feature allows you to hide the heading of the page with "Player dashboard for", your geocaching name and the "Dashboard settings" button.<br><br>
 		The "Dashboard settings" button will then be integrated into the "Profile summary" button in the left column of your dashboard.<br>
 		<img src="../images/0.18.6/Screen02.jpg" alt="Screen02.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_heading_and_move_settings_button_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
