@@ -89,7 +89,7 @@
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a>.<br><br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Dashboard] Link to "Ignore list" in left column is missing. [<a href="https://github.com/2Abendsegler/GClh/issues/3120" title="Issue 3120">3120</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Dashboard] Link to "Ignore list" in left column is missing. [<a href="https://github.com/2Abendsegler/GClh/issues/3120" title="Issue 3120">3120</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Dashboard] VIP, VUP, Mail links without border and smaller gap. [<a href="https://github.com/2Abendsegler/GClh/issues/3140" title="Issue 3140">3140</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -178,40 +178,40 @@
 	</li>
 	<li>
 		<strong>Remove:</strong> [Search Map] Remove older code that no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Browse geocaches button has changed position and look. [<a href="https://github.com/2Abendsegler/GClh/issues/3139" title="Issue 3139">3139</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3139" title="Issue 3139">3139</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3139" title="Issue 3139">3139</a>.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Uncaught TypeError: can't access property "Control", window.L is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/3137" title="Issue 3137">3137</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Fix:</strong> [Search Map] Uncaught TypeError: can't access property "Control", window.L is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/3137" title="Issue 3137">3137</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Display Options for Search Results do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/3149" title="Issue 3149">3149</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Fix:</strong> [Search Map] Display Options for Search Results do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/3149" title="Issue 3149">3149</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Issues with BML. [<a href="https://github.com/2Abendsegler/GClh/issues/3150" title="Issue 3150">3150</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		<strong>Fix:</strong> [Search Map] Issues with BML. [<a href="https://github.com/2Abendsegler/GClh/issues/3150" title="Issue 3150">3150</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Missing gclh buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] The green color of the icons on the map has changed. [<a href="https://github.com/2Abendsegler/GClh/issues/3138" title="Issue 3138">3138</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3138" title="Issue 3138">3138</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3138" title="Issue 3138">3138</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Improve color scheme when hovering the "Display Options for Search Results" button. [<a href="https://github.com/2Abendsegler/GClh/issues/3134" title="Issue 3134">3134</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3134" title="Issue 3134">3134</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3134" title="Issue 3134">3134</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Add to list pop-up entries not visible. [<a href="https://github.com/2Abendsegler/GClh/issues/3131" title="Issue 3131">3131</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3131" title="Issue 3131">3131</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3131" title="Issue 3131">3131</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Browse geocaches button is broken. [<a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a>.<br><br><br>
 	</li>
 </ul>
 
@@ -219,37 +219,37 @@
 <ul>
 	<li>
 		<strong>Change:</strong> [Pocket Query] Set border and center map box, more appealing circle, enable dragging. [<a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] Leaflet error: gclh_GetGcAccessToken(): can't access property "getPane", this._map is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a>.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Listing] Set background color of the overview map in the same way as for other maps. [<a href="https://github.com/2Abendsegler/GClh/issues/3128" title="Issue 3128">3128</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Listing] Set background color of the overview map in the same way as for other maps. [<a href="https://github.com/2Abendsegler/GClh/issues/3128" title="Issue 3128">3128</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search, My Lists, Cache Owner Dashboard] Automatic setting of the default language doesn't work due to asynchronous loading of footer. [<a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Maps] Incorrect number of trackables in enhanced cache data. [<a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Prevent outer border in add to list area. [<a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a>.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Browse Map] Incorrect function call during hide header. [<a href="https://github.com/2Abendsegler/GClh/issues/3126" title="Issue 3126">3126</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Browse Map] Incorrect function call during hide header. [<a href="https://github.com/2Abendsegler/GClh/issues/3126" title="Issue 3126">3126</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Config] Improve align of version info after parameter, otherwise, premature line breaks may occur. [<a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [My Lists, BML] Disable all config parameters because of features are not available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a>.<br><br>
 	</li>
 </ul>
 <br>
