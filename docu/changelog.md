@@ -101,11 +101,11 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Search Map] Compact layout in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
-		<strong>Overview of settings for compact layout in the left sidebar of Search Map:</strong><br>
+		<strong>- Overview of settings for compact layout in the left sidebar of Search Map:</strong><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout" title="Link to your GClh II Config">Settings -> Search Map:<br>
 		<img src="../images/0.18.6/Screen18.jpg" alt="Screen18.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for header:</strong><br>
-		This option display the header area in the left sidebar of the search map more compact.<br> The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
+		<strong>- Compact layout in the left sidebar of Search Map for header:</strong><br>
+		This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
 		With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
 		With compact layout and without:<br>
 		<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
