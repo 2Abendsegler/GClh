@@ -13612,6 +13612,7 @@ var mainGC = function() {
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
         css += '.gclh-leaflet-control:hover .gclh-leaflet-list {display: block;}';
         css += '.gclh-leaflet-list a:hover {background-color: #e6f7ef; text-decoration: none;}';
+        css += '#gclh_geoservices_list a {width: -webkit-fill-available; text-decoration: none;}';
         appendCssStyle(css, null, 'gclh_geoservices_css');
     }
 
