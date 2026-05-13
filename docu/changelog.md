@@ -71,7 +71,7 @@
 		If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.<br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_view_larger_log_images_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.18.6/Screen06.jpg" alt="Screen06.jpg"></a><br>
-		If you want to use this feature, you have to activate and customize it.<br>
+		If you want to use this feature, you have to activate and customize it.<br><br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a>.<br><br><br>
 	</li>
 	<li>
@@ -85,7 +85,7 @@
 		<img src="../images/0.18.6/Screen02.jpg" alt="Screen02.jpg"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_heading_and_move_settings_button_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
 		<img src="../images/0.18.6/Screen03.jpg" alt="Screen03.jpg"></a><br>
-		If you want to use this feature, you have to activate it.<br>
+		If you want to use this feature, you have to activate it.<br><br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a>.<br><br><br>
 	</li>
 	<li>
