@@ -1,3 +1,4 @@
+<a href="#v0186" title="GClh II version 0.18.6 (13.05.2026)">v0.18.6</a> &nbsp;
 <a href="#v0185" title="GClh II version 0.18.5 (17.04.2026)">v0.18.5</a> &nbsp;
 <a href="#v0184" title="GClh II version 0.18.4 (11.04.2026)">v0.18.4</a> &nbsp;
 <a href="#v0183" title="GClh II version 0.18.3 (09.04.2026)">v0.18.3</a> &nbsp;
@@ -43,6 +44,218 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.6:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+
+### Dashboard:
+<ul>
+	<li>
+		<strong>Change:</strong> [Dashboard] Hide individual rows in the left column doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3097" title="Issue 3097">3097</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		This feature allows you to hide individual rows in the left column of your dashboard. Each row has an icon for marking it. Above all rows, there's another icon for activating the configuration.<br>
+		<img src="../images/0.18.6/Screen04.gif" alt="Screen04.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_row_hide_new_dashboard" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.18.6/Screen05.jpg" alt="Screen05.jpg"></a><br>
+		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br><br>
+	</li>
+	<li>
+		<strong>Change:</strong> [Dashboard] Re-enable feature to hide right column. [<a href="https://github.com/2Abendsegler/GClh/issues/3124" title="Issue 3124">3124</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+		This feature allows you to hide the right column of your dashboard. The feature is integrated in the standard "Dashboard settings" button.<br>
+		<img src="../images/0.18.6/Screen31.jpg" alt="Screen31.jpg"><br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Dashboard] View larger log images. [<a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		With this option, the dialog containing the log images are displayed larger and the log images can be loaded in full resolution. Using this option also simplifies closing such a dialog by clicking outside the dialog.<br>
+		To ensure that the images are fully visible on the screen, the max width and height should be adjusted to the screen size. For example, a max width of 640 pixel and a max height of 450 pixel might be a good choice for a small laptop with a screen resolution of approximately 1280 x 620 pixel. If these values exceed the width or height of the screen, they will be determined automatically.<br>
+		If the max width is greater than 640 pixel, images will be processed in full resolution. The loading of such images results in higher data transfer and can incur high costs if your internet plan is based on data volume. Therefore, this option is not recommended for such plans. The loading of such images takes also longer, so it may take some time for the image to appear on the screen. Therefore, this option is not recommended for slow internet connections.<br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_view_larger_log_images_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.18.6/Screen06.jpg" alt="Screen06.jpg"></a><br>
+		If you want to use this feature, you have to activate and customize it.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/530" title="Issue 530">530</a>.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Dashboard] Close dialog containing log images also by clicking outside the dialog. [<a href="https://github.com/2Abendsegler/GClh/issues/3141" title="Issue 3141">3141</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3141" title="Issue 3141">3141</a>.<br><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Dashboard] Hide heading and reposition settings button. [<a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		This feature allows you to hide the heading of the page with "Player dashboard for", your geocaching name and the "Dashboard settings" button.<br><br>
+		The "Dashboard settings" button will then be integrated into the "Profile summary" button in the left column of your dashboard.<br>
+		<img src="../images/0.18.6/Screen02.jpg" alt="Screen02.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_hide_heading_and_move_settings_button_db" title="Link to your GClh II Config">Settings -> Dashboard:<br>
+		<img src="../images/0.18.6/Screen03.jpg" alt="Screen03.jpg"></a><br>
+		If you want to use this feature, you have to activate it.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3119" title="Issue 3119">3119</a>.<br><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Link to "Ignore list" in left column is missing. [<a href="https://github.com/2Abendsegler/GClh/issues/3120" title="Issue 3120">3120</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] VIP, VUP, Mail links without border and smaller gap. [<a href="https://github.com/2Abendsegler/GClh/issues/3140" title="Issue 3140">3140</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3140" title="Issue 3140">3140</a>.<br><br>
+	</li>
+</ul>
+
+### Search Map:
+<ul>
+	<li>
+		<strong>New:</strong> [Search Map] Compact layout in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+		<ul>
+			<li>
+				<strong> Overview of settings for compact layout in the left sidebar of Search Map:</strong><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen18.jpg" alt="Screen18.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for header:</strong><br>
+				This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
+				With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for list of caches:</strong><br>
+				This option display the list of caches in the left sidebar of the search map more compact.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen22.jpg" alt="Screen22.jpg"> <img src="../images/0.18.6/Screen23.jpg" alt="Screen23.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfCaches" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen24.jpg" alt="Screen24.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for list of My Lists.</strong><br>
+				This option display the list of bookmark lists (My Lists) in the left sidebar of the search map more compact.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen25.jpg" alt="Screen25.jpg"> <img src="../images/0.18.6/Screen26.jpg" alt="Screen26.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfLists" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen27.jpg" alt="Screen27.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for footer.</strong><br>
+				This option display the footer in the left sidebar of the search map more compact.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen28.jpg" alt="Screen28.jpg"> <img src="../images/0.18.6/Screen29.jpg" alt="Screen29.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarFooter" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen30.jpg" alt="Screen30.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for header.</strong><br>
+				This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
+				With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for cache preview header.</strong><br>
+				This option display the cache preview header area in the left sidebar of the search map more compact. The cache preview header contains the most important data about the cache, such as cache status, cache type, cache link, cache name, last logged date, cache code and in case of events further data such as start date and time and location.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen07.jpg" alt="Screen07.jpg"> <img src="../images/0.18.6/Screen08.jpg" alt="Screen08.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen11.jpg" alt="Screen11.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for cache preview action menu.</strong><br>
+				This option display the cache preview action menu in the left sidebar of the search map more compact. The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and may contain foreign buttons such as a button to send to c:geo.<br>
+				With this option you can choose the height of the buttons in the cache preview action menu in the left sidebar of the search map from 30 up to 46 pixel. The website default for the log button is 46 pixel and for the action buttons 62 pixel. The suggestion is 36 pixel.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen13.jpg" alt="Screen13.jpg"> <img src="../images/0.18.6/Screen12.jpg" alt="Screen12.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewActionMenu" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen14.jpg" alt="Screen14.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong> Compact layout in the left sidebar of Search Map for cache preview attributes.</strong><br>
+				This option display the cache preview attributes in the left sidebar of the search map more compact. The cache preview attributes contains further details about the cache, such as difficulty, terrain, size, favorite points, owner and placed date, and may contain additional attributes such as the enhanced cache data block.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen16.jpg" alt="Screen16.jpg"> <img src="../images/0.18.6/Screen15.jpg" alt="Screen15.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewAttributes" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen17.jpg" alt="Screen17.jpg"></a><br><br><br>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Remove:</strong> [Search Map] Remove older code that no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Browse geocaches button has changed position and look. [<a href="https://github.com/2Abendsegler/GClh/issues/3139" title="Issue 3139">3139</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3139" title="Issue 3139">3139</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Uncaught TypeError: can't access property "Control", window.L is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/3137" title="Issue 3137">3137</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Display Options for Search Results do not work. [<a href="https://github.com/2Abendsegler/GClh/issues/3149" title="Issue 3149">3149</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Issues with BML. [<a href="https://github.com/2Abendsegler/GClh/issues/3150" title="Issue 3150">3150</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Missing gclh buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] The green color of the icons on the map has changed. [<a href="https://github.com/2Abendsegler/GClh/issues/3138" title="Issue 3138">3138</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3138" title="Issue 3138">3138</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Improve color scheme when hovering the "Display Options for Search Results" button. [<a href="https://github.com/2Abendsegler/GClh/issues/3134" title="Issue 3134">3134</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3134" title="Issue 3134">3134</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Add to list pop-up entries not visible. [<a href="https://github.com/2Abendsegler/GClh/issues/3131" title="Issue 3131">3131</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3131" title="Issue 3131">3131</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Browse geocaches button is broken. [<a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a>.<br><br>
+	</li>
+</ul>
+
+### Others:
+<ul>
+	<li>
+		<strong>Change:</strong> [Pocket Query] Set border and center map box, more appealing circle, enable dragging. [<a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Cache Listing] Leaflet error: gclh_GetGcAccessToken(): can't access property "getPane", this._map is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] Set background color of the overview map in the same way as for other maps. [<a href="https://github.com/2Abendsegler/GClh/issues/3128" title="Issue 3128">3128</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search, My Lists, Cache Owner Dashboard] Automatic setting of the default language doesn't work due to asynchronous loading of footer. [<a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Maps] Incorrect number of trackables in enhanced cache data. [<a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Prevent outer border in add to list area. [<a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Incorrect function call during hide header. [<a href="https://github.com/2Abendsegler/GClh/issues/3126" title="Issue 3126">3126</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Config] Improve align of version info after parameter, otherwise, premature line breaks may occur. [<a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [My Lists, BML] Disable all config parameters because of features are not available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a>.<br>
+	</li>
+</ul>
+<br>
+(13.05.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.5:
