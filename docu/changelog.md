@@ -248,7 +248,7 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [My Lists, BML] Disable all config parameters because of features are not available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a>.<br>
 	</li>
 </ul>
 <br>
