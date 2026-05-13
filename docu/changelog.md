@@ -1,3 +1,4 @@
+<a href="#v0187" title="GClh II version 0.18.7 (13.05.2026)">v0.18.7</a> &nbsp;
 <a href="#v0186" title="GClh II version 0.18.6 (13.05.2026)">v0.18.6</a> &nbsp;
 <a href="#v0185" title="GClh II version 0.18.5 (17.04.2026)">v0.18.5</a> &nbsp;
 <a href="#v0184" title="GClh II version 0.18.4 (11.04.2026)">v0.18.4</a> &nbsp;
@@ -44,6 +45,19 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.7:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Global] Reload during migration task prevents counting. [<a href="https://github.com/2Abendsegler/GClh/issues/3157" title="Issue 3157">3157</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(13.05.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.6:
