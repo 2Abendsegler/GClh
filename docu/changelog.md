@@ -100,61 +100,81 @@
 ### Search Map:
 <ul>
 	<li>
-		<strong>New:</strong> [Search Map] Compact layout in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br><br>
-		<strong>- Overview of settings for compact layout in the left sidebar of Search Map:</strong><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen18.jpg" alt="Screen18.jpg"></a><br><br>
-		<strong>- Compact layout in the left sidebar of Search Map for header:</strong><br>
-		This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
-		With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for list of caches:</strong><br>
-		This option display the list of caches in the left sidebar of the search map more compact.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen22.jpg" alt="Screen22.jpg"> <img src="../images/0.18.6/Screen23.jpg" alt="Screen23.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfCaches" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen24.jpg" alt="Screen24.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for list of My Lists.</strong><br>
-		This option display the list of bookmark lists (My Lists) in the left sidebar of the search map more compact.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen25.jpg" alt="Screen25.jpg"> <img src="../images/0.18.6/Screen26.jpg" alt="Screen26.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfLists" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen27.jpg" alt="Screen27.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for footer.</strong><br>
-		This option display the footer in the left sidebar of the search map more compact.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen28.jpg" alt="Screen28.jpg"> <img src="../images/0.18.6/Screen29.jpg" alt="Screen29.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarFooter" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen30.jpg" alt="Screen30.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for header.</strong><br>
-		This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
-		With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for cache preview header.</strong><br>
-		This option display the cache preview header area in the left sidebar of the search map more compact. The cache preview header contains the most important data about the cache, such as cache status, cache type, cache link, cache name, last logged date, cache code and in case of events further data such as start date and time and location.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen07.jpg" alt="Screen07.jpg"> <img src="../images/0.18.6/Screen08.jpg" alt="Screen08.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen11.jpg" alt="Screen11.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for cache preview action menu.</strong><br>
-		This option display the cache preview action menu in the left sidebar of the search map more compact. The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and may contain foreign buttons such as a button to send to c:geo.<br>
-		With this option you can choose the height of the buttons in the cache preview action menu in the left sidebar of the search map from 30 up to 46 pixel. The website default for the log button is 46 pixel and for the action buttons 62 pixel. The suggestion is 36 pixel.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen13.jpg" alt="Screen13.jpg"> <img src="../images/0.18.6/Screen12.jpg" alt="Screen12.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewActionMenu" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen14.jpg" alt="Screen14.jpg"></a><br><br>
-		<strong>Compact layout in the left sidebar of Search Map for cache preview attributes.</strong><br>
-		This option display the cache preview attributes in the left sidebar of the search map more compact. The cache preview attributes contains further details about the cache, such as difficulty, terrain, size, favorite points, owner and placed date, and may contain additional attributes such as the enhanced cache data block.<br><br>
-		With compact layout and without:<br>
-		<img src="../images/0.18.6/Screen16.jpg" alt="Screen16.jpg"> <img src="../images/0.18.6/Screen15.jpg" alt="Screen15.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewAttributes" title="Link to your GClh II Config">Settings -> Search Map:<br>
-		<img src="../images/0.18.6/Screen17.jpg" alt="Screen17.jpg"></a><br><br><br>
+		<strong>New:</strong> [Search Map] Compact layout in the left sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3151" title="Issue 3151">3151</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<ul>
+			<li>
+				<strong> Overview of settings for compact layout in the left sidebar of Search Map:</strong><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen18.jpg" alt="Screen18.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>- Compact layout in the left sidebar of Search Map for header:</strong><br>
+				This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
+				With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for list of caches:</strong><br>
+				This option display the list of caches in the left sidebar of the search map more compact.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen22.jpg" alt="Screen22.jpg"> <img src="../images/0.18.6/Screen23.jpg" alt="Screen23.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfCaches" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen24.jpg" alt="Screen24.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for list of My Lists.</strong><br>
+				This option display the list of bookmark lists (My Lists) in the left sidebar of the search map more compact.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen25.jpg" alt="Screen25.jpg"> <img src="../images/0.18.6/Screen26.jpg" alt="Screen26.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_listOfLists" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen27.jpg" alt="Screen27.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for footer.</strong><br>
+				This option display the footer in the left sidebar of the search map more compact.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen28.jpg" alt="Screen28.jpg"> <img src="../images/0.18.6/Screen29.jpg" alt="Screen29.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarFooter" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen30.jpg" alt="Screen30.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for header.</strong><br>
+				This option display the header area in the left sidebar of the search map more compact. The header area can contain buttons such as "Search", "My Lists" and "Filters", the input field for searching, a button for a bookmark list, the sort feature for a list and maybe some further buttons such as to hide the header of the search map or to save the caches as a Pocket Query.<br>
+				With this option you can choose the height of the buttons in the header area in the left sidebar of the search map from 30 up to 40 pixel. The website default is 40 pixel. The suggestion is 36 pixel.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen19.jpg" alt="Screen19.jpg"> <img src="../images/0.18.6/Screen20.jpg" alt="Screen20.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_sidebarHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen21.jpg" alt="Screen21.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for cache preview header.</strong><br>
+				This option display the cache preview header area in the left sidebar of the search map more compact. The cache preview header contains the most important data about the cache, such as cache status, cache type, cache link, cache name, last logged date, cache code and in case of events further data such as start date and time and location.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen07.jpg" alt="Screen07.jpg"> <img src="../images/0.18.6/Screen08.jpg" alt="Screen08.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewHeader" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen11.jpg" alt="Screen11.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for cache preview action menu.</strong><br>
+				This option display the cache preview action menu in the left sidebar of the search map more compact. The cache preview action menu contains buttons to log the cache, to add the cache to a list, to download the cache as GPX, to send the cache to Garmin and may contain foreign buttons such as a button to send to c:geo.<br>
+				With this option you can choose the height of the buttons in the cache preview action menu in the left sidebar of the search map from 30 up to 46 pixel. The website default for the log button is 46 pixel and for the action buttons 62 pixel. The suggestion is 36 pixel.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen13.jpg" alt="Screen13.jpg"> <img src="../images/0.18.6/Screen12.jpg" alt="Screen12.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewActionMenu" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen14.jpg" alt="Screen14.jpg"></a><br><br>
+			</li>
+			<li>
+				<strong>Compact layout in the left sidebar of Search Map for cache preview attributes.</strong><br>
+				This option display the cache preview attributes in the left sidebar of the search map more compact. The cache preview attributes contains further details about the cache, such as difficulty, terrain, size, favorite points, owner and placed date, and may contain additional attributes such as the enhanced cache data block.<br><br>
+				With compact layout and without:<br>
+				<img src="../images/0.18.6/Screen16.jpg" alt="Screen16.jpg"> <img src="../images/0.18.6/Screen15.jpg" alt="Screen15.jpg"><br><br>
+				<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_searchmap_compact_layout_cachePreviewAttributes" title="Link to your GClh II Config">Settings -> Search Map:<br>
+				<img src="../images/0.18.6/Screen17.jpg" alt="Screen17.jpg"></a><br><br><br>
+			</li>
+		</ul>
 	</li>
 	<li>
 		<strong>Remove:</strong> [Search Map] Remove older code that no longer works. [<a href="https://github.com/2Abendsegler/GClh/issues/3153" title="Issue 3153">3153</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
