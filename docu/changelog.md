@@ -194,7 +194,7 @@
 		<strong>Fix:</strong> [Search Map] Issues with BML. [<a href="https://github.com/2Abendsegler/GClh/issues/3150" title="Issue 3150">3150</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Search Map] Missing gclh buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a> / <a href="https://github.com/2Abendsegler/GClh/issues/3138" title="Issue 3138">3138</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<strong>Fix:</strong> [Search Map] Missing gclh buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3147" title="Issue 3147">3147</a>.<br>
 	</li>
 	<li>
