@@ -210,53 +210,41 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Browse geocaches button is broken. [<a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a>.<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3127" title="Issue 3127">3127</a>.<br><br>
 	</li>
 </ul>
 
 ### Others:
 <ul>
 	<li>
-		<strong>New:</strong> [Pocket Query] Set border and center map box, more appealing circle, enable dragging. [<a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		...<br>
-		<img src="../images/0.18.6/Screen01.jpg" alt="Screen01.jpg"><br><br>
-		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#...(PARAMETER EINTRAGEN)" title="Link to your GClh II Config">Settings -> Pocket Query:<br>
-		<img src="../images/0.18.6/Screen01.jpg" alt="Screen01.jpg"></a><br><br>
-		...<br>
-		If you want to use this feature, you have to activate it.<br><br>
-		This parameter is not new. If you want to use this feature, maybe you have to activate it.<br><br>
-		If you want to use this feature, you may need to do some customization.<br><br>
-		If you want to optimize the settings, you may need to change something.<br><br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a>.<br><br>
-		Further examples can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a>.<br><br>
+		<strong>Change:</strong> [Pocket Query] Set border and center map box, more appealing circle, enable dragging. [<a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3129" title="Issue 3129">3129</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Cache Listing] Leaflet error: gclh_GetGcAccessToken(): can't access property "getPane", this._map is undefined. [<a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3123" title="Issue 3123">3123</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Listing] Set background color of the overview map in the same way as for other maps. [<a href="https://github.com/2Abendsegler/GClh/issues/3128" title="Issue 3128">3128</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3128" title="Issue 3128">3128</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search, My Lists, Cache Owner Dashboard] Automatic setting of the default language doesn't work due to asynchronous loading of footer. [<a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3144" title="Issue 3144">3144</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Maps] Incorrect number of trackables in enhanced cache data. [<a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3133" title="Issue 3133">3133</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Prevent outer border in add to list area. [<a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3132" title="Issue 3132">3132</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Incorrect function call during hide header. [<a href="https://github.com/2Abendsegler/GClh/issues/3126" title="Issue 3126">3126</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3126" title="Issue 3126">3126</a>.<br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Config] Improve align of version info after parameter, otherwise, premature line breaks may occur. [<a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3136" title="Issue 3136">3136</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [My Lists, BML] Disable all config parameters because of features are not available (Tech migration). [<a href="https://github.com/2Abendsegler/GClh/issues/3130" title="Issue 3130">3130</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
