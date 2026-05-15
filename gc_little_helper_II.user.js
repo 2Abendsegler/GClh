@@ -10283,7 +10283,7 @@ var mainGC = function() {
                         const $div_gclh_hide_column = $(`
                         <div id="gclh_hide_column" class="flex items-center justify-between gap-2">
                           <span class="text-sm/5 text-gray-600 m-0">Hide right sidebar</span>
-                        </div> 
+                        </div>
                         `);
                         const enabled = `
                         <div class="gclh_hide_column_toggle enabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-green-500 hover:bg-green-600" role="button" tabindex="0" aria-pressed="true" aria-disabled="false">
@@ -12599,12 +12599,10 @@ var mainGC = function() {
                 if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map)) {
                     initGeoServiceControl();
                 }
-                // Relocate browse button to other buttons above.
-                if (!$('#gclh_browse_map')[0] && settings_relocate_other_map_buttons && $('.browse-map-link')[0] && $('.browse-map-link')[0].childNodes[1]) {
-                    $('.leaflet-top.leaflet-right').prepend('<div id="gclh_browse_map"></div>');
-                    $('#gclh_browse_map').append($('.browse-map-link:first').remove().get().reverse());
-                    $('#gclh_browse_map a')[0].childNodes[1].remove();
-                    $('#gclh_browse_map a').attr('class', '');
+                // Relocate browse map button to other buttons above.
+                if (settings_relocate_other_map_buttons && $('.browse-map-link span')[0]) {
+                    $('.browse-map-link span').each(function() {removeElement(this);});
+                    $('.browse-map-link').each(function() {$(this)[0].style.setProperty('width', '40px', 'important');});
                 }
             }
 
@@ -13085,21 +13083,19 @@ var mainGC = function() {
             css += '.cache-preview-activities .opener {height: 22px; width: 22px; transition: all .3s ease; transform-origin: 50% 50%;}';
             css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
             css += '.cache-preview-activities.isHide > header > ul {display: none;}';
-            // Map buttons above.
-            // - All top buttons next to each other.
+            // Map buttons top right.
+            // - All buttons next to each other.
             css += '.leaflet-top.leaflet-right {display: flex;}';
             // - Standardize button spacing.
             css += '.leaflet-top.leaflet-right > div {margin-right: 8px; margin-top: 8px;}';
-            // - Adjust browse map button when we use it. Or leave enough space for our buttons.
-            if (settings_relocate_other_map_buttons) {
-                css += '#gclh_browse_map a {height: 40px !important; width: 40px !important; display: flex !important; justify-content: center !important; align-items: center !important; color: #007d46 !important; background-color: rgb(255 255 255) !important; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
-                css += '#gclh_browse_map a:hover {background-color: rgb(230, 250, 235) !important}';
-            } else {
-                var mr = 0;
-                if (settings_use_gclh_layercontrol_on_search_map) mr += 48;
-                if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
-                css += '.browse-map-link {margin-right: ' + mr + 'px;}';
-            }
+            // - Align and unify buttons.
+            var mr = 0;
+            if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) mr += 48;
+            if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
+            css += '.browse-map-link, button[data-testid="close-route-view"] {margin-right: ' + mr + 'px; height: 40px;}';
+            css += '.leaflet-top.leaflet-right {z-index: 2001 !important;}';
+            css += '.leaflet-top.leaflet-right > div {border: unset !important; border-radius: 8px !important;}';
+            css += '.leaflet-top.leaflet-right > div > a {border-radius: 8px !important; border: 1px solid rgb(0, 125, 70) !important; background-color: rgb(255, 255, 255) !important;}';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -13578,8 +13574,7 @@ var mainGC = function() {
         if (is_page('map')) {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
-            // Increase z-index, otherwise buttons may overlap map control.
-            $('.leaflet-top.leaflet-right').prepend('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>').css('z-index', 2001);
+            $('.leaflet-top.leaflet-right').prepend('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>');
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
