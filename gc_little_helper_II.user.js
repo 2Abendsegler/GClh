@@ -13084,12 +13084,14 @@ var mainGC = function() {
             css += '.leaflet-top.leaflet-right {display: flex;}';
             // - Standardize button spacing.
             css += '.leaflet-top.leaflet-right > div {margin-right: 8px; margin-top: 8px;}';
+            // - GS buttons may overlap button selections, therefore increase z-index when hovering.
+            css += 'div:has(>#gclh_geoservices_control:hover, >#gclh_layers:hover) {z-index: 2001;}';
             // - Align and unify buttons.
             var mr = 0;
             if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) mr += 48;
             if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
-            css += '.browse-map-link, button[data-testid="close-route-view"] {margin-right: ' + mr + 'px; height: 40px;}';
-            css += '.leaflet-top.leaflet-right {z-index: 2001 !important;}';
+            css += 'button[data-testid="close-route-view"] {position: absolute; top: 8px; right: ' + (mr+8) + 'px; width: max-content; height: 40px;}';
+            css += '@media (min-width: 768px) {div:has(>.browse-map-link) {position: absolute; top: 8px; right: ' + (mr+8) + 'px;}}';
             css += '.leaflet-top.leaflet-right > div {border: unset !important; border-radius: 8px !important;}';
             css += '.leaflet-top.leaflet-right > div > a {border-radius: 8px !important; border: 1px solid rgb(0, 125, 70) !important; background-color: rgb(255, 255, 255) !important;}';
             // - Show compact browse map and create route buttons.
