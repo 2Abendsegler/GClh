@@ -12594,16 +12594,12 @@ var mainGC = function() {
 
             // Build map buttons above.
             function buildMapButtonsAbove() {
-                if (!$('.leaflet-top.leaflet-right')[0]) return;
-                // Add button with links to Google, OSM, Flopp's, GeoHack, Komoot and Waymarked Trails map.
-                if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map)) {
-                    initGeoServiceControl();
-                }
-                // Relocate browse map button to other buttons above.
-                if (settings_relocate_other_map_buttons && $('.browse-map-link span')[0]) {
-                    $('.browse-map-link span').each(function() {removeElement(this);});
-                    $('.browse-map-link').each(function() {$(this)[0].style.setProperty('width', '40px', 'important');});
-                }
+                waitForElementThenRun('.leaflet-top.leaflet-right', function() {
+                    // Add button with links to Google, OSM, Flopp's, GeoHack, Komoot and Waymarked Trails map.
+                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) {
+                        initGeoServiceControl();
+                    }
+                });
             }
 
             // Show additional cache data in cache details.
@@ -13026,7 +13022,6 @@ var mainGC = function() {
                 scrollUpInDescription();
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
-                buildMapButtonsAbove();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
                 // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
@@ -13068,6 +13063,7 @@ var mainGC = function() {
             };
             observer_body.observe(target_body, config_body);
             processAllSearchMap();
+            buildMapButtonsAbove();
 
             var css = '';
             // Hide button search this area and icon loading, if not link from matrix.
@@ -13096,6 +13092,11 @@ var mainGC = function() {
             css += '.leaflet-top.leaflet-right {z-index: 2001 !important;}';
             css += '.leaflet-top.leaflet-right > div {border: unset !important; border-radius: 8px !important;}';
             css += '.leaflet-top.leaflet-right > div > a {border-radius: 8px !important; border: 1px solid rgb(0, 125, 70) !important; background-color: rgb(255, 255, 255) !important;}';
+            // - Show compact browse map and create route buttons.
+            if (settings_relocate_other_map_buttons) {
+                css += 'div:has(>.browse-map-link) span {display: none;}';
+                css += '.browse-map-link, [data-testid="create-route-map"] {width: 40px !important;}';
+            }
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -13313,9 +13314,6 @@ var mainGC = function() {
                                     document.querySelector('.mapboxgl-canvas').remove();
                                 }, 0);
                             }
-                            // Issue #3148: Trigger the body observer on search map by adding/removing a dummy element, otherwise
-                            // the call of buildMapButtonsAbove() will not be triggered always and the gclh buttons will be missing.
-                            document.body.appendChild(document.createElement('div')).remove();
                         }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
