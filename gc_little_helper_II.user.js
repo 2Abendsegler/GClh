@@ -13099,6 +13099,8 @@ var mainGC = function() {
                 css += 'div:has(>.browse-map-link) span {display: none;}';
                 css += '.browse-map-link, [data-testid="create-route-map"] {width: 40px !important;}';
             }
+            // If viewport is smaller than 768px, then sidebar is hidden and GS List/Map control shows up and covers gclh buttons. Therefore move GS control left of gclh buttons.
+            css += '@media (width < 768px) { div.tablet\\:hidden:has(> ul[aria-label="List / Map"]) {position: absolute; top: 8px; right: ' + (mr+8) + 'px;} }';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
