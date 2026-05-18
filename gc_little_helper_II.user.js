@@ -11173,6 +11173,7 @@ var mainGC = function() {
 
             // Add proxies for getting map handle and modifying cache properties.
             if (!unsafeWindow.GCLH) unsafeWindow.GCLH = {};
+            let isEnabledHiddenCacheLocationOnMap;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
                 // Safeguard.
@@ -11180,7 +11181,17 @@ var mainGC = function() {
                     observer.disconnect();
                     if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
                     if (!unsafeWindow.GCLH?.getLayout) gclh_error("Add proxy for cache properties", new Error('getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Display options won\'t work as expected.'));
+                    if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps) gclh_log('unsafeWindow.__NEXT_DATA__.props.pageProps not found for ' + observerCalls + ' MutationObserver calls. Hiding display options during route creation won\'t work as expected.');
                     return;
+                }
+
+                // GS experimental features.
+                const pageProps = unsafeWindow.__NEXT_DATA__?.props?.pageProps;
+                if (pageProps && typeof isEnabledHiddenCacheLocationOnMap === 'undefined') {
+                    isEnabledHiddenCacheLocationOnMap = pageProps.activeExperimentalFeatures.includes("hiddenCacheLocationOnMap");
+                    if (pageProps.activeExperimentalFeatures.includes("cachesAlongARoute")) {
+                        handleDisplayOptionsButtonOnRouteCreation();
+                    }
                 }
 
                 // Add proxies for getting map handle and modifying cache properties.
@@ -11262,7 +11273,7 @@ var mainGC = function() {
                 }
 
                 // Finished, stop observing.
-                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout) {
+                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout && pageProps) {
                     observer.disconnect();
                     return;
                 }
@@ -11282,6 +11293,9 @@ var mainGC = function() {
 
             // Handle cache properties.
             const processCaches = (layout) => {
+                // If route creation is active, do nothing.
+                if (isActiveCreateRoute) return;
+
                 // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
                 // Otherwise cache properties cannot be set.
                 layout.props.searchResults = structuredClone(layout.props.searchResults);
@@ -11373,7 +11387,7 @@ var mainGC = function() {
                     // Hide DNF icons.
                     if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
                     // Change original cache coords to corrected coords.
-                    if (showAtCorrectedCoords && gc.userCorrectedCoordinates) {
+                    if (!isEnabledHiddenCacheLocationOnMap && showAtCorrectedCoords && gc.userCorrectedCoordinates) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
                 }
@@ -11616,12 +11630,14 @@ var mainGC = function() {
                         <div style="margin-bottom: 5px;"><u>Remembered Display Options</u></div>
                     `);
                     // Show at corrected coordinates.
-                    $list.append(`
+                    if (!isEnabledHiddenCacheLocationOnMap) {
+                        $list.append(`
                         <label for="gclh_showAtCorrectedCoords">
                             <input type="checkbox" id="gclh_showAtCorrectedCoords" ${showAtCorrectedCoords ? 'checked' : ''}>
                             Show finds at corrected coordinates
                         </label>
-                    `);
+                        `);
+                    }
                     // Show cache type for DNFs.
                     $list.append(`
                         <label for="gclh_hideDNFIcons">
@@ -11867,6 +11883,17 @@ var mainGC = function() {
                     }
                     `;
                     appendCssStyle(css);
+                });
+            }
+
+            // Hide display options button if route creation is active (GS experimental feature - Caches along a route).
+            let isActiveCreateRoute = false;
+            function handleDisplayOptionsButtonOnRouteCreation() {
+                waitForElementThenRun('button[data-testid="create-route-map"]', function() {
+                    $('button[data-testid="create-route-map"]').click(function() {
+                        $('#gclh_display_options_control').toggle();
+                        isActiveCreateRoute = !isActiveCreateRoute;
+                    });
                 });
             }
 
@@ -13144,6 +13171,10 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
+            // If gclh layer control is active, hide GS map types selection.
+            if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                css += 'div:first-of-type:has(>button[data-testid="gc-accordion-button"]) {display: none;}';
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
@@ -13385,10 +13416,6 @@ var mainGC = function() {
             if (is_page('map')) loopAtLayerControls(0);
             if (is_page('searchmap')) {
                 setDefaultsInLayer();
-                // Remove default GS layer control.
-                waitForElementThenRun('div.md\\:block', () => {
-                    $('div.md\\:block, div.md\\:hidden').remove();
-                });
             }
 
             var css = '';
