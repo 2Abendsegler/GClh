@@ -12399,18 +12399,18 @@ var mainGC = function() {
             function compactLayout_cachePreviewActionMenu() {
                 if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewActionMenu) {
                     if ($('.cache-preview-action-menu a.log-geocache')[0] && $('.cache-preview-action-menu ul > li button svg')[0] &&
-                        $('.cache-preview-action-menu ul > li span')[0]) {
+                        $('.cache-preview-action-menu ul > li span')[0] && !$('.cache-preview-action-menu dialog')[0]) {
                         if (!$('#gclh_css_cachePreviewActionMenu')[0]) {
                             var buttonLineHeight = parseInt(settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight);
                             var pad = 12 - ( 46 - buttonLineHeight ) / 2;
                             var css = '';
-                            css += '.cache-preview-action-menu {padding-top: 5px !important; padding-bottom: 5px !important; margin: 0px !important;}';
-                            css += '.cache-preview-action-menu a.log-geocache {padding-top: ' + pad + 'px !important; padding-bottom: ' + pad + 'px !important; margin: 0px 0px 5px 0px !important;}';
-                            css += '.cache-preview-action-menu ul {padding: 0px !important; margin: 0px !important; gap: 5px !important;}';
-                            css += '.cache-preview-action-menu ul > li button, .cache-preview-action-menu ul > li a {padding-top: ' + (pad - 2) + 'px !important; padding-bottom: ' + (pad - 2) + 'px !important;}';
-                            css += '.cache-preview-action-menu ul > li svg, .cache-preview-action-menu ul > li img {margin: 0px auto 0px auto !important;}';
-                            css += '.cache-preview-action-menu ul > li span:not(:has(> span.gclh_ownBMLs_count)):not(.gclh_ownBMLs_count) {display: none !important;}';
-                            css += '.cache-preview-action-menu ul > li span.gclh_ownBMLs_count {position: absolute; margin: -12px 0px 0px 12px;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) {padding-top: 5px !important; padding-bottom: 5px !important; margin: 0px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) a.log-geocache {padding-top: ' + pad + 'px !important; padding-bottom: ' + pad + 'px !important; margin: 0px 0px 5px 0px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul {padding: 0px !important; margin: 0px !important; gap: 5px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li button, .cache-preview-action-menu:not(:has(dialog)) ul > li a {padding-top: ' + (pad - 2) + 'px !important; padding-bottom: ' + (pad - 2) + 'px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li svg, .cache-preview-action-menu:not(:has(dialog)) ul > li img {margin: 0px auto 0px auto !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li span:not(:has(> span.gclh_ownBMLs_count)):not(.gclh_ownBMLs_count) {display: none !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li span.gclh_ownBMLs_count {position: absolute; margin: -12px 0px 0px 12px;}';
                             appendCssStyle(css, null, 'gclh_css_cachePreviewActionMenu');
                         }
                         // Number of items want to display in the buttons line.
