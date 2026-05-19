@@ -12235,40 +12235,41 @@ var mainGC = function() {
                 }, 20000);
             }
 
-            // Preserve zoom parameter in URLs on page load (GS ignores zoom levels from URLs); no BML and for Leaflet maps only.
-            let run_setZoom = getURLParam('bmCode') ? false : true;
-            function setZoom() {
-                if (run_setZoom && unsafeWindow.MapSettings?.Map?.setZoom) {
-                    // Only run once.
-                    run_setZoom = false;
+            // Preserve zoom parameter in URLs on page load (GS ignores zoom levels from URLs), except for BML.
+            const zoom = getURLParam('zoom') * 1;
+            const notBML = getURLParam('bmCode') ? false : true;
+            if (zoom && notBML) {
+                let setView_orig;
+                let patched = false;
+                const obs = new MutationObserver(function() {
+                    if (!unsafeWindow.L?.Map) return;
 
-                    // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
-                    const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
-                    if (!isNaN(zoom)) unsafeWindow.MapSettings.Map.setZoom(zoom);
-                    // Initializing map bounds here prevents an unintentional search after zoom has been set
-                    // (changing zoom triggers 'zoomend' event which in turn triggers a search).
-                    // But if the map bounds match the actual map view, no search is triggered.
-                    [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
-                }
+                    obs.disconnect();
+                    setView_orig = unsafeWindow.L.Map.prototype.setView;
+                    patched = true;
+                    // Monkey patch Leaflet's setView function (temporary) and thereby control zoom level.
+                    unsafeWindow.L.Map.prototype.setView = new Proxy(setView_orig, {
+                        apply(target, thisArg, args) {
+                            // args = [center, zoom, options]
+                            if (args[1] !== zoom) {
+                                // Preserve zoom parameter from url.
+                                args[1] = zoom;
+                                // Only preserve once, then restore original function.
+                                unsafeWindow.L.Map.prototype.setView = setView_orig;
+                                patched = false;
+                            }
+                            return Reflect.apply(target, thisArg, args);
+                        }
+                    });
+                });
+                obs.observe(document, { childList: true, subtree: true });
+
+                // Safeguard: clean up after 5 seconds.
+                setTimeout(function() {
+                    obs.disconnect();
+                    if (patched) unsafeWindow.L.Map.prototype.setView = setView_orig;
+                }, 5000);
             }
-
-            // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
-            // (for reference: https://stackoverflow.com/a/64927639)
-            window.history.pushState = new Proxy(window.history.pushState, {
-                apply: (target, thisArg, argArray) => {
-                    setZoom();
-
-                    // FF issue (https://github.com/2Abendsegler/GClh/issues/2889):
-                    // "Too many calls to Location or History APIs in a short period of time" results in an exception
-                    // and therefore gclh code stops. This exception is catched here and logged as a warning.
-                    // Not an issue in Chrome.
-                    try {
-                        return target.apply(thisArg, argArray);
-                    } catch(e) {
-                        console.warn(e);
-                    }
-                }
-            });
 
             // Set link to owner.
             function setLinkToOwner() {
