@@ -12089,6 +12089,8 @@ var mainGC = function() {
 
             // Handle toggle between search results and bookmark lists (if automatic search is active).
             function handleToggleBetweenSearchAndBMLTab() {
+                if (!(!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map)) return;
+
                 const $searchTab = $('button[data-testid="gc-button-group-option-0"]');
                 if (!$searchTab[0]) return;
 
@@ -13034,7 +13036,7 @@ var mainGC = function() {
             }
 
             // Processing all steps.
-            function processAllSearchMap() {
+            function processAllSidebar() {
                 scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout_sidebarHeader();
@@ -13050,46 +13052,26 @@ var mainGC = function() {
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
-                // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
-                if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) handleToggleBetweenSearchAndBMLTab();
+                handleToggleBetweenSearchAndBMLTab();
             }
 
-            // Observer callback for body and checking existence of sidebar.
-            var cb_body = function() {
-                processAllSearchMap();
-                if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
-                    $('div#sidebar').addClass('gclh_sidebar_observer');
-                    var target_sidebar = $('div#sidebar')[0];
-                    var config_sidebar = {
-                        childList: true,
-                        subtree: true
-                    };
-                    observer_sidebar.observe(target_sidebar, config_sidebar);
-                }
-            }
-            // Observer callback for sidebar.
-            var cb_sidebar = function() {
-                if (!$('div#sidebar')[0]) return;
+            // Sidebar observer.
+            var target_sidebar;
+            var config_sidebar = {childList: true, subtree: true};
+            var observer_sidebar = new MutationObserver(function() {
                 observer_sidebar.disconnect();
-                processAllSearchMap();
-                var target_sidebar = $('div#sidebar')[0];
-                var config_sidebar = {
-                    childList: true,
-                    subtree: true
-                };
+                processAllSidebar();
                 observer_sidebar.observe(target_sidebar, config_sidebar);
-            }
-            // Create observer instances linked to callback functions.
-            var observer_body    = new MutationObserver(cb_body);
-            var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
-            var target_body = $('body')[0];
-            var config_body = {
-                childList: true,
-                attributes: true
-            };
-            observer_body.observe(target_body, config_body);
-            processAllSearchMap();
+            });
+            // Wait for sidebar, then start observing.
+            waitForElementThenRun('div#sidebar', function() {
+                processAllSidebar();
+                target_sidebar = $('div#sidebar')[0];
+                observer_sidebar.observe(target_sidebar, config_sidebar);
+            });
+
+            // Build map buttons top right.
             buildMapButtonsAbove();
 
             var css = '';
