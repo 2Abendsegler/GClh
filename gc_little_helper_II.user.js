@@ -2747,6 +2747,59 @@ var mainGC = function() {
         } catch(e) {gclh_error("Hide treasure things",e);}
     }
 
+// Extract collection titles and add to map links (Treasure page).
+    tlc('START Treasure collection titles');
+    if (window.location.href.match(/play\/treasure/)) {
+        try {
+            function addTitleToMapLinks() {
+                var accordions = document.querySelectorAll('.accordion.open');
+                for (var i = 0; i < accordions.length; i++) {
+                    var titleElement = accordions[i].querySelector('.collection-title');
+                    if (titleElement) {
+                        var title = titleElement.textContent.trim();
+                        var mapButton = accordions[i].querySelector('.treasure-map-button');
+                        if (mapButton) {
+                            var currentHref = mapButton.href;
+                            var separator = currentHref.includes('?') ? '&' : '?';
+                            var newHref = currentHref + separator + 'TreasuresTitle=' + encodeURIComponent(title);
+                            mapButton.href = newHref;
+                        }
+                    }
+                }
+            }
+            setTimeout(addTitleToMapLinks, 500);
+        } catch(e) {gclh_error("Extract collection titles and add to map links",e);}
+    }
+
+// Update page title from TreasuresTitle parameter (Map page).
+    tlc('START Treasure title in page title');
+    if (window.location.href.match(/play\/map/)) {
+        try {
+            function updatePageTitleFromParameter() {
+                var urlParams = new URLSearchParams(window.location.search);
+                var collectionTitle = urlParams.get('TreasuresTitle');
+                if (collectionTitle) {
+                    var desiredTitle = collectionTitle + " (Treasures) - " + document.title.replace(collectionTitle + " (Treasures) - ", "");
+                    document.title = desiredTitle;
+                    var titleObserver = new MutationObserver(function(mutations) {
+                        if (document.title !== desiredTitle && !document.title.startsWith(collectionTitle + " (Treasures) - ")) {
+                            document.title = collectionTitle + " (Treasures) - " + document.title;
+                        }
+                    });
+                    var titleElement = document.querySelector('title');
+                    if (titleElement) {
+                        titleObserver.observe(titleElement, {
+                            childList: true,
+                            characterData: true,
+                            subtree: true
+                        });
+                    }
+                }
+            }
+            setTimeout(updatePageTitleFromParameter, 500);
+        } catch(e) {gclh_error("Update page title from TreasuresTitle parameter",e);}
+    }
+
 // Improve Ignore, Stop Ignoring button handling.
     if (is_page("cache_listing") && (settings_show_remove_ignoring_link && settings_use_one_click_ignoring) && !global_isBasic) {
         appendCssStyle("#ignoreSaved {display: none; color: #E0B70A; float: right; padding-left: 0px;}");
@@ -13212,8 +13265,6 @@ var mainGC = function() {
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
-            // Prevent tooltip with cache name if cache detail pop-up is available.
-            css += '.leaflet-container:has(.leaflet-popup) .map-tooltip {display: none !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
@@ -13430,7 +13481,7 @@ var mainGC = function() {
                     $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
                     $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
                     var css = '';
-                    css += '.gclh_hideMapHeader {text-decoration-line: none; color: rgb(61, 118, 197);} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
+                    css += '.gclh_hideMapHeader {text-decoration-line: none;} .gclh_hideMapHeader:hover {text-decoration-line: underline;}';
                     // Link in Sidebar rechts orientieren wegen möglichem GC Tour Icon.
                     css += '.gclh_hideMapHeader {float: right; padding-right: 3px;}';
                     // Link in Sidebar komplett anzeigen und auch nicht mehr überblenden, auch nicht durch GME.
