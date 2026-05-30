@@ -13740,20 +13740,17 @@ var mainGC = function() {
             function hideFoundCaches() {
                 // Kartenfilter bei externen Filtern (beispielsweise aus play/search) nicht verändern.
                 if (document.location.href.match(/&asq=/)) return;
-                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[1];
-                if (button) button.click();
+                if ($('.ct_mf')[0]) $('.ct_mf')[0].click();
             }
             if (settings_map_hide_found) isMapLoad(hideFoundCaches);
             function hideHiddenCaches() {
                 if (document.location.href.match(/&asq=/)) return;
-                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
-                if (button) button.click();
+                if ($('.ct_mo')[0]) $('.ct_mo')[0].click();
             }
             if (settings_map_hide_hidden) isMapLoad(hideHiddenCaches);
             function removeDNFSmileys() {
                 if (document.location.href.match(/&asq=/)) return;
-                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[5];
-                if (button) button.click();
+                if ($('.ct_mdnf')[0]) $('.ct_mdnf')[0].click();
             }
             if (settings_map_hide_dnfs) isMapLoad(removeDNFSmileys);
             function getAllCachetypeButtons() {
