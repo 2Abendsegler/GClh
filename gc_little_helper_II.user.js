@@ -9695,10 +9695,10 @@ var mainGC = function() {
                     css += leftCol + allLinkBlocks + ' .gclh a {gap: 4px !important;}';
                     // View larger log images.
                     if (settings_view_larger_log_images_db) {
-                        css += 'dialog.gclh_largerImage {padding: 10px 16px !important;}';
+                        css += 'dialog.gclh_largerImage {padding: 10px 16px 16px 16px !important;}';
                         css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) {flex-flow: row !important; align-items: baseline !important;}';
-                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) button {margin-top: 0px !important; margin-right: -3px !important; margin-left: 15px !important;}';
-                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) h1 span {font-size: 16px !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) button {margin-top: -7px !important; margin-right: -2px !important; margin-left: 15px !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) h1 {margin-bottom: 6px !important; font-size: 16px !important;}';
                         css += 'dialog.gclh_largerImage #modal-base-body > div > div {min-height: 50px !important;}';
                         css += 'dialog.gclh_largerImage #modal-base-body form {margin-top: 4px !important; min-height: 24px !important; font-size: 16px !important;}';
                         // Inner and outer frames span 32px and 34px in width. In total 66px.
@@ -10262,6 +10262,8 @@ var mainGC = function() {
                         $(images[i].closest('dialog')).addClass('gclh_largerImage');
                         // Close dialog containing log images also by clicking outside the dialog.
                         $(images[i].closest('dialog')).attr('closedby', 'any');
+                        // Prevent focus to close button.
+                        $(images[i].closest('dialog'))[0].focus();
                     }
                 }
             }
