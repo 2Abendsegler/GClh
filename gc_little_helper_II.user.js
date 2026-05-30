@@ -13214,6 +13214,8 @@ var mainGC = function() {
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Prevent tooltip with cache name if cache detail pop-up is available.
             css += '.leaflet-container:has(.leaflet-popup) .map-tooltip {display: none !important;}';
+            // Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
+            css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
@@ -13476,7 +13478,11 @@ var mainGC = function() {
             $(this)[0].style.setProperty('margin-top', '10px', 'important');
             $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
         });
-        if ($('.Sidebar footer')[0]) $('.Sidebar footer')[0].style.setProperty('padding-right', '24px', 'important');
+        // Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
+        if ($('.Sidebar footer')[0]) {
+            $('.Sidebar footer')[0].style.setProperty('padding-right', '0px', 'important');
+            $('.Sidebar footer')[0].style.setProperty('margin-right', '24px', 'important');
+        }
         $('.Sidebar footer p').each(function () {
             $(this)[0].style.setProperty('margin-top', '0px', 'important');
             $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
@@ -13508,26 +13514,9 @@ var mainGC = function() {
         try {
             function changeMap() {
                 if (settings_map_hide_sidebar) {
-                    if (document.getElementById("searchtabs").parentNode.style.left != "-355px") {
-                        var links = document.getElementsByTagName("a");
-                        for (var i = 0; i < links.length; i++) {
-                            if (links[i].className.match(/ToggleSidebar/)) {
-                                links[i].click();
-                                break;
-                            }
-                        }
+                    if ($('.Sidebar.Open .ToggleSidebar')[0]) {
+                        $('.Sidebar.Open .ToggleSidebar')[0].click();
                     }
-                    function hideSidebarRest(waitCount) {
-                        if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0] && $('.leaflet-control-zoom')[0]) {
-                            // Wenn externe Kartenfilter vorhanden, dann gibt es keinen Balken zur Sidebar.
-                            if (document.location.href.match(/&asq=/)) var styleLeft = "15px";
-                            else var styleLeft = "30px";
-                            $('.groundspeak-control-findmylocation')[0].style.left = styleLeft;
-                            $('.leaflet-control-scale')[0].style.left = styleLeft;
-                            $('.leaflet-control-zoom')[0].style.left = styleLeft;
-                        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){hideSidebarRest(waitCount);}, 200);}
-                    }
-                    hideSidebarRest(0);
                 }
                 function addHomeZoneMap(unsafeWindow, home_lat, home_lng, settings_homezone_radius, settings_homezone_color, settings_homezone_opacity) {
                     settings_homezone_color = settings_homezone_color.replace("##", "#");
