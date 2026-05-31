@@ -54,7 +54,8 @@
 	<li>
 		<strong>Note:</strong> [Maps] OpenStreetMap blocked. [<a href="https://github.com/2Abendsegler/GClh/issues/3032" title="Issue 3032">3032</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		We reported in <a href="https://github.com/2Abendsegler/GClh/blob/master/docu/changelog.md#v0181" title="Changelog v0.18.1">v0.18.1</a> that the access to "OpenStreetMap" with map layer "OpenStreetMap Default" is sometimes blocked.<br>
-		For the past few weeks, the tiles for map layer "OpenStreetMap Default" no longer appear to be blocked. The map layer can currently be used again. Perhaps it is working again only because the number of requests has dropped. We shall see. The documentation regarding "blocked tiles" seems to have changed, at least.<br>
+		For the past few weeks, the tiles for map layer "OpenStreetMap Default" no longer appear to be blocked. The map layer can currently be used again. Perhaps it is working again only because the number of requests has dropped. We shall see.<br>
+		The documentation regarding "blocked tiles" seems to have changed, at least.<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3032" title="Issue 3032">3032</a>.<br><br>
 	</li>
 	<li>
