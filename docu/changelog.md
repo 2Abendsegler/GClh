@@ -65,31 +65,31 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Preserving URL zoom parameter on page load often does not work. [<a href="https://github.com/2Abendsegler/GClh/issues/3175" title="Issue 3175">3175</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3175" title="Issue 3175">3175</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3175" title="Issue 3175">3175</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Sidebar processing is not triggered on page load. [<a href="https://github.com/2Abendsegler/GClh/issues/3173" title="Issue 3173">3173</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3173" title="Issue 3173">3173</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3173" title="Issue 3173">3173</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Improved z-index handling of gclh map buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/3168" title="Issue 3168">3168</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3168" title="Issue 3168">3168</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3168" title="Issue 3168">3168</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Add to list dialog on smaller screens doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3170" title="Issue 3170">3170</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3170" title="Issue 3170">3170</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3170" title="Issue 3170">3170</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] On small screens list/map selector is hidden behind gclh map buttons. [<a href="https://github.com/2Abendsegler/GClh/issues/3169" title="Issue 3169">3169</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3169" title="Issue 3169">3169</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3169" title="Issue 3169">3169</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Missing gclh buttons if layer control not active. [<a href="https://github.com/2Abendsegler/GClh/issues/3167" title="Issue 3167">3167</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3167" title="Issue 3167">3167</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3167" title="Issue 3167">3167</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Make use of experimental feature "Caches along a route" possible. [<a href="https://github.com/2Abendsegler/GClh/issues/3164" title="Issue 3164">3164</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3164" title="Issue 3164">3164</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3164" title="Issue 3164">3164</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] If "Go to" button is missing, the map layer button cannot be activated by mouse. [<a href="https://github.com/2Abendsegler/GClh/issues/3163" title="Issue 3163">3163</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -101,15 +101,15 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Hide found caches, own caches and DNF smileys by default do not work since last update of the website. [<a href="https://github.com/2Abendsegler/GClh/issues/3178" title="Issue 3178">3178</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3178" title="Issue 3178">3178</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3178" title="Issue 3178">3178</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Hide sidebar by default does not work since last update of the website. [<a href="https://github.com/2Abendsegler/GClh/issues/3179" title="Issue 3179">3179</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3179" title="Issue 3179">3179</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3179" title="Issue 3179">3179</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Move zoom buttons again top left. [<a href="https://github.com/2Abendsegler/GClh/issues/3180" title="Issue 3180">3180</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3180" title="Issue 3180">3180</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3180" title="Issue 3180">3180</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Browse Map] Prevent tooltip with cache name if cache detail pop-up is available. [<a href="https://github.com/2Abendsegler/GClh/issues/3181" title="Issue 3181">3181</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
@@ -117,7 +117,6 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [Dashboard] Improve the alignment of log images. [<a href="https://github.com/2Abendsegler/GClh/issues/3182" title="Issue 3182">3182</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3182" title="Issue 3182">3182</a>.<br><br>
 	</li>
 </ul>
 <br>
