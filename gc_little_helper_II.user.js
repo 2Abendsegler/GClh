@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.7
+// @version      0.18.8
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -9695,10 +9695,10 @@ var mainGC = function() {
                     css += leftCol + allLinkBlocks + ' .gclh a {gap: 4px !important;}';
                     // View larger log images.
                     if (settings_view_larger_log_images_db) {
-                        css += 'dialog.gclh_largerImage {padding: 10px 16px !important;}';
+                        css += 'dialog.gclh_largerImage {padding: 10px 16px 16px 16px !important;}';
                         css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) {flex-flow: row !important; align-items: baseline !important;}';
-                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) button {margin-top: 0px !important; margin-right: -3px !important; margin-left: 15px !important;}';
-                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) h1 span {font-size: 16px !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) button {margin-top: -7px !important; margin-right: -2px !important; margin-left: 15px !important;}';
+                        css += 'dialog.gclh_largerImage > div:has(use[href*="close"]) h1 {margin-bottom: 6px !important; font-size: 16px !important;}';
                         css += 'dialog.gclh_largerImage #modal-base-body > div > div {min-height: 50px !important;}';
                         css += 'dialog.gclh_largerImage #modal-base-body form {margin-top: 4px !important; min-height: 24px !important; font-size: 16px !important;}';
                         // Inner and outer frames span 32px and 34px in width. In total 66px.
@@ -10262,6 +10262,8 @@ var mainGC = function() {
                         $(images[i].closest('dialog')).addClass('gclh_largerImage');
                         // Close dialog containing log images also by clicking outside the dialog.
                         $(images[i].closest('dialog')).attr('closedby', 'any');
+                        // Prevent focus to close button.
+                        $(images[i].closest('dialog'))[0].focus();
                     }
                 }
             }
@@ -10283,7 +10285,7 @@ var mainGC = function() {
                         const $div_gclh_hide_column = $(`
                         <div id="gclh_hide_column" class="flex items-center justify-between gap-2">
                           <span class="text-sm/5 text-gray-600 m-0">Hide right sidebar</span>
-                        </div> 
+                        </div>
                         `);
                         const enabled = `
                         <div class="gclh_hide_column_toggle enabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-green-500 hover:bg-green-600" role="button" tabindex="0" aria-pressed="true" aria-disabled="false">
@@ -11173,6 +11175,7 @@ var mainGC = function() {
 
             // Add proxies for getting map handle and modifying cache properties.
             if (!unsafeWindow.GCLH) unsafeWindow.GCLH = {};
+            let isEnabledHiddenCacheLocationOnMap;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
                 // Safeguard.
@@ -11180,7 +11183,17 @@ var mainGC = function() {
                     observer.disconnect();
                     if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
                     if (!unsafeWindow.GCLH?.getLayout) gclh_error("Add proxy for cache properties", new Error('getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Display options won\'t work as expected.'));
+                    if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps) gclh_log('unsafeWindow.__NEXT_DATA__.props.pageProps not found for ' + observerCalls + ' MutationObserver calls. Hiding display options during route creation won\'t work as expected.');
                     return;
+                }
+
+                // GS experimental features.
+                const pageProps = unsafeWindow.__NEXT_DATA__?.props?.pageProps;
+                if (pageProps && typeof isEnabledHiddenCacheLocationOnMap === 'undefined') {
+                    isEnabledHiddenCacheLocationOnMap = pageProps.activeExperimentalFeatures.includes("hiddenCacheLocationOnMap");
+                    if (pageProps.activeExperimentalFeatures.includes("cachesAlongARoute")) {
+                        handleDisplayOptionsButtonOnRouteCreation();
+                    }
                 }
 
                 // Add proxies for getting map handle and modifying cache properties.
@@ -11262,7 +11275,7 @@ var mainGC = function() {
                 }
 
                 // Finished, stop observing.
-                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout) {
+                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout && pageProps) {
                     observer.disconnect();
                     return;
                 }
@@ -11282,6 +11295,9 @@ var mainGC = function() {
 
             // Handle cache properties.
             const processCaches = (layout) => {
+                // If route creation is active, do nothing.
+                if (isActiveCreateRoute) return;
+
                 // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
                 // Otherwise cache properties cannot be set.
                 layout.props.searchResults = structuredClone(layout.props.searchResults);
@@ -11373,7 +11389,7 @@ var mainGC = function() {
                     // Hide DNF icons.
                     if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
                     // Change original cache coords to corrected coords.
-                    if (showAtCorrectedCoords && gc.userCorrectedCoordinates) {
+                    if (!isEnabledHiddenCacheLocationOnMap && showAtCorrectedCoords && gc.userCorrectedCoordinates) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
                 }
@@ -11616,12 +11632,14 @@ var mainGC = function() {
                         <div style="margin-bottom: 5px;"><u>Remembered Display Options</u></div>
                     `);
                     // Show at corrected coordinates.
-                    $list.append(`
+                    if (!isEnabledHiddenCacheLocationOnMap) {
+                        $list.append(`
                         <label for="gclh_showAtCorrectedCoords">
                             <input type="checkbox" id="gclh_showAtCorrectedCoords" ${showAtCorrectedCoords ? 'checked' : ''}>
                             Show finds at corrected coordinates
                         </label>
-                    `);
+                        `);
+                    }
                     // Show cache type for DNFs.
                     $list.append(`
                         <label for="gclh_hideDNFIcons">
@@ -11870,6 +11888,17 @@ var mainGC = function() {
                 });
             }
 
+            // Hide display options button if route creation is active (GS experimental feature - Caches along a route).
+            let isActiveCreateRoute = false;
+            function handleDisplayOptionsButtonOnRouteCreation() {
+                waitForElementThenRun('button[data-testid="create-route-map"]', function() {
+                    $('button[data-testid="create-route-map"]').click(function() {
+                        $('#gclh_display_options_control').toggle();
+                        isActiveCreateRoute = !isActiveCreateRoute;
+                    });
+                });
+            }
+
             // Add button for additional geocache display options.
             if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                 var hideFinds = false;
@@ -12062,6 +12091,8 @@ var mainGC = function() {
 
             // Handle toggle between search results and bookmark lists (if automatic search is active).
             function handleToggleBetweenSearchAndBMLTab() {
+                if (!(!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map)) return;
+
                 const $searchTab = $('button[data-testid="gc-button-group-option-0"]');
                 if (!$searchTab[0]) return;
 
@@ -12208,40 +12239,41 @@ var mainGC = function() {
                 }, 20000);
             }
 
-            // Preserve zoom parameter in URLs on page load (GS ignores zoom levels from URLs); no BML and for Leaflet maps only.
-            let run_setZoom = getURLParam('bmCode') ? false : true;
-            function setZoom() {
-                if (run_setZoom && unsafeWindow.MapSettings?.Map?.setZoom) {
-                    // Only run once.
-                    run_setZoom = false;
+            // Preserve zoom parameter in URLs on page load (GS ignores zoom levels from URLs), except for BML.
+            const zoom = getURLParam('zoom') * 1;
+            const notBML = getURLParam('bmCode') ? false : true;
+            if (zoom && notBML) {
+                let setView_orig;
+                let patched = false;
+                const obs = new MutationObserver(function() {
+                    if (!unsafeWindow.L?.Map) return;
 
-                    // Get specified zoom level from __NEXT_DATA__ and set zoom. If none is present, do nothing.
-                    const zoom = unsafeWindow.__NEXT_DATA__?.query?.zoom*1;
-                    if (!isNaN(zoom)) unsafeWindow.MapSettings.Map.setZoom(zoom);
-                    // Initializing map bounds here prevents an unintentional search after zoom has been set
-                    // (changing zoom triggers 'zoomend' event which in turn triggers a search).
-                    // But if the map bounds match the actual map view, no search is triggered.
-                    [latHighG, latLowG, lngHighG, lngLowG] = getMapBounds();
-                }
+                    obs.disconnect();
+                    setView_orig = unsafeWindow.L.Map.prototype.setView;
+                    patched = true;
+                    // Monkey patch Leaflet's setView function (temporary) and thereby control zoom level.
+                    unsafeWindow.L.Map.prototype.setView = new Proxy(setView_orig, {
+                        apply(target, thisArg, args) {
+                            // args = [center, zoom, options]
+                            if (args[1] !== zoom) {
+                                // Preserve zoom parameter from url.
+                                args[1] = zoom;
+                                // Only preserve once, then restore original function.
+                                unsafeWindow.L.Map.prototype.setView = setView_orig;
+                                patched = false;
+                            }
+                            return Reflect.apply(target, thisArg, args);
+                        }
+                    });
+                });
+                obs.observe(document, { childList: true, subtree: true });
+
+                // Safeguard: clean up after 5 seconds.
+                setTimeout(function() {
+                    obs.disconnect();
+                    if (patched) unsafeWindow.L.Map.prototype.setView = setView_orig;
+                }, 5000);
             }
-
-            // Each map movement or zoom change alters the URL by triggering 'window.history.pushState', therefore we add custom calls inside.
-            // (for reference: https://stackoverflow.com/a/64927639)
-            window.history.pushState = new Proxy(window.history.pushState, {
-                apply: (target, thisArg, argArray) => {
-                    setZoom();
-
-                    // FF issue (https://github.com/2Abendsegler/GClh/issues/2889):
-                    // "Too many calls to Location or History APIs in a short period of time" results in an exception
-                    // and therefore gclh code stops. This exception is catched here and logged as a warning.
-                    // Not an issue in Chrome.
-                    try {
-                        return target.apply(thisArg, argArray);
-                    } catch(e) {
-                        console.warn(e);
-                    }
-                }
-            });
 
             // Set link to owner.
             function setLinkToOwner() {
@@ -12399,18 +12431,18 @@ var mainGC = function() {
             function compactLayout_cachePreviewActionMenu() {
                 if (settings_searchmap_compact_layout && settings_searchmap_compact_layout_cachePreviewActionMenu) {
                     if ($('.cache-preview-action-menu a.log-geocache')[0] && $('.cache-preview-action-menu ul > li button svg')[0] &&
-                        $('.cache-preview-action-menu ul > li span')[0]) {
+                        $('.cache-preview-action-menu ul > li span')[0] && !$('.cache-preview-action-menu dialog')[0]) {
                         if (!$('#gclh_css_cachePreviewActionMenu')[0]) {
                             var buttonLineHeight = parseInt(settings_searchmap_compact_layout_cachePreviewActionMenu_buttonHeight);
                             var pad = 12 - ( 46 - buttonLineHeight ) / 2;
                             var css = '';
-                            css += '.cache-preview-action-menu {padding-top: 5px !important; padding-bottom: 5px !important; margin: 0px !important;}';
-                            css += '.cache-preview-action-menu a.log-geocache {padding-top: ' + pad + 'px !important; padding-bottom: ' + pad + 'px !important; margin: 0px 0px 5px 0px !important;}';
-                            css += '.cache-preview-action-menu ul {padding: 0px !important; margin: 0px !important; gap: 5px !important;}';
-                            css += '.cache-preview-action-menu ul > li button, .cache-preview-action-menu ul > li a {padding-top: ' + (pad - 2) + 'px !important; padding-bottom: ' + (pad - 2) + 'px !important;}';
-                            css += '.cache-preview-action-menu ul > li svg, .cache-preview-action-menu ul > li img {margin: 0px auto 0px auto !important;}';
-                            css += '.cache-preview-action-menu ul > li span:not(:has(> span.gclh_ownBMLs_count)):not(.gclh_ownBMLs_count) {display: none !important;}';
-                            css += '.cache-preview-action-menu ul > li span.gclh_ownBMLs_count {position: absolute; margin: -12px 0px 0px 12px;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) {padding-top: 5px !important; padding-bottom: 5px !important; margin: 0px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) a.log-geocache {padding-top: ' + pad + 'px !important; padding-bottom: ' + pad + 'px !important; margin: 0px 0px 5px 0px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul {padding: 0px !important; margin: 0px !important; gap: 5px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li button, .cache-preview-action-menu:not(:has(dialog)) ul > li a {padding-top: ' + (pad - 2) + 'px !important; padding-bottom: ' + (pad - 2) + 'px !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li svg, .cache-preview-action-menu:not(:has(dialog)) ul > li img {margin: 0px auto 0px auto !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li span:not(:has(> span.gclh_ownBMLs_count)):not(.gclh_ownBMLs_count) {display: none !important;}';
+                            css += '.cache-preview-action-menu:not(:has(dialog)) ul > li span.gclh_ownBMLs_count {position: absolute; margin: -12px 0px 0px 12px;}';
                             appendCssStyle(css, null, 'gclh_css_cachePreviewActionMenu');
                         }
                         // Number of items want to display in the buttons line.
@@ -12594,18 +12626,12 @@ var mainGC = function() {
 
             // Build map buttons above.
             function buildMapButtonsAbove() {
-                if (!$('.leaflet-top.leaflet-right')[0]) return;
-                // Add button with links to Google, OSM, Flopp's, GeoHack, Komoot and Waymarked Trails map.
-                if (!$('#gclh_geoservices_control')[0] && (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map)) {
-                    initGeoServiceControl();
-                }
-                // Relocate browse button to other buttons above.
-                if (!$('#gclh_browse_map')[0] && settings_relocate_other_map_buttons && $('.browse-map-link')[0] && $('.browse-map-link')[0].childNodes[1]) {
-                    $('.leaflet-top.leaflet-right').prepend('<div id="gclh_browse_map"></div>');
-                    $('#gclh_browse_map').append($('.browse-map-link:first').remove().get().reverse());
-                    $('#gclh_browse_map a')[0].childNodes[1].remove();
-                    $('#gclh_browse_map a').attr('class', '');
-                }
+                waitForElementThenRun('.leaflet-top.leaflet-right', function() {
+                    // Add button with links to Google, OSM, Flopp's, GeoHack, Komoot and Waymarked Trails map.
+                    if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) {
+                        initGeoServiceControl();
+                    }
+                });
             }
 
             // Show additional cache data in cache details.
@@ -13013,7 +13039,7 @@ var mainGC = function() {
             }
 
             // Processing all steps.
-            function processAllSearchMap() {
+            function processAllSidebar() {
                 scrollInCacheList();
                 setLinkToOwner(); // Has to be run before compactLayout.
                 compactLayout_sidebarHeader();
@@ -13028,48 +13054,28 @@ var mainGC = function() {
                 scrollUpInDescription();
                 collapseActivity();
                 showSearchmapSidebarEnhancements();
-                buildMapButtonsAbove();
                 geocacheActionBar(); // "Save as PQ" and "Hide Header".
-                // Prepare keydown F2 filter screen.
                 prepareKeydownF2InFilterScreen();
-                if (!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) handleToggleBetweenSearchAndBMLTab();
+                handleToggleBetweenSearchAndBMLTab();
             }
 
-            // Observer callback for body and checking existence of sidebar.
-            var cb_body = function() {
-                processAllSearchMap();
-                if ($('div#sidebar')[0] && !$('.gclh_sidebar_observer')[0]) {
-                    $('div#sidebar').addClass('gclh_sidebar_observer');
-                    var target_sidebar = $('div#sidebar')[0];
-                    var config_sidebar = {
-                        childList: true,
-                        subtree: true
-                    };
-                    observer_sidebar.observe(target_sidebar, config_sidebar);
-                }
-            }
-            // Observer callback for sidebar.
-            var cb_sidebar = function() {
-                if (!$('div#sidebar')[0]) return;
+            // Sidebar observer.
+            var target_sidebar;
+            var config_sidebar = {childList: true, subtree: true};
+            var observer_sidebar = new MutationObserver(function() {
                 observer_sidebar.disconnect();
-                processAllSearchMap();
-                var target_sidebar = $('div#sidebar')[0];
-                var config_sidebar = {
-                    childList: true,
-                    subtree: true
-                };
+                processAllSidebar();
                 observer_sidebar.observe(target_sidebar, config_sidebar);
-            }
-            // Create observer instances linked to callback functions.
-            var observer_body    = new MutationObserver(cb_body);
-            var observer_sidebar = new MutationObserver(cb_sidebar); // ATTENTION: the order matters here
-            var target_body = $('body')[0];
-            var config_body = {
-                childList: true,
-                attributes: true
-            };
-            observer_body.observe(target_body, config_body);
-            processAllSearchMap();
+            });
+            // Wait for sidebar, then start observing.
+            waitForElementThenRun('div#sidebar', function() {
+                processAllSidebar();
+                target_sidebar = $('div#sidebar')[0];
+                observer_sidebar.observe(target_sidebar, config_sidebar);
+            });
+
+            // Build map buttons top right.
+            buildMapButtonsAbove();
 
             var css = '';
             // Hide button search this area and icon loading, if not link from matrix.
@@ -13085,21 +13091,28 @@ var mainGC = function() {
             css += '.cache-preview-activities .opener {height: 22px; width: 22px; transition: all .3s ease; transform-origin: 50% 50%;}';
             css += '.cache-preview-activities.isHide .opener {transform: rotate(180deg);}';
             css += '.cache-preview-activities.isHide > header > ul {display: none;}';
-            // Map buttons above.
-            // - All top buttons next to each other.
+            // Map buttons top right.
+            // - All buttons next to each other.
             css += '.leaflet-top.leaflet-right {display: flex;}';
             // - Standardize button spacing.
             css += '.leaflet-top.leaflet-right > div {margin-right: 8px; margin-top: 8px;}';
-            // - Adjust browse map button when we use it. Or leave enough space for our buttons.
+            // - GS buttons may overlap button selections, therefore increase z-index when hovering.
+            css += 'div:has(>#gclh_geoservices_control:hover, >#gclh_layers:hover) {z-index: 2001;}';
+            // - Align and unify buttons.
+            var mr = 0;
+            if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) mr += 48;
+            if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
+            css += 'button[data-testid="close-route-view"] {position: absolute; top: 8px; right: ' + (mr+8) + 'px; width: max-content; height: 40px;}';
+            css += '@media (min-width: 768px) {div:has(>.browse-map-link) {position: absolute; top: 8px; right: ' + (mr+8) + 'px;}}';
+            css += '.leaflet-top.leaflet-right > div {border: unset !important; border-radius: 8px !important;}';
+            css += '.leaflet-top.leaflet-right > div > a {border-radius: 8px !important; border: 1px solid rgb(0, 125, 70) !important; background-color: rgb(255, 255, 255) !important;}';
+            // - Show compact browse map and create route buttons.
             if (settings_relocate_other_map_buttons) {
-                css += '#gclh_browse_map a {height: 40px !important; width: 40px !important; display: flex !important; justify-content: center !important; align-items: center !important; color: #007d46 !important; background-color: rgb(255 255 255) !important; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
-                css += '#gclh_browse_map a:hover {background-color: rgb(230, 250, 235) !important}';
-            } else {
-                var mr = 0;
-                if (settings_use_gclh_layercontrol_on_search_map) mr += 48;
-                if (settings_add_link_google_maps_on_gc_map || settings_add_link_osm_on_gc_map || settings_add_link_flopps_on_gc_map || settings_add_link_geohack_on_gc_map || settings_add_link_komoot_on_gc_map || settings_add_link_wmthiking_on_gc_map || settings_add_link_wmtcycling_on_gc_map || settings_add_link_wmtmtb_on_gc_map) mr += 48;
-                css += '.browse-map-link {margin-right: ' + mr + 'px;}';
+                css += 'div:has(>.browse-map-link) span {display: none;}';
+                css += '.browse-map-link, [data-testid="create-route-map"] {width: 40px !important;}';
             }
+            // If viewport is smaller than 768px, then sidebar is hidden and GS List/Map control shows up and covers gclh buttons. Therefore move GS control left of gclh buttons.
+            css += '@media (width < 768px) { div.tablet\\:hidden:has(> ul[aria-label="List / Map"]) {position: absolute; top: 8px; right: ' + (mr+8) + 'px;} }';
             // Sidebar Enhancements.
             if (settings_show_enhanced_map_popup) {
                 css += '.cache-preview-attributes .geocache-owner {margin-bottom: 3px;}';
@@ -13143,6 +13156,10 @@ var mainGC = function() {
             css += '#gclh_saveAsPQ img {vertical-align: middle;}';
             // Hide header.
             css += '.hideHeaderLink, .set_defaults {font-size: 12px; display: flex; gap: 0.5em;}';
+            // If gclh layer control is active, hide GS map types selection.
+            if (settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                css += 'div:first-of-type:has(>button[data-testid="gc-accordion-button"]) {display: none;}';
+            }
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Search Map",e);}
     }
@@ -13192,13 +13209,18 @@ var mainGC = function() {
             var css = '';
             // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+            // Move zoom buttons again top left and animate moving of zoom buttons if sidebar moves.
+            css += '.leaflet-control-zoom {position: relative !important; left: 30px !important; transition: left 0.52s ease-in-out !important; top: 52px !important; bottom: 0px !important; right: 0px !important; margin: 0px 0px 0px 1px !important; transform: unset !important; z-index: 7 !important;}';
+            css += 'body:has(.Sidebar.Open) .leaflet-control-zoom {left: 385px !important;}';
             // Improve the scale lines on the left side.
             css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
+            // Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
+            css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Prevent tooltip with cache name if cache detail pop-up is available.
-            css += '.leaflet-container:has(.leaflet-popup) .map-tooltip {display: none !important;}';
+            css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
@@ -13317,9 +13339,6 @@ var mainGC = function() {
                                     document.querySelector('.mapboxgl-canvas').remove();
                                 }, 0);
                             }
-                            // Issue #3148: Trigger the body observer on search map by adding/removing a dummy element, otherwise
-                            // the call of buildMapButtonsAbove() will not be triggered always and the gclh buttons will be missing.
-                            document.body.appendChild(document.createElement('div')).remove();
                         }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
@@ -13387,10 +13406,6 @@ var mainGC = function() {
             if (is_page('map')) loopAtLayerControls(0);
             if (is_page('searchmap')) {
                 setDefaultsInLayer();
-                // Remove default GS layer control.
-                waitForElementThenRun('div.md\\:block', () => {
-                    $('div.md\\:block, div.md\\:hidden').remove();
-                });
             }
 
             var css = '';
@@ -13468,7 +13483,11 @@ var mainGC = function() {
             $(this)[0].style.setProperty('margin-top', '10px', 'important');
             $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
         });
-        if ($('.Sidebar footer')[0]) $('.Sidebar footer')[0].style.setProperty('padding-right', '24px', 'important');
+        // Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
+        if ($('.Sidebar footer')[0]) {
+            $('.Sidebar footer')[0].style.setProperty('padding-right', '0px', 'important');
+            $('.Sidebar footer')[0].style.setProperty('margin-right', '24px', 'important');
+        }
         $('.Sidebar footer p').each(function () {
             $(this)[0].style.setProperty('margin-top', '0px', 'important');
             $(this)[0].style.setProperty('margin-bottom', '5px', 'important');
@@ -13500,26 +13519,9 @@ var mainGC = function() {
         try {
             function changeMap() {
                 if (settings_map_hide_sidebar) {
-                    if (document.getElementById("searchtabs").parentNode.style.left != "-355px") {
-                        var links = document.getElementsByTagName("a");
-                        for (var i = 0; i < links.length; i++) {
-                            if (links[i].className.match(/ToggleSidebar/)) {
-                                links[i].click();
-                                break;
-                            }
-                        }
+                    if ($('.Sidebar.Open .ToggleSidebar')[0]) {
+                        $('.Sidebar.Open .ToggleSidebar')[0].click();
                     }
-                    function hideSidebarRest(waitCount) {
-                        if ($('.groundspeak-control-findmylocation')[0] && $('.leaflet-control-scale')[0] && $('.leaflet-control-zoom')[0]) {
-                            // Wenn externe Kartenfilter vorhanden, dann gibt es keinen Balken zur Sidebar.
-                            if (document.location.href.match(/&asq=/)) var styleLeft = "15px";
-                            else var styleLeft = "30px";
-                            $('.groundspeak-control-findmylocation')[0].style.left = styleLeft;
-                            $('.leaflet-control-scale')[0].style.left = styleLeft;
-                            $('.leaflet-control-zoom')[0].style.left = styleLeft;
-                        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){hideSidebarRest(waitCount);}, 200);}
-                    }
-                    hideSidebarRest(0);
                 }
                 function addHomeZoneMap(unsafeWindow, home_lat, home_lng, settings_homezone_radius, settings_homezone_color, settings_homezone_opacity) {
                     settings_homezone_color = settings_homezone_color.replace("##", "#");
@@ -13578,8 +13580,7 @@ var mainGC = function() {
         if (is_page('map')) {
             $('.leaflet-top.leaflet-right').append('<div id="gclh_geoservices_control" class="leaflet-control-layers gclh-leaflet-control browsemap"></div>');
         } else {
-            // Increase z-index, otherwise buttons may overlap map control.
-            $('.leaflet-top.leaflet-right').prepend('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>').css('z-index', 2001);
+            $('.leaflet-top.leaflet-right').prepend('<div id="gclh_geoservices_control" class="gclh-leaflet-control searchmap"></div>');
         }
         $('#gclh_geoservices_control').append('<a id="gclh_google_button"></a>');
         $("#gclh_geoservices_control").append('<div id="gclh_geoservices_list" class="gclh-leaflet-list"></div>');
@@ -13612,6 +13613,7 @@ var mainGC = function() {
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
         css += '.gclh-leaflet-control:hover .gclh-leaflet-list {display: block;}';
         css += '.gclh-leaflet-list a:hover {background-color: #e6f7ef; text-decoration: none;}';
+        css += '#gclh_geoservices_list a {width: -webkit-fill-available; text-decoration: none;}';
         appendCssStyle(css, null, 'gclh_geoservices_css');
     }
 
@@ -13727,20 +13729,17 @@ var mainGC = function() {
             function hideFoundCaches() {
                 // Kartenfilter bei externen Filtern (beispielsweise aus play/search) nicht verändern.
                 if (document.location.href.match(/&asq=/)) return;
-                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[1];
-                if (button) button.click();
+                if ($('.ct_mf')[0]) $('.ct_mf')[0].click();
             }
             if (settings_map_hide_found) isMapLoad(hideFoundCaches);
             function hideHiddenCaches() {
                 if (document.location.href.match(/&asq=/)) return;
-                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[3];
-                if (button) button.click();
+                if ($('.ct_mo')[0]) $('.ct_mo')[0].click();
             }
             if (settings_map_hide_hidden) isMapLoad(hideHiddenCaches);
             function removeDNFSmileys() {
                 if (document.location.href.match(/&asq=/)) return;
-                var button = unsafeWindow.document.getElementById("m_myCaches").childNodes[5];
-                if (button) button.click();
+                if ($('.ct_mdnf')[0]) $('.ct_mdnf')[0].click();
             }
             if (settings_map_hide_dnfs) isMapLoad(removeDNFSmileys);
             function getAllCachetypeButtons() {
@@ -16550,8 +16549,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/fLeH/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iGF"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/LfgV/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iGN"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -17932,12 +17931,13 @@ var mainGC = function() {
             html += thanksLineBuild("RoRo",                 "RolandRosenfeld",          false, false, false, true,  false);
             html += thanksLineBuild("stepborc",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("TiBaWe",               "",                         false, false, false, true,  false);
+            html += thanksLineBuild("TopGodo",              "",                         false, false, false, true,  false);
             html += thanksLineBuild("Tungstène",            "Tungstene",                false, false, false, true,  false);
             html += thanksLineBuild("V60",                  "V60GC",                    false, false, false, true,  false);
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "13.05.2026";
+            var thanksLastUpdate = "30.05.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
