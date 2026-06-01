@@ -13209,9 +13209,6 @@ var mainGC = function() {
             var css = '';
             // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
-            // Move zoom buttons again top left and animate moving of zoom buttons if sidebar moves.
-            css += '.leaflet-control-zoom {position: relative !important; left: 30px !important; transition: left 0.52s ease-in-out !important; top: 52px !important; bottom: 0px !important; right: 0px !important; margin: 0px 0px 0px 1px !important; transform: unset !important; z-index: 7 !important;}';
-            css += 'body:has(.Sidebar.Open) .leaflet-control-zoom {left: 385px !important;}';
             // Improve the scale lines on the left side.
             css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
@@ -13221,6 +13218,13 @@ var mainGC = function() {
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Prevent tooltip with cache name if cache detail pop-up is available.
             css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
+            // Move zoom buttons again top left.
+            css += '.leaflet-control-zoom {position: relative !important; top: 52px !important; bottom: 0px !important; right: 0px !important; margin: 0px 0px 0px 1px !important; transform: unset !important; z-index: 7 !important;}';
+            // Positions of sidebar and left map elements and animate left move. Standardization of GClh and GME.
+            css += '.Sidebar {left: -355px !important; transition: left 0.5s ease-in-out !important;}';
+            css += '.leaflet-control-toolbar, .leaflet-control-zoom, .leaflet-control-scale, .gme-left {left: 30px !important; transition: left 0.5s ease-in-out !important;}';
+            css += 'body:has(.Sidebar.Open) .Sidebar {left: 0px !important;}';
+            css += 'body:has(.Sidebar.Open) .leaflet-control-toolbar, body:has(.Sidebar.Open) .leaflet-control-zoom, body:has(.Sidebar.Open) .leaflet-control-scale, body:has(.Sidebar.Open) .gme-left {left: 385px !important;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
