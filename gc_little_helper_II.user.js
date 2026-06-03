@@ -13355,7 +13355,8 @@ var mainGC = function() {
                     if (name == settings_map_default_layer) defaultLayer = name;
                     else if (defaultLayer == "") defaultLayer = name;
                 }
-                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label');
+                // Der Default Layer wurde bereits gesetzt. Hier muss er erneut gesetzt werden wegen möglicher Änderungen durch GME.
+                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label > span');
                 if (labels) {
                     if (is_page("map")) {
                         for (var i=0; i<labels.length; i++) {
