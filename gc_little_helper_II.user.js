@@ -5035,6 +5035,10 @@ var mainGC = function() {
                     $('.post-button-container').bind('click', () => isSubmit = true);
                     $('.post-button-container').addClass('gclh_mess_unsaved_log');
                 }
+                if ($('.save-draft-button-container')[0] && !$('.gclh_mess_unsaved_log_draft')[0]) {
+                    $('.save-draft-button-container').bind('click', () => isSubmit = true);
+                    $('.save-draft-button-container').addClass('gclh_mess_unsaved_log_draft');
+                }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildMessUnsavedLog(waitCount);}, 200);
             }
             try {
