@@ -13437,7 +13437,7 @@ var mainGC = function() {
     function hideHeaderOnBrowseMap() {
         try {
             function checkMap(waitCount) {
-                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
+                if (($('.leaflet-container')[0] || $('.Map.Google')[0]) && $('gclh_nav')[0]) {
                     if (settings_hide_map_header) hide_map_header();
                     $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
                     $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
