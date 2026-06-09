@@ -13339,8 +13339,17 @@ var mainGC = function() {
                             }
                             if (document.location.pathname.match(/^(\/live|)\/play\/map/)) {
                                 setTimeout(() => {
-                                    // Remove default GS map tiles.
-                                    document.querySelector('.mapboxgl-canvas').remove();
+                                    // Remove GS map layer (WebGL based map layer by MapLibre). Those vector tiles are fetched as .pbf tiles:
+                                    // - downloaded in the background
+                                    // - decoded and processed in a Web Worker
+                                    // - rendered directly onto a single <canvas> element via WebGL
+                                    // Removing the <canvas> element doesn't destroy the MapLibre GL instance and thus, it continues fetching .pbf tiles in the background.
+                                    // Therefore the MapLibre GL layer needs to be removed, which also removes the <canvas> element automatically.
+                                    try {
+                                        window.MapSettings.Map.eachLayer(function (layer) {
+                                            if (layer._glMap) window.MapSettings.Map.removeLayer(layer);
+                                        });
+                                    } catch(e) {console.error("Remove default GS map layer -",e);}
                                 }, 0);
                             }
                         }
