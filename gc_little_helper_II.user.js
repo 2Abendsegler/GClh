@@ -13213,6 +13213,10 @@ var mainGC = function() {
             var css = '';
             // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
+            // Space between the buttons top right.
+            css += '.leaflet-control {margin-right: 8px !important;}';
+            // Resize Leaflet control.
+            css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
             // Improve the scale lines on the left side.
             css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
             css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
@@ -13227,10 +13231,10 @@ var mainGC = function() {
             css += '.leaflet-control-toolbar, .leaflet-control-scale, .gme-left {left: 30px !important; transition: left 0.5s ease-in-out !important;}';
             css += 'body:has(.Sidebar.Open) .Sidebar {left: 0px !important;}';
             css += 'body:has(.Sidebar.Open) .leaflet-control-toolbar, body:has(.Sidebar.Open) .leaflet-control-scale, body:has(.Sidebar.Open) .gme-left {left: 385px !important;}';
-            // Prevent that zoom buttons overlap map selection dialog.
-            css += '.legacy-map-zoom-wrapper {z-index: auto}';
-            // Slight opacity for zomm buttons.
-            css += '.leaflet-control-zoom {opacity: 0.8}';
+            // Prevent that zoom buttons overlap map selection dialog and align distance to the right to buttons top right.
+            css += '.legacy-map-zoom-wrapper {z-index: auto; right: 0px !important;}';
+            // Zoom buttons: slight opacity.
+            css += '.leaflet-control-zoom {opacity: 0.8;}';
             // Prevent close button on cache details screen from overlapping GC code, make height and width of close button proportional and set a hover effect.
             css += '.leaflet-container a.leaflet-popup-close-button {padding: 0px; top: -8px; right: -8px; width: 22px; height: 22px; font: 16px/19px Tahoma, Verdana, sans-serif;}';
             css += '.leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus {color: #fff;}';
@@ -13434,7 +13438,7 @@ var mainGC = function() {
 
             var css = '';
             css += '.leaflet-control-layers-expanded .leaflet-control-layers-list {display: block !important;}';
-            css += '#gclh_layers .leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
+            css += '#gclh_layers .leaflet-control-layers-list {right: -2px; top: -4px; height: inherit; display: none; position: absolute !important; border-radius: 7px; background-color: white; white-space: nowrap; padding: 6px; border: 2px solid rgba(0, 0, 0, 0.2); background-clip: padding-box;}';
             css += '#gclh_layers, #gclh_layers .leaflet-control-layers-list {z-index: 1020;}';
             css += '#gclh_layers .leaflet-control-layers-base label, #gclh_layers .leaflet-control-layers-overlays label {padding: 0px 6px;}';
             css += '#gclh_layers .leaflet-control-layers-base label:hover, #gclh_layers .leaflet-control-layers-overlays label:hover {background-color: #e6f7ef;}';
@@ -13628,10 +13632,10 @@ var mainGC = function() {
         var css = '';
         css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
         css += '.searchmap .gclh-leaflet-list {right: -1px; top: -1px; }';
-        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: relative; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
+        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; position: relative; right: unset; margin-top: 16px; margin-right: 8px; float: right; clear: left; border-radius: 7px; pointer-events: auto;}';
         css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; padding: 4px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
-        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 0px; top: 0px;}';
+        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: -2px; top: -4px; border: 2px solid rgba(0, 0, 0, 0.2); background-clip: padding-box;}';
         css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
