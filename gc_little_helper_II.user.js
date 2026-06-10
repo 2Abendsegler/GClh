@@ -13322,6 +13322,7 @@ var mainGC = function() {
                             if (document.location.pathname.match(/^\/map/)) {
                                 var div = document.createElement("div");
                                 div.setAttribute("class", "gclh_dummy gclh_used");
+                                div.setAttribute("style", "display: none;");
                                 var aTag = document.createElement("a");
                                 aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
                                 div.appendChild(aTag);
