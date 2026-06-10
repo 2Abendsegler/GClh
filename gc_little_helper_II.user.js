@@ -5265,8 +5265,8 @@ var mainGC = function() {
 
             // Send Log with F2.
             function buildSendLogWithF2(waitCount) {
-                if ($('.post-button-container button.gc-button-primary')[0] && !$('.post-button-container button.gc-button-primary')[0].innerHTML.match(/\s\(F2\)/)) {
-                    let logBtn = $('.post-button-container button.gc-button-primary')[0];
+                if ($('.post-button-container button')[0] && !$('.post-button-container button')[0].innerHTML.match(/\s\(F2\)/)) {
+                    let logBtn = $('.post-button-container button')[0];
                     function keydownF2(e) {
                         if (!check_config_page()) {
                             if (e.keyCode == 113 && noSpecialKey(e)) {
