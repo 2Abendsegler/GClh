@@ -13231,6 +13231,9 @@ var mainGC = function() {
             css += '.legacy-map-zoom-wrapper {z-index: auto}';
             // Slight opacity for zomm buttons.
             css += '.leaflet-control-zoom {opacity: 0.8}';
+            // Prevent close button on cache details screen from overlapping GC code, make height and width of close button proportional and set a hover effect.
+            css += '.leaflet-container a.leaflet-popup-close-button {padding: 0px; top: -8px; right: -8px; width: 22px; height: 22px; font: 16px/19px Tahoma, Verdana, sans-serif;}';
+            css += '.leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus {color: #fff;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
