@@ -13879,7 +13879,6 @@ var mainGC = function() {
             var target = document.querySelector('.leaflet-popup-pane');
 
             var css = '';
-//xxxx ok das hier prüfen. Sitzt das Popup noch richtig über dem Icon?
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
             css += ".leaflet-popup-content {margin-left: 10px !important; margin-right: 10px !important;}";
             css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
