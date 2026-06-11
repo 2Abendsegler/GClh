@@ -13373,23 +13373,25 @@ var mainGC = function() {
             }
             // Layer Defaults setzen.
             function setDefaultsInLayer() {
-                var defaultLayer = "";
-                for (name in map_layers) {
-                    if (name == settings_map_default_layer) defaultLayer = name;
-                    else if (defaultLayer == "") defaultLayer = name;
-                }
-                // Der Default Layer wurde bereits gesetzt. Hier muss er erneut gesetzt werden wegen möglicher Änderungen durch GME.
-                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label > span');
-                if (labels) {
-                    if (is_page("map")) {
+                if (is_page("map")) {
+                    // Der Default Layer wurde bereits gesetzt. Hier wird er erneut gesetzt, wenn er zwischenzeitlich beispielsweise durch GME geändert
+                    // wurde. Das führt zu einem Flackern der Karte. Mit der neuen Leaflet Version 1.9.4 kann nur ein aktiver Layer über alle Layer Listen
+                    // (.leaflet-control-layers-base) hinweg aktiviert sein. Wird also beispielsweise nach dem Setzen des GClh Default Layers später der GME
+                    // Default Layer gesetzt, ist der GClh Layer automatisch deaktiviert. Ab GME 0.8.2.2As.12 wird dort geprüft, ob der GClh die Hoheit über
+                    // die Layer hat, dadurch wird das Flackern unterbunden. Für alle früheren GME Versionen der "2As" Reihe und für andere GME Reihen oder
+                    // noch ganz andere Skripte wird hier der GClh Default Layer falls nötig erneut gesetzt.
+                    var defaultLayer = "";
+                    for (name in map_layers) {
+                        if (name == settings_map_default_layer) defaultLayer = name;
+                        else if (defaultLayer == "") defaultLayer = name;
+                    }
+                    var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label > span');
+                    if (labels) {
                         for (var i=0; i<labels.length; i++) {
                             if (labels[i].children[1].innerHTML.match(defaultLayer)) {
-                                // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
-                                if (labels[i].children[0].checked && labels.length > 1) {
-                                    if (i == 0) labels[i+1].children[0].click();
-                                    else labels[i-1].children[0].click();
+                                if (!labels[i].children[0].checked) {
+                                    labels[i].children[0].click();
                                 }
-                                labels[i].children[0].click();
                                 break;
                             }
                         }
@@ -13431,7 +13433,11 @@ var mainGC = function() {
                 if (waitCount <= 200) setTimeout(function(){loopAtLayerControls(waitCount);}, 50);
             }
             addLayerControl();
-            if (is_page('map')) loopAtLayerControls(0);
+            if (is_page('map')) {
+                // Note for GME that GClhII has the authority over the map layer.
+                appendMetaId('GClhII_map_layer_authority');
+                loopAtLayerControls(0);
+            }
             if (is_page('searchmap')) {
                 setDefaultsInLayer();
             }
