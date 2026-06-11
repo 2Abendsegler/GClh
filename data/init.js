@@ -484,7 +484,7 @@ function states_idInit(c) {
         {"n":"Budapest","id":"438"},
         {"n":"Burgenland","id":"258"},
         {"n":"Busan","id":"297"},
-        {"n":"Buskerud","id":"244"},
+        {"n":"Buskerud","id":"534"},
         {"n":"Calabria","id":"192"},
         {"n":"California","id":"5"},
         {"n":"Campania","id":"193"},
