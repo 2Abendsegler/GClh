@@ -13215,27 +13215,31 @@ var mainGC = function() {
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
             // Space between the buttons top right.
             css += '.leaflet-control {margin-right: 8px !important;}';
-            // Resize Leaflet control.
-            css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
-            // Improve the scale lines on the left side.
-            css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
-            css += '.leaflet-control-scale-line {box-shadow: none;}';
-            // Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
-            css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Prevent tooltip with cache name if cache detail pop-up is available.
             css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
-            // Reduce the overly wide border of the "Find My Location" button.
+            // Shared styles for GClh and GME:
+            // - Resize map layer control button.
+            css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
+            // - Space of the right buttons from the right edge.
+            css += '.leaflet-control {margin-right: 8px !important;}';
+            css += '#search-map-cta {right: 8px !important;}';
+            // - Improve the scale lines on the left side.
+            css += '.leaflet-control-scale {margin-left: 1px !important;}';
+            css += '.leaflet-control-scale-line {box-shadow: none;}';
+            // - Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
+            css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
+            // - Reduce the overly wide border of the "Find My Location" button.
             css += '.leaflet-touch .leaflet-control-toolbar {padding: 2px;}';
-            // Prevent that zoom buttons overlap map selection dialog and align distance to the right to buttons top right.
+            // - Prevent that zoom buttons overlap map selection dialog and align distance to the right to buttons top right.
             css += '.legacy-map-zoom-wrapper {z-index: auto; right: 0px !important;}';
-            // Zoom buttons: slight opacity.
+            // - Slight opacity for zoom buttons.
             css += '.leaflet-control-zoom {opacity: 0.8;}';
-            // Prevent close button on cache details screen from overlapping GC code, make height and width of close button proportional and set a hover effect.
+            // - Prevent close button on cache details screen from overlapping GC code, make height and width of close button proportional and set a hover effect.
             css += '.leaflet-container a.leaflet-popup-close-button {padding: 0px; top: -8px; right: -8px; width: 22px; height: 22px; font: 16px/19px Tahoma, Verdana, sans-serif;}';
             css += '.leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus {color: #fff;}';
-            // Prevent a possible blue border around the map.
+            // - Prevent a possible blue border around the map.
             css += '#map_canvas {outline-style: none;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
