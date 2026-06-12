@@ -106,6 +106,9 @@
 		<strong>Fix:</strong> [PQ Splitter] PQs for region "Buskerud" can not created via PQ Splitter because of changed PQ id. [<a href="https://github.com/2Abendsegler/GClh/issues/3202" title="Issue 3202">3202</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3202" title="Issue 3202">3202</a>.<br>
 	</li>
+	<li>
+		<strong>Fix:</strong> [Global, PQ-Splitter] Update countries and states. [<a href="https://github.com/2Abendsegler/GClh/issues/3211" title="Issue 3211">3211</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
 </ul>
 <br>
 (13.06.2026)<br>
