@@ -17976,7 +17976,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "30.05.2026";
+            var thanksLastUpdate = "12.06.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
