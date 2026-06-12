@@ -15443,7 +15443,6 @@ var mainGC = function() {
                 if (SouvenirsDashboard.length) {
                     function correctSouvenirName(name) {
                         name = name.replace(/(^\s|\s$)/g,'');
-                        if (name == 'Åland Islands') name = 'Aland Islands';
                         if (name == 'Česká Republika') name = 'Czechia';
                         if (name == 'China (中国)') name = 'China';
                         if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
