@@ -169,6 +169,8 @@ function elevationServicesDataInit(c) {
 
 function country_idInit(c) {
     c.country_id = [
+		{"n":"Unknown","id":"1"},
+        {"n":"United States","id":"2"},
         {"n":"Afghanistan","id":"12"},
         {"n":"Åland Islands","id":"272"},
         {"n":"Albania","id":"244"},
