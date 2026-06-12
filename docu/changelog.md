@@ -1,3 +1,4 @@
+<a href="#v0189" title="GClh II version 0.18.9 (13.06.2026)">v0.18.9</a> &nbsp;
 <a href="#v0188" title="GClh II version 0.18.8 (31.05.2026)">v0.18.8</a> &nbsp;
 <a href="#v0187" title="GClh II version 0.18.7 (13.05.2026)">v0.18.7</a> &nbsp;
 <a href="#v0186" title="GClh II version 0.18.6 (13.05.2026)">v0.18.6</a> &nbsp;
@@ -48,6 +49,70 @@
 <span id="readme"></span>
 
 ---
+## v0.18.9:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Appearance of map buttons top right. [<a href="https://github.com/2Abendsegler/GClh/issues/3200" title="Issue 3200">3200</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3200" title="Issue 3200">3200</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Set default map layer no longer works if GME is running. [<a href="https://github.com/2Abendsegler/GClh/issues/3189" title="Issue 3189">3189</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Prevent close button on cache details screen from overlapping GC code. [<a href="https://github.com/2Abendsegler/GClh/issues/3198" title="Issue 3198">3198</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3198" title="Issue 3198">3198</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Some small changes. [<a href="https://github.com/2Abendsegler/GClh/issues/3204" title="Issue 3204">3204</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3204" title="Issue 3204">3204</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Prevent flickering caused by unnecessary switching of map layers. [<a href="https://github.com/2Abendsegler/GClh/issues/3201" title="Issue 3201">3201</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve the scale block on the left side. [<a href="https://github.com/2Abendsegler/GClh/issues/3208" title="Issue 3208">3208</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Shadow above the buttons top right caused by dummy layer. [<a href="https://github.com/2Abendsegler/GClh/issues/3197" title="Issue 3197">3197</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3197" title="Issue 3197">3197</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Error on hide header by default. [<a href="https://github.com/2Abendsegler/GClh/issues/3194" title="Issue 3194">3194</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Zoom buttons have disappeared. [<a href="https://github.com/2Abendsegler/GClh/issues/3193" title="Issue 3193">3193</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3193" title="Issue 3193">3193</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Standardization of sidebar and left map elements positions and animate left move for GClh and GME. [<a href="https://github.com/2Abendsegler/GClh/issues/3186" title="Issue 3186">3186</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Grouping of shared styles for GClh and GME. [<a href="https://github.com/2Abendsegler/GClh/issues/3207" title="Issue 3207">3207</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Unsaved Log Message is show on save as draft. [<a href="https://github.com/2Abendsegler/GClh/issues/3192" title="Issue 3192">3192</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3192" title="Issue 3192">3192</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Log Form] Missing F2 feature on post button. [<a href="https://github.com/2Abendsegler/GClh/issues/3199" title="Issue 3199">3199</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3199" title="Issue 3199">3199</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Removal of GS map layer does not work anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/3190" title="Issue 3190">3190</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3190" title="Issue 3190">3190</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [PQ Splitter] PQs for region "Buskerud" can not created via PQ Splitter because of changed PQ id. [<a href="https://github.com/2Abendsegler/GClh/issues/3202" title="Issue 3202">3202</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3202" title="Issue 3202">3202</a>.<br>
+	</li>
+</ul>
+<br>
+(13.06.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
+---
+
 ## v0.18.8:
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
