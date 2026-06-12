@@ -15447,10 +15447,11 @@ var mainGC = function() {
                         if (name == 'Česká Republika') name = 'Czechia';
                         if (name == 'China (中国)') name = 'China';
                         if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
+                        if (name == 'The Bahamas') name = 'Bahamas';
                         if (name == 'Deutschland') name = 'Germany';
                         if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
-                        if (name == 'România') name = 'Romania';
                         if (name == 'Rzeczpospolita Polska') name = 'Poland';
+                        if (name == 'România') name = 'Romania';
                         if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
                         if (name == 'Slovenská republika') name = 'Slovakia';
                         if (name == 'United States of America') name = 'United States';
