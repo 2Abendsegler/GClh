@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.8
+// @version      0.18.9
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -5035,6 +5035,10 @@ var mainGC = function() {
                     $('.post-button-container').bind('click', () => isSubmit = true);
                     $('.post-button-container').addClass('gclh_mess_unsaved_log');
                 }
+                if ($('.save-draft-button-container')[0] && !$('.gclh_mess_unsaved_log_draft')[0]) {
+                    $('.save-draft-button-container').bind('click', () => isSubmit = true);
+                    $('.save-draft-button-container').addClass('gclh_mess_unsaved_log_draft');
+                }
                 waitCount++; if (waitCount <= 50) setTimeout(function(){buildMessUnsavedLog(waitCount);}, 200);
             }
             try {
@@ -5261,8 +5265,8 @@ var mainGC = function() {
 
             // Send Log with F2.
             function buildSendLogWithF2(waitCount) {
-                if ($('.post-button-container button.gc-button-primary')[0] && !$('.post-button-container button.gc-button-primary')[0].innerHTML.match(/\s\(F2\)/)) {
-                    let logBtn = $('.post-button-container button.gc-button-primary')[0];
+                if ($('.post-button-container button')[0] && !$('.post-button-container button')[0].innerHTML.match(/\s\(F2\)/)) {
+                    let logBtn = $('.post-button-container button')[0];
                     function keydownF2(e) {
                         if (!check_config_page()) {
                             if (e.keyCode == 113 && noSpecialKey(e)) {
@@ -13209,22 +13213,35 @@ var mainGC = function() {
             var css = '';
             // Damit auch mehr als 2 rechte Buttons handlebar.
             css += '.leaflet-control-layers + .leaflet-control {position: unset; right: unset;} .leaflet-control {clear: left}';
-            // Improve the scale lines on the left side.
-            css += '.leaflet-control-scale {margin-bottom: 18px !important; margin-left: 1px !important;}';
-            css += '.leaflet-control-scale-line:first-child {box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2) !important;}';
-            // Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
-            css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
+            // Space between the buttons top right.
+            css += '.leaflet-control {margin-right: 8px !important;}';
             // Improve clickability on list names of add to list pop up.
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Prevent tooltip with cache name if cache detail pop-up is available.
             css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
-            // Move zoom buttons again top left.
-            css += '.leaflet-control-zoom {position: relative !important; top: 52px !important; bottom: 0px !important; right: 0px !important; margin: 0px 0px 0px 1px !important; transform: unset !important; z-index: 7 !important;}';
-            // Positions of sidebar and left map elements and animate left move. Standardization of GClh and GME.
-            css += '.Sidebar {left: -355px !important; transition: left 0.5s ease-in-out !important;}';
-            css += '.leaflet-control-toolbar, .leaflet-control-zoom, .leaflet-control-scale, .gme-left {left: 30px !important; transition: left 0.5s ease-in-out !important;}';
-            css += 'body:has(.Sidebar.Open) .Sidebar {left: 0px !important;}';
-            css += 'body:has(.Sidebar.Open) .leaflet-control-toolbar, body:has(.Sidebar.Open) .leaflet-control-zoom, body:has(.Sidebar.Open) .leaflet-control-scale, body:has(.Sidebar.Open) .gme-left {left: 385px !important;}';
+            // Improve the scale block on the left side.
+            css += '.leaflet-control-scale {margin-left: 1px !important;}';
+            // Shared styles for GClh and GME:
+            // - Resize map layer control button.
+            css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
+            // - Space of the right buttons from the right edge.
+            css += '.leaflet-control {margin-right: 8px !important;}';
+            css += '#search-map-cta {right: 8px !important;}';
+            // - Improve the scale lines on the left side.
+            css += '.leaflet-control-scale-line {box-shadow: none;}';
+            // - Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
+            css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
+            // - Reduce the overly wide border of the "Find My Location" button.
+            css += '.leaflet-touch .leaflet-control-toolbar {padding: 2px;}';
+            // - Prevent that zoom buttons overlap map selection dialog and align distance to the right to buttons top right.
+            css += '.legacy-map-zoom-wrapper {z-index: auto; right: 0px !important;}';
+            // - Slight opacity for zoom buttons.
+            css += '.leaflet-control-zoom {opacity: 0.8;}';
+            // - Prevent close button on cache details screen from overlapping GC code, make height and width of close button proportional and set a hover effect.
+            css += '.leaflet-container a.leaflet-popup-close-button {padding: 0px; top: -8px; right: -8px; width: 22px; height: 22px; font: 16px/19px Tahoma, Verdana, sans-serif;}';
+            css += '.leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus {color: #fff;}';
+            // - Prevent a possible blue border around the map.
+            css += '#map_canvas {outline-style: none;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Improve Browse Map",e);}
     }
@@ -13316,6 +13333,7 @@ var mainGC = function() {
                             if (document.location.pathname.match(/^\/map/)) {
                                 var div = document.createElement("div");
                                 div.setAttribute("class", "gclh_dummy gclh_used");
+                                div.setAttribute("style", "display: none;");
                                 var aTag = document.createElement("a");
                                 aTag.setAttribute("class", "leaflet-control-layers dummy_for_gme gclh_dummy gclh_used");
                                 div.appendChild(aTag);
@@ -13339,8 +13357,17 @@ var mainGC = function() {
                             }
                             if (document.location.pathname.match(/^(\/live|)\/play\/map/)) {
                                 setTimeout(() => {
-                                    // Remove default GS map tiles.
-                                    document.querySelector('.mapboxgl-canvas').remove();
+                                    // Remove GS map layer (WebGL based map layer by MapLibre). Those vector tiles are fetched as .pbf tiles:
+                                    // - downloaded in the background
+                                    // - decoded and processed in a Web Worker
+                                    // - rendered directly onto a single <canvas> element via WebGL
+                                    // Removing the <canvas> element doesn't destroy the MapLibre GL instance and thus, it continues fetching .pbf tiles in the background.
+                                    // Therefore the MapLibre GL layer needs to be removed, which also removes the <canvas> element automatically.
+                                    try {
+                                        window.MapSettings.Map.eachLayer(function (layer) {
+                                            if (layer._glMap) window.MapSettings.Map.removeLayer(layer);
+                                        });
+                                    } catch(e) {console.error("Remove default GS map layer -",e);}
                                 }, 0);
                             }
                         }
@@ -13350,23 +13377,25 @@ var mainGC = function() {
             }
             // Layer Defaults setzen.
             function setDefaultsInLayer() {
-                var defaultLayer = "";
-                for (name in map_layers) {
-                    if (name == settings_map_default_layer) defaultLayer = name;
-                    else if (defaultLayer == "") defaultLayer = name;
-                }
-                // Der Default Layer wurde bereits gesetzt. Hier muss er erneut gesetzt werden wegen möglicher Änderungen durch GME.
-                var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label > span');
-                if (labels) {
-                    if (is_page("map")) {
+                if (is_page("map")) {
+                    // Der Default Layer wurde bereits gesetzt. Hier wird er erneut gesetzt, wenn er zwischenzeitlich beispielsweise durch GME geändert
+                    // wurde. Das führt zu einem Flackern der Karte. Mit der neuen Leaflet Version 1.9.4 kann nur ein aktiver Layer über alle Layer Listen
+                    // (.leaflet-control-layers-base) hinweg aktiviert sein. Wird also beispielsweise nach dem Setzen des GClh Default Layers später der GME
+                    // Default Layer gesetzt, ist der GClh Layer automatisch deaktiviert. Ab GME 0.8.2.2As.12 wird dort geprüft, ob der GClh die Hoheit über
+                    // die Layer hat, dadurch wird das Flackern unterbunden. Für alle früheren GME Versionen der "2As" Reihe und für andere GME Reihen oder
+                    // noch ganz andere Skripte wird hier der GClh Default Layer falls nötig erneut gesetzt.
+                    var defaultLayer = "";
+                    for (name in map_layers) {
+                        if (name == settings_map_default_layer) defaultLayer = name;
+                        else if (defaultLayer == "") defaultLayer = name;
+                    }
+                    var labels = $('.leaflet-control-layers.gclh_layers.gclh_used .leaflet-control-layers-base').find('label > span');
+                    if (labels) {
                         for (var i=0; i<labels.length; i++) {
                             if (labels[i].children[1].innerHTML.match(defaultLayer)) {
-                                // Wenn der erste Layer der Default Layer ist, wird er hiermit erneut klickbar gemacht.
-                                if (labels[i].children[0].checked && labels.length > 1) {
-                                    if (i == 0) labels[i+1].children[0].click();
-                                    else labels[i-1].children[0].click();
+                                if (!labels[i].children[0].checked) {
+                                    labels[i].children[0].click();
                                 }
-                                labels[i].children[0].click();
                                 break;
                             }
                         }
@@ -13408,14 +13437,18 @@ var mainGC = function() {
                 if (waitCount <= 200) setTimeout(function(){loopAtLayerControls(waitCount);}, 50);
             }
             addLayerControl();
-            if (is_page('map')) loopAtLayerControls(0);
+            if (is_page('map')) {
+                // Note for GME that GClhII has the authority over the map layer.
+                appendMetaId('GClhII_map_layer_authority');
+                loopAtLayerControls(0);
+            }
             if (is_page('searchmap')) {
                 setDefaultsInLayer();
             }
 
             var css = '';
             css += '.leaflet-control-layers-expanded .leaflet-control-layers-list {display: block !important;}';
-            css += '#gclh_layers .leaflet-control-layers-list {right: 0px; top: 0px; height: inherit; display: none; position: absolute !important; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: white; white-space: nowrap; padding: 6px;}';
+            css += '#gclh_layers .leaflet-control-layers-list {right: -2px; top: -2px; height: inherit; display: none; position: absolute !important; border-radius: 7px; border: 2px solid rgba(0, 0, 0, 0.2); background-color: white; white-space: nowrap; padding: 6px;}';
             css += '#gclh_layers, #gclh_layers .leaflet-control-layers-list {z-index: 1020;}';
             css += '#gclh_layers .leaflet-control-layers-base label, #gclh_layers .leaflet-control-layers-overlays label {padding: 0px 6px;}';
             css += '#gclh_layers .leaflet-control-layers-base label:hover, #gclh_layers .leaflet-control-layers-overlays label:hover {background-color: #e6f7ef;}';
@@ -13437,7 +13470,7 @@ var mainGC = function() {
     function hideHeaderOnBrowseMap() {
         try {
             function checkMap(waitCount) {
-                if ($('.leaflet-container')[0] || $('.Map.Google')[0]) {
+                if (($('.leaflet-container')[0] || $('.Map.Google')[0]) && $('gclh_nav')[0]) {
                     if (settings_hide_map_header) hide_map_header();
                     $('#searchtabs').append('<a class="gclh_hideMapHeader" href="#">Hide/Show Header</a>');
                     $('.gclh_hideMapHeader')[0].addEventListener("click", hide_map_header, false);
@@ -13609,10 +13642,10 @@ var mainGC = function() {
         var css = '';
         css += '.gclh-leaflet-control.searchmap {margin-top: 10px; margin-right: 10px; position: relative; cursor: default; align-items: center; background-color: white; border: 1px solid #00b265; border-radius: 4px; display: flex; height: 40px; width: 40px}';
         css += '.searchmap .gclh-leaflet-list {right: -1px; top: -1px; }';
-        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; border: unset; position: relative; right: unset; margin-top: 16px; margin-right: 16px; float: right; clear: left; border-radius: 7px; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background: #f8f8f9; pointer-events: auto;}';
+        css += '.gclh-leaflet-control.browsemap {width: 28px; height: 28px; position: relative; right: unset; margin-top: 16px; margin-right: 8px; float: right; clear: left; border-radius: 7px; pointer-events: auto;}';
         css += '.gclh-leaflet-control.browsemap {z-index: 1019; cursor: default; align-items: center; color: #00b265; display: flex; justify-content: center; outline: none; padding: 4px;}';
         css += '.gclh-leaflet-control > a {background-image: url("/images/silk/map_go.png"); background-size: 19px; opacity: 0.8; background-repeat: no-repeat; background-position: 50% 50%; height: 40px; width: 40px;}';
-        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: 0px; top: 0px;}';
+        css += '.browsemap .gclh-leaflet-list {z-index: 1019; right: -2px; top: -2px; border: 2px solid rgba(0, 0, 0, 0.2); box-shadow: none;}';
         css += '.gclh-leaflet-list {display: none; position: absolute; right: 0px; top: 50px; min-width: 135px; width: max-content; border-radius: inherit; box-shadow: 0 1px 7px rgba(0,0,0,0.4); background-color: inherit; padding: 6px;}';
         css += '.gclh-leaflet-list > b {display: table; padding: 2px 6px 6px 6px; font-size: 15px; color: #000000; cursor: default; }';
         css += '.gclh-leaflet-list > a {display: table; padding: 2px 6px; font-size: 13px; color: #000000; cursor: pointer; min-width: 135px; text-align: left;}';
@@ -13713,7 +13746,7 @@ var mainGC = function() {
                         css += '#gclh_search_map {width: 28px; height: 28px; align-items: center; display: flex !important; justify-content: center; outline: none;  padding: 4px; position: relative; z-index: 1018;}';
                         css += '#gclh_search_map:hover {background-color: #fff;}';
                         css += '#gclh_search_map a {opacity: 0.8; margin-top: 4px;}';
-                        css += '#gclh_search_map svg {margin: 0; padding: 9px 7px 6px 7px; color: #02874d;}';
+                        css += '#gclh_search_map svg {color: rgb(0 125 70);}';
                         appendCssStyle(css);
                     }
                 } else {waitCount++; if (waitCount <= 100) setTimeout(function(){relocatingSearchMapButton(waitCount);}, 100);}
@@ -13862,6 +13895,7 @@ var mainGC = function() {
             var css = '';
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
             css += ".leaflet-popup-content {margin-left: 10px !important; margin-right: 10px !important;}";
+            css += "#gmCacheInfo {color: rgb(74 74 74);}";
             css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
             css += "#gmCacheInfo h4 a:hover, #gmCacheInfo dl a:hover, #gmCacheInfo dl a span:hover, #gmCacheInfo .links:not(.popup_additional_info) a:hover {text-decoration-line: underline !important;}";
             css += "#gmCacheInfo img.gclh_vip, #gmCacheInfo img.gclh_vup, #gmCacheInfo img.gclh_send {vertical-align: revert-layer !important;}";
@@ -15409,14 +15443,14 @@ var mainGC = function() {
                 if (SouvenirsDashboard.length) {
                     function correctSouvenirName(name) {
                         name = name.replace(/(^\s|\s$)/g,'');
-                        if (name == 'Åland Islands') name = 'Aland Islands';
                         if (name == 'Česká Republika') name = 'Czechia';
                         if (name == 'China (中国)') name = 'China';
                         if (name == 'Commonwealth of the Bahamas') name = 'Bahamas';
+                        if (name == 'The Bahamas') name = 'Bahamas';
                         if (name == 'Deutschland') name = 'Germany';
                         if (name == 'Montenegro | Црна Гора | Crna Gora') name = 'Montenegro';
-                        if (name == 'România') name = 'Romania';
                         if (name == 'Rzeczpospolita Polska') name = 'Poland';
+                        if (name == 'România') name = 'Romania';
                         if (name == 'Singapore (Republik Singapura)') name = 'Singapore';
                         if (name == 'Slovenská republika') name = 'Slovakia';
                         if (name == 'United States of America') name = 'United States';
@@ -16554,8 +16588,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/LfgV/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iGN"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/Tae5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iHa"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -17942,7 +17976,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "30.05.2026";
+            var thanksLastUpdate = "12.06.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
