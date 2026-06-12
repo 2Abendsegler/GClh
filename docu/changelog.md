@@ -111,8 +111,8 @@
 (13.06.2026)<br>
 released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
 <br>
----
 
+---
 ## v0.18.8:
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
