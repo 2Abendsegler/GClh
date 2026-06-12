@@ -13219,6 +13219,8 @@ var mainGC = function() {
             css += '.add-list li button {width: 100%; text-align: left;} .pop-modal .status {width: initial;}';
             // Prevent tooltip with cache name if cache detail pop-up is available.
             css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
+            // Improve the scale block on the left side.
+            css += '.leaflet-control-scale {margin-left: 1px !important;}';
             // Shared styles for GClh and GME:
             // - Resize map layer control button.
             css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
@@ -13226,7 +13228,6 @@ var mainGC = function() {
             css += '.leaflet-control {margin-right: 8px !important;}';
             css += '#search-map-cta {right: 8px !important;}';
             // - Improve the scale lines on the left side.
-            css += '.leaflet-control-scale {margin-left: 1px !important;}';
             css += '.leaflet-control-scale-line {box-shadow: none;}';
             // - Lower part of the sidebar toggle is no longer working by click. (Bug on website 28.05.2026.)
             css += '.Sidebar footer {padding-right: 0px !important; margin-right: 24px !important;}';
