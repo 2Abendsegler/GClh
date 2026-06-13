@@ -15415,7 +15415,8 @@ var mainGC = function() {
             createCounterElement('placedByCounter', placedBy);
             createCounterElement('hintCounter', hint);
             var css = '#nameCounter, #placedByCounter, #hintCounter {text-align: right;}';
-            css += '#nameCounter, #placedByCounter {width: 400px;}';
+            css += '#nameCounter, #placedByCounter {width: 52%;}';
+            css += '.edit-cache-form #nameCounter, .edit-cache-form #placedByCounter {width: 400px;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Show length of hint, cachename and placed by on hide edit page",e);}
     }
