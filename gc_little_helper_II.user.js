@@ -2680,12 +2680,10 @@ var mainGC = function() {
     if (is_page("cache_listing")) {
         try {
             // Highlight usercoords.
-            if ($('body')[0].innerHTML.match(/"isUserDefined":true/gm)) {
-                var css = '#uxLatLon ';
-                css += (settings_highlight_usercoords ? '{color: #FF0000 !important; ' : '{color: rgb(0, 0, 0) !important; ');
-                css += (settings_highlight_usercoords_bb ? 'border-bottom: 2px solid #999 !important; ' : 'border-bottom: unset !important; ');
-                css += (settings_highlight_usercoords_it ? 'font-style: italic !important;}' : 'font-style: normal !important;}');
-            }
+            var css = '#uxLatLon.italic ';
+            css += (settings_highlight_usercoords ? '{color: #FF0000 !important; ' : '{color: rgb(0, 0, 0) !important; ');
+            css += (settings_highlight_usercoords_bb ? 'border-bottom: 2px solid #999 !important; ' : 'border-bottom: unset !important; ');
+            css += (settings_highlight_usercoords_it ? 'font-style: italic !important;}' : 'font-style: normal !important;}');
             // Improve screen "Enter solved coordinates" (only in english).
             css += '#coordinate-update-root div > dl > dd > input {width: 72%; font-size: 100%; padding: 4px 6px; margin: -7px 0px 0px -7px;}';
             css += '#coordinate-update-root div > dl > dd {height: 23px !important; font-style: normal !important;}';
@@ -2702,7 +2700,7 @@ var mainGC = function() {
             box.innerHTML = box.innerHTML.replace("<br>", "");
             var coords = $('#uxLatLon')[0].innerHTML;
             otherFormats(box, coords, " - ");
-            box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
+            appendCssStyle('#ctl00_ContentBody_LocationSubPanel {font-size: 10px;}');
         } catch(e) {gclh_error("Show other coord formats listing",e);}
     }
 
@@ -2722,9 +2720,7 @@ var mainGC = function() {
         try {
             var coords = toDec($('#uxLatLon')[0].innerHTML);
             var link = $('#uxLatLon').parents(".NoBottomSpacing");
-            var small = document.createElement("small");
-            small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
-            link.append(small);
+            link.append('<small style="display: block;"><a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a></small>');
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
