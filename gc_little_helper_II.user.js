@@ -13217,6 +13217,9 @@ var mainGC = function() {
             css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
             // Improve the scale block on the left side.
             css += '.leaflet-control-scale {margin-left: 1px !important;}';
+            // Make line-break for line with links in the cache detail pop-up possible.
+            css += ".gm-browse-map .map-item .links {overflow: visible !important; text-overflow: unset !important; white-space: unset !important;}";
+            css += ".gm-browse-map .map-item .links a {display: inline-block;}";
             // Shared styles for GClh and GME:
             // - Resize map layer control button.
             css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
