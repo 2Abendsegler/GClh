@@ -13890,7 +13890,7 @@ var mainGC = function() {
 
             var css = '';
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
-            css += ".leaflet-popup-content {margin-left: 10px !important; margin-right: 10px !important;}";
+            css += ".leaflet-popup-content {width: 400px !important; margin-left: 10px !important; margin-right: 10px !important;}";
             css += "#gmCacheInfo {color: rgb(74 74 74);}";
             css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
             css += "#gmCacheInfo h4 a:hover, #gmCacheInfo dl a:hover, #gmCacheInfo dl a span:hover, #gmCacheInfo .links:not(.popup_additional_info) a:hover {text-decoration-line: underline !important;}";
