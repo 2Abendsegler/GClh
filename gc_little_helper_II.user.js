@@ -13893,19 +13893,23 @@ var mainGC = function() {
 
             // Improve opening position of the cache detail pop-up.
             window.addEventListener('load', () => {
-                const map = unsafeWindow.MapSettings.Map;
-                if (map) {
-                    map.on('popupopen', function(e) {
-                        const popup = e.popup;
-                        if ($('.Sidebar.Open')[0]) var left = 360;
-                        else var left = 6;
-                        var top = -40;
-                        var right = 8;
-                        var bottom = 200;
-                        popup.options.autoPanPaddingTopLeft = [left, top];
-                        popup.options.autoPanPaddingBottomRight = [right, bottom];
-                        popup.update();
-                    });
+                if (unsafeWindow.MapSettings?.Map) {
+                    const map = unsafeWindow.MapSettings.Map;
+                    if (map) {
+                        map.on('popupopen', function(e) {
+                            if (e.popup) {
+                                const popup = e.popup;
+                                if ($('.Sidebar.Open')[0]) var left = 360;
+                                else var left = 6;
+                                var top = -40;
+                                var right = 8;
+                                var bottom = 200;
+                                popup.options.autoPanPaddingTopLeft = [left, top];
+                                popup.options.autoPanPaddingBottomRight = [right, bottom];
+                                popup.update();
+                            }
+                        });
+                    }
                 }
             });
 
