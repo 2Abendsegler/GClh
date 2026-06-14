@@ -14037,7 +14037,7 @@ var mainGC = function() {
                             else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                             // Put all together.
-                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
+                            var new_text = '<div style="display: flex;"><span style="margin-right: 5px;">Logs:</span>' + all_logs + '</div>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
 
