@@ -13901,8 +13901,8 @@ var mainGC = function() {
                                 const popup = e.popup;
                                 if ($('.Sidebar.Open')[0]) var left = 360;
                                 else var left = 6;
-                                var top = -40;
-                                var right = 8;
+                                var top = 20;
+                                var right = 42;
                                 var bottom = 200;
                                 popup.options.autoPanPaddingTopLeft = [left, top];
                                 popup.options.autoPanPaddingBottomRight = [right, bottom];
@@ -13915,7 +13915,7 @@ var mainGC = function() {
 
             var css = '';
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
-            css += ".leaflet-popup-content {width: 400px !important; margin-left: 10px !important; margin-right: 10px !important;}";
+            css += ".leaflet-popup-content {width: 406px !important; margin-left: 10px !important; margin-right: 10px !important;}";
             css += "#gmCacheInfo {color: rgb(74 74 74);}";
             css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
             css += "#gmCacheInfo h4 a:hover, #gmCacheInfo dl a:hover, #gmCacheInfo dl a span:hover, #gmCacheInfo .links:not(.popup_additional_info) a:hover {text-decoration-line: underline !important;}";
@@ -14120,11 +14120,11 @@ var mainGC = function() {
                                 original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                                 original_coords = original_coords.replace("\"","");
                                 original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
+                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span> ' + original_coords + ' )</span>';
                                 corrected = "corrected ";
                             }
                             if (settings_show_enhanced_map_coords) {
-                                new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</span>';
+                                new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates"> ' + coords + '</span>' + original_coords_span + '</span>';
                             }
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
