@@ -9556,7 +9556,7 @@ var mainGC = function() {
             // >> Button icon containing the toggle icon for the button.
             var profileButtonIcon = ' button > svg';
             // >> Box containing all entries.
-            var profileBox = ' > div > div > div';
+            var profileBox = ' > div > div > div > div > div';
             // >>> Profile cover image and components.
             var profileCover = ' > a';
             // >>> Profile avatar image and components.
