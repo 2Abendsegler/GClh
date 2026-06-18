@@ -9556,7 +9556,7 @@ var mainGC = function() {
             // >> Button icon containing the toggle icon for the button.
             var profileButtonIcon = ' button > svg';
             // >> Box containing all entries.
-            var profileBox = ' > div > div > div > div > div';
+            var profileBox = ' > div > div > div > div';
             // >>> Profile cover image and components.
             var profileCover = ' > a';
             // >>> Profile avatar image and components.
@@ -10205,16 +10205,17 @@ var mainGC = function() {
             function setStylesToleftColumnDB() {
                 try {
                     if (settings_compact_layout_new_dashboard) {
-                        // Profile summary block of the left column.
-                        var box = $(leftCol + profileBlock + profileBox);
-                        if ($(box)[0]) {
-                            // The distance between the button and the box should be determined by only one element, the last div element.
-                            $(box)[0].parentNode.style.setProperty('margin', '0px', 'important');
-                        }
+                        // All block of the left column.
+                        // Distance between button and box.
+                        if ($(leftCol).find('> div')[0]) $(leftCol).find('> div')[0].style.setProperty('gap', '4px', 'important');
+                        // All link block of the left column.
+                        var allLbs = $(leftCol + allLinkBlocks);
+                        // Distance between button and box.
+                        if ($(allLbs)[0]) $(allLbs)[0].style.setProperty('gap', '4px', 'important');
                         // Link blocks of the left column.
                         var lbs = $(leftCol + allLinkBlocks + linkBlock);
                         for (var s = 0; s < lbs.length; s++) {
-                            // The distance between the button and the box should be determined by only one element, the ul element.
+                            // Distance between button and box.
                             if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
                             if ($(lbs[s]).find('> div > div')[0]) $(lbs[s]).find('> div > div')[0].style.setProperty('margin-top', '0px', 'important');
                             var uls = $(lbs[s]).find(linkBox);
