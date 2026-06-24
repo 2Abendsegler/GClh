@@ -3467,6 +3467,8 @@ var mainGC = function() {
             css += '.mapIconRight svg {padding: 3px;}';
             css += '.search_map_icon {margin-left: 2px !important;}';
             if (!settings_map_overview_search_map_icon) css += '.browse_map_icon {margin-top: 1px;}';
+            // Prevent areas from flashing white when zooming.
+            css += '#gclh_map_overview.leaflet-container img.leaflet-tile {mix-blend-mode: normal !important;}';
             appendCssStyle(css);
             var html = "";
             html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
