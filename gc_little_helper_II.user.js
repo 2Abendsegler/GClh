@@ -3909,37 +3909,34 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve inventory list",e);}
     }
 
-// Replace link to larger map in preview map in cache listing with the Browse Map.
-    if (settings_larger_map_as_browse_map && is_page("cache_listing") && $('#uxLatLon')[0]) {
+// Improve preview map in cache listing.
+    if (is_page("cache_listing") && $('#mini-map-root')[0] && (settings_larger_map_as_browse_map || settings_show_google_maps)) {
         try {
-            var newstrPROStyle = '<a id="ctl00_ContentBody_uxViewLargerMap" title="View Larger Browse Map" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Browse Map</a>';
-            document.getElementById('ctl00_ContentBody_uxViewLargerMap').outerHTML = newstrPROStyle;
-        } catch(e) {gclh_error("Replace link to larger map in preview map in cache listing with the Browse Map",e);}
-    }
-
-// Show Google-Maps Link on Cache Listing Page.
-    if (settings_show_google_maps && is_page("cache_listing") && $('#ctl00_ContentBody_uxViewLargerMap')[0] && $('#uxLatLon')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
-        try {
-            var ref_link = $('#ctl00_ContentBody_uxViewLargerMap')[0];
-            var box = ref_link.parentNode;
-            box.appendChild(document.createElement("br"));
-            var link = document.createElement("a");
-            link.setAttribute("class", "lnk");
-            link.setAttribute("target", "_blank");
-            link.setAttribute("title", "Show area on Google Maps");
-            var coords = toDec($('#uxLatLon')[0].innerHTML);
-            var latlng = coords[0] + "," + coords[1];
-            // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
-            link.setAttribute("href", "https://maps.google.de/maps?q=" + latlng + "&ll=" + latlng + "&z=18");
-            var img = document.createElement("img");
-            img.setAttribute("src", "/images/silk/map_go.png");
-            link.appendChild(img);
-            link.appendChild(document.createTextNode(" "));
-            var span = document.createElement("span");
-            span.appendChild(document.createTextNode("Show area on Google Maps"));
-            link.appendChild(span);
-            box.appendChild(link);
-        } catch(e) {gclh_error("Show google maps link",e);}
+            const configPreviewMap = {childList: true, subtree: true, attributes: true};
+            const observerPreviewMap = new MutationObserver(function(_, observer) {
+                observer.disconnect();
+                if ($('#uxLatLon')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0] && $('#mini-map-root a[href*="/play/map/"]')[0]) {
+                    $('#mini-map-root a[href*="/play/map/"]')[0].parentNode.style.setProperty('font-weight', 'normal', 'important');
+                    // Replace link to larger map above the preview map with the Browse Map.
+                    if (settings_larger_map_as_browse_map) {
+                        var html = '<a title="View Larger Browse Map" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Browse Map</a>';
+                        $('#mini-map-root a[href*="/play/map/"]')[0].outerHTML = html;
+                    }
+                    // Show Google Maps link above the preview map.
+                    if (settings_show_google_maps) {
+                        var coords = toDec($('#uxLatLon')[0].innerHTML);
+                        var latlng = coords[0] + "," + coords[1];
+                        // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
+                        var href = "https://maps.google.de/maps?q=" + latlng + "&ll=" + latlng + "&z=18";
+                        var html = '<a class="lnk" href="' + href + '" target="_blank" rel="noopener noreferrer" title="Show area on Google Maps" style="display: block;"><img src="/images/silk/map_go.png" style="vertical-align: sub;"> <span>Show area on Google Maps</span></a>';
+                        $('#mini-map-root a[href*="/map/"]').after(html);
+                    }
+                } else {
+                    observer.observe($('#mini-map-root')[0], configPreviewMap);
+                }
+            });
+            observerPreviewMap.observe($('#mini-map-root')[0], configPreviewMap);
+        } catch(e) {gclh_error("Improve preview map in cache listing",e);}
     }
 
 // Hide spoilerwarning above the logs.
