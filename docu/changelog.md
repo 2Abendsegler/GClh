@@ -101,8 +101,8 @@
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3228" title="Issue 3228">3228</a>.<br><br>
 	</li>
 	<li>
-		<strong>Fix:</strong> [Hide cache] Align info of length for field cachename and field placed by. [<a href="https://github.com/2Abendsegler/GClh/issues/3215" title="Issue 3215">3215</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3215" title="Issue 3215">3215</a>.<br><br>
+		<strong>Fix:</strong> [Hide] Align info of length for field cachename and field placed by. [<a href="https://github.com/2Abendsegler/GClh/issues/3215" title="Issue 3215">3215</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3215" title="Issue 3215">3215</a>.<br>
 	</li>
 </ul>
 <br>
