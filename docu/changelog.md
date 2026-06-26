@@ -1,3 +1,4 @@
+<a href="#v01810" title="GClh II version 0.18.10 (27.06.2026)">v0.18.10</a> &nbsp;
 <a href="#v0189" title="GClh II version 0.18.9 (13.06.2026)">v0.18.9</a> &nbsp;
 <a href="#v0188" title="GClh II version 0.18.8 (31.05.2026)">v0.18.8</a> &nbsp;
 <a href="#v0187" title="GClh II version 0.18.7 (13.05.2026)">v0.18.7</a> &nbsp;
@@ -47,6 +48,67 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.10:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Browse Map] Improve opening position of the cache detail pop-up. [<a href="https://github.com/2Abendsegler/GClh/issues/3222" title="Issue 3222">3222</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3222" title="Issue 3222">3222</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve opening position and remove unnecessary widening of the cache detail pop-up (2). [<a href="https://github.com/2Abendsegler/GClh/issues/3226" title="Issue 3226">3226</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] In cache detail pop-up, log texts of the "Latest logs" are cut off at the bottom. [<a href="https://github.com/2Abendsegler/GClh/issues/3217" title="Issue 3217">3217</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3217" title="Issue 3217">3217</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Remove unnecessary widening of the cache detail pop-up. [<a href="https://github.com/2Abendsegler/GClh/issues/3219" title="Issue 3219">3219</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3219" title="Issue 3219">3219</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Make line-break for line with links in the cache detail pop-up possible again. [<a href="https://github.com/2Abendsegler/GClh/issues/3221" title="Issue 3221">3221</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3221" title="Issue 3221">3221</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Browse Map] Improve line-break for log totals in the cache detail pop-up. [<a href="https://github.com/2Abendsegler/GClh/issues/3220" title="Issue 3220">3220</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3220" title="Issue 3220">3220</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] Error message: Replace link to larger map in preview map in cache listing with the Browse Map. [<a href="https://github.com/2Abendsegler/GClh/issues/3230" title="Issue 3230">3230</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3230" title="Issue 3230">3230</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] Prevent areas from flashing white when zooming the overview map. [<a href="https://github.com/2Abendsegler/GClh/issues/3232" title="Issue 3232">3232</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3232" title="Issue 3232">3232</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] Coordinates modified via the GS Checker are not displayed correctly immediately. [<a href="https://github.com/2Abendsegler/GClh/issues/3216" title="Issue 3216">3216</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3216" title="Issue 3216">3216</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Hide individual rows in the left column first block doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3224" title="Issue 3224">3224</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3224" title="Issue 3224">3224</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] No GClh links and other stuff in first block of left column. [<a href="https://github.com/2Abendsegler/GClh/issues/3223" title="Issue 3223">3223</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3223" title="Issue 3223">3223</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Improve distance between button and box in left column. [<a href="https://github.com/2Abendsegler/GClh/issues/3228" title="Issue 3228">3228</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3228" title="Issue 3228">3228</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Hide] Align info of length for field cachename and field placed by. [<a href="https://github.com/2Abendsegler/GClh/issues/3215" title="Issue 3215">3215</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3215" title="Issue 3215">3215</a>.<br>
+	</li>
+</ul>
+<br>
+(27.06.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.9:

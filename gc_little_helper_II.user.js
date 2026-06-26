@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.9
+// @version      0.18.10
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -2680,12 +2680,10 @@ var mainGC = function() {
     if (is_page("cache_listing")) {
         try {
             // Highlight usercoords.
-            if ($('body')[0].innerHTML.match(/"isUserDefined":true/gm)) {
-                var css = '#uxLatLon ';
-                css += (settings_highlight_usercoords ? '{color: #FF0000 !important; ' : '{color: rgb(0, 0, 0) !important; ');
-                css += (settings_highlight_usercoords_bb ? 'border-bottom: 2px solid #999 !important; ' : 'border-bottom: unset !important; ');
-                css += (settings_highlight_usercoords_it ? 'font-style: italic !important;}' : 'font-style: normal !important;}');
-            }
+            var css = '#uxLatLon.italic ';
+            css += (settings_highlight_usercoords ? '{color: #FF0000 !important; ' : '{color: rgb(0, 0, 0) !important; ');
+            css += (settings_highlight_usercoords_bb ? 'border-bottom: 2px solid #999 !important; ' : 'border-bottom: unset !important; ');
+            css += (settings_highlight_usercoords_it ? 'font-style: italic !important;}' : 'font-style: normal !important;}');
             // Improve screen "Enter solved coordinates" (only in english).
             css += '#coordinate-update-root div > dl > dd > input {width: 72%; font-size: 100%; padding: 4px 6px; margin: -7px 0px 0px -7px;}';
             css += '#coordinate-update-root div > dl > dd {height: 23px !important; font-style: normal !important;}';
@@ -2702,7 +2700,7 @@ var mainGC = function() {
             box.innerHTML = box.innerHTML.replace("<br>", "");
             var coords = $('#uxLatLon')[0].innerHTML;
             otherFormats(box, coords, " - ");
-            box.innerHTML = "<font style='font-size: 10px;'>" + box.innerHTML + "</font><br>";
+            appendCssStyle('#ctl00_ContentBody_LocationSubPanel {font-size: 10px;}');
         } catch(e) {gclh_error("Show other coord formats listing",e);}
     }
 
@@ -2722,9 +2720,7 @@ var mainGC = function() {
         try {
             var coords = toDec($('#uxLatLon')[0].innerHTML);
             var link = $('#uxLatLon').parents(".NoBottomSpacing");
-            var small = document.createElement("small");
-            small.innerHTML = '<a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a>';
-            link.append(small);
+            link.append('<small style="display: block;"><a href="'+map_url+'?ll='+coords[0]+','+coords[1]+'">Map this Location</a></small>');
         } catch(e) {gclh_error("Map this Location",e);}
     }
 
@@ -3471,6 +3467,8 @@ var mainGC = function() {
             css += '.mapIconRight svg {padding: 3px;}';
             css += '.search_map_icon {margin-left: 2px !important;}';
             if (!settings_map_overview_search_map_icon) css += '.browse_map_icon {margin-top: 1px;}';
+            // Prevent areas from flashing white when zooming.
+            css += '#gclh_map_overview.leaflet-container img.leaflet-tile {mix-blend-mode: normal !important;}';
             appendCssStyle(css);
             var html = "";
             html += "<div class='CacheDetailNavigationWidget' style='margin-top: 1.5em;'>";
@@ -3913,37 +3911,34 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve inventory list",e);}
     }
 
-// Replace link to larger map in preview map in cache listing with the Browse Map.
-    if (settings_larger_map_as_browse_map && is_page("cache_listing") && $('#uxLatLon')[0]) {
+// Improve preview map in cache listing.
+    if (is_page("cache_listing") && $('#mini-map-root')[0] && (settings_larger_map_as_browse_map || settings_show_google_maps)) {
         try {
-            var newstrPROStyle = '<a id="ctl00_ContentBody_uxViewLargerMap" title="View Larger Browse Map" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Browse Map</a>';
-            document.getElementById('ctl00_ContentBody_uxViewLargerMap').outerHTML = newstrPROStyle;
-        } catch(e) {gclh_error("Replace link to larger map in preview map in cache listing with the Browse Map",e);}
-    }
-
-// Show Google-Maps Link on Cache Listing Page.
-    if (settings_show_google_maps && is_page("cache_listing") && $('#ctl00_ContentBody_uxViewLargerMap')[0] && $('#uxLatLon')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
-        try {
-            var ref_link = $('#ctl00_ContentBody_uxViewLargerMap')[0];
-            var box = ref_link.parentNode;
-            box.appendChild(document.createElement("br"));
-            var link = document.createElement("a");
-            link.setAttribute("class", "lnk");
-            link.setAttribute("target", "_blank");
-            link.setAttribute("title", "Show area on Google Maps");
-            var coords = toDec($('#uxLatLon')[0].innerHTML);
-            var latlng = coords[0] + "," + coords[1];
-            // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
-            link.setAttribute("href", "https://maps.google.de/maps?q=" + latlng + "&ll=" + latlng + "&z=18");
-            var img = document.createElement("img");
-            img.setAttribute("src", "/images/silk/map_go.png");
-            link.appendChild(img);
-            link.appendChild(document.createTextNode(" "));
-            var span = document.createElement("span");
-            span.appendChild(document.createTextNode("Show area on Google Maps"));
-            link.appendChild(span);
-            box.appendChild(link);
-        } catch(e) {gclh_error("Show google maps link",e);}
+            const configPreviewMap = {childList: true, subtree: true, attributes: true};
+            const observerPreviewMap = new MutationObserver(function(_, observer) {
+                observer.disconnect();
+                if ($('#uxLatLon')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0] && $('#mini-map-root a[href*="/play/map/"]')[0]) {
+                    $('#mini-map-root a[href*="/play/map/"]')[0].parentNode.style.setProperty('font-weight', 'normal', 'important');
+                    // Replace link to larger map above the preview map with the Browse Map.
+                    if (settings_larger_map_as_browse_map) {
+                        var html = '<a title="View Larger Browse Map" href="https://www.geocaching.com/map/?lat='+lat+'&lng='+lng+'" target="_blank" rel="noopener noreferrer">View Larger Browse Map</a>';
+                        $('#mini-map-root a[href*="/play/map/"]')[0].outerHTML = html;
+                    }
+                    // Show Google Maps link above the preview map.
+                    if (settings_show_google_maps) {
+                        var coords = toDec($('#uxLatLon')[0].innerHTML);
+                        var latlng = coords[0] + "," + coords[1];
+                        // &ll sorgt für Zentrierung der Seite beim Marker auch wenn linke Sidebar aufklappt. Zoom 18 setzen, weil GC Map eigentlich nicht mehr kann.
+                        var href = "https://maps.google.de/maps?q=" + latlng + "&ll=" + latlng + "&z=18";
+                        var html = '<a class="lnk" href="' + href + '" target="_blank" rel="noopener noreferrer" title="Show area on Google Maps" style="display: block;"><img src="/images/silk/map_go.png" style="vertical-align: sub;"> <span>Show area on Google Maps</span></a>';
+                        $('#mini-map-root a[href*="/map/"]').after(html);
+                    }
+                } else {
+                    observer.observe($('#mini-map-root')[0], configPreviewMap);
+                }
+            });
+            observerPreviewMap.observe($('#mini-map-root')[0], configPreviewMap);
+        } catch(e) {gclh_error("Improve preview map in cache listing",e);}
     }
 
 // Hide spoilerwarning above the logs.
@@ -9560,7 +9555,7 @@ var mainGC = function() {
             // >> Button icon containing the toggle icon for the button.
             var profileButtonIcon = ' button > svg';
             // >> Box containing all entries.
-            var profileBox = ' > div > div > div';
+            var profileBox = ' > div > div > div > div';
             // >>> Profile cover image and components.
             var profileCover = ' > a';
             // >>> Profile avatar image and components.
@@ -10209,16 +10204,17 @@ var mainGC = function() {
             function setStylesToleftColumnDB() {
                 try {
                     if (settings_compact_layout_new_dashboard) {
-                        // Profile summary block of the left column.
-                        var box = $(leftCol + profileBlock + profileBox);
-                        if ($(box)[0]) {
-                            // The distance between the button and the box should be determined by only one element, the last div element.
-                            $(box)[0].parentNode.style.setProperty('margin', '0px', 'important');
-                        }
+                        // All block of the left column.
+                        // Distance between button and box.
+                        if ($(leftCol).find('> div')[0]) $(leftCol).find('> div')[0].style.setProperty('gap', '4px', 'important');
+                        // All link block of the left column.
+                        var allLbs = $(leftCol + allLinkBlocks);
+                        // Distance between button and box.
+                        if ($(allLbs)[0]) $(allLbs)[0].style.setProperty('gap', '4px', 'important');
                         // Link blocks of the left column.
                         var lbs = $(leftCol + allLinkBlocks + linkBlock);
                         for (var s = 0; s < lbs.length; s++) {
-                            // The distance between the button and the box should be determined by only one element, the ul element.
+                            // Distance between button and box.
                             if ($(lbs[s]).find('> div')[0]) $(lbs[s]).find('> div')[0].style.setProperty('margin-top', '0px', 'important');
                             if ($(lbs[s]).find('> div > div')[0]) $(lbs[s]).find('> div > div')[0].style.setProperty('margin-top', '0px', 'important');
                             var uls = $(lbs[s]).find(linkBox);
@@ -13221,6 +13217,9 @@ var mainGC = function() {
             css += '.leaflet-container:has(.leaflet-popup-content-wrapper:hover) .map-tooltip {display: none !important;}';
             // Improve the scale block on the left side.
             css += '.leaflet-control-scale {margin-left: 1px !important;}';
+            // Make line-break for line with links in the cache detail pop-up possible.
+            css += ".gm-browse-map .map-item .links {overflow: visible !important; text-overflow: unset !important; white-space: unset !important;}";
+            css += ".gm-browse-map .map-item .links a {display: inline-block;}";
             // Shared styles for GClh and GME:
             // - Resize map layer control button.
             css += 'a.leaflet-control-layers-toggle {width: 36px !important; height: 36px !important;}';
@@ -13892,9 +13891,31 @@ var mainGC = function() {
             // Select the target node.
             var target = document.querySelector('.leaflet-popup-pane');
 
+            // Improve opening position of the cache detail pop-up.
+            window.addEventListener('load', () => {
+                if (unsafeWindow.MapSettings?.Map) {
+                    const map = unsafeWindow.MapSettings.Map;
+                    if (map) {
+                        map.on('popupopen', function(e) {
+                            if (e.popup._content?.firstChild?.id == 'gmCacheInfo') {
+                                const popup = e.popup;
+                                if ($('.Sidebar.Open')[0]) var left = 360;
+                                else var left = 6;
+                                var top = 20;
+                                var right = 42;
+                                var bottom = 200;
+                                popup.options.autoPanPaddingTopLeft = [left, top];
+                                popup.options.autoPanPaddingBottomRight = [right, bottom];
+                                popup.update();
+                            }
+                        });
+                    }
+                }
+            });
+
             var css = '';
             css += ".leaflet-popup-content-wrapper, .leaflet-popup-close-button {margin: 16px 3px 0px 13px !important;}";
-            css += ".leaflet-popup-content {margin-left: 10px !important; margin-right: 10px !important;}";
+            css += ".leaflet-popup-content:has(.popup_additional_info) {width: 406px !important; margin-left: 10px !important; margin-right: 10px !important;}";
             css += "#gmCacheInfo {color: rgb(74 74 74);}";
             css += "#gmCacheInfo h4 a, #gmCacheInfo dl a, #gmCacheInfo dl a span, #gmCacheInfo .links:not(.popup_additional_info) a {text-decoration-line: none !important;}";
             css += "#gmCacheInfo h4 a:hover, #gmCacheInfo dl a:hover, #gmCacheInfo dl a span:hover, #gmCacheInfo .links:not(.popup_additional_info) a:hover {text-decoration-line: underline !important;}";
@@ -13903,7 +13924,7 @@ var mainGC = function() {
             css += ".popup_additional_info a.gclh_galleryImages:hover {text-decoration-line: underline !important;}";
             if (settings_show_enhanced_map_coords) css += "div.popup_additional_info {min-height: 82px;}";
             else css += "div.popup_additional_info {min-height: 64px;}";
-            css += "div.popup_additional_info {padding-top: 3px !important; padding-bottom: 4px !important;}";
+            css += "div.popup_additional_info {padding-top: 3px !important; padding-bottom: 4px !important; overflow: visible !important; text-overflow: unset !important; white-space: unset !important;}";
             css += "div.popup_additional_info .loading_container {display: flex; justify-content: center; align-items: center;}";
             css += "div.popup_additional_info .loading_container img {margin-right: 5px;}";
             css += "div.popup_additional_info span.favi_points svg, div.popup_additional_info span.tackables svg {position: relative; top: 4px;}";
@@ -14041,7 +14062,7 @@ var mainGC = function() {
                             else var place = $(text).find('#ctl00_ContentBody_Location')[0].innerHTML.replace(/(.*?)\s/,'');
 
                             // Put all together.
-                            var new_text = '<span style="margin-right: 5px;">Logs:</span>' + all_logs + '<br>';
+                            var new_text = '<div style="display: flex;"><span style="margin-right: 5px;">Logs:</span>' + all_logs + '</div>';
                             new_text += $(last_logs).prop('outerHTML');
                             new_text += '<div style="padding-bottom: 3px;">';
 
@@ -14099,11 +14120,11 @@ var mainGC = function() {
                                 original_coords = original_coords.replace("oldLatLngDisplay\":\"","");
                                 original_coords = original_coords.replace("\"","");
                                 original_coords = original_coords.replace(new RegExp('\'', 'g'),'');
-                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span>' + original_coords + ' )</span>';
+                                original_coords_span = ' <span class="coordinates original" title="original Coordinates">&nbsp;( <span class="anker"></span> ' + original_coords + ' )</span>';
                                 corrected = "corrected ";
                             }
                             if (settings_show_enhanced_map_coords) {
-                                new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates">' + coords + '</span>' + original_coords_span + '</span>';
+                                new_text += '<span><span class="coordinates current" title="'+corrected+'Coordinates"> ' + coords + '</span>' + original_coords_span + '</span>';
                             }
 
                             $('#popup_additional_info_' + local_gc_code).html(new_text);
@@ -15415,7 +15436,8 @@ var mainGC = function() {
             createCounterElement('placedByCounter', placedBy);
             createCounterElement('hintCounter', hint);
             var css = '#nameCounter, #placedByCounter, #hintCounter {text-align: right;}';
-            css += '#nameCounter, #placedByCounter {width: 400px;}';
+            css += '#nameCounter, #placedByCounter {width: 52%;}';
+            css += '.edit-cache-form #nameCounter, .edit-cache-form #placedByCounter {width: 400px;}';
             appendCssStyle(css);
         } catch(e) {gclh_error("Show length of hint, cachename and placed by on hide edit page",e);}
     }
@@ -16588,8 +16610,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/Tae5/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iHa"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/QHNC/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iHl"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
