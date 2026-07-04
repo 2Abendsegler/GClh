@@ -413,6 +413,7 @@ var variablesInit = function(c) {
     c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
     c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
     c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);
+    c.settings_listing_remove_from_list = getValue("settings_listing_remove_from_list", true);
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     c.settings_esc_close_gclh_config = getValue("settings_esc_close_gclh_config", true);
     c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", true);
@@ -1762,7 +1763,7 @@ var mainGC = function() {
                     }
                 });
                 // On search map, a gray area 80px high appears at the bottom of the page.
-                // To prevent this, we override the “min-height” property, thereby preventing an additional 80px (= header height) from being added to the viewport height.
+                // To prevent this, we override the "min-height" property, thereby preventing an additional 80px (= header height) from being added to the viewport height.
                 if (is_page("searchmap")) {
                     try {document.querySelector('#__next > div').style.setProperty("min-height", "calc(100vh - 80px)", "important");}
                     catch {}
@@ -2690,7 +2691,7 @@ var mainGC = function() {
             css += '#coordinate-update-root div > dl > dd span {font-style: normal !important;}';
             css += '#coordinate-update-root button:not(.btn-link) {margin: 6px 6px 0px 0px !important;}';
             appendCssStyle(css);
-        } catch(e) {gclh_error('Highlight usercoords and improve screen "Enter solved coordinates"',e);}
+        } catch(e) {gclh_error('Highlight usercoords and improve screen "Enter solved coordinates"',e);}
     }
 
 // Show other coord formats cache listing.
@@ -3909,6 +3910,72 @@ var mainGC = function() {
             var inventory = $('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget').find('.WidgetBody span');
             for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 201, inventory[i].innerHTML);}
         } catch(e) {gclh_error("Improve inventory list",e);}
+    }
+
+// Improve bookmark lists in cache listing.
+    if (is_page("cache_listing") && settings_listing_remove_from_list) {
+        try {
+            // Remove this cache from a bookmark list
+            function removeFromBookmarkList(gcCode, listItem) {
+                try {
+                    listItem.addClass('gclh_bookmark_list_item_loading');
+                    var listId = listItem.find('a').first().attr('href').match(/.*\/([a-z0-9]+$)/i)[1];
+                    $.ajax({
+                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/' + listId + '/geocaches/bulkdelete',
+                        type: 'POST',
+                        data: JSON.stringify([gcCode]),
+                        headers: { 'Content-Type': 'application/json', 'X-Verification-Token': $('input[name=__RequestVerificationToken]').val() },
+                        success: function (result) { listItem.remove(); },
+                        error: function(error) { listItem.removeClass('gclh_bookmark_list_item_loading'); }
+                    });
+                } catch(e) { gclh_error("Remove from bookmark list", e); }
+            }
+            // Improve bookmark lists. I.e. add remove from list button
+            function improveBookmarkLists(bookmarkListRoot) {
+                var listItems = bookmarkListRoot.find('div div div ul li');
+                var gcCode = bookmarkListRoot.attr('data-reference-code');
+                listItems.each(function() {
+                    try {
+                        var listItem = $(this);
+                        var listLink = $(this).find('a').first();
+                        var listName = listLink.text();
+                        var listItemLoader = $('<div class="gclh_bookmark_list_loader"><img src="' + urlImages + 'ajax-loader.gif" /></div>');
+                        var listItemRemove = $('<div class="gclh_bookmark_list_remove"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10 2.5a1 1 0 0 0-1 1H4a1 1 0 0 0 0 2h1v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-14h1a1 1 0 1 0 0-2h-5a1 1 0 0 0-1-1h-4Zm-3 3h10v14H7v-14Zm3 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Z"/></svg></div>');
+                        listItemRemove.click(function() {
+                            if (window.confirm('Delete this cache from your bookmark list "' + listName + '"?')) {
+                                removeFromBookmarkList(gcCode, listItem);
+                            }
+                        });
+                        listItem.append(listItemLoader, listItemRemove).addClass('gclh_bookmark_list_item');;
+                    } catch(e) { gclh_error("Improve bookmark lists", e); }
+                });
+            }
+            function appendBookmarkListStyles() {
+                var css = '';
+                css += '.gclh_bookmark_list_item { display: flex; justify-content: space-between; }';
+                css += '.gclh_bookmark_list_item_loading { pointer-events: none; opacity: .5; }';
+                css += '.gclh_bookmark_list_remove, .gclh_bookmark_list_loader { display: flex; align-items: center; justify-content: center; margin: -5px; }';
+                css += '.gclh_bookmark_list_remove { cursor: pointer; }';
+                css += '.gclh_bookmark_list_remove:hover { opacity: .5; }';
+                css += '.gclh_bookmark_list_remove svg { display: block; height: 16px; width: 16px; }';
+                css += '.gclh_bookmark_list_loader { display: none; }';
+                css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_loader { display: flex; }';
+                css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_remove { display: none; }';
+                appendCssStyle(css);
+            }
+            // Bookmark lists are fetched asychrinous, so we have to wait until they're rendered
+            function waitForBookmarkLists(waitCount) {
+                var bookmarkListRoot = $('#bookmark-lists-root');
+                if (bookmarkListRoot.find('div div div ul li').length) {
+                    appendBookmarkListStyles();
+                    improveBookmarkLists(bookmarkListRoot);
+                } else {
+                    waitCount ++;
+                    if (waitCount <= 100) { setTimeout(function() { waitForBookmarkLists(waitCount); }, 100); }
+                }
+            }
+            waitForBookmarkLists(0);
+        } catch(e) { gclh_error("Improve bookmark lists",e); }
     }
 
 // Improve preview map in cache listing.
@@ -18750,6 +18817,9 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + "<br>";
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
 
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Bookmark Lists<font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
+            html += checkboxy('settings_listing_remove_from_list', 'Add button to remove Cache from a bookmark lists') + show_help("Adds a button to each of your bookmark lists to remove the cache from that list.") + "<br>";
+
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
             html += newParameterOn3;
             html += checkboxy('settings_show_eventinfo_in_desc', 'Show event info at the beginning of the cache description') + show_help("With this option an event info with the event startdate, the event weekday, the event starttime and the event endtime can be displayed.") + "<br>";
@@ -20197,6 +20267,7 @@ var mainGC = function() {
                 'settings_show_vup_friends',
                 'settings_vup_hide_avatar',
                 'settings_vup_hide_log',
+                'settings_listing_remove_from_list',
                 'settings_f2_save_gclh_config',
                 'settings_esc_close_gclh_config',
                 'settings_f4_call_gclh_config',
