@@ -413,6 +413,7 @@ var variablesInit = function(c) {
     c.settings_show_vup_friends = getValue("settings_show_vup_friends", false);
     c.settings_vup_hide_avatar = getValue("settings_vup_hide_avatar", false);
     c.settings_vup_hide_log = getValue("settings_vup_hide_log", false);
+    c.settings_listing_remove_from_list = getValue("settings_listing_remove_from_list", true);
     c.settings_f2_save_gclh_config = getValue("settings_f2_save_gclh_config", true);
     c.settings_esc_close_gclh_config = getValue("settings_esc_close_gclh_config", true);
     c.settings_f4_call_gclh_config = getValue("settings_f4_call_gclh_config", true);
@@ -1762,7 +1763,7 @@ var mainGC = function() {
                     }
                 });
                 // On search map, a gray area 80px high appears at the bottom of the page.
-                // To prevent this, we override the “min-height” property, thereby preventing an additional 80px (= header height) from being added to the viewport height.
+                // To prevent this, we override the "min-height" property, thereby preventing an additional 80px (= header height) from being added to the viewport height.
                 if (is_page("searchmap")) {
                     try {document.querySelector('#__next > div').style.setProperty("min-height", "calc(100vh - 80px)", "important");}
                     catch {}
@@ -2690,7 +2691,7 @@ var mainGC = function() {
             css += '#coordinate-update-root div > dl > dd span {font-style: normal !important;}';
             css += '#coordinate-update-root button:not(.btn-link) {margin: 6px 6px 0px 0px !important;}';
             appendCssStyle(css);
-        } catch(e) {gclh_error('Highlight usercoords and improve screen "Enter solved coordinates"',e);}
+        } catch(e) {gclh_error('Highlight usercoords and improve screen "Enter solved coordinates"',e);}
     }
 
 // Show other coord formats cache listing.
@@ -3909,6 +3910,91 @@ var mainGC = function() {
             var inventory = $('#ctl00_ContentBody_uxTravelBugList_uxInventoryLabel').closest('.CacheDetailNavigationWidget').find('.WidgetBody span');
             for (var i = 0; i < inventory.length; i++) {noBreakInLine(inventory[i], 201, inventory[i].innerHTML);}
         } catch(e) {gclh_error("Improve inventory list",e);}
+    }
+
+// Improve bookmark lists in cache listing.
+    if (is_page("cache_listing") && settings_listing_remove_from_list) {
+        try {
+            // Remove this cache from a bookmark list
+            function removeFromBookmarkList(gcCode, listItem) {
+                try {
+                    listItem.addClass('gclh_bookmark_list_item_loading');
+                    var listId = listItem.find('a').first().attr('href').match(/.*\/([a-z0-9]+$)/i)[1];
+                    $.ajax({
+                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/' + listId + '/geocaches/bulkdelete',
+                        type: 'POST',
+                        data: JSON.stringify([gcCode]),
+                        headers: { 'Content-Type': 'application/json', 'X-Verification-Token': $('input[name=__RequestVerificationToken]').val() },
+                        success: function (result) { listItem.removeClass('gclh_bookmark_list_item_loading').addClass('gclh_bookmark_list_item_removed') },
+                        error: function(error) { listItem.removeClass('gclh_bookmark_list_item_loading'); }
+                    });
+                } catch(e) { gclh_error("Remove from bookmark list", e); }
+            }
+            // Restore removed cache to a bookmark list
+            function restoreToBookmarkList(gcCode, listItem) {
+                try {
+                    listItem.addClass('gclh_bookmark_list_item_loading');
+                    var listId = listItem.find('a').first().attr('href').match(/.*\/([a-z0-9]+$)/i)[1];
+                    $.ajax({
+                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/' + listId + '/geocaches',
+                        type: 'PUT',
+                        data: JSON.stringify([{referenceCode: gcCode}]),
+                        headers: { 'Content-Type': 'application/json', 'X-Verification-Token': $('input[name=__RequestVerificationToken]').val() },
+                        success: function (result) { listItem.removeClass('gclh_bookmark_list_item_loading gclh_bookmark_list_item_removed') },
+                        error: function(error) { listItem.removeClass('gclh_bookmark_list_item_loading'); }
+                    });
+                } catch(e) { gclh_error("Restote to bookmark list", e); }
+            }
+            // Improve bookmark lists. I.e. add remove from list button
+            function improveBookmarkLists(bookmarkListRoot) {
+                var listItems = bookmarkListRoot.find('div div div ul li');
+                var gcCode = bookmarkListRoot.attr('data-reference-code');
+                listItems.each(function() {
+                    try {
+                        var listItem = $(this);
+                        var listLink = $(this).find('a').first();
+                        var listName = listLink.text();
+                        var listItemLoader = $('<div class="gclh_bookmark_list_loader"><img src="' + urlImages + 'ajax-loader.gif" /></div>');
+                        var listItemRemove = $('<div class="gclh_bookmark_list_button gclh_bookmark_list_remove" title="Remove from list"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10 2.5a1 1 0 0 0-1 1H4a1 1 0 0 0 0 2h1v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-14h1a1 1 0 1 0 0-2h-5a1 1 0 0 0-1-1h-4Zm-3 3h10v14H7v-14Zm3 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Z"/></svg></div>');
+                        var listItemRestore = $('<div class="gclh_bookmark_list_button gclh_bookmark_list_restore" title="Undo"><svg width="800" height="800" viewBox="0 0 24 24" fill="currentColor"><path d="M12.207 2.293a1 1 0 0 1 0 1.414L10.914 5H12.5c4.652 0 8.5 3.848 8.5 8.5S17.152 22 12.5 22 4 18.152 4 13.5a1 1 0 1 1 2 0c0 3.548 2.952 6.5 6.5 6.5s6.5-2.952 6.5-6.5S16.048 7 12.5 7h-1.586l1.293 1.293a1 1 0 0 1-1.414 1.414l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0z"/></svg></div>');
+                        listItemRemove.click(function() { removeFromBookmarkList(gcCode, listItem); });
+                        listItemRestore.click(function() { restoreToBookmarkList(gcCode, listItem); });
+                        listItem.append(listItemLoader, listItemRemove, listItemRestore).addClass('gclh_bookmark_list_item');;
+                    } catch(e) { gclh_error("Improve bookmark lists", e); }
+                });
+            }
+            function appendBookmarkListStyles() {
+                var css = '';
+                css += '.gclh_bookmark_list_item { display: flex; justify-content: space-between; }';
+                css += '.gclh_bookmark_list_item_loading { pointer-events: none; }';
+                css += '.gclh_bookmark_list_item_loading div:first-child { opacity: .25; }';
+                css += '.gclh_bookmark_list_remove, .gclh_bookmark_list_restore, .gclh_bookmark_list_loader { display: flex; align-items: center; justify-content: center; margin: -5px; }';
+                css += '.gclh_bookmark_list_button { cursor: pointer; }';
+                css += '.gclh_bookmark_list_button:hover { opacity: .75; }';
+                css += '.gclh_bookmark_list_button svg { display: block; height: 16px; width: 16px; }';
+                css += '.gclh_bookmark_list_loader, .gclh_bookmark_list_restore { display: none; }';
+                css += '.gclh_bookmark_list_item_removed .gclh_bookmark_list_remove { display: none; }';
+                css += '.gclh_bookmark_list_item_removed .gclh_bookmark_list_restore { display: flex; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child { opacity: .25; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child a:first-child { text-decoration-line: line-through !important; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child a:first-child:hover { text-decoration-line: line-through underline !important; }';
+                css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_loader { display: flex; }';
+                css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_remove, .gclh_bookmark_list_item_loading .gclh_bookmark_list_restore { display: none; }';
+                appendCssStyle(css);
+            }
+            // Bookmark lists are fetched asychrinous, so we have to wait until they're rendered
+            function waitForBookmarkLists(waitCount) {
+                var bookmarkListRoot = $('#bookmark-lists-root');
+                if (bookmarkListRoot.find('div div div ul li').length) {
+                    appendBookmarkListStyles();
+                    improveBookmarkLists(bookmarkListRoot);
+                } else {
+                    waitCount ++;
+                    if (waitCount <= 100) { setTimeout(function() { waitForBookmarkLists(waitCount); }, 100); }
+                }
+            }
+            waitForBookmarkLists(0);
+        } catch(e) { gclh_error("Improve bookmark lists",e); }
     }
 
 // Improve preview map in cache listing.
@@ -18740,7 +18826,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>VIP-Lists <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_show_vip_listX0', 'Process VIPs') + show_help(content_settings_show_vip_list + "<br><br>You can adjust details about this feature also in the Dashboard topic.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.")+ "<br>";
-            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list') + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_lackey_as_vip', 'Show lackey in VIP list')  + show_help("If you enable this option, lackeys which logged the cache are VIPs for the cache. Behind the logs of lackeys are primarily employees of Groundspeak who cache. In addition, administrative logs can also be performed by these lackeys. Administrative user of Groundspeak may also be flagged as lackeys. An example of the latter are the logs for archiving older events.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
@@ -18749,6 +18835,9 @@ var mainGC = function() {
             html += "&nbsp; " + checkboxy('settings_process_vupX0', 'Process VUPs') + show_help(content_settings_process_vup + "<br><br>You can adjust details about this feature also in the Dashboard topic.") + "<br>";
             html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + "<br>";
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
+
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Bookmark Lists <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
+            html += checkboxy('settings_listing_remove_from_list', 'Add button to remove Cache from your bookmark list') + show_help("Adds a button to each of your bookmark lists to remove the cache from that list.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
             html += newParameterOn3;
@@ -20197,6 +20286,7 @@ var mainGC = function() {
                 'settings_show_vup_friends',
                 'settings_vup_hide_avatar',
                 'settings_vup_hide_log',
+                'settings_listing_remove_from_list',
                 'settings_f2_save_gclh_config',
                 'settings_esc_close_gclh_config',
                 'settings_f4_call_gclh_config',
