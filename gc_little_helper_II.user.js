@@ -3925,10 +3925,25 @@ var mainGC = function() {
                         type: 'POST',
                         data: JSON.stringify([gcCode]),
                         headers: { 'Content-Type': 'application/json', 'X-Verification-Token': $('input[name=__RequestVerificationToken]').val() },
-                        success: function (result) { listItem.remove(); },
+                        success: function (result) { listItem.removeClass('gclh_bookmark_list_item_loading').addClass('gclh_bookmark_list_item_removed') },
                         error: function(error) { listItem.removeClass('gclh_bookmark_list_item_loading'); }
                     });
                 } catch(e) { gclh_error("Remove from bookmark list", e); }
+            }
+            // Restore removed cache to a bookmark list
+            function restoreToBookmarkList(gcCode, listItem) {
+                try {
+                    listItem.addClass('gclh_bookmark_list_item_loading');
+                    var listId = listItem.find('a').first().attr('href').match(/.*\/([a-z0-9]+$)/i)[1];
+                    $.ajax({
+                        url: 'https://www.geocaching.com/api/proxy/web/v1/lists/' + listId + '/geocaches',
+                        type: 'PUT',
+                        data: JSON.stringify([{referenceCode: gcCode}]),
+                        headers: { 'Content-Type': 'application/json', 'X-Verification-Token': $('input[name=__RequestVerificationToken]').val() },
+                        success: function (result) { listItem.removeClass('gclh_bookmark_list_item_loading gclh_bookmark_list_item_removed') },
+                        error: function(error) { listItem.removeClass('gclh_bookmark_list_item_loading'); }
+                    });
+                } catch(e) { gclh_error("Restote to bookmark list", e); }
             }
             // Improve bookmark lists. I.e. add remove from list button
             function improveBookmarkLists(bookmarkListRoot) {
@@ -3940,27 +3955,31 @@ var mainGC = function() {
                         var listLink = $(this).find('a').first();
                         var listName = listLink.text();
                         var listItemLoader = $('<div class="gclh_bookmark_list_loader"><img src="' + urlImages + 'ajax-loader.gif" /></div>');
-                        var listItemRemove = $('<div class="gclh_bookmark_list_remove"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10 2.5a1 1 0 0 0-1 1H4a1 1 0 0 0 0 2h1v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-14h1a1 1 0 1 0 0-2h-5a1 1 0 0 0-1-1h-4Zm-3 3h10v14H7v-14Zm3 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Z"/></svg></div>');
-                        listItemRemove.click(function() {
-                            if (window.confirm('Delete this cache from your bookmark list "' + listName + '"?')) {
-                                removeFromBookmarkList(gcCode, listItem);
-                            }
-                        });
-                        listItem.append(listItemLoader, listItemRemove).addClass('gclh_bookmark_list_item');;
+                        var listItemRemove = $('<div class="gclh_bookmark_list_button gclh_bookmark_list_remove" title="Remove from list"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M10 2.5a1 1 0 0 0-1 1H4a1 1 0 0 0 0 2h1v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-14h1a1 1 0 1 0 0-2h-5a1 1 0 0 0-1-1h-4Zm-3 3h10v14H7v-14Zm3 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Zm4 0a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0v-8a1 1 0 0 1 1-1Z"/></svg></div>');
+                        var listItemRestore = $('<div class="gclh_bookmark_list_button gclh_bookmark_list_restore" title="Undo"><svg width="800" height="800" viewBox="0 0 24 24" fill="currentColor"><path d="M12.207 2.293a1 1 0 0 1 0 1.414L10.914 5H12.5c4.652 0 8.5 3.848 8.5 8.5S17.152 22 12.5 22 4 18.152 4 13.5a1 1 0 1 1 2 0c0 3.548 2.952 6.5 6.5 6.5s6.5-2.952 6.5-6.5S16.048 7 12.5 7h-1.586l1.293 1.293a1 1 0 0 1-1.414 1.414l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0z"/></svg></div>');
+                        listItemRemove.click(function() { removeFromBookmarkList(gcCode, listItem); });
+                        listItemRestore.click(function() { restoreToBookmarkList(gcCode, listItem); });
+                        listItem.append(listItemLoader, listItemRemove, listItemRestore).addClass('gclh_bookmark_list_item');;
                     } catch(e) { gclh_error("Improve bookmark lists", e); }
                 });
             }
             function appendBookmarkListStyles() {
                 var css = '';
                 css += '.gclh_bookmark_list_item { display: flex; justify-content: space-between; }';
-                css += '.gclh_bookmark_list_item_loading { pointer-events: none; opacity: .5; }';
-                css += '.gclh_bookmark_list_remove, .gclh_bookmark_list_loader { display: flex; align-items: center; justify-content: center; margin: -5px; }';
-                css += '.gclh_bookmark_list_remove { cursor: pointer; }';
-                css += '.gclh_bookmark_list_remove:hover { opacity: .5; }';
-                css += '.gclh_bookmark_list_remove svg { display: block; height: 16px; width: 16px; }';
-                css += '.gclh_bookmark_list_loader { display: none; }';
+                css += '.gclh_bookmark_list_item_loading { pointer-events: none; }';
+                css += '.gclh_bookmark_list_item_loading div:first-child { opacity: .25; }';
+                css += '.gclh_bookmark_list_remove, .gclh_bookmark_list_restore, .gclh_bookmark_list_loader { display: flex; align-items: center; justify-content: center; margin: -5px; }';
+                css += '.gclh_bookmark_list_button { cursor: pointer; }';
+                css += '.gclh_bookmark_list_button:hover { opacity: .75; }';
+                css += '.gclh_bookmark_list_button svg { display: block; height: 16px; width: 16px; }';
+                css += '.gclh_bookmark_list_loader, .gclh_bookmark_list_restore { display: none; }';
+                css += '.gclh_bookmark_list_item_removed .gclh_bookmark_list_remove { display: none; }';
+                css += '.gclh_bookmark_list_item_removed .gclh_bookmark_list_restore { display: flex; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child { opacity: .25; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child a:first-child { text-decoration-line: line-through !important; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child a:first-child:hover { text-decoration-line: line-through underline !important; }';
                 css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_loader { display: flex; }';
-                css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_remove { display: none; }';
+                css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_remove, .gclh_bookmark_list_item_loading .gclh_bookmark_list_restore { display: none; }';
                 appendCssStyle(css);
             }
             // Bookmark lists are fetched asychrinous, so we have to wait until they're rendered
@@ -18807,7 +18826,7 @@ var mainGC = function() {
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>VIP-Lists <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
             html += checkboxy('settings_show_vip_listX0', 'Process VIPs') + show_help(content_settings_show_vip_list + "<br><br>You can adjust details about this feature also in the Dashboard topic.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_owner_vip_list', 'Show owner in VIP list')  + show_help("If you enable this option, the owner is a VIP for the cache, so you can see, what happened with the cache (disable, maint, enable, ...). Then the owner is shown not only in VIP list but also in VIP logs.")+ "<br>";
-            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list')  + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.") + "<br>";
+            html += "&nbsp; " + checkboxy('settings_show_reviewer_as_vip', 'Show reviewer/publisher in VIP list') + show_help("If you enable this option, the reviewer or publisher of the cache is a VIP for the cache.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_lackey_as_vip', 'Show lackey in VIP list')  + show_help("If you enable this option, lackeys which logged the cache are VIPs for the cache. Behind the logs of lackeys are primarily employees of Groundspeak who cache. In addition, administrative logs can also be performed by these lackeys. Administrative user of Groundspeak may also be flagged as lackeys. An example of the latter are the logs for archiving older events.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_show_long_vip', 'Show long VIP list (one row per log)') + show_help("This is another type of displaying the VIP list. If you disable this option you get the short list, one row per VIP and the logs as icons beside the VIP. If you enable this option, there is a row for every log.") + "<br>";
             html += "&nbsp; " + checkboxy('settings_vip_show_nofound', 'Show a list of VIPs who have not found the cache') + "<br>";
@@ -18817,8 +18836,8 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; " + checkboxy('settings_vup_hide_avatar', 'Also hide name, avatar and counter from log') + "<br>";
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
 
-            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Bookmark Lists<font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
-            html += checkboxy('settings_listing_remove_from_list', 'Add button to remove Cache from a bookmark lists') + show_help("Adds a button to each of your bookmark lists to remove the cache from that list.") + "<br>";
+            html += "<div style='margin-top: 9px; margin-left: 5px'><b>Bookmark Lists <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
+            html += checkboxy('settings_listing_remove_from_list', 'Add button to remove Cache from your bookmark list') + show_help("Adds a button to each of your bookmark lists to remove the cache from that list.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
             html += newParameterOn3;
