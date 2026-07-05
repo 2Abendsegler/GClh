@@ -3915,7 +3915,7 @@ var mainGC = function() {
 // Improve bookmark lists in cache listing.
     if (is_page("cache_listing") && settings_listing_remove_from_list) {
         try {
-            // Remove this cache from a bookmark list
+            // Remove this cache from a bookmark list.
             function removeFromBookmarkList(gcCode, listItem) {
                 try {
                     listItem.addClass('gclh_bookmark_list_item_loading');
@@ -3930,7 +3930,7 @@ var mainGC = function() {
                     });
                 } catch(e) { gclh_error("Remove from bookmark list", e); }
             }
-            // Restore removed cache to a bookmark list
+            // Restore removed cache to a bookmark list.
             function restoreToBookmarkList(gcCode, listItem) {
                 try {
                     listItem.addClass('gclh_bookmark_list_item_loading');
@@ -3943,9 +3943,9 @@ var mainGC = function() {
                         success: function (result) { listItem.removeClass('gclh_bookmark_list_item_loading gclh_bookmark_list_item_removed') },
                         error: function(error) { listItem.removeClass('gclh_bookmark_list_item_loading'); }
                     });
-                } catch(e) { gclh_error("Restote to bookmark list", e); }
+                } catch(e) { gclh_error("Restore to bookmark list", e); }
             }
-            // Improve bookmark lists. I.e. add remove from list button
+            // Improve bookmark lists. I.e. add remove from list button.
             function improveBookmarkLists(bookmarkListRoot) {
                 var listItems = bookmarkListRoot.find('div div div ul li');
                 var gcCode = bookmarkListRoot.attr('data-reference-code');
@@ -3960,7 +3960,7 @@ var mainGC = function() {
                         listItemRemove.click(function() { removeFromBookmarkList(gcCode, listItem); });
                         listItemRestore.click(function() { restoreToBookmarkList(gcCode, listItem); });
                         listItem.append(listItemLoader, listItemRemove, listItemRestore).addClass('gclh_bookmark_list_item');;
-                    } catch(e) { gclh_error("Improve bookmark lists", e); }
+                    } catch(e) { gclh_error("Improve bookmark list items", e); }
                 });
             }
             function appendBookmarkListStyles() {
@@ -3975,23 +3975,20 @@ var mainGC = function() {
                 css += '.gclh_bookmark_list_loader, .gclh_bookmark_list_restore { display: none; }';
                 css += '.gclh_bookmark_list_item_removed .gclh_bookmark_list_remove { display: none; }';
                 css += '.gclh_bookmark_list_item_removed .gclh_bookmark_list_restore { display: flex; }';
-                css += '.gclh_bookmark_list_item_removed div:first-child { opacity: .25; }';
+                css += '.gclh_bookmark_list_item_removed div:first-child { opacity: .4; }';
                 css += '.gclh_bookmark_list_item_removed div:first-child a:first-child { text-decoration-line: line-through !important; }';
                 css += '.gclh_bookmark_list_item_removed div:first-child a:first-child:hover { text-decoration-line: line-through underline !important; }';
                 css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_loader { display: flex; }';
                 css += '.gclh_bookmark_list_item_loading .gclh_bookmark_list_remove, .gclh_bookmark_list_item_loading .gclh_bookmark_list_restore { display: none; }';
                 appendCssStyle(css);
             }
-            // Bookmark lists are fetched asychrinous, so we have to wait until they're rendered
+            // Bookmark lists are fetched asynchronous, so we have to wait until they're rendered.
             function waitForBookmarkLists(waitCount) {
                 var bookmarkListRoot = $('#bookmark-lists-root');
                 if (bookmarkListRoot.find('div div div ul li').length) {
                     appendBookmarkListStyles();
                     improveBookmarkLists(bookmarkListRoot);
-                } else {
-                    waitCount ++;
-                    if (waitCount <= 100) { setTimeout(function() { waitForBookmarkLists(waitCount); }, 100); }
-                }
+                } else {waitCount++; if (waitCount <= 100) setTimeout(function(){waitForBookmarkLists(waitCount);}, 100);}
             }
             waitForBookmarkLists(0);
         } catch(e) { gclh_error("Improve bookmark lists",e); }
@@ -18041,6 +18038,7 @@ var mainGC = function() {
             html += thanksLineBuild("Pzi",                  "PetziAt",                  false, false, true,  false, false);
             html += thanksLineBuild("",                     "sdennler",                 false, false, true,  false, false);
             html += thanksLineBuild("bruzie",               "",                         false, false, true,  false, false);
+            html += thanksLineBuild("hei go",               "heiCode",                  false, false, true,  false, false);
             html += thanksLineBuild("",                     "ztNFny",                   false, false, true,  true,  false); // GC user changed from ztNFny. Could not find new name.
             html += thanksLineBuild("FoxFil",               "",                         false, false, true,  true,  false);
             html += thanksLineBuild("rambii",               "",                         false, false, true,  false, true);
@@ -18837,7 +18835,7 @@ var mainGC = function() {
             html += " &nbsp; &nbsp; &nbsp; " + checkboxy('settings_vup_hide_log', 'Hide complete log') + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Bookmark Lists <font class='gclh_small' style='vertical-align: text-bottom;'>(right sidebar)</font></b>" + "</div>";
-            html += checkboxy('settings_listing_remove_from_list', 'Add button to remove Cache from your bookmark list') + show_help("Adds a button to each of your bookmark lists to remove the cache from that list.") + "<br>";
+            html += checkboxy('settings_listing_remove_from_list', 'Add button to remove cache from your bookmark list') + show_help("Adds a button to each of your bookmark lists to remove the cache from that list.") + "<br>";
 
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Cache Description</b>" + "</div>";
             html += newParameterOn3;
