@@ -8752,8 +8752,6 @@ var mainGC = function() {
             function override_standard_templates(waitCount) {
                 if (typeof unsafeWindow.$ !== "undefined" &&
                     typeof unsafeWindow.$("#tmpl_CacheLogRow").template !== "undefined" &&
-                    typeof unsafeWindow.initialLogs !== "undefined" &&
-                    unsafeWindow.initialLogs !== null &&
                     (typeof chromeUserData.includeAvatars !== "undefined" || typeof unsafeWindow.includeAvatars !== "undefined" || typeof includeAvatars !== "undefined")) {
                     document.getElementById('tmpl_CacheLogRow').innerHTML = new_tmpl;
                     var elem = unsafeWindow.$('#tmpl_CacheLogRow')[0];
@@ -8766,17 +8764,8 @@ var mainGC = function() {
                             window.$("#tmpl_CacheLogRow").template("tmplCacheLogRow");
                         }, "()");
                     }
-                    // Reinit initalLogs.
                     // Timeout is necessary because otherwise the fancybox for images is not working (WTF??).
                     setTimeout(function(){
-                        unsafeWindow.$("#cache_logs_table tbody").children().remove();
-                        var initialLogs = unsafeWindow.initialLogs;
-                        var inclAvatars = chromeUserData.includeAvatars || unsafeWindow.includeAvatars || includeAvatars;
-                        for (var i = 0; i < initialLogs.data.length; i++) {
-                            var newBody = unsafeWindow.$(document.createElement("TBODY"));
-                            unsafeWindow.$("#tmpl_CacheLogRow_gclh").tmpl(initialLogs.data[i]).appendTo(newBody);
-                            unsafeWindow.$(document.getElementById("cache_logs_table")).append(newBody.children());
-                        }
                         unsafeWindow.$('a.tb_images').fancybox({'type': 'image', 'titlePosition': 'inside'});
                         gclh_add_vip_icon();
                         buildEventShowBiggerAvatar();
