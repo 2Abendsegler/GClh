@@ -68,7 +68,7 @@
 		- No GClh Add to List feature<br><br>
 	</li>
 	<li>
-		<strong>New:</strong> [Cache Listing] Remove cache from bookmark list directly from the cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2421" title="Issue 2421">2421</a> / <a href="https://www.geocaching.com/profile/?u=heiCode" title="Thanks to heiCode">heiCode</a>]<br>
+		<strong>New:</strong> [Cache Listing] Remove cache from bookmark list directly from the cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2421" title="Issue 2421">2421</a> / <a href="https://www.geocaching.com/profile/?u=hei go" title="Thanks to hei go">hei go</a>]<br>
 		<img src="../images/0.18.11/Screen01.gif" alt="Screen01.gif"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_remove_from_list" title="Link to your GClh II Config">Settings -> Listing - Bookmark Lists:<br>
 		<img src="../images/0.18.11/Screen02.jpg" alt="Screen02.jpg"></a><br>
