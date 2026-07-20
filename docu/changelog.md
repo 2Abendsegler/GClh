@@ -1,3 +1,4 @@
+<a href="#v01811" title="GClh II version 0.18.11 (21.07.2026)">v0.18.11</a> &nbsp;
 <a href="#v01810" title="GClh II version 0.18.10 (27.06.2026)">v0.18.10</a> &nbsp;
 <a href="#v0189" title="GClh II version 0.18.9 (13.06.2026)">v0.18.9</a> &nbsp;
 <a href="#v0188" title="GClh II version 0.18.8 (31.05.2026)">v0.18.8</a> &nbsp;
@@ -48,6 +49,27 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.11:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Listing, Maps] New listing website release leads to bugs (30.06.2026). [<a href="https://github.com/2Abendsegler/GClh/issues/3238" title="Issue 3238">3238</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3238" title="Issue 3238">3238</a>.<br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Cache Listing] Remove cache from bookmark list directly from the cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2421" title="Issue 2421">2421</a> / <a href="https://www.geocaching.com/profile/?u=heiCode" title="Thanks to heiCode">heiCode</a>]<br>
+		<img src="../images/0.18.11/Screen01.gif" alt="Screen01.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_listing_remove_from_list" title="Link to your GClh II Config">Settings -> Listing - Bookmark Lists:<br>
+		<img src="../images/0.18.11/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/2421" title="Issue 2421">2421</a>.<br><br>
+	</li>
+</ul>
+<br>
+(21.07.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.10:
