@@ -197,6 +197,7 @@
   "settings_link_big_listing": true,
   "settings_vup_hide_avatar": false,
   "settings_vup_hide_log": false,
+  "settings_listing_remove_from_list": true,
   "settings_pq_warning": true,
   "settings_pq_set_cachestotal": true,
   "settings_pq_cachestotal": 1000,
