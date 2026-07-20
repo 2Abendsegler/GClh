@@ -56,7 +56,16 @@
 <ul>
 	<li>
 		<strong>Fix:</strong> [Listing, Maps] New listing website release leads to bugs (30.06.2026). [<a href="https://github.com/2Abendsegler/GClh/issues/3238" title="Issue 3238">3238</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3238" title="Issue 3238">3238</a>.<br><br>
+		The following bugs have been fixed:<br>
+		Listing:<br>
+		- No latest logs in listing header<br>
+		- No Log totals in listing header<br>
+		- Only loading VIP lists<br>
+		- No buttons and search feature above the logs<br>
+		- No or incorrect and incomplete GClh logs<br>
+		Browse Map / Search Map:<br>
+		- No additional cache data<br>
+		- No GClh Add to List feature<br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Cache Listing] Remove cache from bookmark list directly from the cache listing. [<a href="https://github.com/2Abendsegler/GClh/issues/2421" title="Issue 2421">2421</a> / <a href="https://www.geocaching.com/profile/?u=heiCode" title="Thanks to heiCode">heiCode</a>]<br>
