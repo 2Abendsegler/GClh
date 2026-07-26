@@ -31,6 +31,8 @@
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @resource leafletjs https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.js
 // @resource leafletcss https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.css
+// @resource maplibregl https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js
+// @resource leafletmaplibregl https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.1.3/leaflet-maplibre-gl.min.js
 // @connect      maps.googleapis.com
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
@@ -748,6 +750,7 @@ var variablesInit = function(c) {
     c.settings_add_overlay_wmthiking = getValue("settings_add_overlay_wmthiking", true);
     c.settings_add_overlay_wmtcycling = getValue("settings_add_overlay_wmtcycling", true);
     c.settings_add_overlay_wmtmtb = getValue("settings_add_overlay_wmtmtb", true);
+    c.settings_add_overlay_hillshading = getValue("settings_add_overlay_hillshading", true);
     c.settings_add_search_in_logs_func = getValue("settings_add_search_in_logs_func", true);
     c.settings_show_add_cache_info_in_log_page = getValue("settings_show_add_cache_info_in_log_page", true);
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
@@ -13380,13 +13383,6 @@ var mainGC = function() {
 // Add layers, control to map and set default layers.
     function addLayersOnMap() {
         try {
-            //>> Issue 2016
-            // [Browse Map] Map overlay "Hillshadow" doesn't work. Issue: https://github.com/2Abendsegler/GClh/issues/2016
-            // The "Hillshadow" service is no longer available. We have removed the feature. We'll keep an eye on it, maybe the service will be reactivated,
-            // then we'll reinstall it. The adjustments in the script are marked with "Issue 2016".
-            settings_show_hillshadow = false;
-            //<< Issue 2016
-            // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
             // Sind weniger als 2 Layer im Config ausgewählt, werden alle Layer verwendet.
@@ -13402,12 +13398,16 @@ var mainGC = function() {
             for (var i = 0; i < new_settings_map_layers.length; i++) { map_layers[new_settings_map_layers[i]] = all_map_layers[new_settings_map_layers[i]]; }
             // Layer Control aufbauen.
             function addLayerControl() {
+                // Initialize MapLibre GL for hillshading overlay.
+                if (settings_add_overlay_hillshading) maplibreGLInit(0);
+
                 // Filter selected overlays.
                 let map_overlays_selected = {};
                 for (const key in map_overlays) {
                     if ((key === "Waymarked Trails Hiking" && settings_add_overlay_wmthiking) ||
                         (key === "Waymarked Trails Cycling" && settings_add_overlay_wmtcycling) ||
-                        (key === "Waymarked Trails MTB" && settings_add_overlay_wmtmtb)) {
+                        (key === "Waymarked Trails MTB" && settings_add_overlay_wmtmtb) ||
+                        (key === "Hillshading" && settings_add_overlay_hillshading)) {
                         map_overlays_selected[key] = map_overlays[key];
                     }
                 }
@@ -13429,16 +13429,21 @@ var mainGC = function() {
                                 if (name == settings_map_default_layer) defaultLayer = layerToAdd;
                                 else if (defaultLayer == null) defaultLayer = layerToAdd;
                             }
-                            //>> Issue 2016
+                            var tilePane = MapSettings.Map.getPane('tilePane');
                             for (name in map_overlays_selected) {
-                                layerToAdd = new L.tileLayer(map_overlays_selected[name].tileUrl, map_overlays_selected[name]);
-                                layerControl.addOverlay(layerToAdd, name);
+                                if (name === 'Hillshading') addHillshadingOverlay(0, name, map_overlays_selected[name]);
+                                else {
+                                    // Ensure that overlays are not hidden by hillshading (z-index=50), but still are above base map and below cache icons.
+                                    MapSettings.Map.createPane(name, tilePane);
+                                    MapSettings.Map.getPane(name).style.zIndex = 51;
+                                    const opts = {...map_overlays_selected[name], pane: name};
+                                    layerToAdd = new L.tileLayer(map_overlays_selected[name].tileUrl, opts);
+                                    layerControl.addOverlay(layerToAdd, name);
+                                }
                             }
-                            //<< Issue 2016
                             window.MapSettings.Map.addControl(layerControl);
                             layerControl._container.className += " gclh_layers gclh_used";
                             window.MapSettings.Map.addLayer(defaultLayer);
-                            if (settings_show_hillshadow) $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
                             document.querySelector('.leaflet-control-layers.gclh_layers').id = "gclh_layers";
                             var side = document.querySelector('.leaflet-control-layers');
                             if (document.location.pathname.match(/^\/map/)) {
@@ -13482,6 +13487,194 @@ var mainGC = function() {
                                 }, 0);
                             }
                         }
+                        function addHillshadingOverlay(waitCount, name, layer) {
+                            if (typeof L.maplibreGL !== 'undefined' && document.querySelector('.leaflet-control-layers-overlays')) {
+                                // MapLibre GL style with Mapterhorn hillshade overlay.
+                                const style = {
+                                    version: 8,
+                                    sources: { mapterhorn: { type: "raster-dem", url: layer.tileUrl } },
+                                    layers: [
+                                        { id: "bg",
+                                          type: "background",
+                                          layout: { "visibility": "none" },
+                                          paint: { "background-color": "#78A56F", "background-opacity": 1 }
+                                        },
+                                        { id: "hillshade",
+                                          type: "hillshade",
+                                          source: "mapterhorn",
+                                          paint: {
+                                            "hillshade-exaggeration": 1.0,
+                                            "hillshade-shadow-color": "#000000",
+                                            "hillshade-highlight-color": "#FFFFFF",
+                                             "hillshade-accent-color": "rgba(0, 0, 0, 1)"
+                                          }
+                                        }
+                                    ]
+                                };
+                                // Separate pane in 'tilePane' is necessary, otherwise the overlay is hidden behind the map.
+                                MapSettings.Map.createPane(name, tilePane);
+                                MapSettings.Map.getPane(name).style.zIndex = 50;
+                                layerToAdd = L.maplibreGL({
+                                    attribution: layer.attribution,
+                                    maxZoom: layer.maxZoom,
+                                    minZoom: layer.minZoom,
+                                    pane: name,
+                                    style: style
+                                });
+                                layerControl.addOverlay(layerToAdd, name);
+                                // Proper show/hide attribution handling.
+                                layerToAdd.getAttribution = function() {return this.options.attribution;};
+
+                                // Get opacity from storage (or use default value 0.5).
+                                const default_opacity = localStorage.getItem('gclh_hillshading_opacity') * 1 || 0.5;
+
+                                // State variables.
+                                let glContainer;
+                                let hillshadingMap;
+                                let opacityBeforeRelief = null;
+                                let reliefCheckbox;
+                                let reliefLabel;
+                                let reliefWasChecked = false;
+                                let slider;
+                                let uiInitialized = false;
+
+                                layerToAdd.on('add', function() {
+                                    // Re-sync GL layer position/zoom with Leaflet, otherwise the layer could be shifted after re-add.
+                                    layerToAdd._update();
+
+                                    // One-time UI setup.
+                                    if (!uiInitialized) uiInitialized = setupHillshadingUI();
+
+                                    // Initialize hillshading opacity.
+                                    glContainer = layerToAdd.getContainer();
+                                    if (glContainer) glContainer.style.opacity = slider.value;
+
+                                    // Get hillshading map to control the relief view.
+                                    hillshadingMap = layerToAdd.getMaplibreMap();
+
+                                    // Restore relief state on re-enable.
+                                    if (reliefWasChecked) {
+                                        if (reliefCheckbox && !reliefCheckbox.checked) reliefCheckbox.checked = true;
+                                        const applyRelief = function() {hillshadingMap.setLayoutProperty('bg', 'visibility', 'visible');};
+                                        if (hillshadingMap.isStyleLoaded()) applyRelief();
+                                        else hillshadingMap.once('load', applyRelief);
+                                    }
+                                });
+
+                                // Enable hillshading on page load.
+                                if (settings_show_hillshadow) layerToAdd.addTo(MapSettings.Map);
+
+                                // Add slider and relief view controls, handle their visibilty and preserve current opacity value among sessions.
+                                function setupHillshadingUI() {
+                                    // Get hillshading checkbox.
+                                    const overlay_checkboxes = Array.from(document.querySelectorAll('.leaflet-control-layers-overlays input[type="checkbox"]'));
+                                    const hillshadingCheckbox = overlay_checkboxes.find(function(cb) {
+                                        return cb.closest('label')?.textContent.includes(name);
+                                    });
+                                    if (!hillshadingCheckbox) return false;
+
+                                    // Setup opacity slider.
+                                    const sliderContainer = document.createElement('div');
+                                    sliderContainer.style.display = settings_show_hillshadow ? 'block' : 'none';
+                                    sliderContainer.style.marginLeft = document.location.pathname.match(/^(\/live|)\/play\/map/) ? '4px' : '';
+                                    sliderContainer.style.marginTop = typeof(chrome) === "undefined" ? '2px' : (document.location.pathname.match(/^\/map/) ? '-4px' : '');
+                                    const label = document.createElement('label');
+                                    label.htmlFor = 'Opacity';
+                                    label.textContent = 'Opacity: ';
+                                    label.style.fontSize = '0.95em';
+                                    const valueDisplay = document.createElement('span');
+                                    valueDisplay.id = 'OpacityValue';
+                                    valueDisplay.textContent = Math.round(default_opacity * 100) + '%';
+                                    valueDisplay.style.fontSize = '0.95em';
+                                    valueDisplay.style.marginLeft = '4px';
+                                    slider = document.createElement('input');
+                                    slider.id = 'Opacity';
+                                    slider.type = 'range';
+                                    slider.min = 0; slider.max = 1; slider.step = 0.01;
+                                    slider.value = default_opacity;
+                                    slider.style.verticalAlign = 'middle';
+                                    slider.style.width = '100px';
+                                    slider.addEventListener('input', function() {
+                                        if (glContainer) glContainer.style.opacity = slider.value;
+                                        valueDisplay.textContent = Math.round(slider.value * 100) + '%';
+                                        // If relief is active and the slider is moved manually, then discard the saved value so that nothing is reset when relief is deactivated.
+                                        if (reliefCheckbox && reliefCheckbox.checked) opacityBeforeRelief = null;
+                                    });
+                                    label.appendChild(slider);
+                                    label.appendChild(valueDisplay);
+                                    sliderContainer.appendChild(label);
+
+                                    // Setup relief view control.
+                                    const hillshadingLabel = hillshadingCheckbox.closest('label');
+                                    reliefLabel = hillshadingLabel.cloneNode(true);
+                                    reliefCheckbox = reliefLabel.querySelector('input[type="checkbox"]');
+                                    reliefCheckbox.id = 'Relief';
+                                    reliefCheckbox.checked = false;
+                                    reliefLabel.querySelectorAll('span').forEach(function(sp) {
+                                        if (!sp.querySelector('input')) sp.textContent = ' Relief view';
+                                    });
+                                    reliefLabel.style.display = settings_show_hillshadow ? 'inline-flex' : 'none';
+                                    reliefLabel.style.alignItems = 'center';
+                                    reliefCheckbox.addEventListener('change', function() {
+                                        if (reliefCheckbox.checked) {
+                                            // Store current hillshading opacity.
+                                            opacityBeforeRelief = slider.value;
+                                            // Maximize opacity.
+                                            slider.value = 1;
+                                            if (glContainer) glContainer.style.opacity = 1;
+                                            valueDisplay.textContent = '100%';
+                                        } else {
+                                            if (opacityBeforeRelief !== null) {
+                                                // Restore opacity.
+                                                slider.value = opacityBeforeRelief;
+                                                if (glContainer) glContainer.style.opacity = opacityBeforeRelief;
+                                                valueDisplay.textContent = Math.round(opacityBeforeRelief * 100) + '%';
+                                            }
+                                        }
+                                        // Visibility of hillshading background layer for relief view.
+                                        reliefWasChecked = reliefCheckbox.checked;
+                                        if (hillshadingMap && hillshadingMap.isStyleLoaded()) {
+                                            hillshadingMap.setLayoutProperty(
+                                                'bg', 'visibility', reliefCheckbox.checked ? 'visible' : 'none'
+                                            );
+                                        }
+                                    });
+
+                                    // Add relief view control after hillshading control.
+                                    hillshadingLabel.style.display = 'inline-flex';
+                                    hillshadingLabel.style.alignItems = 'center';
+                                    hillshadingLabel.insertAdjacentElement('afterend', reliefLabel);
+
+                                    // Add slider below.
+                                    document.querySelector('.leaflet-control-layers-overlays').appendChild(sliderContainer);
+
+                                    // Show slider and relief view controls only if hillshading is active.
+                                    hillshadingCheckbox.addEventListener('change', function() {
+                                        const visible = hillshadingCheckbox.checked;
+                                        sliderContainer.style.display = visible ? 'block' : 'none';
+                                        reliefLabel.style.display = visible ? 'inline-flex' : 'none';
+                                        if (visible && reliefWasChecked && !reliefCheckbox.checked) {
+                                            reliefCheckbox.checked = true;
+                                            reliefCheckbox.dispatchEvent(new Event('change'));
+                                        }
+                                    });
+
+                                    // Preserve current slider value among sessions.
+                                    const list = document.querySelector('.leaflet-control-layers-list');
+                                    if (list && !list.dataset.opacityListenerAdded) {
+                                        list.dataset.opacityListenerAdded = 'true';
+                                        list.addEventListener('mouseleave', function() {
+                                            if (MapSettings.Map.hasLayer(layerToAdd)) {
+                                                localStorage.setItem('gclh_hillshading_opacity', opacityBeforeRelief ? opacityBeforeRelief : slider.value);
+                                            }
+                                        });
+                                    }
+                                    return true;
+                                }
+                            } else {
+                                if (++waitCount <= 200) setTimeout(function() {addHillshadingOverlay(waitCount, name, layer);}, 50);
+                            }
+                        }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
                 }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays_selected) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + "," + settings_sort_map_layers + ")");
@@ -13510,13 +13703,6 @@ var mainGC = function() {
                                 break;
                             }
                         }
-                    }
-                }
-                var hs = ".gclh_layers.gclh_used .leaflet-control-layers-overlays";
-                if ($(hs).find('label input')[0]) {
-                    if ((settings_show_hillshadow == true && $(hs).find('label input')[0].checked != true) ||
-                        (settings_show_hillshadow != true && $(hs).find('label input')[0].checked == true)) {
-                        $(hs).find('label input').first().click();
                     }
                 }
             }
@@ -13572,6 +13758,13 @@ var mainGC = function() {
                 // über den Browser.
                 css += '#gclh_layers {border: none;}';
                 css += '#gclh_layers > a {width: 40px; height: 40px; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
+            }
+            // Style hillshading opacity slider in Firefox (to get the same look as in Chrome).
+            if (settings_add_overlay_hillshading && typeof(chrome) === "undefined") {
+                css += 'input[type="range"] {margin: 0; border: none; cursor: pointer;}';
+                css += 'input[type="range"]::-moz-range-track {height: 8px; background: #e0e0e0; border: none; border-radius: 6px;}';
+                css += 'input[type="range"]::-moz-range-progress {height: 8px; background: #007bff; border-radius: 6px 0 0 6px;}';
+                css += 'input[type="range"]::-moz-range-thumb {width: 16px; height: 16px; background: #007bff; border: none; border-radius: 50%;}';
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Add layers, control to map and set default layers",e);}
@@ -16371,6 +16564,22 @@ var mainGC = function() {
         } catch(e) {gclh_error("function leafletInit",e);}
     }
 
+// Maplibre-GL init.
+    function maplibreGLInit(waitCount) {
+        if (unsafeWindow.L) {
+            try {
+                let newJS = GM_getResourceText("maplibregl");
+                injectPageScript(newJS, "body", "gclh_maplibregl");
+                newJS = GM_getResourceText("leafletmaplibregl");
+                injectPageScript(newJS, "body", "gclh_leafletmaplibregl");
+            } catch(e) {
+                gclh_error("function maplibreGLInit", e);
+            }
+        } else {
+            if (++waitCount <= 200) setTimeout(function() {maplibreGLInit(waitCount);}, 50);
+        }
+    }
+
 // Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
@@ -18514,9 +18723,6 @@ var mainGC = function() {
             html += "<tr><td colspan='3'>Default map layer &nbsp; <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a map layer from the right list and push the button \"Set default map layer\".");
             html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default map layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
-            //>> Issue 2016
-            //html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
-            //<< Issue 2016
             html += "</td></tr>";
             html += "</tbody></table>";
             html += checkboxy('settings_sort_map_layers', 'Sort map layers in map') + "<br>";
@@ -18526,6 +18732,10 @@ var mainGC = function() {
             html += checkboxy('settings_add_overlay_wmtcycling', 'Waymarked Trails Cycling') + "<br>";
             html += checkboxy('settings_add_overlay_wmtmtb', 'Waymarked Trails MTB') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_add_overlay_hillshading', 'Hillshading') + show_help("If you want 3D-like-shadows to be displayed, activate this overlay.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_show_hillshadow', 'Show hillshading by default') + "<br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += "</div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps Page</b></div>";
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
@@ -20064,6 +20274,7 @@ var mainGC = function() {
             setEvForDepPara("settings_download_pqs_replace_file_name_founds", "settings_download_pqs_file_name_founds");
             setEvForDepPara("settings_view_larger_log_images_db", "settings_view_larger_log_images_max_width_db");
             setEvForDepPara("settings_view_larger_log_images_db", "settings_view_larger_log_images_max_height_db");
+            setEvForDepPara("settings_add_overlay_hillshading", "settings_show_hillshadow");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -20600,6 +20811,7 @@ var mainGC = function() {
                 'settings_add_overlay_wmthiking',
                 'settings_add_overlay_wmtcycling',
                 'settings_add_overlay_wmtmtb',
+                'settings_add_overlay_hillshading',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
                 'settings_show_create_pq_from_pq_splitter',
