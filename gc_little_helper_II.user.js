@@ -11328,11 +11328,16 @@ var mainGC = function() {
                                 // Add proxy to modify cache properties.
                                 if (key && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                                     // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
-                                    // (if "show at corrected coords" is active on page load)
+                                    // (if "show at corrected coords" is active on page load).
                                     setTimeout(() => {
                                         unsafeWindow.GCLH.getLayout[key].getLayout = new Proxy(unsafeWindow.GCLH.getLayout[key].getLayout, {
                                             apply: (target, thisArg, argArray) => {
-                                                processCaches(argArray[0]);
+                                                arg0 = argArray[0];
+                                                // If called from page (not from gclh), store the actual search results for further use.
+                                                // ATTENTION: searchResults inside arg0 is altered by processCaches, therefore we need to store a separate, cloned copy before altering.
+                                                if (gclhCall) gclhCall = false;
+                                                else searchResultsUnaltered = structuredClone(arg0.props.searchResults);
+                                                processCaches(arg0);
                                                 return target.apply(thisArg, argArray);
                                             }
                                         });
@@ -11469,8 +11474,21 @@ var mainGC = function() {
 
             // Force a refresh of all caches on the map (without reloading from the server).
             let moveend_zoomend = false;
+            let arg0;
+            let searchResultsUnaltered;
+            let gclhCall = false;
             function forceCachesRefresh() {
-                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call.
+                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call
+                // (since July 2026 this is not valid anymore, therefore we call the 'getLayout' function directly).
+
+                // Actual, non-altered search results.
+                arg0.props.searchResults = structuredClone(searchResultsUnaltered);
+                // Mark as gclh call.
+                gclhCall = true;
+                // Call 'getLayout' with non-altered search results.
+                const key = Object.keys(unsafeWindow.GCLH.getLayout).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
+                unsafeWindow.GCLH.getLayout[key].getLayout(arg0);
+
                 moveend_zoomend = true;
                 unsafeWindow.MapSettings?.Map?.fire('moveend');
             }
@@ -11761,17 +11779,17 @@ var mainGC = function() {
                             let checkbox = document.getElementById("gclh_hide"+name);
                             checkbox.checked = !checkbox.checked;
 
-                            forceCachesRefresh();
                             // Clear possible cache selection.
                             unsafeWindow.MapSettings?.Map?.fireEvent('click');
                             // Toggle state variable.
                             eval('hide'+name+' = !hide'+name+';');
+                            forceCachesRefresh();
                             updateFilterLegendStatus(color);
                         });
                     }
                     // Handle clicks on legend icons.
                     function createLegendClickHandlers(color) {
-                        $("#gclh_hideLegend"+color+"_svg").click(function () {
+                        $("#gclh_hideLegend"+color+"_svg").click(function() {
                             // Toggle checkbox.
                             let checkbox = document.getElementById("gclh_hideLegend"+color);
                             checkbox.checked = !checkbox.checked;
@@ -11785,7 +11803,6 @@ var mainGC = function() {
                                 }
                             });
 
-                            forceCachesRefresh();
                             // Clear possible cache selection.
                             unsafeWindow.MapSettings?.Map?.fireEvent('click');
                             // Toggle state variable.
@@ -11812,21 +11829,21 @@ var mainGC = function() {
 
                     // Handle clicks on corrected coords option.
                     $("#gclh_showAtCorrectedCoords").click(function() {
-                        forceCachesRefresh();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         // Toggle state variable.
                         showAtCorrectedCoords = !showAtCorrectedCoords;
+                        forceCachesRefresh();
                         // Save state.
                         setValue('set_switch_SM_show_at_corrected_coords', showAtCorrectedCoords);
                     });
                     // Handle clicks on hide DNF icons option.
                     $("#gclh_hideDNFIcons").click(function() {
-                        forceCachesRefresh();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         // Toggle state variable.
                         hideDNFIcons = !hideDNFIcons;
+                        forceCachesRefresh();
                         // Save state.
                         setValue('set_switch_SM_hide_dnf_icons', hideDNFIcons);
                     });
