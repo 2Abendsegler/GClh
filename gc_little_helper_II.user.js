@@ -1998,7 +1998,7 @@ var mainGC = function() {
                 if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/) ||  // Pocket Query: Einstellungen zur Selektion
                     document.location.href.match(/\.com\/pocket\/bmquery\.aspx/));  // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
                 else {
-                    css += "#Content .container, #Content .span-24, .span-24 {width: " + new_width + "px;}";
+                    css += "#Content .container, #Content .content-main, #Content .content-main-full, #Content .span-24, .span-24 {width: " + new_width + "px;}";
                     css += ".CacheStarLabels.span-6 {width: " + ((new_width - 300 - 190 - 10 - 10) / 2) + "px !important;}";
                     css += ".span-6.right {width: " + ((new_width - 300 - 190 - 10 - 10) / 2) + "px !important;}";
                     css += ".span-8 {width: " + ((new_width - 330 - 10) / 2) + "px !important;}";
@@ -2026,22 +2026,24 @@ var mainGC = function() {
                             css += ".span-9 {width: " + widthSpan9 + "px !important;}";
                         }
                         css += ".container {max-width: " + new_width + "px;}";
+                        css += "#Content .content-main-full > .grid {grid-template-columns: " + (new_width-20-250) + "px 250px !important; column-gap: 20px !important;}";
+                        css += "#Content .content-main-full > .grid > div {padding-left: 0px !important;}";
+                        css += ".LocationData > div {flex: auto !important; width: unset !important;}";
+                        if (settings_hide_spoilerwarning) css += ".Callout > p {width: 100% !important;}";
                     } else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                         css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
                         if (is_page("publicProfile")) {
                             // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
                             css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth {width: 751px;}";
-                            css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
+                            css += ".ProfileStats {overflow-x: hidden;}";
                             // Prevent that display of percentage of caches found in each country exceeds display area.
-                            css += "#StatsFlagLists {max-width: " + (new_width - 754) + "px;}";
                             css += "#StatsFlagLists .Table td a {word-break: break-word;}";
                         } else {
                             // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
-                            css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 790px;}";
-                            css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
+                            css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 736px;}";
+                            css += ".ProfileStats {overflow-x: hidden;}";
                             // Prevent that display of percentage of caches found in each country exceeds display area.
-                            css += "#StatsFlagLists {max-width: " + (new_width - 715) + "px;}";
                             css += "#StatsFlagLists .Table td a {word-break: break-word;}";
                         }
                         css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
@@ -3766,7 +3768,7 @@ var mainGC = function() {
                 logviewSendIconsObserver.observe(document.body, config);
             // Rest:
             } else {
-                if (is_page("cache_listing")) var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
+                if (is_page("cache_listing")) var links = $('#ctl00_ContentBody_mcd1, #divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 else var links = document.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=/)) {
@@ -8014,7 +8016,7 @@ var mainGC = function() {
                 var log_infos = new Object();
                 var log_infos_long = new Array();
                 var index = 0;
-                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
+                var links = $('#ctl00_ContentBody_mcd1, #divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
                 var owner_name = "";
                 if ($('#ctl00_ContentBody_mcd1')[0]) {
