@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.11
+// @version      0.18.12
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -289,6 +289,8 @@ var constInit = function(c) {
     bookmark("Unpublished Events", "/play/owner/unpublished/events", c.bookmarks);
     bookmark("Archived Events", "/play/owner/archived/events", c.bookmarks);
     bookmark("Treasures", "/play/treasure", c.bookmarks);
+    bookmark("Shareables", "/play/shareables", c.bookmarks);
+    bookmark("Public Profile Shareables", "/p/default.aspx?tab=shareables#profilepanel", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -531,6 +533,7 @@ var variablesInit = function(c) {
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
     c.settings_link_big_listing = getValue("settings_link_big_listing", true);
     c.settings_show_big_gallery = getValue("settings_show_big_gallery", false);
+    c.settings_compact_layout_myfriends = getValue("settings_compact_layout_myfriends", true);
     c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", false);
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
     c.settings_load_logs_with_gclh = getValue("settings_load_logs_with_gclh", true);
@@ -1722,7 +1725,8 @@ var mainGC = function() {
                 $('body').prepend(header_old);
                 // Set z-index for old header on specific pages to prevent header elements from disappearing behind page elements:
                 // Search Map and Treasures: Prevent menus from disappearing behind icons (with v0.18.5).
-                if (is_page('searchmap') || document.location.href.match(/\.com\/play\/treasure/)) appendCssStyle('gclh_nav .wrapper {z-index: 2500;}');
+                // Shareables: Prevent menus from disappearing behind icons (with v0.18.12).
+                if (is_page('searchmap') || document.location.href.match(/\.com\/play\/treasure/) || document.location.href.match(/\.com\/play\/shareables/)) appendCssStyle('gclh_nav .wrapper {z-index: 2500;}');
                 // Run header relevant features.
                 tlc('START setUserParameter');
                 setUserParameter();
@@ -1998,7 +2002,7 @@ var mainGC = function() {
                 if (document.location.href.match(/\.com\/pocket\/gcquery\.aspx/) ||  // Pocket Query: Einstellungen zur Selektion
                     document.location.href.match(/\.com\/pocket\/bmquery\.aspx/));  // Pocket Query aus Bockmarkliste: Einstellungen zur Selektion
                 else {
-                    css += "#Content .container, #Content .span-24, .span-24 {width: " + new_width + "px;}";
+                    css += "#Content .container, #Content .content-main, #Content .content-main-full, #Content .span-24, .span-24 {width: " + new_width + "px;}";
                     css += ".CacheStarLabels.span-6 {width: " + ((new_width - 300 - 190 - 10 - 10) / 2) + "px !important;}";
                     css += ".span-6.right {width: " + ((new_width - 300 - 190 - 10 - 10) / 2) + "px !important;}";
                     css += ".span-8 {width: " + ((new_width - 330 - 10) / 2) + "px !important;}";
@@ -2011,7 +2015,7 @@ var mainGC = function() {
                     css += ".LogDisplayRight {width: " + (new_width - 180) + "px !important;}";
                     css += "#log_tabs .LogDisplayRight {width: " + (new_width - 355) + "px !important;}";
                     css += "#uxBookmarkListName {width: " + (new_width - 470 - 5) + "px !important;}";
-                    css += "table.TrackableItemLogTable div {width: " + (new_width - 160) + "px !important; max-width: unset;}";
+                    css += "table.TrackableItemLogTable div {max-width: unset;}";
                     css += ".UserSuppliedContent {max-width: unset;}";
                     // Besonderheiten:
                     if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
@@ -2026,22 +2030,24 @@ var mainGC = function() {
                             css += ".span-9 {width: " + widthSpan9 + "px !important;}";
                         }
                         css += ".container {max-width: " + new_width + "px;}";
+                        css += "#Content .content-main-full > .grid {grid-template-columns: " + (new_width-20-250) + "px 250px !important; column-gap: 20px !important;}";
+                        css += "#Content .content-main-full > .grid > div {padding-left: 0px !important;}";
+                        css += ".LocationData > div {flex: auto !important; width: unset !important;}";
+                        if (settings_hide_spoilerwarning) css += ".Callout > p {width: 100% !important;}";
                     } else if (document.location.href.match(/\.com\/my\/statistics\.aspx/) || (is_page("publicProfile") && $('#ctl00_ContentBody_ProfilePanel1_lnkStatistics.Active')[0])) {
                         css += ".span-9 {width: " + ((new_width - 280) / 2) + "px !important; margin-right: 30px;} .last {margin-right: 0px;}";
                         css += ".StatsTable {width: " + (new_width - 250) + "px !important;}";
                         if (is_page("publicProfile")) {
                             // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
                             css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth {width: 751px;}";
-                            css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 210) + "px;}";
+                            css += ".ProfileStats {overflow-x: hidden;}";
                             // Prevent that display of percentage of caches found in each country exceeds display area.
-                            css += "#StatsFlagLists {max-width: " + (new_width - 754) + "px;}";
                             css += "#StatsFlagLists .Table td a {word-break: break-word;}";
                         } else {
                             // Prevent "Finds Per Month" and "Cumulative Finds Per Month" from having different widths, after "Finds Per Month" has been made scalable.
-                            css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 790px;}";
-                            css += ".ProfileStats {overflow-x: hidden; width: " + (new_width - 180) + "px;}";
+                            css += "#ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth {width: 736px;}";
+                            css += ".ProfileStats {overflow-x: hidden;}";
                             // Prevent that display of percentage of caches found in each country exceeds display area.
-                            css += "#StatsFlagLists {max-width: " + (new_width - 715) + "px;}";
                             css += "#StatsFlagLists .Table td a {word-break: break-word;}";
                         }
                         css += "#ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_CumulativeFindsPerMonth, #CacheTypesFound, #ctl00_ContentBody_StatsChronologyControl1_FindsPerMonth, #ctl00_ContentBody_StatsChronologyControl1_CumulativeFindsPerMonth {margin-left: -15px;}";
@@ -2344,6 +2350,12 @@ var mainGC = function() {
         var css = ''
         // Define class "working" and "isDisabled".
         css += ".working, .isDisabled {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
+        // Reduce whitespace and improve alignment in listing header.
+        css += "#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoLinkPanel p {margin-top: 14px; margin-bottom: 8px;}";
+        css += "#cacheDetails, .cacheDetailsTitle, #uxFavoritesRatingSection {margin-bottom: 16px; row-gap: 0px !important;}";
+        css += "#ctl00_ContentBody_diffTerr dl dd {padding-bottom: 0;}";
+        css += "#ctl00_ContentBody_CacheInformationTable {margin: 16px 0;}";
+        css += "#Print dd {padding-bottom: 8px !important;}";
         // Display listing images not over the maximum available width for FF and chrome.
         css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
         // Show log totals symbols above the logs again in one line.
@@ -3766,7 +3778,7 @@ var mainGC = function() {
                 logviewSendIconsObserver.observe(document.body, config);
             // Rest:
             } else {
-                if (is_page("cache_listing")) var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
+                if (is_page("cache_listing")) var links = $('#ctl00_ContentBody_mcd1, #divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 else var links = document.getElementsByTagName('a');
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].href.match(/https?:\/\/www\.geocaching\.com\/(profile|p)\/\?guid=/)) {
@@ -7387,7 +7399,17 @@ var mainGC = function() {
                 "  text-decoration:none;} " +
                 "#invitation-button-root {display: flex;}" +
                 ".AddFriendTextbox {" +
+                "  margin-bottom: 16px;" +
                 "  width:48%;}";
+            myf += ".divFHclass, .spanTclass {float: left; width: 100%; margin: 0 0 6px 0;}";
+            if (settings_compact_layout_myfriends) {
+                myf += ".FriendUserPanel, .AddFriendTextbox {margin: 0 0 18px 0 !important;}";
+                myf += ".FriendUserPanel h3, #add-friend-validation, #ctl00_ContentBody_divFriendsHeader {margin: 0 0 6px 0 !important;}";
+                myf += "#ctl00_ContentBody_divFriendsSort {margin: 0 8px 0 0 !important;}";
+                myf += ".FriendWidget {padding: 12px !important; margin: 0 8px 12px 0 !important; width: calc(50% - 10px);}";
+                myf += ".FriendList dd {padding-bottom: 0 !important; float: unset !important; margin-left: 126px !important; max-width: unset !important; word-break: break-word;}";
+                myf += ".FriendText p {margin-bottom: 0 !important;}";
+            }
             appendCssStyle(myf);
 
             var sNewF = "";
@@ -7487,7 +7509,7 @@ var mainGC = function() {
                     // Und "last reset" aktualisieren.
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
-                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
+                    spanTTs[0].innerHTML = 'Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 }
             }
             function buildFriendlistSummary() {
@@ -7501,20 +7523,20 @@ var mainGC = function() {
                 spanT.className = "spanTclass";
                 spanT.style.color = "gray";
                 spanT.style.fontSize = "smaller";
-                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
-                if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
+                spanT.innerHTML = 'Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
+                if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = spanT.innerHTML;
                 document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
-                    boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
+                    boxH.innerHTML = "<b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
                     document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
-                    boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
+                    boxF.innerHTML = "<b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
                     document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
                 }
@@ -8014,7 +8036,7 @@ var mainGC = function() {
                 var log_infos = new Object();
                 var log_infos_long = new Array();
                 var index = 0;
-                var links = $('#divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
+                var links = $('#ctl00_ContentBody_mcd1, #divContentMain .span-17, #divContentMain .sidebar').find('a[href*="/profile/?guid="], a[href*="/p/?guid="]');
                 var owner = "";
                 var owner_name = "";
                 if ($('#ctl00_ContentBody_mcd1')[0]) {
@@ -11328,11 +11350,16 @@ var mainGC = function() {
                                 // Add proxy to modify cache properties.
                                 if (key && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
                                     // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
-                                    // (if "show at corrected coords" is active on page load)
+                                    // (if "show at corrected coords" is active on page load).
                                     setTimeout(() => {
                                         unsafeWindow.GCLH.getLayout[key].getLayout = new Proxy(unsafeWindow.GCLH.getLayout[key].getLayout, {
                                             apply: (target, thisArg, argArray) => {
-                                                processCaches(argArray[0]);
+                                                arg0 = argArray[0];
+                                                // If called from page (not from gclh), store the actual search results for further use.
+                                                // ATTENTION: searchResults inside arg0 is altered by processCaches, therefore we need to store a separate, cloned copy before altering.
+                                                if (gclhCall) gclhCall = false;
+                                                else searchResultsUnaltered = structuredClone(arg0.props.searchResults);
+                                                processCaches(arg0);
                                                 return target.apply(thisArg, argArray);
                                             }
                                         });
@@ -11469,8 +11496,21 @@ var mainGC = function() {
 
             // Force a refresh of all caches on the map (without reloading from the server).
             let moveend_zoomend = false;
+            let arg0;
+            let searchResultsUnaltered;
+            let gclhCall = false;
             function forceCachesRefresh() {
-                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call.
+                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call
+                // (since July 2026 this is not valid anymore, therefore we call the 'getLayout' function directly).
+
+                // Actual, non-altered search results.
+                arg0.props.searchResults = structuredClone(searchResultsUnaltered);
+                // Mark as gclh call.
+                gclhCall = true;
+                // Call 'getLayout' with non-altered search results.
+                const key = Object.keys(unsafeWindow.GCLH.getLayout).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
+                unsafeWindow.GCLH.getLayout[key].getLayout(arg0);
+
                 moveend_zoomend = true;
                 unsafeWindow.MapSettings?.Map?.fire('moveend');
             }
@@ -11761,17 +11801,17 @@ var mainGC = function() {
                             let checkbox = document.getElementById("gclh_hide"+name);
                             checkbox.checked = !checkbox.checked;
 
-                            forceCachesRefresh();
                             // Clear possible cache selection.
                             unsafeWindow.MapSettings?.Map?.fireEvent('click');
                             // Toggle state variable.
                             eval('hide'+name+' = !hide'+name+';');
+                            forceCachesRefresh();
                             updateFilterLegendStatus(color);
                         });
                     }
                     // Handle clicks on legend icons.
                     function createLegendClickHandlers(color) {
-                        $("#gclh_hideLegend"+color+"_svg").click(function () {
+                        $("#gclh_hideLegend"+color+"_svg").click(function() {
                             // Toggle checkbox.
                             let checkbox = document.getElementById("gclh_hideLegend"+color);
                             checkbox.checked = !checkbox.checked;
@@ -11785,7 +11825,6 @@ var mainGC = function() {
                                 }
                             });
 
-                            forceCachesRefresh();
                             // Clear possible cache selection.
                             unsafeWindow.MapSettings?.Map?.fireEvent('click');
                             // Toggle state variable.
@@ -11812,21 +11851,21 @@ var mainGC = function() {
 
                     // Handle clicks on corrected coords option.
                     $("#gclh_showAtCorrectedCoords").click(function() {
-                        forceCachesRefresh();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         // Toggle state variable.
                         showAtCorrectedCoords = !showAtCorrectedCoords;
+                        forceCachesRefresh();
                         // Save state.
                         setValue('set_switch_SM_show_at_corrected_coords', showAtCorrectedCoords);
                     });
                     // Handle clicks on hide DNF icons option.
                     $("#gclh_hideDNFIcons").click(function() {
-                        forceCachesRefresh();
                         // Clear possible cache selection.
                         unsafeWindow.MapSettings?.Map?.fireEvent('click');
                         // Toggle state variable.
                         hideDNFIcons = !hideDNFIcons;
+                        forceCachesRefresh();
                         // Save state.
                         setValue('set_switch_SM_hide_dnf_icons', hideDNFIcons);
                     });
@@ -14807,6 +14846,15 @@ var mainGC = function() {
             (function makeChartResizable(waitCount) {
                 // Use more actual jquery from page, otherwise resize handler stays invisible.
                 if (typeof unsafeWindow.$?.fn?.resizable === 'function') {
+                    // Load missing jQuery UI css (starting in 2026, page ships only the js).
+                    if (!document.getElementById('gclh_jquery_ui_css')) {
+                        const link = document.createElement('link');
+                        link.id = 'gclh_jquery_ui_css';
+                        link.rel = 'stylesheet';
+                        link.href = 'https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/jquery-ui.css';
+                        document.head.appendChild(link);
+                    }
+
                     // Don't use chart container 'div#uxFindsPerMonthChartContainer' for resizables directly
                     // (otherwise resizable gets invalid after each chart update).
                     // Rather use its parent container and resize both, then everything works.
@@ -14814,8 +14862,9 @@ var mainGC = function() {
                     let $chartContainerParent = $chartContainer.parent();
 
                     // Style horizontal resize handle and hide overflow.
-                    appendCssStyle('.ui-resizable-s {left: 50%; background-image: url("https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/images/ui-icons_4A4A4A_256x240.png") !important;}');
-                    $chartContainerParent.css('overflow', 'hidden');
+                    appendCssStyle('.ProfileStats > .ui-resizable-s {left: 50%;}');
+                    $chartContainerParent.css('overflow', 'visible');
+                    $chartContainer.css('overflow', 'hidden');
 
                     // Get draw chart script from page and modify as necessary.
                     let drawChartScript_str = $chartContainer.next()[0].text.replace('drawChart()','drawChart_gclh(height)')
@@ -15082,6 +15131,16 @@ var mainGC = function() {
 // Copy TB Code in TB Listing to clipboard.
     if (document.location.href.match(/\.com\/track\/details\.aspx/) && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
         addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "TB Code");
+    }
+
+// Improve TB Listing.
+    if (document.location.href.match(/\.com\/track\/details\.aspx/)) {
+        try {
+            var css = '';
+            // Reduce height of logtext.
+            css += '.TrackLogText {margin: 0 auto;}';
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve TB Listing",e);}
     }
 
 // Improve favorites and profile lists page.
@@ -16683,8 +16742,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/t8kW/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iHA"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/mxsp/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iH1"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -18072,7 +18131,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "20.07.2026";
+            var thanksLastUpdate = "13.08.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -18301,6 +18360,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","friends")+"<label for='lnk_gclh_config_friends'>Friends List</label></h4>";
             html += "<div id='gclh_config_friends' class='gclh_block'>";
+            html += checkboxy('settings_compact_layout_myfriends', 'Compact layout on friends list') + "<br>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friends list automatically') + show_help("If you enable this option, the difference counter at friends list will automatically reset if you have seen the difference and if the day changed.") + "<br>";
             html += checkboxy('settings_friendlist_summary', 'Show summary for new finds/hides in friends list') + show_help("With this option you can show a summary of all new finds/hides of your friends on the friends list page") + "<br>";
             html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for friends in VIP list') + "<br>";
@@ -19174,7 +19234,7 @@ var mainGC = function() {
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
                     // if (num >= 75 && num <= 88) html += newParameterLL1; // Zeile belassen als Beispiel für zukünftige Einträge.
-                    if (num == 89) html += newParameterLL2;
+                    if (num >= 89 && num <= 91) html += newParameterLL2;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -19184,7 +19244,7 @@ var mainGC = function() {
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
                     // if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10"); // Zeile belassen als Beispiel für zukünftige Einträge.
-                    if (num == 89) html += newParameterLLVersionSetzen('0.18');
+                    if (num >= 89 && num <= 91) html += newParameterLLVersionSetzen('0.18');
                 }
                 html += "  </td></tr>";
             }
@@ -20366,6 +20426,7 @@ var mainGC = function() {
                 'settings_hide_avatar',
                 'settings_link_big_listing',
                 'settings_show_big_gallery',
+                'settings_compact_layout_myfriends',
                 'settings_automatic_friend_reset',
                 'settings_show_long_vip',
                 'settings_load_logs_with_gclh',
