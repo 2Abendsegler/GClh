@@ -159,6 +159,7 @@
   "settings_imgcaption_on_top": false,
   "settings_hide_avatar": false,
   "settings_show_big_gallery": false,
+  "settings_compact_layout_myfriends": true,
   "settings_automatic_friend_reset": false,
   "settings_show_long_vip": false,
   "settings_load_logs_with_gclh": true,
