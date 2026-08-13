@@ -14832,6 +14832,15 @@ var mainGC = function() {
             (function makeChartResizable(waitCount) {
                 // Use more actual jquery from page, otherwise resize handler stays invisible.
                 if (typeof unsafeWindow.$?.fn?.resizable === 'function') {
+                    // Load missing jQuery UI css (starting in 2026, page ships only the js).
+                    if (!document.getElementById('gclh_jquery_ui_css')) {
+                        const link = document.createElement('link');
+                        link.id = 'gclh_jquery_ui_css';
+                        link.rel = 'stylesheet';
+                        link.href = 'https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/jquery-ui.css';
+                        document.head.appendChild(link);
+                    }
+
                     // Don't use chart container 'div#uxFindsPerMonthChartContainer' for resizables directly
                     // (otherwise resizable gets invalid after each chart update).
                     // Rather use its parent container and resize both, then everything works.
@@ -14839,8 +14848,9 @@ var mainGC = function() {
                     let $chartContainerParent = $chartContainer.parent();
 
                     // Style horizontal resize handle and hide overflow.
-                    appendCssStyle('.ui-resizable-s {left: 50%; background-image: url("https://www.geocaching.com/js/vendor/jquery-ui-1.12.1/images/ui-icons_4A4A4A_256x240.png") !important;}');
-                    $chartContainerParent.css('overflow', 'hidden');
+                    appendCssStyle('.ProfileStats > .ui-resizable-s {left: 50%;}');
+                    $chartContainerParent.css('overflow', 'visible');
+                    $chartContainer.css('overflow', 'hidden');
 
                     // Get draw chart script from page and modify as necessary.
                     let drawChartScript_str = $chartContainer.next()[0].text.replace('drawChart()','drawChart_gclh(height)')
