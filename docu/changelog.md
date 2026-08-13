@@ -1,3 +1,4 @@
+<a href="#v01812" title="GClh II version 0.18.12 (14.08.2026)">v0.18.12</a> &nbsp;
 <a href="#v01811" title="GClh II version 0.18.11 (21.07.2026)">v0.18.11</a> &nbsp;
 <a href="#v01810" title="GClh II version 0.18.10 (27.06.2026)">v0.18.10</a> &nbsp;
 <a href="#v0189" title="GClh II version 0.18.9 (13.06.2026)">v0.18.9</a> &nbsp;
@@ -49,6 +50,45 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.12:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Friends] Compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/3258" title="Issue 3258">3258</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		<img src="../images/0.18.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_myfriends" title="Link to your GClh II Config">Settings -> Friends:<br>
+		<img src="../images/0.18.12/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>New:</strong> [Shareables] Integrate "Shareable" links in Play menue and Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/3260" title="Issue 3260">3260</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3260" title="Issue 3260">3260</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Global] The "page width" parameter no longer works on numerous websites. [<a href="https://github.com/2Abendsegler/GClh/issues/3255" title="Issue 3255">3255</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3255" title="Issue 3255">3255</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Display options do not apply instantly. [<a href="https://github.com/2Abendsegler/GClh/issues/3253" title="Issue 3253">3253</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3253" title="Issue 3253">3253</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Statistic] Scaling of monthly found statistics graph not working anymore. [<a href="https://github.com/2Abendsegler/GClh/issues/3259" title="Issue 3259">3259</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3259" title="Issue 3259">3259</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [TB Listing] Width and height of TB logs no longer correct. [<a href="https://github.com/2Abendsegler/GClh/issues/3257" title="Issue 3257">3257</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3257" title="Issue 3257">3257</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] Reduce whitespace and improve alignment in listing header. [<a href="https://github.com/2Abendsegler/GClh/issues/3256" title="Issue 3256">3256</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+	</li>
+</ul>
+<br>
+(14.08.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.11:
