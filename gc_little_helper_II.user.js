@@ -2346,6 +2346,12 @@ var mainGC = function() {
         var css = ''
         // Define class "working" and "isDisabled".
         css += ".working, .isDisabled {opacity: 0.4; cursor: default !important; text-decoration: none !important;}";
+        // Reduce whitespace and improve alignment in listing header.
+        css += "#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoLinkPanel p {margin-top: 14px; margin-bottom: 8px;}";
+        css += "#cacheDetails, .cacheDetailsTitle, #uxFavoritesRatingSection {margin-bottom: 16px; row-gap: 0px !important;}";
+        css += "#ctl00_ContentBody_diffTerr dl dd {padding-bottom: 0;}";
+        css += "#ctl00_ContentBody_CacheInformationTable {margin: 16px 0;}";
+        css += "#Print dd {padding-bottom: 8px !important;}";
         // Display listing images not over the maximum available width for FF and chrome.
         css += ".UserSuppliedContent img {max-width: -moz-available; max-width: -webkit-fill-available;}";
         // Show log totals symbols above the logs again in one line.
