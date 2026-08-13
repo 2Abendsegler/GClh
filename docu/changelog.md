@@ -57,16 +57,16 @@
 <ul>
 	<li>
 		<strong>New:</strong> [Friends] Compact layout. [<a href="https://github.com/2Abendsegler/GClh/issues/3258" title="Issue 3258">3258</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		<img src="../images/0.18.12/Screen01.jpg" alt="Screen01.jpg"><br><br>
+		<img src="../images/0.18.12/Screen01.jpg" alt="Screen01.jpg"><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_compact_layout_myfriends" title="Link to your GClh II Config">Settings -> Friends:<br>
 		<img src="../images/0.18.12/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>New:</strong> [Shareables] Integrate "Shareable" links in Play menue and Linklist. [<a href="https://github.com/2Abendsegler/GClh/issues/3260" title="Issue 3260">3260</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#gclh_LinkListElement_90" title="Link to your GClh II Config">Settings - Linklist and Navigation: <br>
-		<img src="../images/0.18.12/Screen03.jpg" alt="Screen03.jpg"></a><br><br>
+		<img src="../images/0.18.12/Screen03.jpg" alt="Screen03.jpg"></a><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#ll#gclh_LinkListElement_91" title="Link to your GClh II Config">Settings - Linklist and Navigation: <br>
-		<img src="../images/0.18.12/Screen04.jpg" alt="Screen04.jpg"></a><br><br>
+		<img src="../images/0.18.12/Screen04.jpg" alt="Screen04.jpg"></a><br>
 		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3260" title="Issue 3260">3260</a>.<br><br>
 	</li>
 	<li>
