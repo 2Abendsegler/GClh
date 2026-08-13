@@ -2011,7 +2011,7 @@ var mainGC = function() {
                     css += ".LogDisplayRight {width: " + (new_width - 180) + "px !important;}";
                     css += "#log_tabs .LogDisplayRight {width: " + (new_width - 355) + "px !important;}";
                     css += "#uxBookmarkListName {width: " + (new_width - 470 - 5) + "px !important;}";
-                    css += "table.TrackableItemLogTable div {width: " + (new_width - 160) + "px !important; max-width: unset;}";
+                    css += "table.TrackableItemLogTable div {max-width: unset;}";
                     css += ".UserSuppliedContent {max-width: unset;}";
                     // Besonderheiten:
                     if (!is_page("cache_listing")) css += ".UserSuppliedContent {width: " + (new_width - 200) + "px;}";
@@ -15107,6 +15107,16 @@ var mainGC = function() {
 // Copy TB Code in TB Listing to clipboard.
     if (document.location.href.match(/\.com\/track\/details\.aspx/) && $('.CoordInfoLink')[0] && $('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0]) {
         addCopyToClipboardLink($('#ctl00_ContentBody_CoordInfoLinkControl1_uxCoordInfoCode')[0], $('.CoordInfoLink')[0], "TB Code");
+    }
+
+// Improve TB Listing.
+    if (document.location.href.match(/\.com\/track\/details\.aspx/)) {
+        try {
+            var css = '';
+            // Reduce height of logtext.
+            css += '.TrackLogText {margin: 0 auto;}';
+            appendCssStyle(css);
+        } catch(e) {gclh_error("Improve TB Listing",e);}
     }
 
 // Improve favorites and profile lists page.
