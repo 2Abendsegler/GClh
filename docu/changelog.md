@@ -79,7 +79,6 @@
 	</li>
 	<li>
 		<strong>Fix:</strong> [TB Listing] Width and height of TB logs no longer correct. [<a href="https://github.com/2Abendsegler/GClh/issues/3257" title="Issue 3257">3257</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3257" title="Issue 3257">3257</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Listing] Reduce whitespace and improve alignment in listing header. [<a href="https://github.com/2Abendsegler/GClh/issues/3256" title="Issue 3256">3256</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
