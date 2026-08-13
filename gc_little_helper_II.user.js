@@ -289,6 +289,8 @@ var constInit = function(c) {
     bookmark("Unpublished Events", "/play/owner/unpublished/events", c.bookmarks);
     bookmark("Archived Events", "/play/owner/archived/events", c.bookmarks);
     bookmark("Treasures", "/play/treasure", c.bookmarks);
+    bookmark("Shareables", "/play/shareables", c.bookmarks);
+    bookmark("Public Profile Shareables", "/p/default.aspx?tab=shareables#profilepanel", c.bookmarks);
     // Custom Bookmark-title.
     c.bookmarks_orig_title = new Array();
     for (var i = 0; i < c.bookmarks.length; i++) {
@@ -1723,7 +1725,8 @@ var mainGC = function() {
                 $('body').prepend(header_old);
                 // Set z-index for old header on specific pages to prevent header elements from disappearing behind page elements:
                 // Search Map and Treasures: Prevent menus from disappearing behind icons (with v0.18.5).
-                if (is_page('searchmap') || document.location.href.match(/\.com\/play\/treasure/)) appendCssStyle('gclh_nav .wrapper {z-index: 2500;}');
+                // Shareables: Prevent menus from disappearing behind icons (with v0.18.12).
+                if (is_page('searchmap') || document.location.href.match(/\.com\/play\/treasure/) || document.location.href.match(/\.com\/play\/shareables/)) appendCssStyle('gclh_nav .wrapper {z-index: 2500;}');
                 // Run header relevant features.
                 tlc('START setUserParameter');
                 setUserParameter();
@@ -19221,7 +19224,7 @@ var mainGC = function() {
                     var outTitle = (typeof(bookmarks_orig_title[num]) != "undefined" && bookmarks_orig_title[num] != "" ? bookmarks_orig_title[num] : bookmarks[i]['title']);
                     html += ">" + outTitle + "</a>";
                     // if (num >= 75 && num <= 88) html += newParameterLL1; // Zeile belassen als Beispiel für zukünftige Einträge.
-                    if (num == 89) html += newParameterLL2;
+                    if (num >= 89 && num <= 91) html += newParameterLL2;
                 }
                 html += "  </td>";
                 // Zweite linke Spalte mit abweichenden Bezeichnungen:
@@ -19231,7 +19234,7 @@ var mainGC = function() {
                 } else {
                     html += "<input style='padding-left: 2px !important; padding-right: 2px !important;' class='gclh_form' title='Differing description for standard link' id='bookmarks_name[" + num + "]' type='text' size='15' value='" + repApo(getValue("settings_bookmarks_title[" + num + "]", "")) + "'>";
                     // if (num >= 75 && num <= 88) html += newParameterLLVersionSetzen("0.10"); // Zeile belassen als Beispiel für zukünftige Einträge.
-                    if (num == 89) html += newParameterLLVersionSetzen('0.18');
+                    if (num >= 89 && num <= 91) html += newParameterLLVersionSetzen('0.18');
                 }
                 html += "  </td></tr>";
             }
