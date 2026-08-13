@@ -531,6 +531,7 @@ var variablesInit = function(c) {
     c.settings_hide_avatar = getValue("settings_hide_avatar", false);
     c.settings_link_big_listing = getValue("settings_link_big_listing", true);
     c.settings_show_big_gallery = getValue("settings_show_big_gallery", false);
+    c.settings_compact_layout_myfriends = getValue("settings_compact_layout_myfriends", true);
     c.settings_automatic_friend_reset = getValue("settings_automatic_friend_reset", false);
     c.settings_show_long_vip = getValue("settings_show_long_vip", false);
     c.settings_load_logs_with_gclh = getValue("settings_load_logs_with_gclh", true);
@@ -7395,7 +7396,17 @@ var mainGC = function() {
                 "  text-decoration:none;} " +
                 "#invitation-button-root {display: flex;}" +
                 ".AddFriendTextbox {" +
+                "  margin-bottom: 16px;" +
                 "  width:48%;}";
+            myf += ".divFHclass, .spanTclass {float: left; width: 100%; margin: 0 0 6px 0;}";
+            if (settings_compact_layout_myfriends) {
+                myf += ".FriendUserPanel, .AddFriendTextbox {margin: 0 0 18px 0 !important;}";
+                myf += ".FriendUserPanel h3, #add-friend-validation, #ctl00_ContentBody_divFriendsHeader {margin: 0 0 6px 0 !important;}";
+                myf += "#ctl00_ContentBody_divFriendsSort {margin: 0 8px 0 0 !important;}";
+                myf += ".FriendWidget {padding: 12px !important; margin: 0 8px 12px 0 !important; width: calc(50% - 10px);}";
+                myf += ".FriendList dd {padding-bottom: 0 !important; float: unset !important; margin-left: 126px !important; max-width: unset !important; word-break: break-word;}";
+                myf += ".FriendText p {margin-bottom: 0 !important;}";
+            }
             appendCssStyle(myf);
 
             var sNewF = "";
@@ -7495,7 +7506,7 @@ var mainGC = function() {
                     // Und "last reset" aktualisieren.
                     var spanTTs = document.getElementsByClassName("spanTclass");
                     var ld1 = getValue("friends_founds_last_reset", 0);
-                    spanTTs[0].innerHTML = '<br><br>Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
+                    spanTTs[0].innerHTML = 'Last reset was 0 seconds ago (' + new Date(parseInt(ld1, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 }
             }
             function buildFriendlistSummary() {
@@ -7509,20 +7520,20 @@ var mainGC = function() {
                 spanT.className = "spanTclass";
                 spanT.style.color = "gray";
                 spanT.style.fontSize = "smaller";
-                spanT.innerHTML = '<br>Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
-                if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = '<br>' + spanT.innerHTML;
+                spanT.innerHTML = 'Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
+                if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = spanT.innerHTML;
                 document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
-                    boxH.innerHTML = "<br><b>New hides by:</b> " + sNewH;
+                    boxH.innerHTML = "<b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
                     document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
-                    boxF.innerHTML = "<br><b>New finds by:</b> " + sNewF;
+                    boxF.innerHTML = "<b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
                     document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
                 }
@@ -18336,6 +18347,7 @@ var mainGC = function() {
 
             html += "<h4 class='gclh_headline2'>"+prepareHideable.replace("#id#","friends")+"<label for='lnk_gclh_config_friends'>Friends List</label></h4>";
             html += "<div id='gclh_config_friends' class='gclh_block'>";
+            html += checkboxy('settings_compact_layout_myfriends', 'Compact layout on friends list') + "<br>";
             html += checkboxy('settings_automatic_friend_reset', 'Reset difference counter on friends list automatically') + show_help("If you enable this option, the difference counter at friends list will automatically reset if you have seen the difference and if the day changed.") + "<br>";
             html += checkboxy('settings_friendlist_summary', 'Show summary for new finds/hides in friends list') + show_help("With this option you can show a summary of all new finds/hides of your friends on the friends list page") + "<br>";
             html += " &nbsp; " + checkboxy('settings_friendlist_summary_viponly', 'Show summary only for friends in VIP list') + "<br>";
@@ -20401,6 +20413,7 @@ var mainGC = function() {
                 'settings_hide_avatar',
                 'settings_link_big_listing',
                 'settings_show_big_gallery',
+                'settings_compact_layout_myfriends',
                 'settings_automatic_friend_reset',
                 'settings_show_long_vip',
                 'settings_load_logs_with_gclh',
