@@ -151,7 +151,7 @@ function layersInit(c) {
     };
     c.map_overlays = new Object();
     c.map_overlays = {
-         //"Hillshadow" : { tileUrl: "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",  attribution: 'hillshadow \u00a9 <a href="http://tiles.wmflabs.org/" target=\'_blank\'>tiles.wmflabs.org</a>',  tileSize: 256,  minZoom: 0,  maxZoom: 17 }
+		 "Hillshading" : { gclh: true, tileUrl: "https://tiles.mapterhorn.com/tilejson.json", attribution: '<a href="https://mapterhorn.com/attribution" target="_blank">© Mapterhorn</a>', minZoom: 1, maxZoom: 17 },
 		 "Waymarked Trails Hiking" : { gclh: true, tileUrl: "https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png", attribution: '<a href="https://waymarkedtrails.org" target=\'_blank\'>Waymarked Trails</a>', tileSize: 256, minZoom: 0, maxZoom: 17 },
 		 "Waymarked Trails Cycling" : { gclh: true, tileUrl: "https://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png", attribution: '<a href="https://waymarkedtrails.org" target=\'_blank\'>Waymarked Trails</a>', tileSize: 256, minZoom: 0, maxZoom: 17 },
 		 "Waymarked Trails MTB" : { gclh: true, tileUrl: "https://tile.waymarkedtrails.org/mtb/{z}/{x}/{y}.png", attribution: '<a href="https://waymarkedtrails.org" target=\'_blank\'>Waymarked Trails</a>', tileSize: 256, minZoom: 0, maxZoom: 17 }
