@@ -11505,6 +11505,7 @@ var mainGC = function() {
             function forceCachesRefresh() {
                 // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call
                 // (since July 2026 this is not valid anymore, therefore we call the 'getLayout' function directly).
+                if (!searchResultsUnaltered) return;
 
                 // Actual, non-altered search results.
                 arg0.props.searchResults = structuredClone(searchResultsUnaltered);
