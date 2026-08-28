@@ -1,3 +1,4 @@
+<a href="#v01813" title="GClh II version 0.18.13 (28.08.2026)">v0.18.13</a> &nbsp;
 <a href="#v01812" title="GClh II version 0.18.12 (14.08.2026)">v0.18.12</a> &nbsp;
 <a href="#v01811" title="GClh II version 0.18.11 (21.07.2026)">v0.18.11</a> &nbsp;
 <a href="#v01810" title="GClh II version 0.18.10 (27.06.2026)">v0.18.10</a> &nbsp;
@@ -50,6 +51,31 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.13:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>New:</strong> [Browse Map] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>br>
+		This feature implements a new hillshading effect.<br>
+		<img src="../images/0.18.13/Screen01.gif" alt="Screen01.gif"><br><br>
+		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_overlay_hillshading" title="Link to your GClh II Config">Settings -> Map - Available map overlays:<br>
+		<img src="../images/0.18.13/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Display options do not apply instantly (again). [<a href="https://github.com/2Abendsegler/GClh/issues/3270" title="Issue 3270">3270</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3270" title="Issue 3270">3270</a>.<br><br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] "Automatic search for new caches after dragging or zooming" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3267" title="Issue 3267">3267</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3267" title="Issue 3267">3267</a>.<br><br>
+	</li>
+</ul>
+<br>
+(28.08.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.12:
