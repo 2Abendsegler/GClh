@@ -57,19 +57,19 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
-		<strong>New:</strong> [Browse Map] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>br>
+		<strong>New:</strong> [Maps] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>br>
 		This feature implements a new hillshading effect.<br>
-		<img src="../images/0.18.13/Screen01.gif" alt="Screen01.gif"><br><br>
+		<img width="600" src="../images/0.18.13/Screen01.gif" alt="Screen01.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_overlay_hillshading" title="Link to your GClh II Config">Settings -> Map - Available map overlays:<br>
 		<img src="../images/0.18.13/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] Display options do not apply instantly (again). [<a href="https://github.com/2Abendsegler/GClh/issues/3270" title="Issue 3270">3270</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3270" title="Issue 3270">3270</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3270" title="Issue 3270">3270</a>.<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Search Map] "Automatic search for new caches after dragging or zooming" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3267" title="Issue 3267">3267</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3267" title="Issue 3267">3267</a>.<br><br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3267" title="Issue 3267">3267</a>.<br>
 	</li>
 </ul>
 <br>
