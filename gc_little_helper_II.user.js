@@ -11253,6 +11253,11 @@ var mainGC = function() {
             // Initialize Map object.
             unsafeWindow.MapSettings = {'Map': null};
 
+            // Access to Next.js router cache, holding the currently rendered search results (re-rendering when applying display options).
+            let next_router = null;
+            let next_router_entry = null;
+            let next_router_app = null;
+
             // Helper to check if a specific key is present in the webpackChunk_N_E modules.
             const isKeyInWebpackChunk_N_E = (key) => {
                 return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
@@ -11279,8 +11284,8 @@ var mainGC = function() {
                 if (++observerCalls > 99) {
                     observer.disconnect();
                     if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
-                    if (!unsafeWindow.GCLH?.getLayout) gclh_error("Add proxy for cache properties", new Error('getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Display options won\'t work as expected.'));
                     if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps) gclh_log('unsafeWindow.__NEXT_DATA__.props.pageProps not found for ' + observerCalls + ' MutationObserver calls. Hiding display options during route creation won\'t work as expected.');
+                    if (!next_router) gclh_log('Add proxy for cache properties - unsafeWindow.next.router.components[next_router.route].Component.getLayout not found for ' + observerCalls + ' MutationObserver calls. If enabled, display options won\'t work as expected.');
                     return;
                 }
 
@@ -11293,8 +11298,8 @@ var mainGC = function() {
                     }
                 }
 
-                // Add proxies for getting map handle and modifying cache properties.
-                if (unsafeWindow.webpackChunk_N_E && (!unsafeWindow.GCLH?.React || !unsafeWindow.GCLH?.getLayout) ) {
+                // Add proxy for getting map handle.
+                if (unsafeWindow.webpackChunk_N_E && !unsafeWindow.GCLH?.React) {
                     // Add webpack modules to global space.
                     try {
                         if (!window.webpackModuleLoader) {
@@ -11339,45 +11344,47 @@ var mainGC = function() {
                                 }
                             }
                         }
-
-                        // Identify 'getLayout' function from all webpack modules.
-                        if (!unsafeWindow.GCLH?.getLayout) {
-                            [index, key] = getKeyByPattern(moduleFunctions, 'getLayout');
-                            if (key) {
-                                // Save in global context.
-                                unsafeWindow.GCLH.getLayout = moduleFunctions[index][key];
-
-                                // Get key from unsafeWindow.GCLH.getLayout.<key>.getLayout (this key already changed during GS updates).
-                                key = Object.keys(unsafeWindow.GCLH.getLayout ?? {}).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
-
-                                // Add proxy to modify cache properties.
-                                if (key && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
-                                    // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
-                                    // (if "show at corrected coords" is active on page load).
-                                    setTimeout(() => {
-                                        unsafeWindow.GCLH.getLayout[key].getLayout = new Proxy(unsafeWindow.GCLH.getLayout[key].getLayout, {
-                                            apply: (target, thisArg, argArray) => {
-                                                arg0 = argArray[0];
-                                                // If called from page (not from gclh), store the actual search results for further use.
-                                                // ATTENTION: searchResults inside arg0 is altered by processCaches, therefore we need to store a separate, cloned copy before altering.
-                                                if (gclhCall) gclhCall = false;
-                                                else searchResultsUnaltered = structuredClone(arg0.props.searchResults);
-                                                processCaches(arg0);
-                                                return target.apply(thisArg, argArray);
-                                            }
-                                        });
-                                    }, 250);
-                                }
-                            }
-                        }
                     } catch(e) {
                         observer.disconnect();
                         gclh_error('handling of unsafeWindow.webpackChunk_N_E failed',e);
                     }
                 }
 
+                // Add proxy for modifying cache properties.
+                if (unsafeWindow.next?.router?.components) {
+                    try {
+                        next_router = unsafeWindow.next.router;
+                        next_router_entry = next_router.components[next_router.route]
+                        next_router_app = next_router.components['/_app'].Component;
+                        if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                            entry = unsafeWindow.next.router.components[unsafeWindow.next.router.route];
+                            entry.Component.getLayout = new Proxy(entry.Component.getLayout, {
+                                apply: (target, thisArg, argArray) => {
+                                    // Called from page or gclh.
+                                    const fromPage = !gclhCall;
+                                    gclhCall = false;
+                                    // searchResults is mutated later by processCaches, so a detached clone has to be taken before anything touches it.
+                                    const el = argArray[0];
+                                    if (fromPage) {
+                                        // Unaltered search results for display options.
+                                        searchResultsUnaltered = structuredClone(el.props.searchResults);
+                                    }
+                                    // Shallow copy of the props instead of the element's own props object, since React elements may be frozen, and mutating them in place is not supported.
+                                    const patched = {...el.props};
+                                    processCaches(patched);
+                                    // New element with modified props.
+                                    const nextEl = unsafeWindow.GCLH.React.cloneElement(el, patched);
+                                    return target.apply(thisArg, [nextEl]);
+                                }
+                            });
+                        }
+                    } catch {
+                        next_router = null;
+                    }
+                }
+
                 // Finished, stop observing.
-                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout && pageProps) {
+                if (unsafeWindow.GCLH?.React?.useState && pageProps && next_router) {
                     observer.disconnect();
                     return;
                 }
@@ -11396,15 +11403,14 @@ var mainGC = function() {
             }
 
             // Handle cache properties.
-            const processCaches = (layout) => {
+            const processCaches = (pageProps) => {
                 // If route creation is active, do nothing.
                 if (isActiveCreateRoute) return;
 
-                // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
-                // Otherwise cache properties cannot be set.
-                layout.props.searchResults = structuredClone(layout.props.searchResults);
+                // Since the content of searchResults is read-only, we overwrite it with a writable clone (otherwise cache properties cannot be set).
+                pageProps.searchResults = structuredClone(pageProps.searchResults);
+                let caches = pageProps.searchResults.results;
 
-                let caches = layout.props.searchResults.results;
                 let gc = null;
                 for (let i = 0; i < caches.length; i++) {
                     gc = caches[i];
@@ -11414,7 +11420,7 @@ var mainGC = function() {
                         continue;
                     }
                     // Hide own caches.
-                    if (hideOwned && gc.owner.code === layout.props.gcUser.referenceCode) {
+                    if (hideOwned && gc.owner.code === pageProps.gcUser.referenceCode) {
                         caches.splice(i--,1);
                         continue;
                     }
@@ -11497,26 +11503,25 @@ var mainGC = function() {
                 }
             }
 
-            // Force a refresh of all caches on the map (without reloading from the server).
-            let moveend_zoomend = false;
-            let arg0;
+            // Force a refresh of all caches on the map (without loading data from the server).
             let searchResultsUnaltered;
             let gclhCall = false;
-            function forceCachesRefresh() {
-                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call
-                // (since July 2026 this is not valid anymore, therefore we call the 'getLayout' function directly).
-                if (!searchResultsUnaltered) return;
+            async function forceCachesRefresh() {
+                if (!next_router || !searchResultsUnaltered) return;
 
-                // Actual, non-altered search results.
-                arg0.props.searchResults = structuredClone(searchResultsUnaltered);
                 // Mark as gclh call.
                 gclhCall = true;
-                // Call 'getLayout' with non-altered search results.
-                const key = Object.keys(unsafeWindow.GCLH.getLayout).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
-                unsafeWindow.GCLH.getLayout[key].getLayout(arg0);
-
-                moveend_zoomend = true;
-                unsafeWindow.MapSettings?.Map?.fire('moveend');
+                // Always start with unaltered search results.
+                next_router_entry.props.pageProps.searchResults = structuredClone(searchResultsUnaltered);
+                // Fresh objects for entry.props and pageProps are necessary, since React compares props by reference and would bail out otherwise (since the references were unchanged).
+                next_router_entry.props = {...next_router_entry.props, pageProps: {...next_router_entry.props.pageProps}};
+                // Trigger getLayout by using Next's render callback directly (router.sub). As a fallback, run the full navigation chain (router.replace) which calls router.sub at some point.
+                if (typeof next_router.sub === 'function') Promise.resolve(next_router.sub(next_router_entry, next_router_app, null)).catch(err => {
+                    if (err?.cancelled) return;
+                    if (/Cancel rendering route/.test(err?.message)) return;
+                    gclh_log('forceCachesRefresh' + err);
+                });
+                else await next_router.replace({pathname: next_router.pathname, query: {...next_router.query}}, undefined, {shallow: true, scroll: false});
             }
 
             // Button for additional display options of search results.
@@ -12205,6 +12210,7 @@ var mainGC = function() {
             }
 
             // Handle toggle between search results and bookmark lists (if automatic search is active).
+            let moveend_zoomend = false;
             function handleToggleBetweenSearchAndBMLTab() {
                 if (!(!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map)) return;
 
@@ -12251,8 +12257,6 @@ var mainGC = function() {
                             clearTimeout(zoomendTimeout);
 
                             if (run_searchThisArea()) {
-                                // Update page content to actual state after movement.
-                                forceCachesRefresh();
                                 // Sligthly delayed search is necessary to reduce server load and prevent console errors, among other things.
                                 dragendTimeout = setTimeout(() => {
                                     searchThisArea();
@@ -12268,8 +12272,6 @@ var mainGC = function() {
                             clearTimeout(zoomendTimeout);
 
                             if (run_searchThisArea()) {
-                                // Update page content to actual state after zoom.
-                                forceCachesRefresh();
                                 // Sligthly delayed search is necessary to reduce server load and prevent console errors, among other things.
                                 zoomendTimeout = setTimeout(() => {
                                     searchThisArea();
