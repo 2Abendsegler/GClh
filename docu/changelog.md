@@ -59,7 +59,7 @@
 	<li>
 		<strong>New:</strong> [Maps] Map overlay "Hillshadow" doesn't work. [<a href="https://github.com/2Abendsegler/GClh/issues/2016" title="Issue 2016">2016</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br><br>
 		This feature implements a new hillshading effect.<br>
-		<img width="600" alt="Hillshading" src="../images/0.18.13/Screen01.gif" alt="Screen01.gif"><br><br>
+		<img width="500" alt="Hillshading" src="../images/0.18.13/Screen01.gif" alt="Screen01.gif"><br><br>
 		<a href="https://www.geocaching.com/my/#GClhShowConfig#a#settings_add_overlay_hillshading" title="Link to your GClh II Config">Settings -> Map - Available map overlays:<br>
 		<img src="../images/0.18.13/Screen02.jpg" alt="Screen02.jpg"></a><br><br>
 	</li>
