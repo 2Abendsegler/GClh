@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.12
+// @version      0.18.13
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -31,6 +31,8 @@
 // @resource jscolor https://raw.githubusercontent.com/2Abendsegler/GClh/master/data/jscolor.js
 // @resource leafletjs https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.js
 // @resource leafletcss https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.css
+// @resource maplibregl https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js
+// @resource leafletmaplibregl https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.1.3/leaflet-maplibre-gl.min.js
 // @connect      maps.googleapis.com
 // @connect      raw.githubusercontent.com
 // @connect      api.open-elevation.com
@@ -748,6 +750,7 @@ var variablesInit = function(c) {
     c.settings_add_overlay_wmthiking = getValue("settings_add_overlay_wmthiking", true);
     c.settings_add_overlay_wmtcycling = getValue("settings_add_overlay_wmtcycling", true);
     c.settings_add_overlay_wmtmtb = getValue("settings_add_overlay_wmtmtb", true);
+    c.settings_add_overlay_hillshading = getValue("settings_add_overlay_hillshading", true);
     c.settings_add_search_in_logs_func = getValue("settings_add_search_in_logs_func", true);
     c.settings_show_add_cache_info_in_log_page = getValue("settings_show_add_cache_info_in_log_page", true);
     c.settings_pq_splitter_pqname = getValue("settings_pq_splitter_pqname", 'PQ_Splitter_');
@@ -11250,6 +11253,11 @@ var mainGC = function() {
             // Initialize Map object.
             unsafeWindow.MapSettings = {'Map': null};
 
+            // Access to Next.js router cache, holding the currently rendered search results (re-rendering when applying display options).
+            let next_router = null;
+            let next_router_entry = null;
+            let next_router_app = null;
+
             // Helper to check if a specific key is present in the webpackChunk_N_E modules.
             const isKeyInWebpackChunk_N_E = (key) => {
                 return unsafeWindow.webpackChunk_N_E.some(([, moduleFunctions]) => key in moduleFunctions);
@@ -11276,8 +11284,8 @@ var mainGC = function() {
                 if (++observerCalls > 99) {
                     observer.disconnect();
                     if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
-                    if (!unsafeWindow.GCLH?.getLayout) gclh_error("Add proxy for cache properties", new Error('getLayout not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Display options won\'t work as expected.'));
                     if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps) gclh_log('unsafeWindow.__NEXT_DATA__.props.pageProps not found for ' + observerCalls + ' MutationObserver calls. Hiding display options during route creation won\'t work as expected.');
+                    if (!next_router) gclh_log('Add proxy for cache properties - unsafeWindow.next.router.components[next_router.route].Component.getLayout not found for ' + observerCalls + ' MutationObserver calls. If enabled, display options won\'t work as expected.');
                     return;
                 }
 
@@ -11290,8 +11298,8 @@ var mainGC = function() {
                     }
                 }
 
-                // Add proxies for getting map handle and modifying cache properties.
-                if (unsafeWindow.webpackChunk_N_E && (!unsafeWindow.GCLH?.React || !unsafeWindow.GCLH?.getLayout) ) {
+                // Add proxy for getting map handle.
+                if (unsafeWindow.webpackChunk_N_E && !unsafeWindow.GCLH?.React) {
                     // Add webpack modules to global space.
                     try {
                         if (!window.webpackModuleLoader) {
@@ -11336,45 +11344,47 @@ var mainGC = function() {
                                 }
                             }
                         }
-
-                        // Identify 'getLayout' function from all webpack modules.
-                        if (!unsafeWindow.GCLH?.getLayout) {
-                            [index, key] = getKeyByPattern(moduleFunctions, 'getLayout');
-                            if (key) {
-                                // Save in global context.
-                                unsafeWindow.GCLH.getLayout = moduleFunctions[index][key];
-
-                                // Get key from unsafeWindow.GCLH.getLayout.<key>.getLayout (this key already changed during GS updates).
-                                key = Object.keys(unsafeWindow.GCLH.getLayout ?? {}).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
-
-                                // Add proxy to modify cache properties.
-                                if (key && settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
-                                    // Run slightly delayed, otherwise Proxy could get called early in the process and result in a slightly shifted map view
-                                    // (if "show at corrected coords" is active on page load).
-                                    setTimeout(() => {
-                                        unsafeWindow.GCLH.getLayout[key].getLayout = new Proxy(unsafeWindow.GCLH.getLayout[key].getLayout, {
-                                            apply: (target, thisArg, argArray) => {
-                                                arg0 = argArray[0];
-                                                // If called from page (not from gclh), store the actual search results for further use.
-                                                // ATTENTION: searchResults inside arg0 is altered by processCaches, therefore we need to store a separate, cloned copy before altering.
-                                                if (gclhCall) gclhCall = false;
-                                                else searchResultsUnaltered = structuredClone(arg0.props.searchResults);
-                                                processCaches(arg0);
-                                                return target.apply(thisArg, argArray);
-                                            }
-                                        });
-                                    }, 250);
-                                }
-                            }
-                        }
                     } catch(e) {
                         observer.disconnect();
                         gclh_error('handling of unsafeWindow.webpackChunk_N_E failed',e);
                     }
                 }
 
+                // Add proxy for modifying cache properties.
+                if (unsafeWindow.next?.router?.components) {
+                    try {
+                        next_router = unsafeWindow.next.router;
+                        next_router_entry = next_router.components[next_router.route]
+                        next_router_app = next_router.components['/_app'].Component;
+                        if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
+                            entry = unsafeWindow.next.router.components[unsafeWindow.next.router.route];
+                            entry.Component.getLayout = new Proxy(entry.Component.getLayout, {
+                                apply: (target, thisArg, argArray) => {
+                                    // Called from page or gclh.
+                                    const fromPage = !gclhCall;
+                                    gclhCall = false;
+                                    // searchResults is mutated later by processCaches, so a detached clone has to be taken before anything touches it.
+                                    const el = argArray[0];
+                                    if (fromPage) {
+                                        // Unaltered search results for display options.
+                                        searchResultsUnaltered = structuredClone(el.props.searchResults);
+                                    }
+                                    // Shallow copy of the props instead of the element's own props object, since React elements may be frozen, and mutating them in place is not supported.
+                                    const patched = {...el.props};
+                                    processCaches(patched);
+                                    // New element with modified props.
+                                    const nextEl = unsafeWindow.GCLH.React.cloneElement(el, patched);
+                                    return target.apply(thisArg, [nextEl]);
+                                }
+                            });
+                        }
+                    } catch {
+                        next_router = null;
+                    }
+                }
+
                 // Finished, stop observing.
-                if (unsafeWindow.GCLH?.React?.useState && unsafeWindow.GCLH?.getLayout && pageProps) {
+                if (unsafeWindow.GCLH?.React?.useState && pageProps && next_router) {
                     observer.disconnect();
                     return;
                 }
@@ -11393,15 +11403,14 @@ var mainGC = function() {
             }
 
             // Handle cache properties.
-            const processCaches = (layout) => {
+            const processCaches = (pageProps) => {
                 // If route creation is active, do nothing.
                 if (isActiveCreateRoute) return;
 
-                // Since the content of searchResults is read-only most of the time, we overwrite it with a writable clone.
-                // Otherwise cache properties cannot be set.
-                layout.props.searchResults = structuredClone(layout.props.searchResults);
+                // Since the content of searchResults is read-only, we overwrite it with a writable clone (otherwise cache properties cannot be set).
+                pageProps.searchResults = structuredClone(pageProps.searchResults);
+                let caches = pageProps.searchResults.results;
 
-                let caches = layout.props.searchResults.results;
                 let gc = null;
                 for (let i = 0; i < caches.length; i++) {
                     gc = caches[i];
@@ -11411,7 +11420,7 @@ var mainGC = function() {
                         continue;
                     }
                     // Hide own caches.
-                    if (hideOwned && gc.owner.code === layout.props.gcUser.referenceCode) {
+                    if (hideOwned && gc.owner.code === pageProps.gcUser.referenceCode) {
                         caches.splice(i--,1);
                         continue;
                     }
@@ -11494,25 +11503,25 @@ var mainGC = function() {
                 }
             }
 
-            // Force a refresh of all caches on the map (without reloading from the server).
-            let moveend_zoomend = false;
-            let arg0;
+            // Force a refresh of all caches on the map (without loading data from the server).
             let searchResultsUnaltered;
             let gclhCall = false;
-            function forceCachesRefresh() {
-                // The 'moveend' event triggers a 'getLayout' call, which in turn triggers a 'processCaches' call
-                // (since July 2026 this is not valid anymore, therefore we call the 'getLayout' function directly).
+            async function forceCachesRefresh() {
+                if (!next_router || !searchResultsUnaltered) return;
 
-                // Actual, non-altered search results.
-                arg0.props.searchResults = structuredClone(searchResultsUnaltered);
                 // Mark as gclh call.
                 gclhCall = true;
-                // Call 'getLayout' with non-altered search results.
-                const key = Object.keys(unsafeWindow.GCLH.getLayout).find(k => unsafeWindow.GCLH.getLayout[k]?.getLayout);
-                unsafeWindow.GCLH.getLayout[key].getLayout(arg0);
-
-                moveend_zoomend = true;
-                unsafeWindow.MapSettings?.Map?.fire('moveend');
+                // Always start with unaltered search results.
+                next_router_entry.props.pageProps.searchResults = structuredClone(searchResultsUnaltered);
+                // Fresh objects for entry.props and pageProps are necessary, since React compares props by reference and would bail out otherwise (since the references were unchanged).
+                next_router_entry.props = {...next_router_entry.props, pageProps: {...next_router_entry.props.pageProps}};
+                // Trigger getLayout by using Next's render callback directly (router.sub). As a fallback, run the full navigation chain (router.replace) which calls router.sub at some point.
+                if (typeof next_router.sub === 'function') Promise.resolve(next_router.sub(next_router_entry, next_router_app, null)).catch(err => {
+                    if (err?.cancelled) return;
+                    if (/Cancel rendering route/.test(err?.message)) return;
+                    gclh_log('forceCachesRefresh' + err);
+                });
+                else await next_router.replace({pathname: next_router.pathname, query: {...next_router.query}}, undefined, {shallow: true, scroll: false});
             }
 
             // Button for additional display options of search results.
@@ -12201,6 +12210,7 @@ var mainGC = function() {
             }
 
             // Handle toggle between search results and bookmark lists (if automatic search is active).
+            let moveend_zoomend = false;
             function handleToggleBetweenSearchAndBMLTab() {
                 if (!(!isGclhMatrix && settings_searchmap_autoupdate_after_dragging && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map)) return;
 
@@ -12247,8 +12257,6 @@ var mainGC = function() {
                             clearTimeout(zoomendTimeout);
 
                             if (run_searchThisArea()) {
-                                // Update page content to actual state after movement.
-                                forceCachesRefresh();
                                 // Sligthly delayed search is necessary to reduce server load and prevent console errors, among other things.
                                 dragendTimeout = setTimeout(() => {
                                     searchThisArea();
@@ -12264,8 +12272,6 @@ var mainGC = function() {
                             clearTimeout(zoomendTimeout);
 
                             if (run_searchThisArea()) {
-                                // Update page content to actual state after zoom.
-                                forceCachesRefresh();
                                 // Sligthly delayed search is necessary to reduce server load and prevent console errors, among other things.
                                 zoomendTimeout = setTimeout(() => {
                                     searchThisArea();
@@ -13380,13 +13386,6 @@ var mainGC = function() {
 // Add layers, control to map and set default layers.
     function addLayersOnMap() {
         try {
-            //>> Issue 2016
-            // [Browse Map] Map overlay "Hillshadow" doesn't work. Issue: https://github.com/2Abendsegler/GClh/issues/2016
-            // The "Hillshadow" service is no longer available. We have removed the feature. We'll keep an eye on it, maybe the service will be reactivated,
-            // then we'll reinstall it. The adjustments in the script are marked with "Issue 2016".
-            settings_show_hillshadow = false;
-            //<< Issue 2016
-            // Auswahl nur bestimmter Layer.
             var map_layers = new Object();
             var new_settings_map_layers = new Array();
             // Sind weniger als 2 Layer im Config ausgewählt, werden alle Layer verwendet.
@@ -13402,12 +13401,16 @@ var mainGC = function() {
             for (var i = 0; i < new_settings_map_layers.length; i++) { map_layers[new_settings_map_layers[i]] = all_map_layers[new_settings_map_layers[i]]; }
             // Layer Control aufbauen.
             function addLayerControl() {
+                // Initialize MapLibre GL for hillshading overlay.
+                if (settings_add_overlay_hillshading) maplibreGLInit(0);
+
                 // Filter selected overlays.
                 let map_overlays_selected = {};
                 for (const key in map_overlays) {
                     if ((key === "Waymarked Trails Hiking" && settings_add_overlay_wmthiking) ||
                         (key === "Waymarked Trails Cycling" && settings_add_overlay_wmtcycling) ||
-                        (key === "Waymarked Trails MTB" && settings_add_overlay_wmtmtb)) {
+                        (key === "Waymarked Trails MTB" && settings_add_overlay_wmtmtb) ||
+                        (key === "Hillshading" && settings_add_overlay_hillshading)) {
                         map_overlays_selected[key] = map_overlays[key];
                     }
                 }
@@ -13429,16 +13432,21 @@ var mainGC = function() {
                                 if (name == settings_map_default_layer) defaultLayer = layerToAdd;
                                 else if (defaultLayer == null) defaultLayer = layerToAdd;
                             }
-                            //>> Issue 2016
+                            var tilePane = MapSettings.Map.getPane('tilePane');
                             for (name in map_overlays_selected) {
-                                layerToAdd = new L.tileLayer(map_overlays_selected[name].tileUrl, map_overlays_selected[name]);
-                                layerControl.addOverlay(layerToAdd, name);
+                                if (name === 'Hillshading') addHillshadingOverlay(0, name, map_overlays_selected[name]);
+                                else {
+                                    // Ensure that overlays are not hidden by hillshading (z-index=50), but still are above base map and below cache icons.
+                                    MapSettings.Map.createPane(name, tilePane);
+                                    MapSettings.Map.getPane(name).style.zIndex = 51;
+                                    const opts = {...map_overlays_selected[name], pane: name};
+                                    layerToAdd = new L.tileLayer(map_overlays_selected[name].tileUrl, opts);
+                                    layerControl.addOverlay(layerToAdd, name);
+                                }
                             }
-                            //<< Issue 2016
                             window.MapSettings.Map.addControl(layerControl);
                             layerControl._container.className += " gclh_layers gclh_used";
                             window.MapSettings.Map.addLayer(defaultLayer);
-                            if (settings_show_hillshadow) $('.leaflet-control-layers.gclh_layers .leaflet-control-layers-overlays').find('label input').first().click();
                             document.querySelector('.leaflet-control-layers.gclh_layers').id = "gclh_layers";
                             var side = document.querySelector('.leaflet-control-layers');
                             if (document.location.pathname.match(/^\/map/)) {
@@ -13482,6 +13490,194 @@ var mainGC = function() {
                                 }, 0);
                             }
                         }
+                        function addHillshadingOverlay(waitCount, name, layer) {
+                            if (typeof L.maplibreGL !== 'undefined' && document.querySelector('.leaflet-control-layers-overlays')) {
+                                // MapLibre GL style with Mapterhorn hillshade overlay.
+                                const style = {
+                                    version: 8,
+                                    sources: { mapterhorn: { type: "raster-dem", url: layer.tileUrl } },
+                                    layers: [
+                                        { id: "bg",
+                                          type: "background",
+                                          layout: { "visibility": "none" },
+                                          paint: { "background-color": "#78A56F", "background-opacity": 1 }
+                                        },
+                                        { id: "hillshade",
+                                          type: "hillshade",
+                                          source: "mapterhorn",
+                                          paint: {
+                                            "hillshade-exaggeration": 1.0,
+                                            "hillshade-shadow-color": "#000000",
+                                            "hillshade-highlight-color": "#FFFFFF",
+                                             "hillshade-accent-color": "rgba(0, 0, 0, 1)"
+                                          }
+                                        }
+                                    ]
+                                };
+                                // Separate pane in 'tilePane' is necessary, otherwise the overlay is hidden behind the map.
+                                MapSettings.Map.createPane(name, tilePane);
+                                MapSettings.Map.getPane(name).style.zIndex = 50;
+                                layerToAdd = L.maplibreGL({
+                                    attribution: layer.attribution,
+                                    maxZoom: layer.maxZoom,
+                                    minZoom: layer.minZoom,
+                                    pane: name,
+                                    style: style
+                                });
+                                layerControl.addOverlay(layerToAdd, name);
+                                // Proper show/hide attribution handling.
+                                layerToAdd.getAttribution = function() {return this.options.attribution;};
+
+                                // Get opacity from storage (or use default value 0.5).
+                                const default_opacity = localStorage.getItem('gclh_hillshading_opacity') * 1 || 0.5;
+
+                                // State variables.
+                                let glContainer;
+                                let hillshadingMap;
+                                let opacityBeforeRelief = null;
+                                let reliefCheckbox;
+                                let reliefLabel;
+                                let reliefWasChecked = false;
+                                let slider;
+                                let uiInitialized = false;
+
+                                layerToAdd.on('add', function() {
+                                    // Re-sync GL layer position/zoom with Leaflet, otherwise the layer could be shifted after re-add.
+                                    layerToAdd._update();
+
+                                    // One-time UI setup.
+                                    if (!uiInitialized) uiInitialized = setupHillshadingUI();
+
+                                    // Initialize hillshading opacity.
+                                    glContainer = layerToAdd.getContainer();
+                                    if (glContainer) glContainer.style.opacity = slider.value;
+
+                                    // Get hillshading map to control the relief view.
+                                    hillshadingMap = layerToAdd.getMaplibreMap();
+
+                                    // Restore relief state on re-enable.
+                                    if (reliefWasChecked) {
+                                        if (reliefCheckbox && !reliefCheckbox.checked) reliefCheckbox.checked = true;
+                                        const applyRelief = function() {hillshadingMap.setLayoutProperty('bg', 'visibility', 'visible');};
+                                        if (hillshadingMap.isStyleLoaded()) applyRelief();
+                                        else hillshadingMap.once('load', applyRelief);
+                                    }
+                                });
+
+                                // Enable hillshading on page load.
+                                if (settings_show_hillshadow) layerToAdd.addTo(MapSettings.Map);
+
+                                // Add slider and relief view controls, handle their visibilty and preserve current opacity value among sessions.
+                                function setupHillshadingUI() {
+                                    // Get hillshading checkbox.
+                                    const overlay_checkboxes = Array.from(document.querySelectorAll('.leaflet-control-layers-overlays input[type="checkbox"]'));
+                                    const hillshadingCheckbox = overlay_checkboxes.find(function(cb) {
+                                        return cb.closest('label')?.textContent.includes(name);
+                                    });
+                                    if (!hillshadingCheckbox) return false;
+
+                                    // Setup opacity slider.
+                                    const sliderContainer = document.createElement('div');
+                                    sliderContainer.style.display = settings_show_hillshadow ? 'block' : 'none';
+                                    sliderContainer.style.marginLeft = document.location.pathname.match(/^(\/live|)\/play\/map/) ? '4px' : '';
+                                    sliderContainer.style.marginTop = typeof(chrome) === "undefined" ? '2px' : (document.location.pathname.match(/^\/map/) ? '-4px' : '');
+                                    const label = document.createElement('label');
+                                    label.htmlFor = 'Opacity';
+                                    label.textContent = 'Opacity: ';
+                                    label.style.fontSize = '0.95em';
+                                    const valueDisplay = document.createElement('span');
+                                    valueDisplay.id = 'OpacityValue';
+                                    valueDisplay.textContent = Math.round(default_opacity * 100) + '%';
+                                    valueDisplay.style.fontSize = '0.95em';
+                                    valueDisplay.style.marginLeft = '4px';
+                                    slider = document.createElement('input');
+                                    slider.id = 'Opacity';
+                                    slider.type = 'range';
+                                    slider.min = 0; slider.max = 1; slider.step = 0.01;
+                                    slider.value = default_opacity;
+                                    slider.style.verticalAlign = 'middle';
+                                    slider.style.width = '100px';
+                                    slider.addEventListener('input', function() {
+                                        if (glContainer) glContainer.style.opacity = slider.value;
+                                        valueDisplay.textContent = Math.round(slider.value * 100) + '%';
+                                        // If relief is active and the slider is moved manually, then discard the saved value so that nothing is reset when relief is deactivated.
+                                        if (reliefCheckbox && reliefCheckbox.checked) opacityBeforeRelief = null;
+                                    });
+                                    label.appendChild(slider);
+                                    label.appendChild(valueDisplay);
+                                    sliderContainer.appendChild(label);
+
+                                    // Setup relief view control.
+                                    const hillshadingLabel = hillshadingCheckbox.closest('label');
+                                    reliefLabel = hillshadingLabel.cloneNode(true);
+                                    reliefCheckbox = reliefLabel.querySelector('input[type="checkbox"]');
+                                    reliefCheckbox.id = 'Relief';
+                                    reliefCheckbox.checked = false;
+                                    reliefLabel.querySelectorAll('span').forEach(function(sp) {
+                                        if (!sp.querySelector('input')) sp.textContent = ' Relief view';
+                                    });
+                                    reliefLabel.style.display = settings_show_hillshadow ? 'inline-flex' : 'none';
+                                    reliefLabel.style.alignItems = 'center';
+                                    reliefCheckbox.addEventListener('change', function() {
+                                        if (reliefCheckbox.checked) {
+                                            // Store current hillshading opacity.
+                                            opacityBeforeRelief = slider.value;
+                                            // Maximize opacity.
+                                            slider.value = 1;
+                                            if (glContainer) glContainer.style.opacity = 1;
+                                            valueDisplay.textContent = '100%';
+                                        } else {
+                                            if (opacityBeforeRelief !== null) {
+                                                // Restore opacity.
+                                                slider.value = opacityBeforeRelief;
+                                                if (glContainer) glContainer.style.opacity = opacityBeforeRelief;
+                                                valueDisplay.textContent = Math.round(opacityBeforeRelief * 100) + '%';
+                                            }
+                                        }
+                                        // Visibility of hillshading background layer for relief view.
+                                        reliefWasChecked = reliefCheckbox.checked;
+                                        if (hillshadingMap && hillshadingMap.isStyleLoaded()) {
+                                            hillshadingMap.setLayoutProperty(
+                                                'bg', 'visibility', reliefCheckbox.checked ? 'visible' : 'none'
+                                            );
+                                        }
+                                    });
+
+                                    // Add relief view control after hillshading control.
+                                    hillshadingLabel.style.display = 'inline-flex';
+                                    hillshadingLabel.style.alignItems = 'center';
+                                    hillshadingLabel.insertAdjacentElement('afterend', reliefLabel);
+
+                                    // Add slider below.
+                                    document.querySelector('.leaflet-control-layers-overlays').appendChild(sliderContainer);
+
+                                    // Show slider and relief view controls only if hillshading is active.
+                                    hillshadingCheckbox.addEventListener('change', function() {
+                                        const visible = hillshadingCheckbox.checked;
+                                        sliderContainer.style.display = visible ? 'block' : 'none';
+                                        reliefLabel.style.display = visible ? 'inline-flex' : 'none';
+                                        if (visible && reliefWasChecked && !reliefCheckbox.checked) {
+                                            reliefCheckbox.checked = true;
+                                            reliefCheckbox.dispatchEvent(new Event('change'));
+                                        }
+                                    });
+
+                                    // Preserve current slider value among sessions.
+                                    const list = document.querySelector('.leaflet-control-layers-list');
+                                    if (list && !list.dataset.opacityListenerAdded) {
+                                        list.dataset.opacityListenerAdded = 'true';
+                                        list.addEventListener('mouseleave', function() {
+                                            if (MapSettings.Map.hasLayer(layerToAdd)) {
+                                                localStorage.setItem('gclh_hillshading_opacity', opacityBeforeRelief ? opacityBeforeRelief : slider.value);
+                                            }
+                                        });
+                                    }
+                                    return true;
+                                }
+                            } else {
+                                if (++waitCount <= 200) setTimeout(function() {addHillshadingOverlay(waitCount, name, layer);}, 50);
+                            }
+                        }
                     };
                     window["GCLittleHelper_MapLayerHelper"](map_layers, map_overlays_selected, settings_map_default_layer, settings_show_hillshadow, settings_sort_map_layers);
                 }, "(" + JSON.stringify(map_layers) + "," + JSON.stringify(map_overlays_selected) + ",'" + settings_map_default_layer + "'," + settings_show_hillshadow + "," + settings_sort_map_layers + ")");
@@ -13510,13 +13706,6 @@ var mainGC = function() {
                                 break;
                             }
                         }
-                    }
-                }
-                var hs = ".gclh_layers.gclh_used .leaflet-control-layers-overlays";
-                if ($(hs).find('label input')[0]) {
-                    if ((settings_show_hillshadow == true && $(hs).find('label input')[0].checked != true) ||
-                        (settings_show_hillshadow != true && $(hs).find('label input')[0].checked == true)) {
-                        $(hs).find('label input').first().click();
                     }
                 }
             }
@@ -13572,6 +13761,13 @@ var mainGC = function() {
                 // über den Browser.
                 css += '#gclh_layers {border: none;}';
                 css += '#gclh_layers > a {width: 40px; height: 40px; border: 1px solid rgb(0, 178, 101); border-radius: 4px;}';
+            }
+            // Style hillshading opacity slider in Firefox (to get the same look as in Chrome).
+            if (settings_add_overlay_hillshading && typeof(chrome) === "undefined") {
+                css += 'input[type="range"] {margin: 0; border: none; cursor: pointer;}';
+                css += 'input[type="range"]::-moz-range-track {height: 8px; background: #e0e0e0; border: none; border-radius: 6px;}';
+                css += 'input[type="range"]::-moz-range-progress {height: 8px; background: #007bff; border-radius: 6px 0 0 6px;}';
+                css += 'input[type="range"]::-moz-range-thumb {width: 16px; height: 16px; background: #007bff; border: none; border-radius: 50%;}';
             }
             appendCssStyle(css);
         } catch(e) {gclh_error("Add layers, control to map and set default layers",e);}
@@ -16371,6 +16567,22 @@ var mainGC = function() {
         } catch(e) {gclh_error("function leafletInit",e);}
     }
 
+// Maplibre-GL init.
+    function maplibreGLInit(waitCount) {
+        if (unsafeWindow.L) {
+            try {
+                let newJS = GM_getResourceText("maplibregl");
+                injectPageScript(newJS, "body", "gclh_maplibregl");
+                newJS = GM_getResourceText("leafletmaplibregl");
+                injectPageScript(newJS, "body", "gclh_leafletmaplibregl");
+            } catch(e) {
+                gclh_error("function maplibreGLInit", e);
+            }
+        } else {
+            if (++waitCount <= 200) setTimeout(function() {maplibreGLInit(waitCount);}, 50);
+        }
+    }
+
 // Searches for the owner's original username from the listing.
     function get_real_owner() {
         if ($('#ctl00_ContentBody_bottomSection')) {
@@ -16742,8 +16954,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/mxsp/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iH1"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/z1Lu/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://www.worldflagcounter.com/iIb"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -18131,7 +18343,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "13.08.2026";
+            var thanksLastUpdate = "28.08.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
@@ -18514,9 +18726,6 @@ var mainGC = function() {
             html += "<tr><td colspan='3'>Default map layer &nbsp; <code><span id='settings_mapdefault_layer'>" + (settings_map_default_layer ? settings_map_default_layer:"<i>not available</i>") +"</span></code>";
             html += "&nbsp;" + show_help("Here you can select the map source you want to use as default in the map. Mark a map layer from the right list and push the button \"Set default map layer\".");
             html += "<span style='float: right; margin-top: 0px;' ><input class='gclh_form' style='height: 25px;' value='Set default map layer' type='button' id='btn_set_default_layer'></span><br><span style='margin-left: -4px'></span>";
-            //>> Issue 2016
-            //html += checkboxy('settings_show_hillshadow', 'Show hillshadow by default') + show_help("If you want 3D-like-Shadow to be displayed by default, activate this feature.") + "<br>";
-            //<< Issue 2016
             html += "</td></tr>";
             html += "</tbody></table>";
             html += checkboxy('settings_sort_map_layers', 'Sort map layers in map') + "<br>";
@@ -18526,6 +18735,10 @@ var mainGC = function() {
             html += checkboxy('settings_add_overlay_wmtcycling', 'Waymarked Trails Cycling') + "<br>";
             html += checkboxy('settings_add_overlay_wmtmtb', 'Waymarked Trails MTB') + "<br>";
             html += newParameterVersionSetzen('0.17') + newParameterOff;
+            html += newParameterOn2;
+            html += checkboxy('settings_add_overlay_hillshading', 'Hillshading') + show_help("If you want 3D-like-shadows to be displayed, activate this overlay.") + "<br>";
+            html += " &nbsp; " + checkboxy('settings_show_hillshadow', 'Show hillshading by default') + "<br>";
+            html += newParameterVersionSetzen('0.18') + newParameterOff;
             html += "</div>";
             html += "<div style='margin-top: 9px; margin-left: 5px'><b>Google Maps Page</b></div>";
             html += checkboxy('settings_hide_left_sidebar_on_google_maps', 'Hide left sidebar on Google Maps by default') + "<br>";
@@ -20064,6 +20277,7 @@ var mainGC = function() {
             setEvForDepPara("settings_download_pqs_replace_file_name_founds", "settings_download_pqs_file_name_founds");
             setEvForDepPara("settings_view_larger_log_images_db", "settings_view_larger_log_images_max_width_db");
             setEvForDepPara("settings_view_larger_log_images_db", "settings_view_larger_log_images_max_height_db");
+            setEvForDepPara("settings_add_overlay_hillshading", "settings_show_hillshadow");
 
             // Abhängigkeiten der Linklist Parameter.
             for (var i = 0; i < 100; i++) {
@@ -20600,6 +20814,7 @@ var mainGC = function() {
                 'settings_add_overlay_wmthiking',
                 'settings_add_overlay_wmtcycling',
                 'settings_add_overlay_wmtmtb',
+                'settings_add_overlay_hillshading',
                 'settings_add_search_in_logs_func',
                 'settings_show_add_cache_info_in_log_page',
                 'settings_show_create_pq_from_pq_splitter',
