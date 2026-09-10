@@ -13264,6 +13264,8 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements img {height: 14px; width: 14px; padding-left: 0px; margin-left: 2px;}';
             css += "#searchmap_sidebar_enhancements ul {display: inline-block; padding-left: 0px; margin: 0px;}";
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
+            // Hint on cache detail screen.
+            css += ".gc-map-cache-hint > .content-empty:not(:empty) {display: block;}";
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; gap: 0.5em; color: #4a4a4a; cursor: default; padding: 0px !important;}'
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
