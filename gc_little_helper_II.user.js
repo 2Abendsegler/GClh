@@ -3625,17 +3625,14 @@ var mainGC = function() {
         // Build templates for Personal Cache Note.
         try {
             function waitForPCN(waitCount) {
-                if ($('#editCacheNote')[0] && $('#ctl00_ContentBody_lnkDH')[0] && $('#div_hint')[0]) {
+                if ($('#editCacheNote')[0] && $('#div_hint')[0]) {
                     // Script for insert personal cache note template by click.
                     function insertCacheNoteTemplatesFunction() {
                         var [aDate, aTime] = getDateTime();
                         var aHints = '';
                         if ($('#div_hint')[0].innerHTML.trim() != '') {
-                            if ($('#ctl00_ContentBody_lnkDH')[0].title == 'Decrypt') {
-                                aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
-                            } else {
-                                aHints = $('#div_hint')[0].innerHTML.trim();
-                            }
+                            // At this stage, the hint is always encrypted (even if automatic decryption is active).
+                            aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
                         }
                         aHints = aHints.replace(/<br>/g, '\r\n');
                         aHints = JSON.stringify(aHints).slice(1, -1);
@@ -3860,28 +3857,28 @@ var mainGC = function() {
 // Decrypt hints.
     if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
         try {
-            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('#ctl00_ContentBody_lnkDH')[0]) {
-                decrypt_hints(0);
+            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('[id$="lnkDH"]')[0]) {
+                decrypt_hints();
                 var decryptKey = $('#dk')[0];
                 if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
             }
         } catch(e) {gclh_error("Decrypt hints",e);}
     }
 // Hide hints.
-    if (settings_hide_hint && is_page("cache_listing") && $('#dk')[0]) {
+    if (settings_hide_hint && is_page("cache_listing")) {
         try {
-            // Replace hints by a link which shows the hints dynamically.
-            decrypt_hints(0, true);
-            // Remove hint description.
-            var decryptKey = $('#dk')[0];
-            if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
+            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('[id$="lnkDH"]')[0]) {
+                // Replace hints by a link which shows the hints dynamically.
+                decrypt_hints(true);
+                // Remove hint description.
+                var decryptKey = $('#dk')[0];
+                if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
+            }
         } catch(e) {gclh_error("Hide hints",e);}
     }
-    function decrypt_hints(waitCount, hideHints) {
-        $('#ctl00_ContentBody_lnkDH').click();
-        if ($('#ctl00_ContentBody_lnkDH')[0].getAttribute('title') != 'Decrypt') {
-            if (hideHints) hide_hints();
-        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){decrypt_hints(waitCount, hideHints);}, 200);}
+    function decrypt_hints(hideHints) {
+        $('[id$="lnkDH"]').click();
+        if (hideHints) hide_hints();
     }
     function hide_hints() {
         var hint = $('#div_hint')[0];
@@ -3892,21 +3889,21 @@ var mainGC = function() {
                 "  var hint = document.getElementById('div_hint');" +
                 "  if (hint.style.display == 'none') {" +
                 "    hint.style.display = 'block';" +
-                "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
-                "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Hide'" +
+                "    if (document.querySelector('[id$=\"lnkDH\"]')) {" +
+                "      document.querySelector('[id$=\"lnkDH\"]').innerHTML = 'Hide'" +
                 "    }" +
                 "  } else {" +
                 "    hint.style.display = 'none';" +
-                "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
-                "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Show'" +
+                "    if (document.querySelector('[id$=\"lnkDH\"]')) {" +
+                "      document.querySelector('[id$=\"lnkDH\"]').innerHTML = 'Show'" +
                 "    }" +
                 "  }" +
                 "  hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
                 "  return false;" +
                 "}";
             injectPageScript(code, 'body');
-            if ($('#ctl00_ContentBody_lnkDH')[0]) {
-                var link = $('#ctl00_ContentBody_lnkDH')[0];
+            if ($('[id$="lnkDH"]')[0]) {
+                var link = $('[id$="lnkDH"]')[0];
                 link.setAttribute('onclick', 'hide_hint();');
                 link.setAttribute('title', 'Show/Hide ' + decode_innerHTML(label));
                 link.setAttribute('href', 'javascript:void(0);');
