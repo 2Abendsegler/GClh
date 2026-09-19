@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.13
+// @version      0.18.14
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -3625,17 +3625,14 @@ var mainGC = function() {
         // Build templates for Personal Cache Note.
         try {
             function waitForPCN(waitCount) {
-                if ($('#editCacheNote')[0] && $('#ctl00_ContentBody_lnkDH')[0] && $('#div_hint')[0]) {
+                if ($('#editCacheNote')[0] && $('#div_hint')[0]) {
                     // Script for insert personal cache note template by click.
                     function insertCacheNoteTemplatesFunction() {
                         var [aDate, aTime] = getDateTime();
                         var aHints = '';
                         if ($('#div_hint')[0].innerHTML.trim() != '') {
-                            if ($('#ctl00_ContentBody_lnkDH')[0].title == 'Decrypt') {
-                                aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
-                            } else {
-                                aHints = $('#div_hint')[0].innerHTML.trim();
-                            }
+                            // At this stage, the hint is always encrypted (even if automatic decryption is active).
+                            aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
                         }
                         aHints = aHints.replace(/<br>/g, '\r\n');
                         aHints = JSON.stringify(aHints).slice(1, -1);
@@ -3860,28 +3857,28 @@ var mainGC = function() {
 // Decrypt hints.
     if (settings_decrypt_hint && !settings_hide_hint && is_page("cache_listing")) {
         try {
-            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('#ctl00_ContentBody_lnkDH')[0]) {
-                decrypt_hints(0);
+            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('[id$="lnkDH"]')[0]) {
+                decrypt_hints();
                 var decryptKey = $('#dk')[0];
                 if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
             }
         } catch(e) {gclh_error("Decrypt hints",e);}
     }
 // Hide hints.
-    if (settings_hide_hint && is_page("cache_listing") && $('#dk')[0]) {
+    if (settings_hide_hint && is_page("cache_listing")) {
         try {
-            // Replace hints by a link which shows the hints dynamically.
-            decrypt_hints(0, true);
-            // Remove hint description.
-            var decryptKey = $('#dk')[0];
-            if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
+            if ($('#ctl00_ContentBody_EncryptionKey')[0] && $('[id$="lnkDH"]')[0]) {
+                // Replace hints by a link which shows the hints dynamically.
+                decrypt_hints(true);
+                // Remove hint description.
+                var decryptKey = $('#dk')[0];
+                if (decryptKey) decryptKey.parentNode.removeChild(decryptKey);
+            }
         } catch(e) {gclh_error("Hide hints",e);}
     }
-    function decrypt_hints(waitCount, hideHints) {
-        $('#ctl00_ContentBody_lnkDH').click();
-        if ($('#ctl00_ContentBody_lnkDH')[0].getAttribute('title') != 'Decrypt') {
-            if (hideHints) hide_hints();
-        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){decrypt_hints(waitCount, hideHints);}, 200);}
+    function decrypt_hints(hideHints) {
+        $('[id$="lnkDH"]').click();
+        if (hideHints) hide_hints();
     }
     function hide_hints() {
         var hint = $('#div_hint')[0];
@@ -3892,21 +3889,21 @@ var mainGC = function() {
                 "  var hint = document.getElementById('div_hint');" +
                 "  if (hint.style.display == 'none') {" +
                 "    hint.style.display = 'block';" +
-                "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
-                "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Hide'" +
+                "    if (document.querySelector('[id$=\"lnkDH\"]')) {" +
+                "      document.querySelector('[id$=\"lnkDH\"]').innerHTML = 'Hide'" +
                 "    }" +
                 "  } else {" +
                 "    hint.style.display = 'none';" +
-                "    if (document.getElementById('ctl00_ContentBody_lnkDH')) {" +
-                "      document.getElementById('ctl00_ContentBody_lnkDH').innerHTML = 'Show'" +
+                "    if (document.querySelector('[id$=\"lnkDH\"]')) {" +
+                "      document.querySelector('[id$=\"lnkDH\"]').innerHTML = 'Show'" +
                 "    }" +
                 "  }" +
                 "  hint.innerHTML = convertROTStringWithBrackets(hint.innerHTML);" +
                 "  return false;" +
                 "}";
             injectPageScript(code, 'body');
-            if ($('#ctl00_ContentBody_lnkDH')[0]) {
-                var link = $('#ctl00_ContentBody_lnkDH')[0];
+            if ($('[id$="lnkDH"]')[0]) {
+                var link = $('[id$="lnkDH"]')[0];
                 link.setAttribute('onclick', 'hide_hint();');
                 link.setAttribute('title', 'Show/Hide ' + decode_innerHTML(label));
                 link.setAttribute('href', 'javascript:void(0);');
@@ -6204,27 +6201,26 @@ var mainGC = function() {
                 }
                 // Placed During.
                 $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
-                $('#ctl00_ContentBody_DateTimeBegin_Month option[value=' + findGetParameter('sm') + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeBegin_Day option[value=' + findGetParameter('sd') + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeBegin_Year option[value=' + findGetParameter('sy') + ']').attr('selected', true);
-                if ((findGetParameter('ed') != '') && (findGetParameter('em') != '') && (findGetParameter('ey') != '')) {
-                    var day = findGetParameter('ed');
-                    var month = findGetParameter('em');
-                    var year = findGetParameter('ey');
+                var day = findGetParameter('sd').padStart(2, '0');
+                var month = findGetParameter('sm').padStart(2, '0');
+                var year = findGetParameter('sy').padStart(4, '0');
+                $('#ctl00_ContentBody_DateTimeBegin')[0].value = year + '-' + month + '-' + day;
+                if (findGetParameter('ed') != '' && findGetParameter('em') != '' && findGetParameter('ey') != '' && findGetParameter('ed') != null && findGetParameter('em') != null && findGetParameter('ey') != null) {
+                    var day = findGetParameter('ed').padStart(2, '0');
+                    var month = findGetParameter('em').padStart(2, '0');
+                    var year = findGetParameter('ey').padStart(4, '0');
                 } else {
-                    if ((findGetParameter('hidden_todd') != '') && (findGetParameter('hidden_tomm') != '') && (findGetParameter('hidden_toyyyy') != '')) {
-                        var day = parseInt(findGetParameter('hidden_todd'));
-                        var month = parseInt(findGetParameter('hidden_tomm'));
-                        var year = findGetParameter('hidden_toyyyy');
+                    if (findGetParameter('hidden_todd') != '' && findGetParameter('hidden_tomm') != '' && findGetParameter('hidden_toyyyy') != '' && findGetParameter('hidden_todd') != null && findGetParameter('hidden_tomm') != null && findGetParameter('hidden_toyyyy') != null) {
+                        var day = findGetParameter('hidden_todd').padStart(2, '0');
+                        var month = findGetParameter('hidden_tomm').padStart(2, '0');
+                        var year = findGetParameter('hidden_toyyyy').padStart(4, '0');
                     } else {
                         var day = 31;
                         var month = 12;
                         var year = (new Date()).getFullYear()+1;
                     }
                 }
-                $('#ctl00_ContentBody_DateTimeEnd_Month option[value=' + month + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeEnd')[0].value = year + '-' + month + '-' + day;
                 // Select the secondary output Email Address.
                 if (findGetParameter('e') == 2) {
                     if ($('#ctl00_ContentBody_ddlAltEmails option:eq(1)')[0]) {
@@ -13264,6 +13260,8 @@ var mainGC = function() {
             css += '#searchmap_sidebar_enhancements img {height: 14px; width: 14px; padding-left: 0px; margin-left: 2px;}';
             css += "#searchmap_sidebar_enhancements ul {display: inline-block; padding-left: 0px; margin: 0px;}";
             css += "#searchmap_sidebar_enhancements li {display: inline-block; margin-right: 5px;}";
+            // Hint on cache detail screen.
+            css += ".gc-map-cache-hint > .content-empty:not(:empty) {display: block;}";
             // GClh Action Bar (Save as PQ and Hide Header Buttons).
             css += '#gclh_action_bar {display: flex; gap: 0.5em; color: #4a4a4a; cursor: default; padding: 0px !important;}'
             css += '#gclh_action_bar span, #gclh_action_bar a {margin-top: 2px;}';
@@ -16954,8 +16952,8 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/z1Lu/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
-        code += '<img src="https://www.worldflagcounter.com/iIb"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/HIBu/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+//        code += '<img src="https://www.worldflagcounter.com/iIb"' + prop;
 //<-- $$002
         div.innerHTML = code;
         side.appendChild(div);
@@ -18343,7 +18341,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "28.08.2026";
+            var thanksLastUpdate = "18.09.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";

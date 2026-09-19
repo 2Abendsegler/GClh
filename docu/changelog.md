@@ -1,3 +1,4 @@
+<a href="#v01814" title="GClh II version 0.18.14 (19.09.2026)">v0.18.14</a> &nbsp;
 <a href="#v01813" title="GClh II version 0.18.13 (28.08.2026)">v0.18.13</a> &nbsp;
 <a href="#v01812" title="GClh II version 0.18.12 (14.08.2026)">v0.18.12</a> &nbsp;
 <a href="#v01811" title="GClh II version 0.18.11 (21.07.2026)">v0.18.11</a> &nbsp;
@@ -51,6 +52,27 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.14:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Search Map] Missing hint in cache details on sidebar. [<a href="https://github.com/2Abendsegler/GClh/issues/3277" title="Issue 3277">3277</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] The features for "Additional Hints" no longer work. [<a href="https://github.com/2Abendsegler/GClh/issues/3276" title="Issue 3276">3276</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3276" title="Issue 3276">3276</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [PQ-Splitter] The "Placed During" date range values ​​are no longer being set. [<a href="https://github.com/2Abendsegler/GClh/issues/3275" title="Issue 3275">3275</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3275" title="Issue 3275">3275</a>.<br>
+	</li>
+</ul>
+<br>
+(19.09.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.13:
