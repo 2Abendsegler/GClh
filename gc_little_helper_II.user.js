@@ -6201,27 +6201,26 @@ var mainGC = function() {
                 }
                 // Placed During.
                 $('#ctl00_ContentBody_rbPlacedBetween').attr('checked', true);
-                $('#ctl00_ContentBody_DateTimeBegin_Month option[value=' + findGetParameter('sm') + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeBegin_Day option[value=' + findGetParameter('sd') + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeBegin_Year option[value=' + findGetParameter('sy') + ']').attr('selected', true);
-                if ((findGetParameter('ed') != '') && (findGetParameter('em') != '') && (findGetParameter('ey') != '')) {
-                    var day = findGetParameter('ed');
-                    var month = findGetParameter('em');
-                    var year = findGetParameter('ey');
+                var day = findGetParameter('sd').padStart(2, '0');
+                var month = findGetParameter('sm').padStart(2, '0');
+                var year = findGetParameter('sy').padStart(4, '0');
+                $('#ctl00_ContentBody_DateTimeBegin')[0].value = year + '-' + month + '-' + day;
+                if (findGetParameter('ed') != '' && findGetParameter('em') != '' && findGetParameter('ey') != '' && findGetParameter('ed') != null && findGetParameter('em') != null && findGetParameter('ey') != null) {
+                    var day = findGetParameter('ed').padStart(2, '0');
+                    var month = findGetParameter('em').padStart(2, '0');
+                    var year = findGetParameter('ey').padStart(4, '0');
                 } else {
-                    if ((findGetParameter('hidden_todd') != '') && (findGetParameter('hidden_tomm') != '') && (findGetParameter('hidden_toyyyy') != '')) {
-                        var day = parseInt(findGetParameter('hidden_todd'));
-                        var month = parseInt(findGetParameter('hidden_tomm'));
-                        var year = findGetParameter('hidden_toyyyy');
+                    if (findGetParameter('hidden_todd') != '' && findGetParameter('hidden_tomm') != '' && findGetParameter('hidden_toyyyy') != '' && findGetParameter('hidden_todd') != null && findGetParameter('hidden_tomm') != null && findGetParameter('hidden_toyyyy') != null) {
+                        var day = findGetParameter('hidden_todd').padStart(2, '0');
+                        var month = findGetParameter('hidden_tomm').padStart(2, '0');
+                        var year = findGetParameter('hidden_toyyyy').padStart(4, '0');
                     } else {
                         var day = 31;
                         var month = 12;
                         var year = (new Date()).getFullYear()+1;
                     }
                 }
-                $('#ctl00_ContentBody_DateTimeEnd_Month option[value=' + month + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeEnd_Day option[value=' + day + ']').attr('selected', true);
-                $('#ctl00_ContentBody_DateTimeEnd_Year option[value=' + year + ']').attr('selected', true);
+                $('#ctl00_ContentBody_DateTimeEnd')[0].value = year + '-' + month + '-' + day;
                 // Select the secondary output Email Address.
                 if (findGetParameter('e') == 2) {
                     if ($('#ctl00_ContentBody_ddlAltEmails option:eq(1)')[0]) {
