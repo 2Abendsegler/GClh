@@ -9505,6 +9505,53 @@ var mainGC = function() {
                 });
             }
 
+            // Borrowed from 'function handleUpvoteClick(...)' in https://www.geocaching.com/app/dist/cacheDetails.<content-hash>.js
+            async function upvoteLog(e) {
+                const n = Number(e.attr("data-log-id")),
+                    a = Number(e.attr("data-upvote-type")),
+                    t = { labels: unsafeWindow.resources?.upvoteLabels ?? {},
+                        requestVerificationToken: document.querySelector("input[name=__RequestVerificationToken]")?.value ?? ""
+                    },
+                    ve = '/api/proxy/web/v1/geocaches/logs';
+
+                if (!(n > 0) || 1 !== a && 2 !== a) return;
+                const o = !0 === e.data("upvoted"),
+                    i = $('#cache_logs_table2').find(`.upvotes .loading-${n}`);
+                e.data("upvoted", !o);
+                i.removeClass("hide");
+                e.hide();
+                try {
+                    const r = await async function toggleUpvote(e, t, n, a) {
+                        const o = new URLSearchParams({ upvoteType: 1 === t ? "GreatStory" : "Helpful" }),
+                            i = await fetch(`${ve}/${e}/upvote?${o.toString()}`, {
+                                method: n ? "DELETE" : "POST",
+                                credentials: "include",
+                                headers: {
+                                    "Accept": "application/json",
+                                    "X-Requested-With": "XMLHttpRequest",
+                                    "X-Verification-Token": a
+                                }
+                            });
+                        if (!i.ok) throw new Error(`Upvote update failed: ${i.status}`);
+                        return await i.json();
+                    }(n, a, o, t.requestVerificationToken);
+                    formatUpvoteButton(e, !o, r, a, t.labels);
+                    i.addClass("hide");
+                    e.show();
+                } catch {}
+            }
+            // Borrowed from https://www.geocaching.com/app/dist/cacheDetails.<content-hash>.js.
+            function formatUpvoteButton(e, t, n, a, o) {
+                0 !== e.length && (e.data("upvoted", t),
+                    e.toggleClass("upvoted", t),
+                    e.find("span").text(function upvoteButtonText(e, t, n) {
+                        let a = "";
+                        return 1 === t ? a = e.greatStory ?? "" : 2 === t && (a = e.helpful ?? ""),
+                        n > 0 && (a += ` (${n})`),
+                            a
+                    }(o, a, n)))
+            }
+
             if (settings_show_all_logs) gclh_load_logs(countOfLogsInListing());
             else gclh_load_logs(30);
 
