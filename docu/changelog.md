@@ -59,13 +59,13 @@
 &nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
 <ul>
 	<li>
+		<strong>Fix:</strong> [Listing] Log formatting out of order. [<a href="https://github.com/2Abendsegler/GClh/issues/3286" title="Issue 3286">3286</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+	</li>
+	<li>
 		<strong>Fix:</strong> [Listing] "Great story" or "Helpful" don't work. [<a href="https://github.com/2Abendsegler/GClh/issues/3288" title="Issue 3288">3288</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 	<li>
 		<strong>Fix:</strong> [Friends List] Summary for new finds/hides formatted incorrectly. [<a href="https://github.com/2Abendsegler/GClh/issues/3287" title="Issue 3287">3287</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
-	</li>
-	<li>
-		<strong>Fix:</strong> [Listing] Log formatting out of order. [<a href="https://github.com/2Abendsegler/GClh/issues/3286" title="Issue 3286">3286</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
 	</li>
 </ul>
 <br>
