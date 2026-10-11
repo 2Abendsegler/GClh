@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.14
+// @version      0.18.15
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -7524,20 +7524,20 @@ var mainGC = function() {
                 spanT.style.fontSize = "smaller";
                 spanT.innerHTML = 'Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = spanT.innerHTML;
-                document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
+                document.getElementById('invitation-button-root').parentNode.after(spanT);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('invitation-button-root').parentNode.after(boxH);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('invitation-button-root').parentNode.after(boxF);
                 }
             }
             function waitForInvitationButton(waitCount) {
@@ -8566,7 +8566,8 @@ var mainGC = function() {
                 '<tr class="log-row l-${LogID}" data-encoded="${IsEncoded}" >' +
                 '{{/if}}' +
                 '  <td>' +
-                '    <div class="FloatLeft LogDisplayLeft" >' +
+                '   <div class="log-row-body">' +
+                '    <div class="LogDisplayLeft" >' +
                 '      <p class="logOwnerProfileName">' +
                 '        <strong>' +
                 '          {{' + vupHideAvatarString  + '}}' +
@@ -8615,7 +8616,8 @@ var mainGC = function() {
                 '        {{/if}}' +
                 '      </p>' +
                 '    </div>' +
-                '    <div class="FloatLeft LogDisplayRight">' +
+                '    <div class="LogDisplayRight">' +
+                '     <div class="log-row-header">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
                 '           <img height="17" width="17" title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' +
@@ -8625,16 +8627,17 @@ var mainGC = function() {
                 '             </svg>' +
                 '           {{/if}}' +
                 '           ${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
-                '      <div class="HalfRight AlignRight">' +
-                '        <span class="minorDetails LogDate">${Visited}</span></div>' +
+                '      <div class="HalfRight LogDate">' +
+                '        <span class="minorDetails">${Visited}</span></div>' +
+                '     </div>' +
                 '      <div class="Clear LogContent markdown-output">' +
                 '        {{if LatLonString.length > 0}}' +
                 '        <strong>${LatLonString}</strong>' +
                 '        {{/if}}' +
                 '        {{' + vupUserString + '}}' +
-                '        <p class="LogText">censored</p>' +
+                '        <div class="LogText">censored</div>' +
                 '        {{else}}' +
-                '        <p class="LogText">{{html LogText}}</p>' +
+                '        <div class="LogText">{{html LogText}}</div>' +
                 '        {{/if}}';
             if (settings_show_thumbnails) new_tmpl +=
                 '      </div>' +
@@ -8725,6 +8728,7 @@ var mainGC = function() {
                 '        </div>' +
                 '       </div>' +
                 '     </div>' +
+                '    </div>' +
                 '   </td>' +
                 '</tr>';
 
@@ -8736,8 +8740,8 @@ var mainGC = function() {
             css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 5.5em;}";
-            // Bilderrahmen im Log ausrichten.
-            css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
+            // Bilderrahmen im Log ausrichten, Breite an Bilderanzahl anpassen.
+            css += ".LogImagesTable {margin-left: 0; width: auto;} .LogImagesTable a.lnk {white-space: initial;}";
             css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
@@ -8749,6 +8753,8 @@ var mainGC = function() {
             if (settings_no_wiggle_upvotes_click) css += ".upvotes .loading-container {height: " + (settings_smaller_upvotes_icons ? 20:26) +"px;}";
             if (settings_no_wiggle_upvotes_click) css += "#sort_logs_working {display: none;}";
             css += "#new_sort_element_upvote {width: unset; background-position-x: 95%;" + (settings_smaller_upvotes_icons ? " background-position-y: 60%; background-size: 22px; padding-top: 4px; padding-bottom: 4px;":"") + "}";
+            // Adapt separator color between left and right log part (otherwise the separator can hardly be seen in colored logs).
+            css += ".LogDisplayRight {border-left: 1px solid rgb(189, 193, 198);}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
@@ -9503,6 +9509,53 @@ var mainGC = function() {
                         return upvoteLog($(this));
                     });
                 });
+            }
+
+            // Borrowed from 'function handleUpvoteClick(...)' in https://www.geocaching.com/app/dist/cacheDetails.<content-hash>.js
+            async function upvoteLog(e) {
+                const n = Number(e.attr("data-log-id")),
+                    a = Number(e.attr("data-upvote-type")),
+                    t = { labels: unsafeWindow.resources?.upvoteLabels ?? {},
+                        requestVerificationToken: document.querySelector("input[name=__RequestVerificationToken]")?.value ?? ""
+                    },
+                    ve = '/api/proxy/web/v1/geocaches/logs';
+
+                if (!(n > 0) || 1 !== a && 2 !== a) return;
+                const o = !0 === e.data("upvoted"),
+                    i = $('#cache_logs_table2').find(`.upvotes .loading-${n}`);
+                e.data("upvoted", !o);
+                i.removeClass("hide");
+                e.hide();
+                try {
+                    const r = await async function toggleUpvote(e, t, n, a) {
+                        const o = new URLSearchParams({ upvoteType: 1 === t ? "GreatStory" : "Helpful" }),
+                            i = await fetch(`${ve}/${e}/upvote?${o.toString()}`, {
+                                method: n ? "DELETE" : "POST",
+                                credentials: "include",
+                                headers: {
+                                    "Accept": "application/json",
+                                    "X-Requested-With": "XMLHttpRequest",
+                                    "X-Verification-Token": a
+                                }
+                            });
+                        if (!i.ok) throw new Error(`Upvote update failed: ${i.status}`);
+                        return await i.json();
+                    }(n, a, o, t.requestVerificationToken);
+                    formatUpvoteButton(e, !o, r, a, t.labels);
+                    i.addClass("hide");
+                    e.show();
+                } catch {}
+            }
+            // Borrowed from https://www.geocaching.com/app/dist/cacheDetails.<content-hash>.js.
+            function formatUpvoteButton(e, t, n, a, o) {
+                0 !== e.length && (e.data("upvoted", t),
+                    e.toggleClass("upvoted", t),
+                    e.find("span").text(function upvoteButtonText(e, t, n) {
+                        let a = "";
+                        return 1 === t ? a = e.greatStory ?? "" : 2 === t && (a = e.helpful ?? ""),
+                        n > 0 && (a += ` (${n})`),
+                            a
+                    }(o, a, n)))
             }
 
             if (settings_show_all_logs) gclh_load_logs(countOfLogsInListing());
@@ -16952,7 +17005,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/HIBu/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/LZmV/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //        code += '<img src="https://www.worldflagcounter.com/iIb"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -18341,7 +18394,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "18.09.2026";
+            var thanksLastUpdate = "11.10.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
