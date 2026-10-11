@@ -8566,7 +8566,8 @@ var mainGC = function() {
                 '<tr class="log-row l-${LogID}" data-encoded="${IsEncoded}" >' +
                 '{{/if}}' +
                 '  <td>' +
-                '    <div class="FloatLeft LogDisplayLeft" >' +
+                '   <div class="log-row-body">' +
+                '    <div class="LogDisplayLeft" >' +
                 '      <p class="logOwnerProfileName">' +
                 '        <strong>' +
                 '          {{' + vupHideAvatarString  + '}}' +
@@ -8615,7 +8616,8 @@ var mainGC = function() {
                 '        {{/if}}' +
                 '      </p>' +
                 '    </div>' +
-                '    <div class="FloatLeft LogDisplayRight">' +
+                '    <div class="LogDisplayRight">' +
+                '     <div class="log-row-header">' +
                 '      <div class="HalfLeft LogType">' +
                 '         <strong>' +
                 '           <img height="17" width="17" title="${getLocalizedLogType(LogTypeID, LogType)}" alt="${getLocalizedLogType(LogTypeID, LogType)}" src="/images/logtypes/${LogTypeImage}">' +
@@ -8625,16 +8627,17 @@ var mainGC = function() {
                 '             </svg>' +
                 '           {{/if}}' +
                 '           ${getLocalizedLogType(LogTypeID, LogType)}</strong><small class="gclh_logCounter"></small></div>' +
-                '      <div class="HalfRight AlignRight">' +
-                '        <span class="minorDetails LogDate">${Visited}</span></div>' +
+                '      <div class="HalfRight LogDate">' +
+                '        <span class="minorDetails">${Visited}</span></div>' +
+                '     </div>' +
                 '      <div class="Clear LogContent markdown-output">' +
                 '        {{if LatLonString.length > 0}}' +
                 '        <strong>${LatLonString}</strong>' +
                 '        {{/if}}' +
                 '        {{' + vupUserString + '}}' +
-                '        <p class="LogText">censored</p>' +
+                '        <div class="LogText">censored</div>' +
                 '        {{else}}' +
-                '        <p class="LogText">{{html LogText}}</p>' +
+                '        <div class="LogText">{{html LogText}}</div>' +
                 '        {{/if}}';
             if (settings_show_thumbnails) new_tmpl +=
                 '      </div>' +
@@ -8725,6 +8728,7 @@ var mainGC = function() {
                 '        </div>' +
                 '       </div>' +
                 '     </div>' +
+                '    </div>' +
                 '   </td>' +
                 '</tr>';
 
@@ -8736,8 +8740,8 @@ var mainGC = function() {
             css += ".compact_logbook tbody tr > td:nth-child(1) {padding-top: 6px; padding-bottom: 0px;}";
             css += ".markdown-output {margin: unset;}";
             if (!settings_hide_avatar) css += ".markdown-output {min-height: 5.5em;}";
-            // Bilderrahmen im Log ausrichten.
-            css += ".LogImagesTable {margin-left: 0;} .LogImagesTable a.lnk {white-space: initial;}";
+            // Bilderrahmen im Log ausrichten, Breite an Bilderanzahl anpassen.
+            css += ".LogImagesTable {margin-left: 0; width: auto;} .LogImagesTable a.lnk {white-space: initial;}";
             css += ".LogImagesTable a.gclh_thumb img {margin-bottom: 1px !important; margin-top: 1px; vertical-align: sub;}";
             // Länge der Usernamen in den Logs beschränken, damit sie nicht umgebrochen werden.
             css += ".logOwnerProfileName {max-width: 135px; display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; text-overflow: ellipsis;}";
@@ -8749,6 +8753,8 @@ var mainGC = function() {
             if (settings_no_wiggle_upvotes_click) css += ".upvotes .loading-container {height: " + (settings_smaller_upvotes_icons ? 20:26) +"px;}";
             if (settings_no_wiggle_upvotes_click) css += "#sort_logs_working {display: none;}";
             css += "#new_sort_element_upvote {width: unset; background-position-x: 95%;" + (settings_smaller_upvotes_icons ? " background-position-y: 60%; background-size: 22px; padding-top: 4px; padding-bottom: 4px;":"") + "}";
+            // Adapt separator color between left and right log part (otherwise the separator can hardly be seen in colored logs).
+            css += ".LogDisplayRight {border-left: 1px solid rgb(189, 193, 198);}";
             appendCssStyle(css);
         } catch(e) {gclh_error("Define log-template",e);}
     }
