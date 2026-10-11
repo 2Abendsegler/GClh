@@ -7524,20 +7524,20 @@ var mainGC = function() {
                 spanT.style.fontSize = "smaller";
                 spanT.innerHTML = 'Last reset was ' + getDateDiffString(new Date().getTime(), ld) + ' ago (' + new Date(parseInt(ld, 10)).toLocaleString() + ')&nbsp;&nbsp;';
                 if ((sNewH == "") && (sNewF == "")) spanT.innerHTML = spanT.innerHTML;
-                document.getElementById('invitation-button-root').parentNode.insertBefore(spanT, document.getElementById('invitation-button-root').nextSibling);
+                document.getElementById('invitation-button-root').parentNode.after(spanT);
                 // Wenn neue Hides -> anzeigen.
                 if (sNewH != "") {
                     var boxH = document.createElement("div");
                     boxH.innerHTML = "<b>New hides by:</b> " + sNewH;
                     boxH.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxH, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('invitation-button-root').parentNode.after(boxH);
                 }
                 // Wenn neue Founds -> anzeigen.
                 if (sNewF != "") {
                     var boxF = document.createElement("div");
                     boxF.innerHTML = "<b>New finds by:</b> " + sNewF;
                     boxF.className = 'divFHclass';
-                    document.getElementById('invitation-button-root').parentNode.insertBefore(boxF, document.getElementById('invitation-button-root').nextSibling);
+                    document.getElementById('invitation-button-root').parentNode.after(boxF);
                 }
             }
             function waitForInvitationButton(waitCount) {
