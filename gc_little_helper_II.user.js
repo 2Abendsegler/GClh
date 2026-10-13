@@ -5647,7 +5647,7 @@ var mainGC = function() {
                     elem.style.whiteSpace = "nowrap";
                 }
                 // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper .btn {padding: .5em 2em;} .pq-info-wrapper p:last-child {padding: 0;}";
+                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 10px 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper .btn {padding: .75em 2em !important; margin-right: unset !important; min-width: unset !important;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 2em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-panel {padding: 0.5em 1.4em;} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
                 css += ".Success {margin: 5px 0 0 0;}";
                 css += ".BreadcrumbWidget p {margin-top: 0;}";
@@ -5662,7 +5662,7 @@ var mainGC = function() {
                 }
                 $('#ActivePQs, #DownloadablePQs').each(function() {
                     this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
-                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; margin: -28px -15px 0 0; float: right;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; float: right;");
                 });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
@@ -5764,16 +5764,16 @@ var mainGC = function() {
                 if ($('#ActivePQs')[0] && $('#DownloadablePQs')[0]) {
                     if (settings_both_tabs_list_of_pqs_one_page) {
                         function showBothTabsOnOnePage(waitCount) {
-                            if ($('#ui-id-1')[0] && $('#ui-id-2')[0]) {
+                            if ($('#ActivePQs-tab')[0] && $('#DownloadablePQs-tab')[0] && $('.tab-strip')[0]) {
                                 $('#ActivePQs, #DownloadablePQs').attr('aria-hidden', 'false');
                                 $('#ActivePQs, #DownloadablePQs').each(function() {
-                                    this.style.display = 'block';
+                                    this.style.setProperty('display', 'block', 'important');
                                     this.children[0].children[0].style.margin = '0px';
                                 });
                                 $('#DownloadablePQs')[0].style.marginTop = '10px';
-                                $('#ActivePQs')[0].children[0].innerHTML = $('#ui-id-1')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
-                                $('#DownloadablePQs')[0].children[0].innerHTML = $('#ui-id-2')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
-                                $('ul.ui-tabs-nav')[0].remove();
+                                $('#ActivePQs')[0].children[0].innerHTML = $('#ActivePQs-tab')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
+                                $('#DownloadablePQs')[0].children[0].innerHTML = $('#DownloadablePQs-tab')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
+                                $('.tab-strip')[0].remove();
                             } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showBothTabsOnOnePage(waitCount);}, 100);}
                         }
                         showBothTabsOnOnePage(0);
