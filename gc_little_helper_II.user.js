@@ -11326,25 +11326,23 @@ var mainGC = function() {
 
             // Add proxies for getting map handle and modifying cache properties.
             if (!unsafeWindow.GCLH) unsafeWindow.GCLH = {};
-            let isEnabledHiddenCacheLocationOnMap;
+            let showAtCorrectedCoordsByGS = null;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
                 // Safeguard.
                 if (++observerCalls > 99) {
                     observer.disconnect();
                     if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
-                    if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps) gclh_log('unsafeWindow.__NEXT_DATA__.props.pageProps not found for ' + observerCalls + ' MutationObserver calls. Hiding display options during route creation won\'t work as expected.');
                     if (!next_router) gclh_log('Add proxy for cache properties - unsafeWindow.next.router.components[next_router.route].Component.getLayout not found for ' + observerCalls + ' MutationObserver calls. If enabled, display options won\'t work as expected.');
                     return;
                 }
 
-                // GS experimental features.
+                // GS show at corrected coords feature (PMO).
                 const pageProps = unsafeWindow.__NEXT_DATA__?.props?.pageProps;
-                if (pageProps && typeof isEnabledHiddenCacheLocationOnMap === 'undefined') {
-                    isEnabledHiddenCacheLocationOnMap = pageProps.activeExperimentalFeatures.includes("hiddenCacheLocationOnMap");
-                    if (pageProps.activeExperimentalFeatures.includes("cachesAlongARoute")) {
-                        handleDisplayOptionsButtonOnRouteCreation();
-                    }
+                if (pageProps && showAtCorrectedCoordsByGS !== null) {
+                    // Same user props are available for both, BM and PM.
+                    const userProps = pageProps?.gcUser?.settings?.find(i => i.name === 'map')?.properties;
+                    showAtCorrectedCoordsByGS = userProps?.solvedCoordinateDisplayOption === 'solved';
                 }
 
                 // Add proxy for getting map handle.
@@ -11433,7 +11431,7 @@ var mainGC = function() {
                 }
 
                 // Finished, stop observing.
-                if (unsafeWindow.GCLH?.React?.useState && pageProps && next_router) {
+                if (unsafeWindow.GCLH?.React?.useState && next_router) {
                     observer.disconnect();
                     return;
                 }
@@ -11546,7 +11544,7 @@ var mainGC = function() {
                     // Hide DNF icons.
                     if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
                     // Change original cache coords to corrected coords.
-                    if (!isEnabledHiddenCacheLocationOnMap && showAtCorrectedCoords && gc.userCorrectedCoordinates) {
+                    if (!showAtCorrectedCoordsByGS && showAtCorrectedCoords && gc.userCorrectedCoordinates) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
                 }
@@ -11802,7 +11800,7 @@ var mainGC = function() {
                         <div style="margin-bottom: 5px;"><u>Remembered Display Options</u></div>
                     `);
                     // Show at corrected coordinates.
-                    if (!isEnabledHiddenCacheLocationOnMap) {
+                    if (!showAtCorrectedCoordsByGS) {
                         $list.append(`
                         <label for="gclh_showAtCorrectedCoords">
                             <input type="checkbox" id="gclh_showAtCorrectedCoords" ${showAtCorrectedCoords ? 'checked' : ''}>
@@ -12057,16 +12055,14 @@ var mainGC = function() {
                 });
             }
 
-            // Hide display options button if route creation is active (GS experimental feature - Caches along a route).
+            // Hide display options button if route creation is active (GS feature (PMO) - Caches along a route).
             let isActiveCreateRoute = false;
-            function handleDisplayOptionsButtonOnRouteCreation() {
-                waitForElementThenRun('button[data-testid="create-route-map"]', function() {
-                    $('button[data-testid="create-route-map"]').click(function() {
-                        $('#gclh_display_options_control').toggle();
-                        isActiveCreateRoute = !isActiveCreateRoute;
-                    });
+            waitForElementThenRun('button[data-testid="create-route-map"]', function() {
+                $('button[data-testid="create-route-map"]').click(function() {
+                    $('#gclh_display_options_control').toggle();
+                    isActiveCreateRoute = !isActiveCreateRoute;
                 });
-            }
+            });
 
             // Add button for additional geocache display options.
             if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
