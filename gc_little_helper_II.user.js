@@ -2560,7 +2560,6 @@ var mainGC = function() {
                             log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "' style='vertical-align: sub;'>" + lateLogs[i]['fav'] + " <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>";
                             a.appendChild(img);
                             for (var j = 0; j < lateLogs[i]['log'].length; j++) {
-                                if (j == 0 && !gcLogs) continue;
                                 log_text.appendChild(lateLogs[i]['log'][j]);
                             }
                             a.appendChild(log_text);
