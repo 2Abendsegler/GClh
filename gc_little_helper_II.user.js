@@ -10441,7 +10441,7 @@ var mainGC = function() {
                         </div>
                         `;
                         const disabled = `
-                        <div class="gclh_hide_column_toggle disabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-grey-500 hover:bg-grey-600" role="button" tabindex="0" aria-pressed="false" aria-disabled="false">
+                        <div class="gclh_hide_column_toggle disabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-semantic-bg-neutral-control hover:bg-semantic-bd-neutral-secondary" role="button" tabindex="0" aria-pressed="false" aria-disabled="false">
                           <div class="size-[20px] rounded-full bg-white absolute left-[2px]"></div>
                         </div>
                         `;
