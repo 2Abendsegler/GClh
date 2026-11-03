@@ -11338,7 +11338,7 @@ var mainGC = function() {
 
                 // GS show at corrected coords feature (PMO).
                 const pageProps = unsafeWindow.__NEXT_DATA__?.props?.pageProps;
-                if (pageProps && showAtCorrectedCoordsByGS !== null) {
+                if (pageProps && showAtCorrectedCoordsByGS === null) {
                     // Same user props are available for both, BM and PM.
                     const userProps = pageProps?.gcUser?.settings?.find(i => i.name === 'map')?.properties;
                     showAtCorrectedCoordsByGS = userProps?.solvedCoordinateDisplayOption === 'solved';
