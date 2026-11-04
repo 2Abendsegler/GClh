@@ -1,3 +1,4 @@
+<a href="#v01816" title="GClh II version 0.18.16 (04.11.2026)">v0.18.16</a> &nbsp;
 <a href="#v01815" title="GClh II version 0.18.15 (11.10.2026)">v0.18.15</a> &nbsp;
 <a href="#v01814" title="GClh II version 0.18.14 (19.09.2026)">v0.18.14</a> &nbsp;
 <a href="#v01813" title="GClh II version 0.18.13 (28.08.2026)">v0.18.13</a> &nbsp;
@@ -53,6 +54,36 @@
 <a href="#v015" title="GClh II version 0.15 (26.11.2023)">v0.15</a> &nbsp;
 <a href="changelog_before.md" title="Go to earlier changelog">Earlier changelog</a> &nbsp;
 <span id="readme"></span>
+
+---
+## v0.18.16:
+&nbsp; &nbsp; <img src="../images/flag_ua.png" alt="" title="Stand with Ukraine"><br>
+<ul>
+	<li>
+		<strong>Fix:</strong> [Pocket Queries] Active pocket queries and downloadable pocket queries on a single screen no longer possible. [<a href="https://github.com/2Abendsegler/GClh/issues/3292" title="Issue 3292">3292</a> / <a href="https://www.geocaching.com/profile/?u=2Abendsegler" title="Thanks to 2Abendsegler">2Abendsegler</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3292" title="Issue 3292">3292</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Listing] Show latest logs: Logtext missing. [<a href="https://github.com/2Abendsegler/GClh/issues/3294" title="Issue 3294">3294</a> / <a href="https://www.geocaching.com/profile/?u=capoaira" title="Thanks to capoaira">capoaira</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3294" title="Issue 3294">3294</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] GClh Error when interacting with the map. [<a href="https://github.com/2Abendsegler/GClh/issues/3295" title="Issue 3295">3295</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3295" title="Issue 3295">3295</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Search Map] Proper handling of GS corrected coords feature. [<a href="https://github.com/2Abendsegler/GClh/issues/3301" title="Issue 3301">3301</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3301" title="Issue 3301">3301</a>.<br>
+	</li>
+	<li>
+		<strong>Fix:</strong> [Dashboard] Button for hiding right sidebar invisible, if disabled. [<a href="https://github.com/2Abendsegler/GClh/issues/3298" title="Issue 3298">3298</a> / <a href="https://www.geocaching.com/profile/?u=Die Batzen" title="Thanks to Die Batzen">Die Batzen</a>]<br>
+		Further information can be found in issue <a href="https://github.com/2Abendsegler/GClh/issues/3298" title="Issue 3298">3298</a>.<br>
+	</li>
+</ul>
+<br>
+(04.11.2026)<br>
+released by <a href="https://www.geocaching.com/profile/?u=2Abendsegler">2Abendsegler</a><br>
+<br>
 
 ---
 ## v0.18.15:
