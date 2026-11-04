@@ -2,7 +2,7 @@
 // @name         GC little helper II
 // @description  Some little things to make life easy (on www.geocaching.com).
 //--> $$000
-// @version      0.18.15
+// @version      0.18.16
 //<-- $$000
 // @copyright    2016-2026 2Abendsegler, 2019-2026 capoaira, 2025-2026 Die Batzen, (2017-2021 Ruko2010, 2010-2016 Torsten Amshove)
 // @author       Torsten Amshove; 2Abendsegler; Ruko2010; capoaira; Die Batzen
@@ -2560,7 +2560,6 @@ var mainGC = function() {
                             log_text.innerHTML = "<img src='" + lateLogs[i]['src'] + "' style='vertical-align: sub;'>" + lateLogs[i]['fav'] + " <b>" + lateLogs[i]['user'] + " - " + lateLogs[i]['date'] + "</b><br>";
                             a.appendChild(img);
                             for (var j = 0; j < lateLogs[i]['log'].length; j++) {
-                                if (j == 0 && !gcLogs) continue;
                                 log_text.appendChild(lateLogs[i]['log'][j]);
                             }
                             a.appendChild(log_text);
@@ -5647,7 +5646,7 @@ var mainGC = function() {
                     elem.style.whiteSpace = "nowrap";
                 }
                 // Header:
-                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 0 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper .btn {padding: .5em 2em;} .pq-info-wrapper p:last-child {padding: 0;}";
+                css += ".pq-info-wrapper {margin: 0; padding: 10px 0 10px 0; background-color: unset; box-shadow: unset;} .pq-info-wrapper .btn {padding: .75em 2em !important; margin-right: unset !important; min-width: unset !important;} .pq-info-wrapper p:last-child {padding: 0;}";
                 css += "#Content .ui-tabs {margin-top: 2em;} .ui-tabs-active {box-shadow: 2px 0px 0 rgba(0,0,0,.2);} .ui-tabs .ui-tabs-panel {padding: 0.5em 1.4em;} .ui-tabs .ui-tabs-nav li {margin-right: 4px;}";
                 css += ".Success {margin: 5px 0 0 0;}";
                 css += ".BreadcrumbWidget p {margin-top: 0;}";
@@ -5662,7 +5661,7 @@ var mainGC = function() {
                 }
                 $('#ActivePQs, #DownloadablePQs').each(function() {
                     this.setAttribute("style", "box-shadow: 2px 2px 0 rgba(0,0,0,.2);");
-                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; margin: -28px -15px 0 0; float: right;");
+                    this.children[0].children[0].setAttribute("style", "font-size: .6rem; float: right;");
                 });
                 // Table active PQs:
                 css += "table {margin-bottom: 0;} table.Table, table.Table th, table.Table td {padding: 5px; border: 1px solid #fff;}";
@@ -5764,16 +5763,16 @@ var mainGC = function() {
                 if ($('#ActivePQs')[0] && $('#DownloadablePQs')[0]) {
                     if (settings_both_tabs_list_of_pqs_one_page) {
                         function showBothTabsOnOnePage(waitCount) {
-                            if ($('#ui-id-1')[0] && $('#ui-id-2')[0]) {
+                            if ($('#ActivePQs-tab')[0] && $('#DownloadablePQs-tab')[0] && $('.tab-strip')[0]) {
                                 $('#ActivePQs, #DownloadablePQs').attr('aria-hidden', 'false');
                                 $('#ActivePQs, #DownloadablePQs').each(function() {
-                                    this.style.display = 'block';
+                                    this.style.setProperty('display', 'block', 'important');
                                     this.children[0].children[0].style.margin = '0px';
                                 });
                                 $('#DownloadablePQs')[0].style.marginTop = '10px';
-                                $('#ActivePQs')[0].children[0].innerHTML = $('#ui-id-1')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
-                                $('#DownloadablePQs')[0].children[0].innerHTML = $('#ui-id-2')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
-                                $('ul.ui-tabs-nav')[0].remove();
+                                $('#ActivePQs')[0].children[0].innerHTML = $('#ActivePQs-tab')[0].innerHTML + $('#ActivePQs')[0].children[0].innerHTML;
+                                $('#DownloadablePQs')[0].children[0].innerHTML = $('#DownloadablePQs-tab')[0].innerHTML + $('#DownloadablePQs')[0].children[0].innerHTML;
+                                $('.tab-strip')[0].remove();
                             } else {waitCount++; if (waitCount <= 100) setTimeout(function(){showBothTabsOnOnePage(waitCount);}, 100);}
                         }
                         showBothTabsOnOnePage(0);
@@ -10442,7 +10441,7 @@ var mainGC = function() {
                         </div>
                         `;
                         const disabled = `
-                        <div class="gclh_hide_column_toggle disabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-grey-500 hover:bg-grey-600" role="button" tabindex="0" aria-pressed="false" aria-disabled="false">
+                        <div class="gclh_hide_column_toggle disabled flex items-center h-5 w-7 rounded-[12px] shrink-0 relative focus:outline-shadow cursor-pointer bg-semantic-bg-neutral-control hover:bg-semantic-bd-neutral-secondary" role="button" tabindex="0" aria-pressed="false" aria-disabled="false">
                           <div class="size-[20px] rounded-full bg-white absolute left-[2px]"></div>
                         </div>
                         `;
@@ -11326,25 +11325,23 @@ var mainGC = function() {
 
             // Add proxies for getting map handle and modifying cache properties.
             if (!unsafeWindow.GCLH) unsafeWindow.GCLH = {};
-            let isEnabledHiddenCacheLocationOnMap;
+            let showAtCorrectedCoordsByGS = null;
             let observerCalls = 0;
             const observer = new MutationObserver(() => {
                 // Safeguard.
                 if (++observerCalls > 99) {
                     observer.disconnect();
                     if (!unsafeWindow.GCLH?.React) gclh_error("Add proxy for map handle", new Error('useState not found in unsafeWindow.webpackChunk_N_E for ' + observerCalls + ' MutationObserver calls. Additional map features won\'t work as expected.'));
-                    if (!unsafeWindow.__NEXT_DATA__?.props?.pageProps) gclh_log('unsafeWindow.__NEXT_DATA__.props.pageProps not found for ' + observerCalls + ' MutationObserver calls. Hiding display options during route creation won\'t work as expected.');
                     if (!next_router) gclh_log('Add proxy for cache properties - unsafeWindow.next.router.components[next_router.route].Component.getLayout not found for ' + observerCalls + ' MutationObserver calls. If enabled, display options won\'t work as expected.');
                     return;
                 }
 
-                // GS experimental features.
+                // GS show at corrected coords feature (PMO).
                 const pageProps = unsafeWindow.__NEXT_DATA__?.props?.pageProps;
-                if (pageProps && typeof isEnabledHiddenCacheLocationOnMap === 'undefined') {
-                    isEnabledHiddenCacheLocationOnMap = pageProps.activeExperimentalFeatures.includes("hiddenCacheLocationOnMap");
-                    if (pageProps.activeExperimentalFeatures.includes("cachesAlongARoute")) {
-                        handleDisplayOptionsButtonOnRouteCreation();
-                    }
+                if (pageProps && showAtCorrectedCoordsByGS === null) {
+                    // Same user props are available for both, BM and PM.
+                    const userProps = pageProps?.gcUser?.settings?.find(i => i.name === 'map')?.properties;
+                    showAtCorrectedCoordsByGS = userProps?.solvedCoordinateDisplayOption === 'solved';
                 }
 
                 // Add proxy for getting map handle.
@@ -11433,7 +11430,7 @@ var mainGC = function() {
                 }
 
                 // Finished, stop observing.
-                if (unsafeWindow.GCLH?.React?.useState && pageProps && next_router) {
+                if (unsafeWindow.GCLH?.React?.useState && next_router) {
                     observer.disconnect();
                     return;
                 }
@@ -11546,7 +11543,7 @@ var mainGC = function() {
                     // Hide DNF icons.
                     if (hideDNFIcons && gc.userDidNotFind) delete gc.userDidNotFind;
                     // Change original cache coords to corrected coords.
-                    if (!isEnabledHiddenCacheLocationOnMap && showAtCorrectedCoords && gc.userCorrectedCoordinates) {
+                    if (!showAtCorrectedCoordsByGS && showAtCorrectedCoords && gc.userCorrectedCoordinates) {
                         gc.postedCoordinates = gc.userCorrectedCoordinates;
                     }
                 }
@@ -11802,7 +11799,7 @@ var mainGC = function() {
                         <div style="margin-bottom: 5px;"><u>Remembered Display Options</u></div>
                     `);
                     // Show at corrected coordinates.
-                    if (!isEnabledHiddenCacheLocationOnMap) {
+                    if (!showAtCorrectedCoordsByGS) {
                         $list.append(`
                         <label for="gclh_showAtCorrectedCoords">
                             <input type="checkbox" id="gclh_showAtCorrectedCoords" ${showAtCorrectedCoords ? 'checked' : ''}>
@@ -12057,16 +12054,14 @@ var mainGC = function() {
                 });
             }
 
-            // Hide display options button if route creation is active (GS experimental feature - Caches along a route).
+            // Hide display options button if route creation is active (GS feature (PMO) - Caches along a route).
             let isActiveCreateRoute = false;
-            function handleDisplayOptionsButtonOnRouteCreation() {
-                waitForElementThenRun('button[data-testid="create-route-map"]', function() {
-                    $('button[data-testid="create-route-map"]').click(function() {
-                        $('#gclh_display_options_control').toggle();
-                        isActiveCreateRoute = !isActiveCreateRoute;
-                    });
+            waitForElementThenRun('button[data-testid="create-route-map"]', function() {
+                $('button[data-testid="create-route-map"]').click(function() {
+                    $('#gclh_display_options_control').toggle();
+                    isActiveCreateRoute = !isActiveCreateRoute;
                 });
-            }
+            });
 
             // Add button for additional geocache display options.
             if (settings_searchmap_show_cache_display_options && settings_use_gclh_layercontrol && settings_use_gclh_layercontrol_on_search_map) {
@@ -17005,7 +17000,7 @@ var mainGC = function() {
 //--> $$002
         code += '<img src="https://c.andyhoppe.com/1643060379"' + prop; // Besucher
         code += '<img src="https://c.andyhoppe.com/1643060408"' + prop; // Seitenaufrufe
-        code += '<img src="https://s11.flagcounter.com/count2/LZmV/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
+        code += '<img src="https://s11.flagcounter.com/count2/Lyng/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_60/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"' + prop;
 //        code += '<img src="https://www.worldflagcounter.com/iIb"' + prop;
 //<-- $$002
         div.innerHTML = code;
@@ -18394,7 +18389,7 @@ var mainGC = function() {
             html += thanksLineBuild("vylda",                "",                         false, false, false, true,  false);
             html += thanksLineBuild("winkamol",             "",                         false, false, false, true,  false);
             html += thanksLineBuild("Woody Woodpin",        "Scirocco53",               false, false, false, true,  false);
-            var thanksLastUpdate = "11.10.2026";
+            var thanksLastUpdate = "04.11.2026";
 //<-- $$006
             html += "    </tbody>";
             html += "</table>";
