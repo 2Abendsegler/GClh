@@ -4843,57 +4843,6 @@ var mainGC = function() {
             // Show warning message due to unsaved changes without minimum width.
             css += '#dialog-header {min-width: unset !important;}';
 
-            // Have we changed the logtext?
-            let keepGClhChanges = false;
-            let _logtext = ''; // The Logtext
-
-            // When the user enter a key to the logfield, changes by GClh (Signature and Templates) are take over by GS script.
-            function buildInputLogTextListener(waitCount) {
-                if ($('#gc-md-editor_md:not(.gclh_text_listener)')[0]) {
-                    $('#gc-md-editor_md')[0].addEventListener('input', () => {
-                        keepGClhChanges = false;
-                    });
-                    $('#gc-md-editor_md').addClass('gclh_text_listener');
-                }
-                waitCount++; if (waitCount <= 1000) setTimeout(function(){buildInputLogTextListener(waitCount);}, 10);
-            }
-            buildInputLogTextListener(0);
-
-            // Sets the Logtext value, if GS deletes it.
-            const config = { childList: true, subtree: true };
-            const logpageObserver = new MutationObserver(function(_, observer) {
-                observer.disconnect();
-                if ($('#gc-md-editor_md')[0] && keepGClhChanges && !_logtext == '') {
-                    $('#gc-md-editor_md')[0].value = _logtext;
-                }
-                if (is_page('logform')) {
-                    observer.observe(document.body, config);
-                }
-            });
-            logpageObserver.observe(document.body, config);
-
-            // Save State and Logtext after changes by GClh (Signature and Templates).
-            window.addEventListener('gclhLogTextChanges', () => {
-                _logtext = $('#gc-md-editor_md')[0].value;
-                keepGClhChanges = true;
-            });
-
-            // Warning if the last changes in the logtext are done with GClh (Signature and Templates).
-            function buildWarningForGClhChanges(waitCount) {
-                if ($('.post-button-container:not(.gclh_change_warning)')[0]) {
-                    $('.post-button-container').addClass('gclh_change_warning');
-                    $('.post-button-container').bind('click', (e) => {
-                        if (keepGClhChanges) {
-                            e.preventDefault();
-                            alert('Please wait. The last change you made was with the GClh. Please add any character to the log (you can delete it immediately afterwards) to apply the changes.');
-                            return false;
-                        }
-                    });
-                }
-                waitCount++; if (waitCount <= 1000) setTimeout(function(){buildWarningForGClhChanges(waitCount);}, 10);
-            }
-            buildWarningForGClhChanges(0);
-
             // Default logtypes.
             function setDefaultLogtype(waitCount) {
                 // Get React properties of logtype selection.
@@ -4953,17 +4902,22 @@ var mainGC = function() {
                         let logfield = $('#gc-md-editor_md')[0];
                         var logtext = logfield.value;
                         var signature = getValue((isTB ? "settings_tb_signature" : "settings_log_signature"), "");
+                        // Cursor behind existing logtext (e.g. drafts), but before the signature.
+                        let cursorPos = 0;
                         if (!logtext.includes(signature.replace(/^\s*/, ''))) {
+                            cursorPos = logfield.value.length;
                             let text = (logfield.value != '' ? logfield.value + '\n' : '') + replacePlaceholder(signature);
-                            logfield.value = text;
-                            _logtext = text;
-                            logfield.dispatchEvent(new Event('input'));
-                            window.dispatchEvent(new Event('gclhLogTextChanges'));
+                            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(logfield, text);
+                            logfield.dispatchEvent(new Event('input', { bubbles: true }));
+                        } else {
+                            // Signature already present: cursor before it.
+                            cursorPos = logtext.lastIndexOf(signature.replace(/^\s*/, ''));
+                            if (cursorPos > 0 && logtext[cursorPos - 1] == '\n') cursorPos--;
                         }
                         if (!$('.gclh_signature')[0]) $('#gc-md-editor_md').addClass('gclh_signature');
                         logfield.focus();
-                        logfield.selectionStart = 0;
-                        logfield.selectionEnd = 0;
+                        logfield.selectionStart = cursorPos;
+                        logfield.selectionEnd = cursorPos;
                     }
                 }
                 waitCount++; if (waitCount <= 1000) setTimeout(function(){buildSignature(waitCount);}, 10);
@@ -4986,6 +4940,7 @@ var mainGC = function() {
                         code += "  document.getElementById('gclh_log_tpls').value = -1;";
                         code += "  var aLogDate = document.getElementById('log-date').value;";
                         code += "  var input = document.getElementById('gc-md-editor_md');";
+                        code += "  var setVal = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;";
                         code += "  var finds = '" + finds + "';";
                         code += "  var aDate = '" + aDate + "';";
                         code += "  var aTime = '" + aTime + "';";
@@ -5019,20 +4974,19 @@ var mainGC = function() {
                         code += "  if (aLogDate) inhalt = inhalt.replace(/#LogDate#/ig, aLogDate);";
                         code += "  if (owner) inhalt = inhalt.replace(/#owner#/ig, owner);";
                         code += "  if (id.match(/last_logtext/) && settings_replace_log_by_last_log) {";
-                        code += "    input.value = inhalt;";
+                        code += "    setVal.call(input, inhalt);";
                         code += "  } else {";
                         code += "    if (typeof input.selectionStart != 'undefined' && inhalt) {";
                         code += "      var start = input.selectionStart;";
                         code += "      var end = input.selectionEnd;";
                         code += "      var insText = input.value.substring(start, end);";
-                        code += "      input.value = input.value.substr(0, start) + inhalt + input.value.substr(end);";
+                        code += "      setVal.call(input, input.value.substr(0, start) + inhalt + input.value.substr(end));";
                         code += "      var pos = start + inhalt.length;";
                         code += "      input.selectionStart = input.selectionEnd = pos;";
                         code += "    }";
                         code += "  }";
                         code += "  input.focus();";
-                        code += "  document.getElementById('gc-md-editor_md').dispatchEvent(new Event('input'));";
-                        code += "  window.dispatchEvent(new Event('gclhLogTextChanges'));"
+                        code += "  input.dispatchEvent(new Event('input', { bubbles: true }));";
                         code += "}";
                         if (!$('#gclh_LogTemplatesScript')[0]) {
                             injectPageScript(code, 'body', 'gclh_LogTemplatesScript');
