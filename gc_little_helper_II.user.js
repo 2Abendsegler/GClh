@@ -3387,7 +3387,7 @@ var mainGC = function() {
         // Show links which open Bikerouter with all waypoints of a cache.
         if (settings_show_bikerouter_link) {
             try {
-                const language = unsafeWindow.serverParameters["app:options"]?.localRegion?.split('-')[0] || 'en';
+                const language = unsafeWindow.serverParameters?.["app:options"]?.localRegion?.split('-')[0] || 'en';
                 mapservice_link( {
                     uniqueServiceId: "bikerouter",
                     urlTemplate: 'https://bikerouter.de/?lng=' + language + '#map={zoom}/{center_latitude}/{center_longitude}/{map}&lonlats={waypoints}&profile=shortest',
@@ -3690,8 +3690,10 @@ var mainGC = function() {
         } catch(e) {gclh_error("Build templates for Personal Cache Note",e);}
         // Create Character Counter for Personal Cache Note.
         try {
-            $('#cacheNoteText + div').append('<div id="gclh_char_count" style="float: right;"></div>');
-            createCounterElement('personalCacheNoteCount', $('#cacheNoteText')[0], {anchor: $('#gclh_char_count')[0], initLength: $('#srOnlyCacheNote').html().length})
+            if ($('#cacheNoteText')[0]) {
+                $('#cacheNoteText + div').append('<div id="gclh_char_count" style="float: right;"></div>');
+                createCounterElement('personalCacheNoteCount', $('#cacheNoteText')[0], {anchor: $('#gclh_char_count')[0], initLength: $('#srOnlyCacheNote').html().length});
+            }
         } catch(e) {gclh_error("Create Character Counter for Personal Cache Note",e);}
         // Append CSS.
         appendCssStyle(css);
