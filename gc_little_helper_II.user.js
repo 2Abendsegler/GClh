@@ -14746,6 +14746,11 @@ var mainGC = function() {
         } catch(e) {gclh_error("Improve own log statistic",e);}
     }
     function getLogSt(type, url, manual) {
+        const cacheLogTypes = [2, 3, 4, 7, 9, 10, 11, 45];
+        const trackableLogTypes = [2, 3, 5, 10, 48, 75];
+        const trackableLogImages = [19, 4, 13, 14, 48, 75];
+        let logTypes = cacheLogTypes;
+        if (type === "track") logTypes = trackableLogTypes;
         var logsName = (type == "cache" ? "Cache":"Trackable") + " logs";
         var logsId = "gclh_" + type + "_logs_";
         var get_last = parseInt(getValue(logsId + "get_last"), 10);
@@ -14756,43 +14761,32 @@ var mainGC = function() {
             if (manual != true) setLogStHF(type, logsName, logsId, url);
             setLogStClear(type, logsName, logsId);
             setLogStAddWait(type, logsName, logsId);
-            GM_xmlhttpRequest({
-                method: "GET",
-                url: url,
-                onload: function(response) {
-                    var logCount = new Array();
-                    for (var i = 0; i < 101; i++) {
-                        var count = response.responseText.match(new RegExp("/images/logtypes/" + i + ".png", "g"));
-                        if (count) {
-                            // Das "?" in "(.*?)" bedeutet "nicht gierig", das heißt es wird das erste Vorkommen verwendet.
-                            var title = response.responseText.match('/images/logtypes/' + i + '.png"(.*?)title="(.*?)"');
-                            if (title && title[2]) {
-                                if (type == "track") {
-                                    if      (i == 4)  var lt = "&lt=3";
-                                    else if (i == 13) var lt = "&lt=5";
-                                    else if (i == 14) var lt = "&lt=10";
-                                    else if (i == 19) var lt = "&lt=2";
-                                    else if (i == 48) var lt = "&lt=48";
-                                    else if (i == 75) var lt = "&lt=75";
-                                    else              var lt = "";
-                                } else var lt = "&lt=" + i;
-                                var logType = new Object();
-                                logType["src"] = "/images/logtypes/" + i + ".png";
-                                logType["title"] = title[2];
-                                logType["href"] = url + lt;
-                                logType["count"] = count.length;
-                                logType["no"] = i;
-                                logCount[logCount.length] = logType;
-                            }
-                        }
+            // Fetch (first 20) cache/trackable logs for each log type in parallel.
+            const promises = logTypes.map(id => fetch(`${url}&lt=${id}`).then(response => response.text()));
+            Promise.allSettled(promises).then(results => {
+                const logCount = [];
+                results.forEach((result, i) => {
+                    // Skip failed requests.
+                    if (result.status !== 'fulfilled') return;
+
+                    const doc = new DOMParser().parseFromString(result.value, 'text/html');
+                    const count = parseInt($('#divContentMain h2', doc).next('p').text(), 10) || 0;
+                    if (count) {
+                        logCount.push({
+                            src: "/images/logtypes/" + (type === "cache" ? logTypes[i] : trackableLogImages[i]) + ".png",
+                            title: $('td:first-child img', doc).first().attr('title'),
+                            href: `${url}&lt=${logTypes[i]}`,
+                            count: count,
+                            no: logTypes[i]
+                        });
                     }
-                    if (logCount.length > 0) setValue(logsId + "get_last", time);
-                    setValue(logsId + "count", JSON.stringify(logCount));
-                    var now = new Date().getTime();
-                    var generated = Math.ceil((now - time) / (60 * 1000));  // In Minuten.
-                    setLogStClear(type, logsName, logsId);
-                    setLogSt(type, logsName, logsId, generated);
-                }
+                });
+                if (logCount.length > 0) setValue(logsId + "get_last", time);
+                setValue(logsId + "count", JSON.stringify(logCount));
+                var now = new Date().getTime();
+                var generated = Math.ceil((now - time) / (60 * 1000));  // In Minuten.
+                setLogStClear(type, logsName, logsId);
+                setLogSt(type, logsName, logsId, generated);
             });
         } else if (reload_after == 0 && get_last == 0) {
             setLogStHF(type, logsName, logsId, url);
@@ -14809,6 +14803,15 @@ var mainGC = function() {
             var side = $('#ctl00_ContentBody_StatsChronologyControl1_YearlyBreakdown, #ctl00_ContentBody_ProfilePanel1_StatsChronologyControl1_YearlyBreakdown')[0];
         }
         if (side) {
+            var outer = document.querySelector('#gclh-total-logs');
+            if (!outer) {
+                outer = document.createElement("div");
+                outer.id = "gclh-total-logs";
+                outer.className = "ProfileStats";
+                outer.style.display = "flex";
+                outer.style.alignItems = "flex-start";
+                side.after(outer);
+            }
             var div = document.createElement("div");
             div.className = (type == "cache" ? "span-9":"span-9 last");
             var html = '';
@@ -14826,7 +14829,7 @@ var mainGC = function() {
             html += '  <tbody id="' + logsId + 'body"> </tbody>';
             html += '</table>';
             div.innerHTML = html;
-            side.appendChild(div);
+            outer.appendChild(div);
             $('#'+logsId+'reload')[0].addEventListener("click", function() {getLogSt(type, url, true);}, false);
         }
     }
