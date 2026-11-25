@@ -1674,26 +1674,42 @@ var mainGC = function() {
                 else if ($('#ctl00_ContentBody_WaypointEdit_uxSubmitIt')[0]) var id = "ctl00_ContentBody_WaypointEdit_uxSubmitIt";
             }
             // "Save" personal cache note in cache listing.
-            if (is_page("cache_listing") && $('.js-pcn-submit')[0]) {
-                var id = "gclh_js-pcn-submit";
-                $('.js-pcn-submit')[0].id = id;
-                setButtonDescInnerHTMLF2(0, id);
+            if (is_page("cache_listing")) {
+                if ($('.js-pcn-submit')[0]) {
+                    var id = "gclh_js-pcn-submit";
+                    $('.js-pcn-submit')[0].id = id;
+                    setButtonDescInnerHTMLF2(0, id);
+                } else {
+                    function waitForPCNSaveButton(waitCount) {
+                        if ($('#editCacheNote button[data-testid="personal-cache-note-save"]')[0]) {
+                            var id = "gclh_personal-cache-note-save";
+                            $('#editCacheNote button[data-testid="personal-cache-note-save"]')[0].id = id;
+                            setButtonDescInnerHTMLF2(0, id);
+                            handleIdF2(id);
+                        } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForPCNSaveButton(waitCount);}, 100);}
+                    }
+                    waitForPCNSaveButton(0);
+                }
             }
-            if (id && document.getElementById(id)) {
-                function keydownF2(e) {
-                    if (!check_config_page() && $('#'+id)[0].offsetParent != null) {
-                        if (e.keyCode == 113 && noSpecialKey(e)) {
-                            document.getElementById(id).click();
-                        }
-                        if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
-                            e.preventDefault();
-                            document.getElementById(id).click();
+            // Handle current id fpr F2 and Ctrl+s.
+            function handleIdF2(id) {
+                if (id && document.getElementById(id)) {
+                    function keydownF2(e) {
+                        if (!check_config_page() && $('#'+id)[0].offsetParent != null) {
+                            if (e.keyCode == 113 && noSpecialKey(e)) {
+                                document.getElementById(id).click();
+                            }
+                            if (e.keyCode == 83 && e.ctrlKey == true && e.altKey == false && e.shiftKey == false) {
+                                e.preventDefault();
+                                document.getElementById(id).click();
+                            }
                         }
                     }
+                    document.getElementById(id).value += " (F2)";
+                    window.addEventListener('keydown', keydownF2, true);
                 }
-                document.getElementById(id).value += " (F2)";
-                window.addEventListener('keydown', keydownF2, true);
             }
+            handleIdF2(id);
         }
         // Aufruf Config per F4 Taste. Nur auf erlaubten Seiten. Nicht im Config.
         if (settings_f4_call_gclh_config && !check_config_page()) {
