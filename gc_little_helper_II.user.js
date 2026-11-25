@@ -12923,12 +12923,11 @@ var mainGC = function() {
                 }
 
                 // Get personal cache note.
-                if ($(text).find('#srOnlyCacheNote')[0]) {
-                    if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
-                        new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span> | ';
-                    } else {
-                        new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span> | ';
-                    }
+                if ($(text).find('#srOnlyCacheNote')[0]?.innerHTML || $(text).find('#personal-cache-note-root')[0]?.dataset?.note) {
+                    var pcn = $(text).find('#srOnlyCacheNote')[0]?.innerHTML || $(text).find('#personal-cache-note-root')[0]?.dataset?.note;
+                    new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages"></use></svg><span>' + pcn.replace(/\n/gi,'<br>') + '</span></span> | ';
+                } else {
+                    new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16" src=""><use xlink:href="#messages"></use></svg></span> | ';
                 }
 
                 // Favorite percentage.
@@ -14473,12 +14472,11 @@ var mainGC = function() {
                         }
 
                         // Get personal cache note.
-                        if ($(text).find('#srOnlyCacheNote')[0]) {
-                            if (!$(text).find('#srOnlyCacheNote')[0].innerHTML || $(text).find('#srOnlyCacheNote')[0].innerHTML == '') {
-                                new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span> | ';
-                            } else {
-                                new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span>' + $(text).find('#srOnlyCacheNote').html().replace(/\n/gi,'<br>') + '</span></span> | ';
-                            }
+                        if ($(text).find('#srOnlyCacheNote')[0]?.innerHTML || $(text).find('#personal-cache-note-root')[0]?.dataset?.note) {
+                            var pcn = $(text).find('#srOnlyCacheNote')[0]?.innerHTML || $(text).find('#personal-cache-note-root')[0]?.dataset?.note;
+                            new_text += '<span class="gclh_cache_note"><svg style="color: #4a4a4ad4; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg><span>' + pcn.replace(/\n/gi,'<br>') + '</span></span> | ';
+                        } else {
+                            new_text += '<span title="No personal cache note"><svg style="opacity: 0.5; vertical-align: middle;" height="16" width="16"><use xlink:href="#messages--inline"></use></svg></span> | ';
                         }
 
                         // Favorite percentage.
