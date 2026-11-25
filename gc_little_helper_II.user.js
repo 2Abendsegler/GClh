@@ -3547,68 +3547,74 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing") && !global_isBasic) {
-        var css = '';
-        // Improve cursor when displaying or editing the personal cache note. It's upside down.
-        css += '#viewCacheNote {cursor: pointer;} #cacheNoteText {cursor: text;}';
-        // Adapt height of edit field for personal cache note.
-        $('h3.h4').append($('#pcn_help').remove().get().reverse());
-        css += '#viewCacheNote {text-decoration: none !important;}';
-        // Personal cache note: Adapt height of edit field for personal cache note.
-        function calcHeightOfCacheNote() {
-            return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
-        }
-        if (settings_adapt_height_cache_notes) {
-            try {
-                var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
-                if (note) $("#cacheNoteText").height(calcHeightOfCacheNote());
-            } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
-        }
-        // Change font to monospace.
-        if (settings_change_font_cache_notes) $("#viewCacheNote, #cacheNoteText").css("font-family", "monospace");
-        // Hide complete and Show/Hide Cache Note.
-        try {
-            var note = ($('.Note.PersonalCacheNote')[0] || $('.NotesWidget')[0]);
-            if (settings_hide_cache_notes && note) note.remove();
-            if (settings_hide_empty_cache_notes && !settings_hide_cache_notes && note) {
-                var desc = decode_innerHTML(note.getElementsByTagName("label")[0]).replace(":", "");
-                var noteText = $('#viewCacheNote')[0].innerHTML;
-                var link = document.createElement("font");
-                link.setAttribute("style", "font-size: 12px;");
-                link.innerHTML = "<a id='gclh_hide_note' href='javascript:void(0);' onClick='gclhHideNote();'>Hide "+desc+"</a>";
-                note.setAttribute("id", "gclh_note");
-                note.parentNode.insertBefore(link, note);
-                if (noteText != null && (noteText == "" || noteText == "Click to enter a note" || noteText == "Klicken zum Eingeben einer Notiz" || noteText == "Pro vložení poznámky klikni sem")) {
-                    note.style.display = "none";
-                    if ($('#gclh_hide_note')[0]) $('#gclh_hide_note')[0].innerHTML = 'Show '+desc;
-                }
-                var code =
-                    "function gclhHideNote() {" +
-                    "  if (document.getElementById('gclh_note').style.display == 'none') {" +
-                    "    document.getElementById('gclh_note').style.display = 'block';" +
-                    "    if (document.getElementById('gclh_hide_note')) {" +
-                    "      document.getElementById('gclh_hide_note').innerHTML = 'Hide "+desc+"'" +
-                    "    }" +
-                    "  } else {" +
-                    "    document.getElementById('gclh_note').style.display = 'none';" +
-                    "    if (document.getElementById('gclh_hide_note')) {" +
-                    "      document.getElementById('gclh_hide_note').innerHTML = 'Show "+desc+"'" +
-                    "    }" +
-                    "  }" +
-                    "}";
-                injectPageScript(code, 'body');
+        function processPCN() {
+            var css = '';
+            // Hide the help (question mark) for the personal cache note.
+            css += '#pcn_help {display: none !important;}';
+            // Improve cursor and text underlining when displaying or editing the personal cache note.
+            css += '#viewCacheNote {cursor: pointer !important; text-decoration: none !important;} #cacheNoteText {cursor: text !important;}';
+            // Personal cache note: Adapt height of edit field for personal cache note.
+            function calcHeightOfCacheNote() {
+                return ($("#viewCacheNote").parent().height()*1.02+36 > settings_cache_notes_min_size ? $("#viewCacheNote").parent().height()*1.02+36 : settings_cache_notes_min_size);
             }
-        } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
-        // Focus Cachenote-Textarea on Click of the Note (to avoid double click to edit).
-        try {
-            var editCacheNote = document.querySelector('#editCacheNote');
-            if (editCacheNote) {
+            if (settings_adapt_height_cache_notes) {
+                try {
+                    var height = calcHeightOfCacheNote();
+                    if (height) css += '#cacheNoteText {height: ' + height + 'px;}';
+                } catch(e) {gclh_error("Adapt size of edit field for personal cache note",e);}
+            }
+            // Change font to monospace.
+            if (settings_change_font_cache_notes) css += '#viewCacheNote, #cacheNoteText {font-family: monospace;}';
+            // Hide complete and Show/Hide Cache Note.
+            try {
+                var note = ($('.Note.PersonalCacheNote')[0] || $('#personal-cache-note-root')[0]);
+                if (settings_hide_cache_notes) css += '.Note.PersonalCacheNote, #personal-cache-note-root {display: none !important;}';
+                if (settings_hide_empty_cache_notes && !settings_hide_cache_notes && note) {
+                    var desc = decode_innerHTML(note.getElementsByTagName("label")[0]).replace(":", "");
+                    var noteText = $('#viewCacheNote span')[0].innerHTML;
+                    var link = document.createElement("font");
+                    link.setAttribute("style", "font-size: 12px;");
+                    link.innerHTML = "<a id='gclh_hide_note' href='javascript:void(0);' onClick='gclhHideNote();'>Hide "+desc+"</a>";
+                    note.setAttribute("id", "gclh_note");
+                    note.parentNode.insertBefore(link, note);
+                    if (noteText != null && (noteText == "" || noteText == "Click to enter a note" || noteText == "Klicken zum Eingeben einer Notiz" || noteText == "Pro vložení poznámky klikni sem")) {
+                        note.style.display = "none";
+                        if ($('#gclh_hide_note')[0]) $('#gclh_hide_note')[0].innerHTML = 'Show '+desc;
+                    }
+                    var code =
+                        "function gclhHideNote() {" +
+                        "  if (document.getElementById('gclh_note').style.display == 'none') {" +
+                        "    document.getElementById('gclh_note').style.display = 'block';" +
+                        "    if (document.getElementById('gclh_hide_note')) {" +
+                        "      document.getElementById('gclh_hide_note').innerHTML = 'Hide "+desc+"'" +
+                        "    }" +
+                        "  } else {" +
+                        "    document.getElementById('gclh_note').style.display = 'none';" +
+                        "    if (document.getElementById('gclh_hide_note')) {" +
+                        "      document.getElementById('gclh_hide_note').innerHTML = 'Show "+desc+"'" +
+                        "    }" +
+                        "  }" +
+                        "}";
+                    injectPageScript(code, 'body');
+                }
+            } catch(e) {gclh_error("Hide complete and Show/Hide Cache Note",e);}
+            // Improve the edit mode for Personal Cache Note.
+            try {
+                var editFirst = true;
                 var observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.type == "attributes") {
-                            if (document.getElementById('editCacheNote').style.display == '') {
-                                document.getElementById('cacheNoteText').focus();
-                            } else {
-                                // Take the parent, because empty lines are not handle by span-element #viewCacheNote.
+                            // When entering edit mode for the first time, place the cursor at the end, just as it was originally.
+                            if (editFirst && settings_adapt_height_cache_notes) {
+                                editFirst = false;
+                                if ($('#cacheNoteText')[0].selectionStart == 0) {
+                                    $('#cacheNoteText')[0].focus();
+                                    var length = $('#cacheNoteText')[0].value.length;
+                                    $('#cacheNoteText')[0].setSelectionRange(length, length);
+                                }
+                            }
+                            // Set height after edit for a next editing.
+                            if (window.getComputedStyle($('#editCacheNote')[0]).display == 'none') {
                                 if (settings_adapt_height_cache_notes) {
                                     if ($("#cacheNoteText").height() != calcHeightOfCacheNote()) {
                                         $("#cacheNoteText").height(calcHeightOfCacheNote());
@@ -3619,60 +3625,58 @@ var mainGC = function() {
                     });
                 });
                 observer.observe(editCacheNote, {attributes: true});
-            }
-        } catch(e) {gclh_error("Focus Cachenote-Textarea on Click of the Note",e);}
-        // Build templates for Personal Cache Note.
-        try {
-            function waitForPCN(waitCount) {
-                if ($('#editCacheNote')[0] && $('#div_hint')[0]) {
-                    // Script for insert personal cache note template by click.
-                    function insertCacheNoteTemplatesFunction() {
-                        var [aDate, aTime] = getDateTime();
-                        var aHints = '';
-                        if ($('#div_hint')[0].innerHTML.trim() != '') {
-                            // At this stage, the hint is always encrypted (even if automatic decryption is active).
-                            aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
-                        }
-                        aHints = aHints.replace(/<br>/g, '\r\n');
-                        aHints = JSON.stringify(aHints).slice(1, -1);
-                        var code = "function gclh_insert_tpl(id){";
-                        code += "  document.getElementById('gclh_cache_note_tpls').value = -1;";
-                        code += "  var input = document.getElementById('cacheNoteText');";
-                        code += "  var aDate = '" + aDate + "';";
-                        code += "  var aTime = '" + aTime + "';";
-                        code += "  var aHints = '" + aHints + "';";
-                        code += "  var inhalt = document.getElementById(id).innerHTML;";
-                        code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
-                        code += "  if (aDate) inhalt = inhalt.replace(/#Date#/ig, aDate);";
-                        code += "  if (aTime) inhalt = inhalt.replace(/#Time#/ig, aTime);";
-                        code += "  inhalt = inhalt.replace(/#Hints#/ig, aHints);";
-                        code += "  if (typeof input.selectionStart != 'undefined' && inhalt) {";
-                        code += "    var start = input.selectionStart;";
-                        code += "    var end = input.selectionEnd;";
-                        code += "    var insText = input.value.substring(start, end);";
-                        code += "    input.value = input.value.substr(0, start) + inhalt + input.value.substr(end);";
-                        code += "    var pos = start + inhalt.length;";
-                        code += "    input.selectionStart = input.selectionEnd = pos;";
-                        code += "  }";
-                        code += "  input.focus();";
-                        code += "  document.getElementById('cacheNoteText').dispatchEvent(new Event('input'));";
-                        code += "}";
-                        injectPageScript(code, 'body', 'gclh_CacheNoteTemplatesScript');
+            } catch(e) {gclh_error("Set height of editable cachenote textarea",e);}
+            // Build templates for Personal Cache Note.
+            try {
+                // Script for insert personal cache note template by click.
+                function insertCacheNoteTemplatesFunction() {
+                    var [aDate, aTime] = getDateTime();
+                    var aHints = '';
+                    if ($('#div_hint')[0].innerHTML.trim() != '') {
+                        // At this stage, the hint is always encrypted (even if automatic decryption is active).
+                        aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
                     }
-                    function prepareCacheNoteTemplates() {
-                        var texts = ""; var logic = "";
-                        for (var i = 0; i < anzTemplates; i++) {
-                            if (getValue("settings_cache_note_template_name["+i+"]", "") != "") {
-                                texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_cache_note_template["+i+"]", "") + "</div>";
-                                logic += "<option value='gclh_template["+i+"]'>" + repApo(getValue("settings_cache_note_template_name["+i+"]", "")) + "</option>";
-                            }
+                    aHints = aHints.replace(/<br>/g, '\r\n');
+                    aHints = JSON.stringify(aHints).slice(1, -1);
+                    var code = "function gclh_insert_tpl(id){";
+                    code += "  document.getElementById('gclh_cache_note_tpls').value = -1;";
+                    code += "  var input = document.getElementById('cacheNoteText');";
+                    code += "  var aDate = '" + aDate + "';";
+                    code += "  var aTime = '" + aTime + "';";
+                    code += "  var aHints = '" + aHints + "';";
+                    code += "  var inhalt = document.getElementById(id).innerHTML;";
+                    code += "  inhalt = inhalt.replace(/\\&amp\\;/g,'&');";
+                    code += "  if (aDate) inhalt = inhalt.replace(/#Date#/ig, aDate);";
+                    code += "  if (aTime) inhalt = inhalt.replace(/#Time#/ig, aTime);";
+                    code += "  inhalt = inhalt.replace(/#Hints#/ig, aHints);";
+                    code += "  if (typeof input.selectionStart != 'undefined' && inhalt) {";
+                    code += "    var start = input.selectionStart;";
+                    code += "    var end = input.selectionEnd;";
+                    code += "    var insText = input.value.substring(start, end);";
+                    code += "    input.value = input.value.substr(0, start) + inhalt + input.value.substr(end);";
+                    code += "    var pos = start + inhalt.length;";
+                    code += "    input.selectionStart = input.selectionEnd = pos;";
+                    code += "  }";
+                    code += "  input.focus();";
+                    code += "  document.getElementById('cacheNoteText').dispatchEvent(new Event('input'));";
+                    code += "}";
+                    injectPageScript(code, 'body', 'gclh_CacheNoteTemplatesScript');
+                }
+                function prepareCacheNoteTemplates() {
+                    var texts = ""; var logic = "";
+                    for (var i = 0; i < anzTemplates; i++) {
+                        if (getValue("settings_cache_note_template_name["+i+"]", "") != "") {
+                            texts += "<div id='gclh_template["+i+"]' style='display: none;'>" + getValue("settings_cache_note_template["+i+"]", "") + "</div>";
+                            logic += "<option value='gclh_template["+i+"]'>" + repApo(getValue("settings_cache_note_template_name["+i+"]", "")) + "</option>";
                         }
-                        liste += texts;
-                        liste += "<select id='gclh_cache_note_tpls' onChange='gclh_insert_tpl(this.value);' title='Personal cache note templates'>";
-                        liste += "<option value='-1'" + (texts == "" ? "" : "style='display: none; visibility: hidden;'") + ">No templates available</option>";
-                        liste += logic;
-                        liste += "</select>";
                     }
+                    liste += texts;
+                    liste += "<select id='gclh_cache_note_tpls' onChange='gclh_insert_tpl(this.value);' title='Personal cache note templates'>";
+                    liste += "<option value='-1'" + (texts == "" ? "" : "style='display: none; visibility: hidden;'") + ">No templates available</option>";
+                    liste += logic;
+                    liste += "</select>";
+                }
+                if (settings_add_cache_note_templates) {
                     insertCacheNoteTemplatesFunction();
                     var liste = "";
                     prepareCacheNoteTemplates();
@@ -3680,23 +3684,31 @@ var mainGC = function() {
                     if (!$('#gclh_cache_note_tpls')[0]) {
                         $('#editCacheNote').prepend(liste);
                     }
+                    css += '#gclh_cache_note_tpls {appearance: none; height: 20px; width: 20px; padding: 12px; margin-top: -30px; float: right; border-color: #9B9B9B; background-color: #FFFFFF; background-image: url(../../app/ui-icons/icons/global/caret-down.svg); background-position: 50% 50%;}';
+                    css += '#gclh_cache_note_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
+                }
+            } catch(e) {gclh_error("Build templates for Personal Cache Note",e);}
+            // Create Character Counter for Personal Cache Note.
+            try {
+                if ($('#cacheNoteText')[0]) {
+                    $('#cacheNoteText + div').append('<div id="gclh_char_count" style="float: right;"></div>');
+                    createCounterElement('personalCacheNoteCount', $('#cacheNoteText')[0], {anchor: $('#gclh_char_count')[0], initLength: $('#srOnlyCacheNote').html().length});
+                }
+            } catch(e) {gclh_error("Create Character Counter for Personal Cache Note",e);}
+            // Append CSS.
+            appendCssStyle(css);
+        }
+        // Wait for Personal Cache Note.
+        try {
+            function waitForPCN(waitCount) {
+                if ($("#viewCacheNote")[0] && $('#cacheNoteText')[0] && $('#editCacheNote')[0] && $('#div_hint')[0]) {
+                    try {
+                        processPCN();
+                    } catch(e) {gclh_error("Process Personal Cache Note",e);}
                 } else {waitCount++; if (waitCount <= 50) setTimeout(function(){waitForPCN(waitCount);}, 200);}
             }
-            if (settings_add_cache_note_templates) {
-                waitForPCN(0);
-                css += '#gclh_cache_note_tpls {appearance: none; height: 20px; width: 20px; padding: 12px; margin-top: -30px; float: right; border-color: #9B9B9B; background-color: #FFFFFF; background-image: url(../../app/ui-icons/icons/global/caret-down.svg); background-position: 50% 50%;}';
-                css += '#gclh_cache_note_tpls:focus {box-shadow: rgb(74, 74, 74) 0px 0px 0px 1px;}';
-            }
-        } catch(e) {gclh_error("Build templates for Personal Cache Note",e);}
-        // Create Character Counter for Personal Cache Note.
-        try {
-            if ($('#cacheNoteText')[0]) {
-                $('#cacheNoteText + div').append('<div id="gclh_char_count" style="float: right;"></div>');
-                createCounterElement('personalCacheNoteCount', $('#cacheNoteText')[0], {anchor: $('#gclh_char_count')[0], initLength: $('#srOnlyCacheNote').html().length});
-            }
-        } catch(e) {gclh_error("Create Character Counter for Personal Cache Note",e);}
-        // Append CSS.
-        appendCssStyle(css);
+            waitForPCN(0);
+        } catch(e) {gclh_error("Wait for Personal Cache Note",e);}
     }
 
 // Show eMail and Message Center Link beside user. (Nicht in Cache Logs im Listing, das erfolgt später bei Log-Template.)
