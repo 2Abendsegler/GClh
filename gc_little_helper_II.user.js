@@ -3563,6 +3563,14 @@ var mainGC = function() {
 
 // Personal cache note at cache listing.
     if (is_page("cache_listing") && !global_isBasic) {
+        // Re-add title to hint (necessary to decide if hint is encrypted or decrypted).
+        const btn = document.getElementById("lnkDH");
+        if (btn) {
+            btn.title = "Decrypt";
+            btn.addEventListener("click", () => {
+                btn.title = btn.title === "Decrypt" ? "Encrypt" : "Decrypt";
+            });
+        }
         function processPCN() {
             var css = '';
             // Hide the help (question mark) for the personal cache note.
@@ -3649,8 +3657,9 @@ var mainGC = function() {
                     var [aDate, aTime] = getDateTime();
                     var aHints = '';
                     if ($('#div_hint')[0].innerHTML.trim() != '') {
-                        // At this stage, the hint is always encrypted (even if automatic decryption is active).
-                        aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
+                        // If PCN loads delayed then the hint can already be decrypted.
+                        if (btn?.title === "Decrypt") aHints = convertROTStringWithBrackets($('#div_hint')[0].innerHTML.trim());
+                        else aHints = $('#div_hint')[0].innerHTML.trim();
                     }
                     aHints = aHints.replace(/<br>/g, '\r\n');
                     aHints = JSON.stringify(aHints).slice(1, -1);
