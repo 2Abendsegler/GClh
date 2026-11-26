@@ -11455,8 +11455,8 @@ var mainGC = function() {
 
             // Handle cache properties.
             const processCaches = (pageProps) => {
-                // If route creation is active, do nothing.
-                if (isActiveCreateRoute) return;
+                // If route creation is active or search results are missing (/play/map/route), do nothing.
+                if (isActiveCreateRoute || !pageProps.searchResults) return;
 
                 // Since the content of searchResults is read-only, we overwrite it with a writable clone (otherwise cache properties cannot be set).
                 pageProps.searchResults = structuredClone(pageProps.searchResults);
