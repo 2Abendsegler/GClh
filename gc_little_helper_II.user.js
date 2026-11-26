@@ -10358,9 +10358,21 @@ var mainGC = function() {
                                     if (p) {
                                         p = (p-20)/2;
                                         $(lis[j])[0].style.setProperty('line-height', '16px', 'important');
-                                        if ($(lis[j]).find('> div a')[0]) {
+                                        if ($(lis[j]).find('> div > a')[0] || $(lis[j]).find('> div > span')[0]) {
                                             $(lis[j]).find('> div')[0].style.setProperty('padding-top', p + 'px', 'important');
                                             $(lis[j]).find('> div')[0].style.setProperty('padding-bottom', p + 'px', 'important');
+                                        }
+                                        // Adjust height of linklists under link lines (Create Route).
+                                        if ($(lis[j]).find('> ul')[0]) {
+                                            var lis2 = $(lis[j]).find('> ul').children();
+                                            for (var k = 0; k < lis2.length; k++) {
+                                                $(lis2[k])[0].style.setProperty('line-height', '16px', 'important');
+                                                if ($(lis2[k]).find('> div > a')[0] || $(lis2[k]).find('> div > span')[0]) {
+                                                    $(lis2[k]).find('> div')[0].style.setProperty('padding-top', p + 'px', 'important');
+                                                    $(lis2[k]).find('> div')[0].style.setProperty('padding-bottom', p + 'px', 'important');
+                                                }
+                                            }
+
                                         }
                                     }
                                     // Reduce the top spacing of sublists in the links (information about favoriten, information about trackable inventory).
